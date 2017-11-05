@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/SwiftEval/SwiftEval.swift#3 $
+//  $Id: //depot/ResidentEval/SwiftEval/SwiftEval.swift#4 $
 //
 //  Basic implementation of ra Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -107,17 +107,17 @@ class SwiftEval {
 
         // locate compile command for class
 
-        let regexp = "^    /.+? -primary-file (\"([^\"]+?/\(className)\\.swift)\"|(\\S+?/\(className)\\.swift)) "
+        let regexp = " -primary-file (\"([^\"]+?/\(className)\\.swift)\"|(\\S+?/\(className)\\.swift)) "
 
         guard var compileCommand = compileByClass[className] ?? {
             () -> String? in
 
             guard shell(command: """
-                # search through build logs in reverse order
+                # search through build logs, most recent first
                 for log in `ls -t "\(logsDir.path)/"*.xcactivitylog`; do
                     echo "Scanning $log"
                     # grep log for build of class source
-                    /usr/bin/gunzip <"$log" | /usr/bin/tr '\\r' '\\n' | \
+                    /usr/bin/gunzip <"$log" | perl -lpe 's/\\r/\\n/g' | \
                     /usr/bin/grep -E '\(regexp)' >/tmp/eval.sh && exit 0;
                 done;
                 exit 1
@@ -192,15 +192,15 @@ class SwiftEval {
         let xcode = "/Applications/Xcode.app/Contents/Developer"
 
         #if os(iOS)
-        let osSpecific = "-isysroot \(xcode)/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk -mios-simulator-version-min=11.1 -L\(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator"
+        let osSpecific = "-isysroot \(xcode)/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk -mios-simulator-version-min=11.1 -L\(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator -Xlinker -bundle_loader -Xlinker \"\(Bundle.main.executablePath!)\""
         let frameworkPath = Bundle.main.bundlePath + "/Frameworks"
         #else
-        let osSpecific = "-isysroot \(xcode)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -mmacosx-version-min=10.12 -L\(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx"
+        let osSpecific = "-isysroot \(xcode)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -mmacosx-version-min=10.12 -L\(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx -undefined dynamic_lookup"
         let frameworkPath = Bundle.main.bundlePath + "/Contents/Frameworks"
         #endif
 
         guard shell(command: """
-            \(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch x86_64 -bundle \(osSpecific) -dead_strip -Xlinker -objc_abi_version -Xlinker 2 -fobjc-arc /tmp/eval.o -L \(frameworkPath) -F \(frameworkPath) -rpath \(frameworkPath) -undefined dynamic_lookup -o \(dylib)
+            \(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch x86_64 -bundle \(osSpecific) -dead_strip -Xlinker -objc_abi_version -Xlinker 2 -fobjc-arc /tmp/eval.o -L \(frameworkPath) -F \(frameworkPath) -rpath \(frameworkPath) -o \(dylib)
             """) else {
             return evalError("Link failed")
         }
