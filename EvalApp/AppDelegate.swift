@@ -14,9 +14,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var window: NSWindow!
     @IBOutlet weak var textField: NSTextField!
     @IBOutlet weak var textView: NSTextView!
+    @IBOutlet weak var closureText: NSTextField!
 
     @IBAction func performEval(_: Any) {
         textView.string = eval(textField.stringValue)
+    }
+
+    @IBAction func closureEval(_: Any) {
+        if let block = eval(closureText.stringValue, (() -> ())?.self) {
+            block()
+        }
     }
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {

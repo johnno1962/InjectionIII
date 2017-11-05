@@ -15,6 +15,7 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="EvalApp" customModuleProvider="target">
             <connections>
+                <outlet property="closureText" destination="jgJ-XA-Jvc" id="9TN-q4-VrV"/>
                 <outlet property="textField" destination="FX4-d7-9cb" id="5DW-HO-DAj"/>
                 <outlet property="textView" destination="bWx-gs-z0L" id="b3w-GR-BnH"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
@@ -685,16 +686,28 @@
         <window title="EvalApp - Enter Swift as you would in a String" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="390" width="480" height="263"/>
+            <rect key="contentRect" x="335" y="390" width="480" height="352"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
             <view key="contentView" wantsLayer="YES" misplaced="YES" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="263"/>
+                <rect key="frame" x="0.0" y="0.0" width="480" height="352"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="Let-g5-fuR">
+                        <rect key="frame" x="10" y="314" width="10" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="&quot;" id="aDu-r9-jM8">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                     <textField verticalHuggingPriority="750" misplaced="YES" id="FX4-d7-9cb">
-                        <rect key="frame" x="20" y="221" width="387" height="22"/>
+                        <rect key="frame" x="20" y="310" width="387" height="22"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="\(textView!)" drawsBackground="YES" id="s2Y-Fc-8xb">
+                        <string key="toolTip">    @IBAction func performEval(_: Any) {
+        textView.string = eval(textField.stringValue)
+    }</string>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" state="on" borderStyle="bezel" title="\(textView!)" drawsBackground="YES" id="s2Y-Fc-8xb">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -703,8 +716,17 @@
                             <action selector="performClick:" target="li3-4d-fP0" id="D55-68-xNV"/>
                         </connections>
                     </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="yPb-FC-Hur">
+                        <rect key="frame" x="407" y="314" width="10" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="&quot;" id="XlS-ly-HlO">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                     <button verticalHuggingPriority="750" misplaced="YES" id="li3-4d-fP0">
-                        <rect key="frame" x="422" y="222" width="38" height="19"/>
+                        <rect key="frame" x="422" y="311" width="38" height="19"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="roundRect" title="Eval" bezelStyle="roundedRect" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Kxu-Md-6sV">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -715,17 +737,17 @@
                         </connections>
                     </button>
                     <scrollView misplaced="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="gLy-DZ-3EO">
-                        <rect key="frame" x="20" y="20" width="440" height="193"/>
+                        <rect key="frame" x="20" y="101" width="440" height="201"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <clipView key="contentView" id="bs2-hy-EvY">
-                            <rect key="frame" x="1" y="1" width="423" height="191"/>
+                            <rect key="frame" x="1" y="1" width="423" height="199"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <textView importsGraphics="NO" verticallyResizable="YES" usesFontPanel="YES" findStyle="panel" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" id="bWx-gs-z0L">
-                                    <rect key="frame" x="0.0" y="0.0" width="423" height="191"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="423" height="199"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <size key="minSize" width="423" height="191"/>
+                                    <size key="minSize" width="423" height="199"/>
                                     <size key="maxSize" width="463" height="10000000"/>
                                     <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                 </textView>
@@ -737,31 +759,45 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="5ho-vt-4DH">
-                            <rect key="frame" x="424" y="1" width="15" height="191"/>
+                            <rect key="frame" x="424" y="1" width="15" height="199"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="Let-g5-fuR">
-                        <rect key="frame" x="10" y="225" width="10" height="17"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="&quot;" id="aDu-r9-jM8">
+                    <textField verticalHuggingPriority="750" misplaced="YES" id="jgJ-XA-Jvc">
+                        <rect key="frame" x="20" y="20" width="393" height="73"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <string key="toolTip">    @IBAction func closureEval(_: Any) {
+        if let block = eval(closureText.stringValue, (() -&gt; ())?.self) {
+            block()
+        }
+    }</string>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="qX7-Te-dLW">
                             <font key="font" metaFont="system"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            <string key="title">{
+    self.textView.textColor = NSColor.purple
+    self.textView.string = "Hello Closure"
+}</string>
+                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
+                        <connections>
+                            <action selector="performClick:" target="qFL-7i-e91" id="ALW-0a-d7l"/>
+                        </connections>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="yPb-FC-Hur">
-                        <rect key="frame" x="407" y="225" width="10" height="17"/>
+                    <button verticalHuggingPriority="750" misplaced="YES" id="qFL-7i-e91">
+                        <rect key="frame" x="421" y="44" width="38" height="19"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="&quot;" id="XlS-ly-HlO">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
+                        <buttonCell key="cell" type="roundRect" title="Eval Block" bezelStyle="roundedRect" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="jiS-KC-Kus">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="cellTitle"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="closureEval:" target="Voe-Tx-rLC" id="sMF-wn-tb7"/>
+                        </connections>
+                    </button>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="131" y="229.5"/>
+            <point key="canvasLocation" x="131" y="274"/>
         </window>
     </objects>
 </document>

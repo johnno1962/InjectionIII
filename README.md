@@ -21,6 +21,22 @@ contents of the String literal as it's argument:
 	}
 ```
 
+An example of how it is used can be found in the EvalApp example.
+
+```Swift
+    @IBAction func performEval(_: Any) {
+        textView.string = eval(textField.stringValue)
+    }
+
+    @IBAction func closureEval(_: Any) {
+        if let block = eval(closureText.stringValue, (() -> ())?.self) {
+            block()
+        }
+    }
+```
+
+### implementation
+
 The code works by adding an extension to your class source containing the expression.
 It then compiles and loads this new version of the class "swizzling" this extension onto
 the original class. The expression can refer to instance members in the class containing
@@ -30,6 +46,14 @@ The command to rebuild the class containing the eval is parsed out of the logs o
 build of your application and the resulting object file linked into a dynamic library for
 loading. In the simulator, it was just not possible to codesign a dylib so you have to
 be running a small server "'signer", included in this project to do this alas.
+
+### Code Injection
+
+Included is a simple implementation of ["code injection"](SwiftEval/SwiftInjection.swift).
+If you are stopped in a class, you can edit the class' implementation, save it and type
+"p inject()". Your changes will be applied without having to restart the application.
+To detect this in your code to reload a view controller for example, subscribe to the
+"INJECTION_BUNDLE_NOTIFICATION".
 
 ### But Why?
 

@@ -8,7 +8,7 @@
 
 import UIKit
 
-let evalGlobal = "HERE"
+let evalGlobal = "GLOBAL"
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		BB037DF51FAD80D0004B267C /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = BB037DF41FAD80D0004B267C /* LICENSE */; };
+		BB109FB01FAECD92008C5218 /* SwiftInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */; };
+		BB109FB11FAECE45008C5218 /* SwiftInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */; };
 		BB439B691FABA64300B4F50B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B681FABA64300B4F50B /* AppDelegate.swift */; };
 		BB439B6B1FABA64300B4F50B /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B6A1FABA64300B4F50B /* MasterViewController.swift */; };
 		BB439B6D1FABA64300B4F50B /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B6C1FABA64300B4F50B /* DetailViewController.swift */; };
@@ -48,6 +50,7 @@
 /* Begin PBXFileReference section */
 		BB037DF31FAD808B004B267C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BB037DF41FAD80D0004B267C /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftInjection.swift; sourceTree = "<group>"; };
 		BB439B651FABA64300B4F50B /* SwiftEval.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftEval.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB439B681FABA64300B4F50B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BB439B6A1FABA64300B4F50B /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
@@ -131,6 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */,
+				BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */,
 				BB439B681FABA64300B4F50B /* AppDelegate.swift */,
 				BB439B6A1FABA64300B4F50B /* MasterViewController.swift */,
 				BB439B6C1FABA64300B4F50B /* DetailViewController.swift */,
@@ -342,6 +346,7 @@
 			files = (
 				BB439B6D1FABA64300B4F50B /* DetailViewController.swift in Sources */,
 				BB439B6B1FABA64300B4F50B /* MasterViewController.swift in Sources */,
+				BB109FB01FAECD92008C5218 /* SwiftInjection.swift in Sources */,
 				BB439B691FABA64300B4F50B /* AppDelegate.swift in Sources */,
 				BB439B8B1FABA65D00B4F50B /* SwiftEval.swift in Sources */,
 			);
@@ -367,6 +372,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB109FB11FAECE45008C5218 /* SwiftInjection.swift in Sources */,
 				BBB148DA1FAD53BE00CB6B33 /* AppDelegate.swift in Sources */,
 				BBB148E51FAD549600CB6B33 /* SwiftEval.swift in Sources */,
 			);
