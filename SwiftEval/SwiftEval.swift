@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/SwiftEval/SwiftEval.swift#4 $
+//  $Id: //depot/ResidentEval/SwiftEval/SwiftEval.swift#5 $
 //
 //  Basic implementation of ra Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -21,7 +21,7 @@ private func debug(_ str: String) {
 
 /// Error handler
 public var evalError = {
-    (_ err: String) -> AnyClass? in
+    (_ err: String) -> [AnyClass]? in
     print("** \(err) **")
     return nil
 }
@@ -55,7 +55,7 @@ extension NSObject {
         // update evalImpl to implement expression
 
         if NSObject.lastEvalByClass[className] != expression,
-            let newClass = SwiftEval.rebuildClass(oldClass: oldClass, className: className, extra: extra) {
+            let newClass = SwiftEval.rebuildClass(oldClass: oldClass, className: className, extra: extra)?.first {
 
             // swizzle new version of evalImpl onto class
 
@@ -96,7 +96,7 @@ class SwiftEval {
     static var dylibNumber = 0
     static var compileByClass = [String: String]()
 
-    static func rebuildClass(oldClass: AnyClass, className: String, extra: String?) -> AnyClass? {
+    static func rebuildClass(oldClass: AnyClass?, className: String, extra: String?) -> [AnyClass]? {
         let sourceURL = URL(fileURLWithPath: #file)
         guard let derivedData = findDerivedData(url: sourceURL) else {
             return evalError("Could not locate derived data")
@@ -107,7 +107,7 @@ class SwiftEval {
 
         // locate compile command for class
 
-        let regexp = " -primary-file (\"([^\"]+?/\(className)\\.swift)\"|(\\S+?/\(className)\\.swift)) "
+        let regexp = " -primary-file (\"([^\"]*?/\(className)\\.swift)\"|(\\S*?/\(className)\\.swift)) "
 
         guard var compileCommand = compileByClass[className] ?? {
             () -> String? in
@@ -118,7 +118,7 @@ class SwiftEval {
                     echo "Scanning $log"
                     # grep log for build of class source
                     /usr/bin/gunzip <"$log" | perl -lpe 's/\\r/\\n/g' | \
-                    /usr/bin/grep -E '\(regexp)' >/tmp/eval.sh && exit 0;
+                    time /usr/bin/grep -E '\(regexp)' >/tmp/eval.sh && exit 0;
                 done;
                 exit 1
                 """) else {
@@ -224,19 +224,31 @@ class SwiftEval {
             return evalError("dlopen() error: \(String(cString: dlerror()))")
         }
 
-        // find patched version of class using symbol for existing
+        if oldClass != nil {
+            // find patched version of class using symbol for existing
 
-        var info = Dl_info()
-        guard dladdr(unsafeBitCast(oldClass, to: UnsafeRawPointer.self), &info) != 0 else {
-            return evalError("Could not locate class symbol")
+            var info = Dl_info()
+            guard dladdr(unsafeBitCast(oldClass, to: UnsafeRawPointer.self), &info) != 0 else {
+                return evalError("Could not locate class symbol")
+            }
+
+            debug(String(cString: info.dli_sname))
+            guard let newSymbol = dlsym(dl, info.dli_sname) else {
+                return evalError("Could not locate newly loaded class symbol")
+            }
+
+            return [unsafeBitCast(newSymbol, to: AnyClass.self)]
         }
-
-        debug(String(cString: info.dli_sname))
-        guard let newSymbol = dlsym(dl, info.dli_sname) else {
-            return evalError("Could not locate newly loaded class symbol")
+        else {
+            guard shell(command: "\(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/bin/nm /tmp/eval.o | grep 'S _OBJC_CLASS_$_' | awk '{print $3}' >/tmp/eval.classes") else {
+                return evalError("Could not list classes")
+            }
+            guard var symbols = (try? String(contentsOfFile: "/tmp/eval.classes"))?.components(separatedBy: "\n") else {
+                return evalError("Could not load class list")
+            }
+            symbols.removeLast()
+            return symbols.map { unsafeBitCast(dlsym(dl, String($0.dropFirst()))!, to: AnyClass.self) }
         }
-
-        return unsafeBitCast(newSymbol, to: AnyClass.self)
     }
 
     static func findDerivedData(url: URL) -> URL? {

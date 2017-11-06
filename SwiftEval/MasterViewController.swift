@@ -13,6 +13,9 @@ class MasterViewController: UITableViewController {
     var detailViewController: DetailViewController? = nil
     var objects = [Any]()
 
+    @objc func injected() {
+        print("I've been injected!")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

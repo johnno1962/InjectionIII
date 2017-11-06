@@ -26,6 +26,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
+    @objc func injected() {
+        print("I've been injected!")
+    }
+
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
         evalError = {

@@ -52,8 +52,8 @@ be running a small server "'signer", included in this project to do this alas.
 Included is a simple implementation of ["code injection"](SwiftEval/SwiftInjection.swift).
 If you are stopped in a class, you can edit the class' implementation, save it and type
 "p inject()". Your changes will be applied without having to restart the application.
-To detect this in your code to reload a view controller for example, subscribe to the
-"INJECTION_BUNDLE_NOTIFICATION".
+To detect this in your code to reload a view controller for example, add an @objc
+injected() method or subscribe to the "INJECTION_BUNDLE_NOTIFICATION".
 
 ### But Why?
 

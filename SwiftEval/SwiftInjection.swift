@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/SwiftEval/SwiftInjection.swift#4 $
+//  $Id: //depot/ResidentEval/SwiftEval/SwiftInjection.swift#8 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -13,6 +13,10 @@
 
 #if arch(x86_64) // simulator/macOS only
 import Foundation
+
+@objc public protocol SwiftInjected {
+    @objc optional func injected()
+}
 
 #if os(iOS)
 import UIKit
@@ -33,39 +37,72 @@ extension UIViewController {
         viewDidLoad()
     }
 }
+#else
+import Cocoa
 #endif
 
 extension NSObject {
 
     public func inject() {
-        if let oldClass: AnyClass = object_getClass(self),
-            let newClass = SwiftEval.rebuildClass(oldClass: oldClass, className: "\(oldClass)", extra: nil) {
-
-            // old-school swizzle Objective-C class & instance methods
-            injection(swizzle: object_getClass(newClass), onto: object_getClass(oldClass))
-            injection(swizzle: newClass, onto: oldClass)
-
-            // overwrite Swift vtable of existing class with implementations from new class
-            let existingClass = unsafeBitCast(oldClass, to: UnsafeMutablePointer<ClassMetadataSwift>.self)
-            let classMetadata = unsafeBitCast(newClass, to: UnsafeMutablePointer<ClassMetadataSwift>.self)
-
-            func byteAddr<T>(_ location: UnsafeMutablePointer<T>) -> UnsafeMutablePointer<UInt8> {
-                return location.withMemoryRebound(to: UInt8.self, capacity: 1) { $0 }
-            }
-
-            let vtableOffset = byteAddr(&existingClass.pointee.IVarDestroyer) - byteAddr(existingClass)
-            let vtableLength = Int(existingClass.pointee.ClassSize -
-                existingClass.pointee.ClassAddressPoint) - vtableOffset
-
-            NSLog("\(unsafeBitCast(classMetadata, to: AnyClass.self)), vtable length: \(vtableLength)")
-            memcpy(byteAddr(existingClass) + vtableOffset, byteAddr(classMetadata) + vtableOffset, vtableLength)
-
-            let notification = Notification.Name("INJECTION_BUNDLE_NOTIFICATION")
-            NotificationCenter.default.post(name: notification, object: [oldClass])
+        if let oldClass: AnyClass = object_getClass(self) {
+            SwiftInjection.inject(oldClass: oldClass, className: "\(oldClass)")
         }
     }
 
-    private func injection(swizzle newClass: AnyClass?, onto oldClass: AnyClass?) {
+    @objc
+    public class func inject(file: String) {
+        let path = URL(fileURLWithPath: file).deletingPathExtension().path
+        SwiftInjection.inject(oldClass: nil, className: String(path.dropFirst()))
+    }
+}
+
+class SwiftInjection {
+
+    static func inject(oldClass: AnyClass?, className: String) {
+        if let newClasses = SwiftEval.rebuildClass(oldClass: oldClass, className: className, extra: nil) {
+            let oldClasses = //oldClass != nil ? [oldClass!] :
+                newClasses.map { objc_getClass(class_getName($0)) as! AnyClass }
+            for i in 0..<oldClasses.count {
+                let oldClass: AnyClass = oldClasses[i], newClass: AnyClass = newClasses[i]
+
+                // old-school swizzle Objective-C class & instance methods
+                injection(swizzle: object_getClass(newClass), onto: object_getClass(oldClass))
+                injection(swizzle: newClass, onto: oldClass)
+
+                // overwrite Swift vtable of existing class with implementations from new class
+                let existingClass = unsafeBitCast(oldClass, to: UnsafeMutablePointer<ClassMetadataSwift>.self)
+                let classMetadata = unsafeBitCast(newClass, to: UnsafeMutablePointer<ClassMetadataSwift>.self)
+
+                func byteAddr<T>(_ location: UnsafeMutablePointer<T>) -> UnsafeMutablePointer<UInt8> {
+                    return location.withMemoryRebound(to: UInt8.self, capacity: 1) { $0 }
+                }
+
+                let vtableOffset = byteAddr(&existingClass.pointee.IVarDestroyer) - byteAddr(existingClass)
+                let vtableLength = Int(existingClass.pointee.ClassSize -
+                    existingClass.pointee.ClassAddressPoint) - vtableOffset
+
+                NSLog("\(unsafeBitCast(classMetadata, to: AnyClass.self)), vtable length: \(vtableLength)")
+                memcpy(byteAddr(existingClass) + vtableOffset, byteAddr(classMetadata) + vtableOffset, vtableLength)
+
+                // implement -injected() method using sweep of objects in application
+                if class_getInstanceMethod(oldClass, #selector(SwiftInjected.injected)) != nil {
+                    #if os(iOS)
+                    let app = UIApplication.shared
+                    #else
+                    let app = NSApplication.shared
+                    #endif
+                    let seeds: [Any] = [app.delegate as Any] + app.windows
+                    sweepValue(seeds, for: oldClass)
+                    seen.removeAll()
+                }
+            }
+
+            let notification = Notification.Name("INJECTION_BUNDLE_NOTIFICATION")
+            NotificationCenter.default.post(name: notification, object: oldClasses)
+        }
+    }
+
+    static func injection(swizzle newClass: AnyClass?, onto oldClass: AnyClass?) {
         var methodCount: UInt32 = 0
         if let methods = class_copyMethodList(newClass, &methodCount) {
             for i in 0 ..< Int(methodCount) {
@@ -74,6 +111,104 @@ extension NSObject {
                                     method_getTypeEncoding(methods[i]))
             }
             free(methods)
+        }
+    }
+
+    static func sweepValue(_ value: Any, for targetClass: AnyClass) {
+        let mirror = Mirror(reflecting: value)
+        if var style = mirror.displayStyle {
+            if _typeName(mirror.subjectType).hasPrefix("Swift.ImplicitlyUnwrappedOptional<") {
+                style = .optional
+            }
+            switch style {
+            case .set:
+                fallthrough
+            case .collection:
+                for (_, child) in mirror.children {
+                    sweepValue(child, for: targetClass)
+                }
+                return
+            case .dictionary:
+                for (_, child) in mirror.children {
+                    for (_, element) in Mirror(reflecting: child).children {
+                        sweepValue(element, for: targetClass)
+                    }
+                }
+                return
+            case .class:
+                sweepInstance(value as AnyObject, for: targetClass)
+                return
+            case .optional:
+                if let some = mirror.children.first?.value {
+                    sweepValue(some, for: targetClass)
+                }
+                return
+            default:
+                break
+            }
+        }
+
+        if let style = mirror.displayStyle {
+            switch style {
+            case .enum:
+                if let evals = mirror.children.first?.value {
+                    sweepValue(evals, for: targetClass)
+                }
+            case .tuple:
+                sweepMembers(value, for: targetClass)
+            case .struct:
+                sweepMembers(value, for: targetClass)
+            default:
+                break
+            }
+        }
+    }
+
+    static var seen = [UnsafeRawPointer: Bool]()
+
+    static func sweepInstance(_ instance: AnyObject, for targetClass: AnyClass) {
+        let reference = unsafeBitCast(instance, to: UnsafeRawPointer.self)
+        if seen[reference] == nil {
+            seen[reference] = true
+
+            if object_getClass(instance) == targetClass {
+                let proto = unsafeBitCast(instance, to: SwiftInjected.self)
+                proto.injected?()
+            }
+
+            sweepMembers(instance, for: targetClass)
+            sweepIvars(instance, for: targetClass)
+        }
+    }
+
+    static func sweepMembers(_ instance: Any, for targetClass: AnyClass) {
+        var mirror: Mirror? = Mirror(reflecting: instance)
+        while mirror != nil {
+            for (_, value) in mirror!.children {
+                sweepValue(value, for: targetClass)
+            }
+            mirror = mirror!.superclassMirror
+        }
+    }
+
+    static func sweepIvars(_ instance: AnyObject, for targetClass: AnyClass) {
+        var icnt: UInt32 = 0, cls: AnyClass? = object_getClass(instance)!
+        let object = "@".utf16.first!
+        while cls != nil && cls != NSURL.self {
+            if let ivars = class_copyIvarList(cls, &icnt) {
+                for i in 0 ..< Int(icnt) {
+                    if let type = ivar_getTypeEncoding(ivars[i]), type[0] == object {
+                        (unsafeBitCast(instance, to: UnsafePointer<Int8>.self) + ivar_getOffset(ivars[i]))
+                            .withMemoryRebound(to: AnyObject?.self, capacity: 1) {
+                                if let obj = $0.pointee {
+                                    sweepValue(obj, for: targetClass)
+                                }
+                        }
+                    }
+                }
+                free(ivars)
+            }
+            cls = class_getSuperclass(cls)
         }
     }
 }
