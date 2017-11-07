@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/SwiftEval/SwiftEval.swift#5 $
+//  $Id: //depot/ResidentEval/SwiftEval/SwiftEval.swift#8 $
 //
 //  Basic implementation of ra Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -55,7 +55,7 @@ extension NSObject {
         // update evalImpl to implement expression
 
         if NSObject.lastEvalByClass[className] != expression,
-            let newClass = SwiftEval.rebuildClass(oldClass: oldClass, className: className, extra: extra)?.first {
+            let newClass = SwiftEval.instance.rebuildClass(oldClass: oldClass, className: className, extra: extra)?.first {
 
             // swizzle new version of evalImpl onto class
 
@@ -91,13 +91,19 @@ extension String {
     }
 }
 
-class SwiftEval {
+@objc
+public class SwiftEval: NSObject {
 
-    static var dylibNumber = 0
-    static var compileByClass = [String: String]()
+    static var instance = SwiftEval()
 
-    static func rebuildClass(oldClass: AnyClass?, className: String, extra: String?) -> [AnyClass]? {
-        let sourceURL = URL(fileURLWithPath: #file)
+    var derivedData: URL?
+    var projectInfo: (file: URL, info: URL)?
+
+    var dylibNumber = 0
+    var compileByClass = [String: String]()
+
+    func rebuildClass(oldClass: AnyClass?, className: String, extra: String?) -> [AnyClass]? {
+        let sourceURL = URL(fileURLWithPath: className.contains("/") ? "/" + className : #file)
         guard let derivedData = findDerivedData(url: sourceURL) else {
             return evalError("Could not locate derived data")
         }
@@ -107,6 +113,8 @@ class SwiftEval {
 
         // locate compile command for class
 
+        dylibNumber += 1
+        let tmpfile = "/tmp/eval\(dylibNumber)"
         let regexp = " -primary-file (\"([^\"]*?/\(className)\\.swift)\"|(\\S*?/\(className)\\.swift)) "
 
         guard var compileCommand = compileByClass[className] ?? {
@@ -118,14 +126,14 @@ class SwiftEval {
                     echo "Scanning $log"
                     # grep log for build of class source
                     /usr/bin/gunzip <"$log" | perl -lpe 's/\\r/\\n/g' | \
-                    time /usr/bin/grep -E '\(regexp)' >/tmp/eval.sh && exit 0;
+                    /usr/bin/grep -E '\(regexp)' >\(tmpfile).sh && exit 0;
                 done;
                 exit 1
                 """) else {
                 return nil
             }
             
-            var compileCommand = try! String(contentsOfFile: "/tmp/eval.sh")
+            var compileCommand = try! String(contentsOfFile: "\(tmpfile).sh")
             compileCommand = compileCommand.components(separatedBy: " -o ")[0]
             compileByClass[className] = compileCommand
             return compileCommand
@@ -180,15 +188,13 @@ class SwiftEval {
         let projectDir = projectFile.deletingLastPathComponent().path
 
         guard shell(command: """
-            cd "\(projectDir)" && \(compileCommand) -o /tmp/eval.o >/tmp/eval.log 2>&1 || (cat /tmp/eval.log && exit 1)
+            cd "\(projectDir)" && \(compileCommand) -o \(tmpfile).o >\(tmpfile).log 2>&1 || (cat \(tmpfile).log && exit 1)
             """) else {
-            return evalError("Re-compilation failed\n\(try! String(contentsOfFile: "/tmp/eval.log"))")
+            return evalError("Re-compilation failed\n\(try! String(contentsOfFile: "\(tmpfile).log"))")
         }
 
         // link object to create dynamic library
 
-        dylibNumber += 1
-        let dylib = "/tmp/eval\(dylibNumber).dylib"
         let xcode = "/Applications/Xcode.app/Contents/Developer"
 
         #if os(iOS)
@@ -200,19 +206,19 @@ class SwiftEval {
         #endif
 
         guard shell(command: """
-            \(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch x86_64 -bundle \(osSpecific) -dead_strip -Xlinker -objc_abi_version -Xlinker 2 -fobjc-arc /tmp/eval.o -L \(frameworkPath) -F \(frameworkPath) -rpath \(frameworkPath) -o \(dylib)
+            \(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch x86_64 -bundle \(osSpecific) -dead_strip -Xlinker -objc_abi_version -Xlinker 2 -fobjc-arc \(tmpfile).o -L \(frameworkPath) -F \(frameworkPath) -rpath \(frameworkPath) -o \(tmpfile).dylib
             """) else {
             return evalError("Link failed")
         }
 
         #if os(iOS)
         // have to delegate code signing to macOS "signer" service
-        guard (try? String(contentsOf: URL(string: "http://localhost:8899" + dylib)!)) != nil else {
+        guard (try? String(contentsOf: URL(string: "http://localhost:8899\(tmpfile).dylib")!)) != nil else {
             return evalError("Codesign failed. Is 'signer' daemon running?")
         }
         #else
         guard shell(command: """
-            export CODESIGN_ALLOCATE=\(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/bin/codesign_allocate; codesign --force -s '-' "\(dylib)"
+            export CODESIGN_ALLOCATE=\(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/bin/codesign_allocate; codesign --force -s '-' "\(tmpfile).dylib"
             """) else {
             return evalError("Codesign failed")
         }
@@ -220,7 +226,7 @@ class SwiftEval {
 
         // load patch .dylib into process with new version of class
 
-        guard let dl = dlopen(dylib, RTLD_NOW) else {
+        guard let dl = dlopen("\(tmpfile).dylib", RTLD_NOW) else {
             return evalError("dlopen() error: \(String(cString: dlerror()))")
         }
 
@@ -240,10 +246,10 @@ class SwiftEval {
             return [unsafeBitCast(newSymbol, to: AnyClass.self)]
         }
         else {
-            guard shell(command: "\(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/bin/nm /tmp/eval.o | grep 'S _OBJC_CLASS_$_' | awk '{print $3}' >/tmp/eval.classes") else {
+            guard shell(command: "\(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/bin/nm \(tmpfile).o | grep 'S _OBJC_CLASS_$_' | awk '{print $3}' >\(tmpfile).classes") else {
                 return evalError("Could not list classes")
             }
-            guard var symbols = (try? String(contentsOfFile: "/tmp/eval.classes"))?.components(separatedBy: "\n") else {
+            guard var symbols = (try? String(contentsOfFile: "\(tmpfile).classes"))?.components(separatedBy: "\n") else {
                 return evalError("Could not load class list")
             }
             symbols.removeLast()
@@ -251,7 +257,7 @@ class SwiftEval {
         }
     }
 
-    static func findDerivedData(url: URL) -> URL? {
+    func findDerivedData(url: URL) -> URL? {
         let dir = url.deletingLastPathComponent()
         if dir.path == "/" {
             return nil
@@ -265,7 +271,7 @@ class SwiftEval {
         return findDerivedData(url: dir)
     }
 
-    static func findProject(for source: URL, derivedData: URL) -> (URL, URL)? {
+    func findProject(for source: URL, derivedData: URL) -> (URL, URL)? {
         let dir = source.deletingLastPathComponent()
         if dir.path == "/" {
             return nil
@@ -280,11 +286,11 @@ class SwiftEval {
         return findProject(for: dir, derivedData: derivedData)
     }
 
-    static func file(withExt ext: String, in files: [String]) -> String? {
+    func file(withExt ext: String, in files: [String]) -> String? {
         return files.first { URL(fileURLWithPath: $0).pathExtension == ext }
     }
 
-    static func logDir(project: URL, derivedData: URL) -> URL? {
+    func logDir(project: URL, derivedData: URL) -> URL? {
         let filemgr = FileManager.default
         let projectPrefix = project.deletingPathExtension()
             .lastPathComponent.replacingOccurrences(of: " ", with: "_")
@@ -305,7 +311,7 @@ class SwiftEval {
             .first
     }
 
-    static func shell(command: String) -> Bool {
+    func shell(command: String) -> Bool {
         debug(command)
 
         let pid = fork()

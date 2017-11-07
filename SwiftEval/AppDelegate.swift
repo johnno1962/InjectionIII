@@ -23,7 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         navigationController.topViewController!.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem
         splitViewController.delegate = self
 //        Bundle(path: "/Applications/Injection.app/Contents/Resources/InjectionLoader.bundle")?.load()
-        FSEventStreamCreate()
         return true
     }
 

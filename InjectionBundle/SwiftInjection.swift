@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/SwiftEval/SwiftInjection.swift#8 $
+//  $Id: //depot/ResidentEval/SwiftEval/SwiftInjection.swift#11 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -56,10 +56,10 @@ extension NSObject {
     }
 }
 
-class SwiftInjection {
+public class SwiftInjection {
 
     static func inject(oldClass: AnyClass?, className: String) {
-        if let newClasses = SwiftEval.rebuildClass(oldClass: oldClass, className: className, extra: nil) {
+        if let newClasses = SwiftEval.instance.rebuildClass(oldClass: oldClass, className: className, extra: nil) {
             let oldClasses = //oldClass != nil ? [oldClass!] :
                 newClasses.map { objc_getClass(class_getName($0)) as! AnyClass }
             for i in 0..<oldClasses.count {
@@ -91,7 +91,7 @@ class SwiftInjection {
                     #else
                     let app = NSApplication.shared
                     #endif
-                    let seeds: [Any] = [app.delegate as Any] + app.windows
+                    let seeds = DispatchQueue.main.sync { () -> [Any] in [app.delegate as Any] + app.windows }
                     sweepValue(seeds, for: oldClass)
                     seen.removeAll()
                 }
@@ -177,7 +177,7 @@ class SwiftInjection {
             }
 
             sweepMembers(instance, for: targetClass)
-            sweepIvars(instance, for: targetClass)
+            instance.legacySweep?(for: targetClass)
         }
     }
 
@@ -190,18 +190,20 @@ class SwiftInjection {
             mirror = mirror!.superclassMirror
         }
     }
+}
 
-    static func sweepIvars(_ instance: AnyObject, for targetClass: AnyClass) {
-        var icnt: UInt32 = 0, cls: AnyClass? = object_getClass(instance)!
+extension NSObject {
+    @objc func legacySweep(for targetClass: AnyClass) {
+        var icnt: UInt32 = 0, cls: AnyClass? = object_getClass(self)!
         let object = "@".utf16.first!
         while cls != nil && cls != NSURL.self {
             if let ivars = class_copyIvarList(cls, &icnt) {
                 for i in 0 ..< Int(icnt) {
                     if let type = ivar_getTypeEncoding(ivars[i]), type[0] == object {
-                        (unsafeBitCast(instance, to: UnsafePointer<Int8>.self) + ivar_getOffset(ivars[i]))
+                        (unsafeBitCast(self, to: UnsafePointer<Int8>.self) + ivar_getOffset(ivars[i]))
                             .withMemoryRebound(to: AnyObject?.self, capacity: 1) {
                                 if let obj = $0.pointee {
-                                    sweepValue(obj, for: targetClass)
+                                    SwiftInjection.sweepInstance(obj, for: targetClass)
                                 }
                         }
                     }
@@ -210,6 +212,18 @@ class SwiftInjection {
             }
             cls = class_getSuperclass(cls)
         }
+    }
+}
+
+extension NSArray {
+    @objc override func legacySweep(for targetClass: AnyClass) {
+        self.forEach { SwiftInjection.sweepInstance($0 as AnyObject, for: targetClass) }
+    }
+}
+
+extension NSDictionary {
+    @objc override func legacySweep(for targetClass: AnyClass) {
+        self.allValues.forEach { SwiftInjection.sweepInstance($0 as AnyObject, for: targetClass) }
     }
 }
 
