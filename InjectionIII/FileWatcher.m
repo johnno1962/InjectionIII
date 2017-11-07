@@ -1,6 +1,6 @@
 //
 //  FileWatcher.m
-//  Injector
+//  InjectionIII
 //
 //  Created by John Holdsworth on 08/03/2015.
 //  Copyright (c) 2015 John Holdsworth. All rights reserved.
@@ -47,7 +47,10 @@ static void fileCallback( ConstFSEventStreamRef streamRef,
     NSMutableSet *changed = [NSMutableSet new];
 
     for ( NSString *path in changes )
-        if ( [path.pathExtension isEqualToString:@"swift"] &&
+        if ( [path rangeOfString:INJECTABLE_PATTERN
+                         options:NSRegularExpressionSearch].location != NSNotFound &&
+            [path rangeOfString:@"DerivedData/|InjectionProject/|main.mm?$"
+                        options:NSRegularExpressionSearch].location == NSNotFound &&
             [fileManager fileExistsAtPath:path] )
             [changed addObject:path];
 

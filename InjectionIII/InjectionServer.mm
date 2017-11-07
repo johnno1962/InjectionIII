@@ -7,6 +7,7 @@
 //
 
 #import "InjectionServer.h"
+#import "SignerService.h"
 #import "AppDelegate.h"
 #import "FileWatcher.h"
 #import "Xcode.h"
@@ -30,7 +31,8 @@
                 [self writeString:swiftSource];
     }];
 
-    [self readString];
+    while (NSString *dylib = [self readString])
+        [self writeString:[SignerService codesignDylib:dylib] ? @"CODESIGN1" : @"CODESIGN0"];
     fileWatcher = nil;
 
     [appDelegate performSelectorOnMainThread:@selector(setMenuIcon:) withObject:@"InjectionIdle" waitUntilDone:YES];

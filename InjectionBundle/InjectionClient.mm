@@ -18,12 +18,26 @@
 @implementation InjectionClient
 
 + (void)load {
-    [[self connectTo:INJECTION_ADDRESS] run];
+    if (InjectionClient *client = [self connectTo:INJECTION_ADDRESS]) {
+        NSLog(@"Injection connected, watching files...");
+        [client run];
+    }
+    else
+        NSLog(@"Injection loaded but could not connect. Is InjectionIII.app running?");
+
 }
 
 - (void)runInBackground {
+    [SwiftEval sharedInstance].signer = ^(NSString * _Nonnull dylib) {
+        [self writeString:dylib];
+        while (![[self readString] hasPrefix:@"CODESIGN"])
+            ;
+    };
+
     while (NSString *swiftSource = [self readString])
-        [NSObject injectWithFile:swiftSource];
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [NSObject injectWithFile:swiftSource];
+        });
 }
 
 @end

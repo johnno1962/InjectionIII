@@ -2,7 +2,7 @@
 
 ![Icon](https://courses.cs.washington.edu/courses/cse190m/10su/lectures/slides/images/drevil.png)
 
-SwiftEval is a [single Swift source](SwiftEval/SwiftEval.swift) you can add to your iOS simulator
+SwiftEval is a [single Swift source](InjectionBundle/SwiftEval.swift) you can add to your iOS simulator
 or macOS projects to implement an eval function inside classes that inherit from NSObject.
 There is a generic form which has the following signature:
 
@@ -49,12 +49,22 @@ be running a small server "'signer", included in this project to do this alas.
 
 ### Code Injection
 
-Included is a simple implementation of ["code injection"](SwiftEval/SwiftInjection.swift).
+Included is a simple implementation of ["code injection"](InjectionBundle/SwiftInjection.swift).
 If you are stopped in a class, you can edit the class' implementation, save it and type
 "p inject()". Your changes will be applied without having to restart the application.
 To detect this in your code to reload a view controller for example, add an @objc
 injected() method or subscribe to the "INJECTION_BUNDLE_NOTIFICATION".
 
-### But Why?
+This new implementation has been built into an app: InjectionIII.app included in the
+repo which runs in the status bar. To use, run the app and add one of the following
+to your applicationDidFinishLaunching:
 
-I Guess it could be useful in a DSL or something? You never know.
+```
+Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle")?.load()
+Or for macOS:
+Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/macOSInjection.bundle")?.load()
+```
+
+Once your application starts, a file watcher is started in the InjectionIII app and whenever
+you save a Swift or Objective-C source the target app is messaged to inject it. The file
+watcher can be disabled & enabled while the app is running using the status bar menu.

@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:SwiftEval.xcodeproj">
+      location = "self:InjectionIII.xcodeproj">
    </FileRef>
 </Workspace>

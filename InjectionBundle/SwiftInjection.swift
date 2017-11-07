@@ -1,6 +1,6 @@
 //
 //  SwiftInjection.swift
-//  SwiftEval
+//  InjectionBundle
 //
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
@@ -51,8 +51,9 @@ extension NSObject {
 
     @objc
     public class func inject(file: String) {
-        let path = URL(fileURLWithPath: file).deletingPathExtension().path
-        SwiftInjection.inject(oldClass: nil, className: String(path.dropFirst()))
+        let path = String(URL(fileURLWithPath: file).deletingPathExtension()
+            .path.replacingOccurrences(of: "+", with: "\\+").dropFirst())
+        SwiftInjection.inject(oldClass: nil, className: path)
     }
 }
 
@@ -73,16 +74,24 @@ public class SwiftInjection {
                 let existingClass = unsafeBitCast(oldClass, to: UnsafeMutablePointer<ClassMetadataSwift>.self)
                 let classMetadata = unsafeBitCast(newClass, to: UnsafeMutablePointer<ClassMetadataSwift>.self)
 
-                func byteAddr<T>(_ location: UnsafeMutablePointer<T>) -> UnsafeMutablePointer<UInt8> {
-                    return location.withMemoryRebound(to: UInt8.self, capacity: 1) { $0 }
+                // Swift equivalent of Swizzling
+                if (existingClass.pointee.Data & 0x1) == 1 {
+                    if classMetadata.pointee.ClassSize != existingClass.pointee.ClassSize {
+                        NSLog("\(oldClass) metadata size changed. Did you add a method?")
+                    }
+
+                    func byteAddr<T>(_ location: UnsafeMutablePointer<T>) -> UnsafeMutablePointer<UInt8> {
+                        return location.withMemoryRebound(to: UInt8.self, capacity: 1) { $0 }
+                    }
+
+                    let vtableOffset = byteAddr(&existingClass.pointee.IVarDestroyer) - byteAddr(existingClass)
+                    let vtableLength = Int(existingClass.pointee.ClassSize -
+                        existingClass.pointee.ClassAddressPoint) - vtableOffset
+
+                    NSLog("Injected \(oldClass), vtable length: \(vtableLength)")
+                    memcpy(byteAddr(existingClass) + vtableOffset,
+                           byteAddr(classMetadata) + vtableOffset, vtableLength)
                 }
-
-                let vtableOffset = byteAddr(&existingClass.pointee.IVarDestroyer) - byteAddr(existingClass)
-                let vtableLength = Int(existingClass.pointee.ClassSize -
-                    existingClass.pointee.ClassAddressPoint) - vtableOffset
-
-                NSLog("\(unsafeBitCast(classMetadata, to: AnyClass.self)), vtable length: \(vtableLength)")
-                memcpy(byteAddr(existingClass) + vtableOffset, byteAddr(classMetadata) + vtableOffset, vtableLength)
 
                 // implement -injected() method using sweep of objects in application
                 if class_getInstanceMethod(oldClass, #selector(SwiftInjected.injected)) != nil {
@@ -91,7 +100,7 @@ public class SwiftInjection {
                     #else
                     let app = NSApplication.shared
                     #endif
-                    let seeds = DispatchQueue.main.sync { () -> [Any] in [app.delegate as Any] + app.windows }
+                    let seeds: [Any] =  [app.delegate as Any] + app.windows
                     sweepValue(seeds, for: oldClass)
                     seen.removeAll()
                 }
@@ -197,6 +206,12 @@ extension NSObject {
         var icnt: UInt32 = 0, cls: AnyClass? = object_getClass(self)!
         let object = "@".utf16.first!
         while cls != nil && cls != NSURL.self {
+            #if os(OSX)
+            let className = NSStringFromClass(cls!)
+            if cls != NSWindow.self && className.starts(with: "NS") {
+                return
+            }
+            #endif
             if let ivars = class_copyIvarList(cls, &icnt) {
                 for i in 0 ..< Int(icnt) {
                     if let type = ivar_getTypeEncoding(ivars[i]), type[0] == object {

@@ -1,12 +1,14 @@
 //
 //  FileWatcher.h
-//  Injector
+//  InjectionIII
 //
 //  Created by John Holdsworth on 08/03/2015.
 //  Copyright (c) 2015 John Holdsworth. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
+
+#define INJECTABLE_PATTERN @"[^~]\\.(mm?|swift)$"
 
 typedef void (^InjectionCallback)( NSArray *filesChanged );
 

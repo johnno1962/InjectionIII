@@ -1,6 +1,6 @@
 //
 //  SwiftEval.swift
-//  SwiftEval
+//  InjectionBundle
 //
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
@@ -56,6 +56,9 @@ extension NSObject {
 
         if NSObject.lastEvalByClass[className] != expression,
             let newClass = SwiftEval.instance.rebuildClass(oldClass: oldClass, className: className, extra: extra)?.first {
+            if NSStringFromClass(newClass) != NSStringFromClass(oldClass) {
+                NSLog("Class names different. Have the right class been loaded?")
+            }
 
             // swizzle new version of evalImpl onto class
 
@@ -96,16 +99,19 @@ public class SwiftEval: NSObject {
 
     static var instance = SwiftEval()
 
-    var derivedData: URL?
-    var projectInfo: (file: URL, info: URL)?
+    @objc public class func sharedInstance() -> SwiftEval {
+        return instance
+    }
 
-    var dylibNumber = 0
+    @objc public var signer: ((_: String) -> ())?
+
+    var injectionNumber = 0
     var compileByClass = [String: String]()
 
     func rebuildClass(oldClass: AnyClass?, className: String, extra: String?) -> [AnyClass]? {
         let sourceURL = URL(fileURLWithPath: className.contains("/") ? "/" + className : #file)
         guard let derivedData = findDerivedData(url: sourceURL) else {
-            return evalError("Could not locate derived data")
+            return evalError("Could not locate derived data. Is the project under you home directory?")
         }
         guard let (projectFile, logsDir) = findProject(for: sourceURL, derivedData: derivedData) else {
             return evalError("Could not locate containg project")
@@ -113,9 +119,9 @@ public class SwiftEval: NSObject {
 
         // locate compile command for class
 
-        dylibNumber += 1
-        let tmpfile = "/tmp/eval\(dylibNumber)"
-        let regexp = " -primary-file (\"([^\"]*?/\(className)\\.swift)\"|(\\S*?/\(className)\\.swift)) "
+        injectionNumber += 1
+        let tmpfile = "/tmp/eval\(injectionNumber)"
+        let regexp = " -(?:primary-file|c) (?:\"([^\"]*?/\(className)\\.(?:swift|mm?))\"|(\\S*?/\(className)\\.(?:swift|mm?))) "
 
         guard var compileCommand = compileByClass[className] ?? {
             () -> String? in
@@ -134,7 +140,7 @@ public class SwiftEval: NSObject {
             }
             
             var compileCommand = try! String(contentsOfFile: "\(tmpfile).sh")
-            compileCommand = compileCommand.components(separatedBy: " -o ")[0]
+            compileCommand = compileCommand.components(separatedBy: " -o ")[0] + " "
             compileByClass[className] = compileCommand
             return compileCommand
         }() else {
@@ -146,11 +152,10 @@ public class SwiftEval: NSObject {
         let fileExtractor = try! NSRegularExpression(pattern: regexp, options: [])
         guard let matches = fileExtractor.firstMatch(in: compileCommand, options: [],
                                                      range: NSMakeRange(0, compileCommand.utf16.count)),
-            let sourceFile = compileCommand[matches.range(at: 2)] ??
-                             compileCommand[matches.range(at: 3)] else {
-                    return evalError("Could not locate source file")
+            let sourceFile = compileCommand[matches.range(at: 1)] ??
+                             compileCommand[matches.range(at: 2)] else {
+                    return evalError("Could not locate source file \(compileCommand)")
         }
-        debug(sourceFile)
 
         // load and patch class source if there is an extension to add
 
@@ -190,7 +195,7 @@ public class SwiftEval: NSObject {
         guard shell(command: """
             cd "\(projectDir)" && \(compileCommand) -o \(tmpfile).o >\(tmpfile).log 2>&1 || (cat \(tmpfile).log && exit 1)
             """) else {
-            return evalError("Re-compilation failed\n\(try! String(contentsOfFile: "\(tmpfile).log"))")
+            return evalError("Re-compilation failed (\(tmpfile).sh)\n\(try! String(contentsOfFile: "\(tmpfile).log"))")
         }
 
         // link object to create dynamic library
@@ -211,21 +216,27 @@ public class SwiftEval: NSObject {
             return evalError("Link failed")
         }
 
-        #if os(iOS)
-        // have to delegate code signing to macOS "signer" service
-        guard (try? String(contentsOf: URL(string: "http://localhost:8899\(tmpfile).dylib")!)) != nil else {
-            return evalError("Codesign failed. Is 'signer' daemon running?")
+        if signer != nil {
+            signer!("\(tmpfile).dylib")
         }
-        #else
-        guard shell(command: """
-            export CODESIGN_ALLOCATE=\(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/bin/codesign_allocate; codesign --force -s '-' "\(tmpfile).dylib"
-            """) else {
-            return evalError("Codesign failed")
+        else {
+            #if os(iOS)
+            // have to delegate code signing to macOS "signer" service
+            guard (try? String(contentsOf: URL(string: "http://localhost:8899\(tmpfile).dylib")!)) != nil else {
+                return evalError("Codesign failed. Is 'signer' daemon running?")
+            }
+            #else
+            guard shell(command: """
+                export CODESIGN_ALLOCATE=\(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/bin/codesign_allocate; codesign --force -s '-' "\(tmpfile).dylib"
+                """) else {
+                return evalError("Codesign failed")
+            }
+            #endif
         }
-        #endif
 
         // load patch .dylib into process with new version of class
 
+        print("Loading \(tmpfile).dylib. (Ignore any duplicate class warning)")
         guard let dl = dlopen("\(tmpfile).dylib", RTLD_NOW) else {
             return evalError("dlopen() error: \(String(cString: dlerror()))")
         }
@@ -246,6 +257,8 @@ public class SwiftEval: NSObject {
             return [unsafeBitCast(newSymbol, to: AnyClass.self)]
         }
         else {
+            // grep out symbols for classes being injected from object file
+
             guard shell(command: "\(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/bin/nm \(tmpfile).o | grep 'S _OBJC_CLASS_$_' | awk '{print $3}' >\(tmpfile).classes") else {
                 return evalError("Could not list classes")
             }
