@@ -15,17 +15,17 @@
     int clientSocket;
 }
 
-+ (void)startServer:(NSString * _Nonnull)address;
-+ (void)runServer:(NSString * _Nonnull)address;
++ (void)startServer:(NSString *_Nonnull)address;
++ (void)runServer:(NSString *_Nonnull)address;
 
-+ (instancetype _Nonnull)connectTo:(NSString * _Nonnull)address;
-+ (BOOL)parseV4Address:(NSString * _Nonnull)address into:(struct sockaddr_storage * _Nonnull)serverAddr;
++ (instancetype _Nullable)connectTo:(NSString *_Nonnull)address;
++ (BOOL)parseV4Address:(NSString *_Nonnull)address into:(struct sockaddr_storage *_Nonnull)serverAddr;
 
 - (void)run;
 - (void)runInBackground;
 
-- (NSString * _Nullable)readString;
-- (BOOL)writeString:(NSString * _Nonnull)string;
+- (NSString *_Nullable)readString;
+- (BOOL)writeString:(NSString *_Nonnull)string;
 
 @end
 

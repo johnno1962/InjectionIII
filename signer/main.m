@@ -8,7 +8,7 @@
 
 #import "SignerService.h"
 
-int main(int argc, const char * argv[]) {
+int main(int argc, const char *argv[]) {
     [SignerService runServer:@":8899"];
     return 0;
 }

@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/SwiftEval/SwiftInjection.swift#11 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#10 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -88,7 +88,7 @@ public class SwiftInjection {
                     let vtableLength = Int(existingClass.pointee.ClassSize -
                         existingClass.pointee.ClassAddressPoint) - vtableOffset
 
-                    NSLog("Injected \(oldClass), vtable length: \(vtableLength)")
+                    print("Injected '\(NSStringFromClass(oldClass))', vtable length: \(vtableLength)")
                     memcpy(byteAddr(existingClass) + vtableOffset,
                            byteAddr(classMetadata) + vtableOffset, vtableLength)
                 }

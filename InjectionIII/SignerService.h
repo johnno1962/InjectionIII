@@ -10,6 +10,6 @@
 
 @interface SignerService : SimpleSocket
 
-+ (BOOL)codesignDylib:(NSString *)dylib;
++ (BOOL)codesignDylib:(NSString *_Nonnull)dylib;
 
 @end

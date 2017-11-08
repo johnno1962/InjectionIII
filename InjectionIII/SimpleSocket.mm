@@ -35,22 +35,23 @@
         [self error:@"Could not bind service socket: %s"];
     else if (listen(serverSocket, 5) < 0)
         [self error:@"Service socket would not listen: %s"];
-    else while (TRUE) {
-        struct sockaddr_storage clientAddr;
-        socklen_t addrLen = sizeof clientAddr;
+    else
+        while (TRUE) {
+            struct sockaddr_storage clientAddr;
+            socklen_t addrLen = sizeof clientAddr;
 
-        int clientSocket = accept(serverSocket, (struct sockaddr *)&clientAddr, &addrLen);
-        if (clientSocket > 0) {
-            @autoreleasepool {
-                struct sockaddr_in *v4Addr = (struct sockaddr_in *)&clientAddr;
-                NSLog(@"Connection from %s:%d\n",
-                      inet_ntoa(v4Addr->sin_addr), ntohs(v4Addr->sin_port));
-                [[[self alloc] initSocket:clientSocket] run];
+            int clientSocket = accept(serverSocket, (struct sockaddr *)&clientAddr, &addrLen);
+            if (clientSocket > 0) {
+                @autoreleasepool {
+                    struct sockaddr_in *v4Addr = (struct sockaddr_in *)&clientAddr;
+                    NSLog(@"Connection from %s:%d\n",
+                          inet_ntoa(v4Addr->sin_addr), ntohs(v4Addr->sin_port));
+                    [[[self alloc] initSocket:clientSocket] run];
+                }
             }
+            else
+                [NSThread sleepForTimeInterval:.5];
         }
-        else
-            [NSThread sleepForTimeInterval:.5];
-    }
 }
 
 + (instancetype)connectTo:(NSString *)address {
@@ -69,21 +70,27 @@
     return [[self alloc] initSocket:clientSocket];
 }
 
-+ (int)newSocket:(sa_family_t)family {
++ (int)newSocket:(sa_family_t)addressFamily {
     int optval = 1, newSocket;
-    if ((newSocket = socket(family, SOCK_STREAM, 0)) < 0)
+    if ((newSocket = socket(addressFamily, SOCK_STREAM, 0)) < 0)
         [self error:@"Could not open service socket: %s"];
     else if (setsockopt(newSocket, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof optval) < 0)
-        [self error:@"Could not set socket option: %s"];
+        [self error:@"Could not set SO_REUSEADDR: %s"];
     else if (setsockopt(newSocket, SOL_SOCKET, SO_NOSIGPIPE, (void *)&optval, sizeof(optval)) < 0)
-        [self error:@"Could not set socket option: %s"];
+        [self error:@"Could not set SO_NOSIGPIPE: %s"];
     else if (setsockopt(newSocket, IPPROTO_TCP, TCP_NODELAY, (void *)&optval, sizeof(optval)) < 0)
-        [self error:@"Could not set socket option: %s"];
+        [self error:@"Could not set TCP_NODELAY: %s"];
     else
         return newSocket;
     return -1;
 }
 
+/**
+ * Available formats
+ * @"<host>[:<pprt>]"
+ * where <host> can be NNN.NNN.NNN.NNN or hostname, empty for localhost or * for all interfaces
+ * The default port is 80 or a specific number to bind or an empty string to allocate any port
+ */
 + (BOOL)parseV4Address:(NSString *)address into:(struct sockaddr_storage *)serverAddr {
     NSArray<NSString *> *parts = [address componentsSeparatedByString:@":"];
 
@@ -92,7 +99,7 @@
 
     v4Addr->sin_family = AF_INET;
     v4Addr->sin_len = sizeof *v4Addr;
-    v4Addr->sin_port = htons(parts[1].intValue);
+    v4Addr->sin_port = htons(parts.count > 1 ? parts[1].intValue : 80);
 
     const char *host = parts[0].UTF8String;
 
@@ -113,7 +120,7 @@
 }
 
 - (instancetype)initSocket:(int)socket {
-    if ( (self = [super init]) ) {
+    if ((self = [super init])) {
         clientSocket = socket;
     }
     return self;
@@ -121,30 +128,30 @@
 
 - (void)run {
     [self performSelectorInBackground:@selector(runInBackground) withObject:nil];
- }
+}
 
 - (void)runInBackground {
     [[self class] error:@"-[Networking run] not implemented in subclass"];
 }
 
 - (NSString *)readString {
-    int length;
+    uint32_t length;
     if (read(clientSocket, &length, sizeof length) != sizeof length)
         return nil;
-    char utf8[length];
+    char utf8[length + 1];
     if (read(clientSocket, utf8, length) != length)
         return nil;
+    utf8[length] = '\000';
     return [NSString stringWithUTF8String:utf8];
 }
 
 - (BOOL)writeString:(NSString *)string {
     const char *utf8 = string.UTF8String;
-    int length = (int)strlen(utf8) + 1;
-    if (write(clientSocket, &length, sizeof length) != sizeof length)
-        return NO;
-    if (write(clientSocket, utf8, length) != length)
-        return NO;
-    return YES;
+    uint32_t length = (uint32_t)strlen(utf8);
+    if (write(clientSocket, &length, sizeof length) != sizeof length ||
+        write(clientSocket, utf8, length) != length)
+        return FALSE;
+    return TRUE;
 }
 
 - (void)dealloc {

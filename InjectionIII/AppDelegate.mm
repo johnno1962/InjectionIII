@@ -25,30 +25,39 @@ AppDelegate *appDelegate;
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
     appDelegate = self;
-    [SignerService startServer:@":8899"];
+//    [SignerService startServer:@":8899"];
     [InjectionServer startServer:INJECTION_ADDRESS];
+
     NSStatusBar *statusBar = [NSStatusBar systemStatusBar];
-    statusItem = [statusBar statusItemWithLength: statusBar.thickness];
+    statusItem = [statusBar statusItemWithLength:statusBar.thickness];
     statusItem.toolTip = @"Code Injection";
     statusItem.highlightMode = TRUE;
     statusItem.menu = statusMenu;
     statusItem.enabled = TRUE;
     statusItem.title = @"";
+
     [self setMenuIcon:@"InjectionIdle"];
+}
+
+- (void)setMenuIcon:(NSString *)tiffName {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (NSString *path = [NSBundle.mainBundle pathForResource:tiffName ofType:@"tif"]) {
+            NSImage *image = [[NSImage alloc] initWithContentsOfFile:path];
+    //        image.template = TRUE;
+            statusItem.image = image;
+            statusItem.alternateImage = statusItem.image;
+        }
+    });
 }
 
 - (IBAction)toggleState:(NSMenuItem *)sender {
     sender.state = !sender.state;
 }
 
-- (void)setMenuIcon:(NSString *)tiffName {
-    if (NSString *path = [NSBundle.mainBundle pathForResource:tiffName ofType:@"tif"]) {
-        NSImage *image = [[NSImage alloc] initWithContentsOfFile:path];
-//        image.template = TRUE;
-        statusItem.image = image;
-        statusItem.alternateImage = statusItem.image;
-    }
+- (IBAction)donate:sender {
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://johnholdsworth.com/cgi-bin/injection3.cgi"]];
 }
+
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
     // Insert code here to tear down your application

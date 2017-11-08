@@ -10,11 +10,11 @@
 
 #define INJECTABLE_PATTERN @"[^~]\\.(mm?|swift)$"
 
-typedef void (^InjectionCallback)( NSArray *filesChanged );
+typedef void (^InjectionCallback)(NSArray *filesChanged);
 
 @interface FileWatcher : NSObject
 
-@property (copy) InjectionCallback callback;
+@property(copy) InjectionCallback callback;
 
 - (instancetype)initWithRoot:(NSString *)projectRoot plugin:(InjectionCallback)callback;
 

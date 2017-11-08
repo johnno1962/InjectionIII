@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/SwiftEval/SwiftEval.swift#8 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#17 $
 //
 //  Basic implementation of ra Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -21,8 +21,9 @@ private func debug(_ str: String) {
 
 /// Error handler
 public var evalError = {
-    (_ err: String) -> [AnyClass]? in
-    print("** \(err) **")
+    (_ message: String) -> [AnyClass]? in
+    print("*** \(message) ***")
+    _ = SwiftEval.instance.signer?("ERROR \(message)")
     return nil
 }
 
@@ -103,7 +104,7 @@ public class SwiftEval: NSObject {
         return instance
     }
 
-    @objc public var signer: ((_: String) -> ())?
+    @objc public var signer: ((_: String) -> Bool)?
 
     var injectionNumber = 0
     var compileByClass = [String: String]()
@@ -114,7 +115,7 @@ public class SwiftEval: NSObject {
             return evalError("Could not locate derived data. Is the project under you home directory?")
         }
         guard let (projectFile, logsDir) = findProject(for: sourceURL, derivedData: derivedData) else {
-            return evalError("Could not locate containg project")
+            return evalError("Could not locate containg project.")
         }
 
         // locate compile command for class
@@ -130,10 +131,24 @@ public class SwiftEval: NSObject {
                 # search through build logs, most recent first
                 for log in `ls -t "\(logsDir.path)/"*.xcactivitylog`; do
                     echo "Scanning $log"
-                    # grep log for build of class source
-                    /usr/bin/gunzip <"$log" | perl -lpe 's/\\r/\\n/g' | \
-                    /usr/bin/grep -E '\(regexp)' >\(tmpfile).sh && exit 0;
-                done;
+                    /usr/bin/env perl <(cat <<'PERL'
+                        use strict;
+
+                        $/ = "\\r";
+
+                        open GUNZIP, "/usr/bin/gunzip <'$ARGV[0]' |" or die;
+
+                        while (<GUNZIP>) {
+                            if (m@\(regexp.replacingOccurrences(of: "\"", with: "\\\""))@) {
+                                print $_;
+                                exit 0;
+                            }
+                        }
+
+                        exit 1;
+                PERL
+                    ) "$log" >"\(tmpfile).sh" && exit 0
+                done
                 exit 1
                 """) else {
                 return nil
@@ -162,7 +177,7 @@ public class SwiftEval: NSObject {
         let filemgr = FileManager.default, backup = sourceFile + ".tmp"
         if extra != nil {
             guard var classSource = (try? String(contentsOfFile: sourceFile)) else {
-                return evalError("Could not load source file")
+                return evalError("Could not load source file \(sourceFile)")
             }
 
             let changesTag = "// extension added to implement eval"
@@ -192,8 +207,9 @@ public class SwiftEval: NSObject {
 
         let projectDir = projectFile.deletingLastPathComponent().path
 
+        print("Compiling \(sourceFile)")
         guard shell(command: """
-            cd "\(projectDir)" && \(compileCommand) -o \(tmpfile).o >\(tmpfile).log 2>&1 || (cat \(tmpfile).log && exit 1)
+            cd "\(projectDir)" && \(compileCommand) -o \(tmpfile).o >\(tmpfile).log 2>&1
             """) else {
             return evalError("Re-compilation failed (\(tmpfile).sh)\n\(try! String(contentsOfFile: "\(tmpfile).log"))")
         }
@@ -203,7 +219,7 @@ public class SwiftEval: NSObject {
         let xcode = "/Applications/Xcode.app/Contents/Developer"
 
         #if os(iOS)
-        let osSpecific = "-isysroot \(xcode)/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk -mios-simulator-version-min=11.1 -L\(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator -Xlinker -bundle_loader -Xlinker \"\(Bundle.main.executablePath!)\""
+        let osSpecific = "-isysroot \(xcode)/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk -mios-simulator-version-min=11.1 -L\(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator -undefined dynamic_lookup"// -Xlinker -bundle_loader -Xlinker \"\(Bundle.main.executablePath!)\""
         let frameworkPath = Bundle.main.bundlePath + "/Frameworks"
         #else
         let osSpecific = "-isysroot \(xcode)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -mmacosx-version-min=10.12 -L\(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx -undefined dynamic_lookup"
@@ -217,7 +233,9 @@ public class SwiftEval: NSObject {
         }
 
         if signer != nil {
-            signer!("\(tmpfile).dylib")
+            guard signer!("SIGN \(tmpfile).dylib") else {
+                return evalError("Codesign failed")
+            }
         }
         else {
             #if os(iOS)
@@ -266,7 +284,7 @@ public class SwiftEval: NSObject {
                 return evalError("Could not load class list")
             }
             symbols.removeLast()
-            return symbols.map { unsafeBitCast(dlsym(dl, String($0.dropFirst()))!, to: AnyClass.self) }
+            return symbols.flatMap { dlsym(dl, String($0.dropFirst())) }.map { unsafeBitCast($0, to: AnyClass.self) }
         }
     }
 

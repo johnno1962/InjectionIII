@@ -18,8 +18,9 @@
 @implementation InjectionClient
 
 + (void)load {
+    // connect to InjetionIII.app using sicket
     if (InjectionClient *client = [self connectTo:INJECTION_ADDRESS]) {
-        NSLog(@"Injection connected, watching files...");
+        NSLog(@"Injection connected, watching %@", [client readString]);
         [client run];
     }
     else
@@ -28,12 +29,25 @@
 }
 
 - (void)runInBackground {
-    [SwiftEval sharedInstance].signer = ^(NSString * _Nonnull dylib) {
+    // make available implementation of signing delegated to macOS app
+    [SwiftEval sharedInstance].signer = ^BOOL(NSString *_Nonnull dylib) {
         [self writeString:dylib];
-        while (![[self readString] hasPrefix:@"CODESIGN"])
-            ;
+        NSMutableArray *queued = [NSMutableArray new];
+        while (NSString *response = [self readString])
+            if ([response hasPrefix:@"SIGNED "]) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    for (NSString *swiftSource in queued)
+                        [NSObject injectWithFile:swiftSource];
+                });
+                return [response substringFromIndex:@"SIGNED ".length].boolValue;
+            }
+            else
+                [queued addObject:response];
+
+        return FALSE;
     };
 
+    // As source file names come in, inject them
     while (NSString *swiftSource = [self readString])
         dispatch_sync(dispatch_get_main_queue(), ^{
             [NSObject injectWithFile:swiftSource];

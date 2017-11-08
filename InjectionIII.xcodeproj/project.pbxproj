@@ -42,6 +42,8 @@
 		BBCA02671FB1316B00E45F0F /* SimpleSocket.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB67DBB31FB0CDA8000EAC8A /* SimpleSocket.mm */; };
 		BBCA02681FB1317400E45F0F /* SignerService.m in Sources */ = {isa = PBXBuildFile; fileRef = BB67DBB61FB0D0F2000EAC8A /* SignerService.m */; };
 		BBE490D01FB2368A003D41BB /* FileWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BBE490CE1FB2368A003D41BB /* FileWatcher.m */; };
+		BBE490DB1FB2C643003D41BB /* InjectionBusy.tif in Resources */ = {isa = PBXBuildFile; fileRef = BBE490D91FB2C643003D41BB /* InjectionBusy.tif */; };
+		BBE490DC1FB2C643003D41BB /* InjectionError.tif in Resources */ = {isa = PBXBuildFile; fileRef = BBE490DA1FB2C643003D41BB /* InjectionError.tif */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -123,6 +125,8 @@
 		BBCA025F1FB122C300E45F0F /* InjectionOK.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = InjectionOK.tif; sourceTree = "<group>"; };
 		BBE490CE1FB2368A003D41BB /* FileWatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileWatcher.m; sourceTree = "<group>"; };
 		BBE490CF1FB2368A003D41BB /* FileWatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileWatcher.h; sourceTree = "<group>"; };
+		BBE490D91FB2C643003D41BB /* InjectionBusy.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = InjectionBusy.tif; sourceTree = "<group>"; };
+		BBE490DA1FB2C643003D41BB /* InjectionError.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = InjectionError.tif; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -270,6 +274,8 @@
 				BBCA02031FB0F10300E45F0F /* Assets.xcassets */,
 				BBCA025E1FB122C300E45F0F /* InjectionIdle.tif */,
 				BBCA025F1FB122C300E45F0F /* InjectionOK.tif */,
+				BBE490D91FB2C643003D41BB /* InjectionBusy.tif */,
+				BBE490DA1FB2C643003D41BB /* InjectionError.tif */,
 				BBCA02051FB0F10300E45F0F /* MainMenu.xib */,
 				BBCA02081FB0F10400E45F0F /* Info.plist */,
 				BBCA02581FB112F500E45F0F /* App.icns */,
@@ -507,12 +513,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBE490DC1FB2C643003D41BB /* InjectionError.tif in Resources */,
 				BBCA02591FB112F500E45F0F /* App.icns in Resources */,
 				BBCA024D1FB1069A00E45F0F /* macOSInjection.bundle in Resources */,
 				BBCA02601FB122C300E45F0F /* InjectionIdle.tif in Resources */,
 				BBCA02611FB122C300E45F0F /* InjectionOK.tif in Resources */,
 				BBCA02041FB0F10300E45F0F /* Assets.xcassets in Resources */,
 				BBCA02071FB0F10300E45F0F /* MainMenu.xib in Resources */,
+				BBE490DB1FB2C643003D41BB /* InjectionBusy.tif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
