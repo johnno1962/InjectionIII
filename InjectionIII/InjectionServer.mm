@@ -16,6 +16,19 @@
     FileWatcher *fileWatcher;
 }
 
++ (int)error:(NSString *)message {
+    int saveno = errno;
+    dispatch_async(dispatch_get_main_queue(), ^{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        [[NSAlert alertWithMessageText:@"Injection Error"
+                         defaultButton:@"OK" alternateButton:nil otherButton:nil
+             informativeTextWithFormat:message, strerror(saveno)] runModal];
+#pragma clang diagnostic pop
+    });
+    return -1;
+}
+
 - (void)runInBackground {
     XcodeApplication *xcode = (XcodeApplication *)[SBApplication
            applicationWithBundleIdentifier:@"com.apple.dt.Xcode"];
@@ -41,7 +54,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             BOOL response = FALSE;
             if ([dylib hasPrefix:@"SIGN "])
-                response = [SignerService codesignDylib:[dylib substringFromIndex:5]];
+                response = [SignerService codesignDylib:[dylib substringFromIndex:@"SIGN ".length]];
 //            if ([dylib hasPrefix:@"ERROR "])
 //                [[NSAlert alertWithMessageText:@"Injection Error"
 //                                 defaultButton:@"OK" alternateButton:nil otherButton:nil
@@ -52,7 +65,7 @@
         });
     fileWatcher = nil;
 
-    [appDelegate setMenuIcon:@"InjectionOK"];
+    [appDelegate setMenuIcon:@"InjectionIdle"];
 }
 
 @end

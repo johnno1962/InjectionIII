@@ -29,29 +29,25 @@
 }
 
 - (void)runInBackground {
+    int codesignStatusPipe[2];
+    pipe(codesignStatusPipe);
+    SimpleSocket *reader = [[SimpleSocket alloc] initSocket:codesignStatusPipe[0]];
+    SimpleSocket *writer = [[SimpleSocket alloc] initSocket:codesignStatusPipe[1]];
+
     // make available implementation of signing delegated to macOS app
     [SwiftEval sharedInstance].signer = ^BOOL(NSString *_Nonnull dylib) {
         [self writeString:dylib];
-        NSMutableArray *queued = [NSMutableArray new];
-        while (NSString *response = [self readString])
-            if ([response hasPrefix:@"SIGNED "]) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    for (NSString *swiftSource in queued)
-                        [NSObject injectWithFile:swiftSource];
-                });
-                return [response substringFromIndex:@"SIGNED ".length].boolValue;
-            }
-            else
-                [queued addObject:response];
-
-        return FALSE;
+        return [reader readString].boolValue;
     };
 
     // As source file names come in, inject them
     while (NSString *swiftSource = [self readString])
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            [NSObject injectWithFile:swiftSource];
-        });
+        if ([swiftSource hasPrefix:@"SIGNED "])
+            [writer writeString:[swiftSource substringFromIndex:@"SIGNED ".length]];
+        else
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [NSObject injectWithFile:swiftSource];
+            });
 }
 
 @end

@@ -21,6 +21,8 @@
 + (instancetype _Nullable)connectTo:(NSString *_Nonnull)address;
 + (BOOL)parseV4Address:(NSString *_Nonnull)address into:(struct sockaddr_storage *_Nonnull)serverAddr;
 
+- (instancetype _Nonnull)initSocket:(int)socket;
+
 - (void)run;
 - (void)runInBackground;
 

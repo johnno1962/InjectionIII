@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#10 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#13 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -45,22 +45,21 @@ extension NSObject {
 
     public func inject() {
         if let oldClass: AnyClass = object_getClass(self) {
-            SwiftInjection.inject(oldClass: oldClass, className: "\(oldClass)")
+            SwiftInjection.inject(oldClass: oldClass, classNameOrFile: "\(oldClass)")
         }
     }
 
     @objc
     public class func inject(file: String) {
-        let path = String(URL(fileURLWithPath: file).deletingPathExtension()
-            .path.replacingOccurrences(of: "+", with: "\\+").dropFirst())
-        SwiftInjection.inject(oldClass: nil, className: path)
+        let path = URL(fileURLWithPath: file).deletingPathExtension().path
+        SwiftInjection.inject(oldClass: nil, classNameOrFile: String(path.dropFirst()))
     }
 }
 
 public class SwiftInjection {
 
-    static func inject(oldClass: AnyClass?, className: String) {
-        if let newClasses = SwiftEval.instance.rebuildClass(oldClass: oldClass, className: className, extra: nil) {
+    static func inject(oldClass: AnyClass?, classNameOrFile: String) {
+        if let newClasses = SwiftEval.instance.rebuildClass(oldClass: oldClass, classNameOrFile: classNameOrFile, extra: nil) {
             let oldClasses = //oldClass != nil ? [oldClass!] :
                 newClasses.map { objc_getClass(class_getName($0)) as! AnyClass }
             for i in 0..<oldClasses.count {
@@ -205,7 +204,7 @@ extension NSObject {
     @objc func legacySweep(for targetClass: AnyClass) {
         var icnt: UInt32 = 0, cls: AnyClass? = object_getClass(self)!
         let object = "@".utf16.first!
-        while cls != nil && cls != NSURL.self {
+        while cls != nil && cls != NSObject.self && cls != NSURL.self {
             #if os(OSX)
             let className = NSStringFromClass(cls!)
             if cls != NSWindow.self && className.starts(with: "NS") {

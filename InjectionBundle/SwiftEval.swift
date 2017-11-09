@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#17 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#25 $
 //
 //  Basic implementation of ra Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -56,7 +56,7 @@ extension NSObject {
         // update evalImpl to implement expression
 
         if NSObject.lastEvalByClass[className] != expression,
-            let newClass = SwiftEval.instance.rebuildClass(oldClass: oldClass, className: className, extra: extra)?.first {
+            let newClass = SwiftEval.instance.rebuildClass(oldClass: oldClass, classNameOrFile: className, extra: extra)?.first {
             if NSStringFromClass(newClass) != NSStringFromClass(oldClass) {
                 NSLog("Class names different. Have the right class been loaded?")
             }
@@ -109,42 +109,52 @@ public class SwiftEval: NSObject {
     var injectionNumber = 0
     var compileByClass = [String: String]()
 
-    func rebuildClass(oldClass: AnyClass?, className: String, extra: String?) -> [AnyClass]? {
-        let sourceURL = URL(fileURLWithPath: className.contains("/") ? "/" + className : #file)
+    func rebuildClass(oldClass: AnyClass?, classNameOrFile: String, extra: String?) -> [AnyClass]? {
+        let sourceURL = URL(fileURLWithPath: classNameOrFile.contains("/") ? "/" + classNameOrFile : #file)
         guard let derivedData = findDerivedData(url: sourceURL) else {
             return evalError("Could not locate derived data. Is the project under you home directory?")
         }
         guard let (projectFile, logsDir) = findProject(for: sourceURL, derivedData: derivedData) else {
-            return evalError("Could not locate containg project.")
+            return evalError("Could not locate containg project or it's logs.")
         }
 
         // locate compile command for class
 
         injectionNumber += 1
         let tmpfile = "/tmp/eval\(injectionNumber)"
-        let regexp = " -(?:primary-file|c) (?:\"([^\"]*?/\(className)\\.(?:swift|mm?))\"|(\\S*?/\(className)\\.(?:swift|mm?))) "
+        let escaped = "\\Q\(classNameOrFile)\\E\\.(?:swift|mm?)"
+        let regexp = " -(?:primary-file|c) (?:\"([^\"]*?/\(escaped))\"|(\\S*?/\(escaped))) "
 
-        guard var compileCommand = compileByClass[className] ?? {
+        guard var compileCommand = compileByClass[classNameOrFile] ?? {
             () -> String? in
 
             guard shell(command: """
                 # search through build logs, most recent first
                 for log in `ls -t "\(logsDir.path)/"*.xcactivitylog`; do
                     echo "Scanning $log"
+                    # path to project directory can contain '$&(){}
+                    # project file itself can only support spaces
                     /usr/bin/env perl <(cat <<'PERL'
                         use strict;
 
+                        # line separator in Xcode logs
                         $/ = "\\r";
 
-                        open GUNZIP, "/usr/bin/gunzip <'$ARGV[0]' |" or die;
+                        # format is gzip
+                        open GUNZIP, "/usr/bin/gunzip <\\"$ARGV[0]\\" |" or die;
 
-                        while (<GUNZIP>) {
-                            if (m@\(regexp.replacingOccurrences(of: "\"", with: "\\\""))@) {
-                                print $_;
+                        # grep the log until there is a match
+                        while (defined (my $line = <GUNZIP>)) {
+                            if ($line =~ m@\(regexp.replacingOccurrences(of: "[\"$]",
+                                    with: "\\\\$0", options: [.regularExpression]))@o) {
+                                # found compile command
+                                print $line;
+                                # stop search
                                 exit 0;
                             }
                         }
 
+                        # class/file not found
                         exit 1;
                 PERL
                     ) "$log" >"\(tmpfile).sh" && exit 0
@@ -156,15 +166,16 @@ public class SwiftEval: NSObject {
             
             var compileCommand = try! String(contentsOfFile: "\(tmpfile).sh")
             compileCommand = compileCommand.components(separatedBy: " -o ")[0] + " "
-            compileByClass[className] = compileCommand
+            compileByClass[classNameOrFile] = compileCommand
             return compileCommand
         }() else {
-            return evalError("Could not locate compile command for \(className)")
+            return evalError("Could not locate compile command for \(classNameOrFile), try a clean build.")
         }
 
         // extract full path to file from compile command
 
-        let fileExtractor = try! NSRegularExpression(pattern: regexp, options: [])
+        func dollarEscape(_ string: String) -> String { return string.replacingOccurrences(of: "$", with: "\\$") }
+        let fileExtractor = try! NSRegularExpression(pattern: dollarEscape(regexp), options: [])
         guard let matches = fileExtractor.firstMatch(in: compileCommand, options: [],
                                                      range: NSMakeRange(0, compileCommand.utf16.count)),
             let sourceFile = compileCommand[matches.range(at: 1)] ??
@@ -209,7 +220,7 @@ public class SwiftEval: NSObject {
 
         print("Compiling \(sourceFile)")
         guard shell(command: """
-            cd "\(projectDir)" && \(compileCommand) -o \(tmpfile).o >\(tmpfile).log 2>&1
+            cd "\(dollarEscape(projectDir))" && \(compileCommand) -o \(tmpfile).o >\(tmpfile).log 2>&1
             """) else {
             return evalError("Re-compilation failed (\(tmpfile).sh)\n\(try! String(contentsOfFile: "\(tmpfile).log"))")
         }
@@ -277,7 +288,9 @@ public class SwiftEval: NSObject {
         else {
             // grep out symbols for classes being injected from object file
 
-            guard shell(command: "\(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/bin/nm \(tmpfile).o | grep 'S _OBJC_CLASS_$_' | awk '{print $3}' >\(tmpfile).classes") else {
+            guard shell(command: """
+                \(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/bin/nm \(tmpfile).o | grep ' S _OBJC_CLASS_$_' | awk '{print $3}' >\(tmpfile).classes
+                """) else {
                 return evalError("Could not list classes")
             }
             guard var symbols = (try? String(contentsOfFile: "\(tmpfile).classes"))?.components(separatedBy: "\n") else {
