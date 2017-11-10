@@ -42,7 +42,9 @@
 
     // As source file names come in, inject them
     while (NSString *swiftSource = [self readString])
-        if ([swiftSource hasPrefix:@"SIGNED "])
+        if ([swiftSource isEqualToString:@"WATCHER OFF"])
+            NSLog(@"The file watcher is turned off");
+        else if ([swiftSource hasPrefix:@"SIGNED "])
             [writer writeString:[swiftSource substringFromIndex:@"SIGNED ".length]];
         else
             dispatch_async(dispatch_get_main_queue(), ^{

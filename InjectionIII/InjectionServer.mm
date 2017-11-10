@@ -41,12 +41,22 @@
 
     [appDelegate setMenuIcon:@"InjectionOK"];
 
+    NSMutableDictionary<NSString *, NSNumber *> *lastInjected = [NSMutableDictionary new];
+    #define MIN_INJECTION_INTERVAL 1.
+
     // start up  afile watcher to write changed filenames to client app
     fileWatcher = [[FileWatcher alloc] initWithRoot:projectRoot plugin:^(NSArray *changed) {
-        if (appDelegate.enableWatcher.state) {
-            for (NSString *swiftSource in changed)
-                [self writeString:swiftSource];
-        }
+        if (appDelegate.enableWatcher.state)
+            for (NSString *swiftSource in changed) {
+                NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
+                if (now > lastInjected[swiftSource].doubleValue + MIN_INJECTION_INTERVAL) {
+                    [self writeString:swiftSource];
+                    lastInjected[swiftSource] = [NSNumber numberWithDouble:now];
+                }
+            }
+        else
+            [self writeString:@"WATCHER OFF"];
+
     }];
 
     // read requests to codesign from client app
@@ -63,8 +73,8 @@
             [appDelegate setMenuIcon:response ? @"InjectionOK" : @"InjectionError"];
             [self writeString:response ? @"SIGNED 1" : @"SIGNED 0"];
         });
-    fileWatcher = nil;
 
+    fileWatcher = nil;
     [appDelegate setMenuIcon:@"InjectionIdle"];
 }
 

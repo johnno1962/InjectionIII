@@ -5,11 +5,11 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#25 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#34 $
 //
-//  Basic implementation of ra Swift "eval()" including the
+//  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
-//  version.
+//  version used in the associated injection version.
 //
 
 #if arch(x86_64) // simulator/macOS only
@@ -93,6 +93,9 @@ extension String {
     subscript(range: NSRange) -> String? {
         return range.location != NSNotFound ? String(self[Range(range, in: self)!]) : nil
     }
+    func escaping(_ chars: String, _ template: String = "\\\\$0") -> String {
+        return self.replacingOccurrences(of: "[\(chars)]", with: template, options: [.regularExpression])
+    }
 }
 
 @objc
@@ -107,7 +110,7 @@ public class SwiftEval: NSObject {
     @objc public var signer: ((_: String) -> Bool)?
 
     var injectionNumber = 0
-    var compileByClass = [String: String]()
+    var compileByClass = [String: (String, String)]()
 
     func rebuildClass(oldClass: AnyClass?, classNameOrFile: String, extra: String?) -> [AnyClass]? {
         let sourceURL = URL(fileURLWithPath: classNameOrFile.contains("/") ? "/" + classNameOrFile : #file)
@@ -122,66 +125,16 @@ public class SwiftEval: NSObject {
 
         injectionNumber += 1
         let tmpfile = "/tmp/eval\(injectionNumber)"
-        let escaped = "\\Q\(classNameOrFile)\\E\\.(?:swift|mm?)"
-        let regexp = " -(?:primary-file|c) (?:\"([^\"]*?/\(escaped))\"|(\\S*?/\(escaped))) "
 
-        guard var compileCommand = compileByClass[classNameOrFile] ?? {
-            () -> String? in
-
-            guard shell(command: """
-                # search through build logs, most recent first
-                for log in `ls -t "\(logsDir.path)/"*.xcactivitylog`; do
-                    echo "Scanning $log"
-                    # path to project directory can contain '$&(){}
-                    # project file itself can only support spaces
-                    /usr/bin/env perl <(cat <<'PERL'
-                        use strict;
-
-                        # line separator in Xcode logs
-                        $/ = "\\r";
-
-                        # format is gzip
-                        open GUNZIP, "/usr/bin/gunzip <\\"$ARGV[0]\\" |" or die;
-
-                        # grep the log until there is a match
-                        while (defined (my $line = <GUNZIP>)) {
-                            if ($line =~ m@\(regexp.replacingOccurrences(of: "[\"$]",
-                                    with: "\\\\$0", options: [.regularExpression]))@o) {
-                                # found compile command
-                                print $line;
-                                # stop search
-                                exit 0;
-                            }
-                        }
-
-                        # class/file not found
-                        exit 1;
-                PERL
-                    ) "$log" >"\(tmpfile).sh" && exit 0
-                done
-                exit 1
-                """) else {
-                return nil
-            }
-            
-            var compileCommand = try! String(contentsOfFile: "\(tmpfile).sh")
-            compileCommand = compileCommand.components(separatedBy: " -o ")[0] + " "
-            compileByClass[classNameOrFile] = compileCommand
-            return compileCommand
-        }() else {
-            return evalError("Could not locate compile command for \(classNameOrFile), try a clean build.")
+        guard var (compileCommand, sourceFile) = compileByClass[classNameOrFile] ??
+            findCompileCommand(logsDir: logsDir, classNameOrFile: classNameOrFile, tmpfile: tmpfile) else {
+            return evalError("""
+                Could not locate compile command for \(classNameOrFile)
+                Try a clean build. There are also restrictions on characters allowed in paths.
+                """)
         }
 
-        // extract full path to file from compile command
-
-        func dollarEscape(_ string: String) -> String { return string.replacingOccurrences(of: "$", with: "\\$") }
-        let fileExtractor = try! NSRegularExpression(pattern: dollarEscape(regexp), options: [])
-        guard let matches = fileExtractor.firstMatch(in: compileCommand, options: [],
-                                                     range: NSMakeRange(0, compileCommand.utf16.count)),
-            let sourceFile = compileCommand[matches.range(at: 1)] ??
-                             compileCommand[matches.range(at: 2)] else {
-                    return evalError("Could not locate source file \(compileCommand)")
-        }
+        compileByClass[classNameOrFile] = (compileCommand, sourceFile)
 
         // load and patch class source if there is an extension to add
 
@@ -219,13 +172,14 @@ public class SwiftEval: NSObject {
         let projectDir = projectFile.deletingLastPathComponent().path
 
         print("Compiling \(sourceFile)")
+
         guard shell(command: """
-            cd "\(dollarEscape(projectDir))" && \(compileCommand) -o \(tmpfile).o >\(tmpfile).log 2>&1
+            time (cd "\(projectDir.escaping("$"))" && \(compileCommand) -o \(tmpfile).o >\(tmpfile).log 2>&1)
             """) else {
             return evalError("Re-compilation failed (\(tmpfile).sh)\n\(try! String(contentsOfFile: "\(tmpfile).log"))")
         }
 
-        // link object to create dynamic library
+        // link resulting object file to create dynamic library
 
         let xcode = "/Applications/Xcode.app/Contents/Developer"
 
@@ -242,6 +196,8 @@ public class SwiftEval: NSObject {
             """) else {
             return evalError("Link failed")
         }
+
+        // codesign dylib
 
         if signer != nil {
             guard signer!("SIGN \(tmpfile).dylib") else {
@@ -291,14 +247,81 @@ public class SwiftEval: NSObject {
             guard shell(command: """
                 \(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/bin/nm \(tmpfile).o | grep ' S _OBJC_CLASS_$_' | awk '{print $3}' >\(tmpfile).classes
                 """) else {
-                return evalError("Could not list classes")
+                return evalError("Could not list class symbols")
             }
             guard var symbols = (try? String(contentsOfFile: "\(tmpfile).classes"))?.components(separatedBy: "\n") else {
-                return evalError("Could not load class list")
+                return evalError("Could not load class symbol list")
             }
+
             symbols.removeLast()
             return symbols.flatMap { dlsym(dl, String($0.dropFirst())) }.map { unsafeBitCast($0, to: AnyClass.self) }
         }
+    }
+
+    func findCompileCommand(logsDir: URL, classNameOrFile: String, tmpfile: String) -> (compileCommand: String, sourceFile: String)? {
+        // path to project can contain spaces and '$&(){}
+        // Objective-C paths can only contain space and '
+        // project file itself can only contain spaces
+        // (logs of new build system escape ', $ and ")
+        let swiftEscaped = "\\Q\(classNameOrFile.escaping("'$", "\\\\E\\\\\\\\*$0\\\\Q"))\\E\\.(?:swift|mm?)"
+        let objcEscaped = "\\Q\(classNameOrFile.escaping(" '"))\\E\\.(?:swift|mm?)"
+        let regexp = " -(?:primary-file|c) (?:\\\\?\"([^\"]*?/\(swiftEscaped))\\\\?\"|(\\S*?/\(objcEscaped))) "
+
+        // messy but fast
+        guard shell(command: """
+            # search through build logs, most recent first
+            for log in `ls -t "\(logsDir.path)/"*.xcactivitylog`; do
+                echo "Scanning $log"
+                /usr/bin/env perl <(cat <<'PERL'
+                    use English;
+                    use strict;
+
+                    # line separator in Xcode logs
+                    $INPUT_RECORD_SEPARATOR = "\\r";
+
+                    # format is gzip
+                    open GUNZIP, "/usr/bin/gunzip <\\"$ARGV[0]\\" |" or die;
+
+                    # grep the log until there is a match
+                    while (defined (my $line = <GUNZIP>)) {
+                        if ($line =~ m@\(regexp.escaping("\"$"))@o) {
+                            # found compile command
+                            print $line;
+                            # stop search
+                            exit 0;
+                        }
+                    }
+
+                    # class/file not found
+                    exit 1;
+            PERL
+                ) "$log" >"\(tmpfile).sh" && exit 0
+            done
+            exit 1
+            """) else {
+            return nil
+        }
+
+        var compileCommand = try! String(contentsOfFile: "\(tmpfile).sh")
+        compileCommand = compileCommand.components(separatedBy: " -o ")[0] + " "
+
+        // cater for escaping in new build system
+        compileCommand = compileCommand
+            .replacingOccurrences(of: "\\\\([\"'\\\\])", with: "$1", options: [.regularExpression])
+            .replacingOccurrences(of: " -pch-output-dir \\S+ ", with: " ", options: [.regularExpression])
+
+        // extract full path to file from compile command
+
+        let fileExtractor = try! NSRegularExpression(pattern: regexp.escaping("$"), options: [])
+        guard let matches = fileExtractor.firstMatch(in: compileCommand, options: [],
+                                                     range: NSMakeRange(0, compileCommand.utf16.count)),
+            let sourceFile = compileCommand[matches.range(at: 1)] ??
+                             compileCommand[matches.range(at: 2)] else {
+            _ =  evalError("Could not locate source file \(compileCommand)")
+            return nil
+        }
+
+        return (compileCommand, sourceFile)
     }
 
     func findDerivedData(url: URL) -> URL? {
