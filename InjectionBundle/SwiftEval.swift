@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#34 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#35 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -93,8 +93,9 @@ extension String {
     subscript(range: NSRange) -> String? {
         return range.location != NSNotFound ? String(self[Range(range, in: self)!]) : nil
     }
-    func escaping(_ chars: String, _ template: String = "\\\\$0") -> String {
-        return self.replacingOccurrences(of: "[\(chars)]", with: template, options: [.regularExpression])
+    func escaping(_ chars: String, _ template: String = "\\$0") -> String {
+        return self.replacingOccurrences(of: "[\(chars)]",
+            with: template.replacingOccurrences(of: "\\", with: "\\\\"), options: [.regularExpression])
     }
 }
 
@@ -263,7 +264,7 @@ public class SwiftEval: NSObject {
         // Objective-C paths can only contain space and '
         // project file itself can only contain spaces
         // (logs of new build system escape ', $ and ")
-        let swiftEscaped = "\\Q\(classNameOrFile.escaping("'$", "\\\\E\\\\\\\\*$0\\\\Q"))\\E\\.(?:swift|mm?)"
+        let swiftEscaped = "\\Q\(classNameOrFile.escaping("'$", "\\E\\\\*$0\\Q"))\\E\\.(?:swift|mm?)"
         let objcEscaped = "\\Q\(classNameOrFile.escaping(" '"))\\E\\.(?:swift|mm?)"
         let regexp = " -(?:primary-file|c) (?:\\\\?\"([^\"]*?/\(swiftEscaped))\\\\?\"|(\\S*?/\(objcEscaped))) "
 
@@ -305,23 +306,29 @@ public class SwiftEval: NSObject {
         var compileCommand = try! String(contentsOfFile: "\(tmpfile).sh")
         compileCommand = compileCommand.components(separatedBy: " -o ")[0] + " "
 
-        // cater for escaping in new build system
+        // remove excess escaping in new build system
         compileCommand = compileCommand
             .replacingOccurrences(of: "\\\\([\"'\\\\])", with: "$1", options: [.regularExpression])
             .replacingOccurrences(of: " -pch-output-dir \\S+ ", with: " ", options: [.regularExpression])
 
         // extract full path to file from compile command
 
-        let fileExtractor = try! NSRegularExpression(pattern: regexp.escaping("$"), options: [])
-        guard let matches = fileExtractor.firstMatch(in: compileCommand, options: [],
-                                                     range: NSMakeRange(0, compileCommand.utf16.count)),
-            let sourceFile = compileCommand[matches.range(at: 1)] ??
-                             compileCommand[matches.range(at: 2)] else {
-            _ =  evalError("Could not locate source file \(compileCommand)")
+        do {
+            let fileExtractor = try NSRegularExpression(pattern: regexp.escaping("$"), options: [])
+            guard let matches = fileExtractor.firstMatch(in: compileCommand, options: [],
+                                                         range: NSMakeRange(0, compileCommand.utf16.count)),
+                let sourceFile = compileCommand[matches.range(at: 1)] ??
+                                 compileCommand[matches.range(at: 2)] else {
+                _ =  evalError("Could not locate source file \(compileCommand)")
+                return nil
+            }
+
+            return (compileCommand, sourceFile)
+        }
+        catch {
+            _ =  evalError("Regexp parse error: \(error) -- \(regexp) -- \(regexp.escaping("$"))")
             return nil
         }
-
-        return (compileCommand, sourceFile)
     }
 
     func findDerivedData(url: URL) -> URL? {
