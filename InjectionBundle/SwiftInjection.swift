@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#13 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#14 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -74,7 +74,7 @@ public class SwiftInjection {
                 let classMetadata = unsafeBitCast(newClass, to: UnsafeMutablePointer<ClassMetadataSwift>.self)
 
                 // Swift equivalent of Swizzling
-                if (existingClass.pointee.Data & 0x1) == 1 {
+                if (classMetadata.pointee.Data & 0x1) == 1 {
                     if classMetadata.pointee.ClassSize != existingClass.pointee.ClassSize {
                         NSLog("\(oldClass) metadata size changed. Did you add a method?")
                     }
