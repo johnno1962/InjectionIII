@@ -89,7 +89,7 @@ extension NSObject {
     }
 }
 
-extension String {
+fileprivate extension String {
     subscript(range: NSRange) -> String? {
         return range.location != NSNotFound ? String(self[Range(range, in: self)!]) : nil
     }
