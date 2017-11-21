@@ -87,7 +87,7 @@
 
 /**
  * Available formats
- * @"<host>[:<pprt>]"
+ * @"<host>[:<port>]"
  * where <host> can be NNN.NNN.NNN.NNN or hostname, empty for localhost or * for all interfaces
  * The default port is 80 or a specific number to bind or an empty string to allocate any port
  */

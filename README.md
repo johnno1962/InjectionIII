@@ -29,7 +29,10 @@ injected() method or subscribe to the "INJECTION\_BUNDLE\_NOTIFICATION".
 To work, method dispatch must be through the classes "vtable" and not be "direct" i.e. statically
 linked. This means injection will not work for final methods or methods in final classes or structs.
 The  -injected method relies on a sweep of all objects in your application to find those of the class
-you have just injected and can be ambitious. If you encounter problems, use the notification.
+you have just injected and can be ambitious. If you encounter problems, use the notification. Also,
+as injection needs to know how to compile swift files individually it it incompatible with building using
+whole module optimization. A workaround for this is to build with WMO switched off so there are
+logs of individual compiles then switching it back on if it suits your project best.
 
 ## SwiftEval - Yes, it's eval() for Swift
 
