@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#14 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#15 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -18,7 +18,7 @@ import Foundation
     @objc optional func injected()
 }
 
-#if os(iOS)
+#if os(iOS) || os(tvOS)
 import UIKit
 
 extension UIViewController {
@@ -94,7 +94,7 @@ public class SwiftInjection {
 
                 // implement -injected() method using sweep of objects in application
                 if class_getInstanceMethod(oldClass, #selector(SwiftInjected.injected)) != nil {
-                    #if os(iOS)
+                    #if os(iOS) || os(tvOS)
                     let app = UIApplication.shared
                     #else
                     let app = NSApplication.shared

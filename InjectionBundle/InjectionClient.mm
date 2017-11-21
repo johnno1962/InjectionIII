@@ -10,7 +10,11 @@
 #import "InjectionServer.h"
 
 #ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
+#if __has_include("tvOSInjection-Swift.h")
+#import "tvOSInjection-Swift.h"
+#else
 #import "iOSInjection-Swift.h"
+#endif
 #else
 #import "macOSInjection-Swift.h"
 #endif

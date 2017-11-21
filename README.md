@@ -9,6 +9,8 @@ one of the following to your applicationDidFinishLaunching:
 ```
 #if DEBUG
 Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle")?.load()
+//for tvOS:
+Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/tvOSInjection.bundle")?.load()
 //Or for macOS:
 Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/macOSInjection.bundle")?.load()
 #endif
@@ -29,9 +31,13 @@ injected() method or subscribe to the "INJECTION\_BUNDLE\_NOTIFICATION".
 To work, method dispatch must be through the classes "vtable" and not be "direct" i.e. statically
 linked. This means injection will not work for final methods or methods in final classes or structs.
 The  -injected method relies on a sweep of all objects in your application to find those of the class
-you have just injected and can be ambitious. If you encounter problems, use the notification. Also,
-as injection needs to know how to compile swift files individually it it incompatible with building using
-whole module optimization. A workaround for this is to build with WMO switched off so there are
+you have just injected which can be ambitious. If you encounter problems, use the notification.
+
+Be careful with global state. If the file you're injecting as non instance-level variables e.g. singletons they
+will be reset when you inject the code as the new implementations will refer to the newly loaded version of the class.
+
+As injection needs to know how to compile swift files individually it is incompatible with building using
+whole module optimisation. A workaround for this is to build with WMO switched off so there are
 logs of individual compiles then switching it back on if it suits your project best.
 
 ## SwiftEval - Yes, it's eval() for Swift
