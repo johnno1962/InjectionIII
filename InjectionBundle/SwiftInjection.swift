@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#15 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#16 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -13,6 +13,7 @@
 
 #if arch(x86_64) // simulator/macOS only
 import Foundation
+import XCTest
 
 @objc public protocol SwiftInjected {
     @objc optional func injected()
@@ -92,8 +93,19 @@ public class SwiftInjection {
                            byteAddr(classMetadata) + vtableOffset, vtableLength)
                 }
 
+                if newClass.isSubclass(of: XCTestCase.self) {
+                    let suite0 = XCTestSuite(name: "Injected")
+                    let suite = XCTestSuite(forTestCaseClass: newClass)
+                    let tr = XCTestSuiteRun(test: suite)
+                    suite0.addTest(suite)
+                    suite0.perform(tr)
+//                    if ( [newClass isSubclassOfClass:objc_getClass("QuickSpec")] )
+//                    [[objc_getClass("_TtC5Quick5World") sharedWorld]
+//                    setCurrentExampleMetadata:nil];
+                }
+
                 // implement -injected() method using sweep of objects in application
-                if class_getInstanceMethod(oldClass, #selector(SwiftInjected.injected)) != nil {
+                else if class_getInstanceMethod(oldClass, #selector(SwiftInjected.injected)) != nil {
                     #if os(iOS) || os(tvOS)
                     let app = UIApplication.shared
                     #else

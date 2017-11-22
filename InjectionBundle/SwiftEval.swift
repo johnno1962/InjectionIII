@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#39 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#40 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -196,7 +196,7 @@ public class SwiftEval: NSObject {
         #endif
 
         guard shell(command: """
-            \(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch x86_64 -bundle \(osSpecific) -dead_strip -Xlinker -objc_abi_version -Xlinker 2 -fobjc-arc \(tmpfile).o -L \(frameworkPath) -F \(frameworkPath) -rpath \(frameworkPath) -o \(tmpfile).dylib
+            \(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch x86_64 -bundle \(osSpecific) -dead_strip -Xlinker -objc_abi_version -Xlinker 2 -fobjc-arc \(tmpfile).o -L "\(frameworkPath)" -F "\(frameworkPath)" -rpath "\(frameworkPath)" -o \(tmpfile).dylib
             """) else {
             return evalError("Link failed")
         }
@@ -277,6 +277,7 @@ public class SwiftEval: NSObject {
             for log in `ls -t "\(logsDir.path)/"*.xcactivitylog`; do
                 echo "Scanning $log"
                 /usr/bin/env perl <(cat <<'PERL'
+                    use JSON::PP;
                     use English;
                     use strict;
 
@@ -290,8 +291,25 @@ public class SwiftEval: NSObject {
                     while (defined (my $line = <GUNZIP>)) {
                         if ($line =~ m@\(regexp.escaping("\"$"))@o) {
                             # found compile command
-                            print $line;
+                            # may need to extract file list
+                            if ($line =~ / -filelist /) {
+                                while (defined (my $line2 = <GUNZIP>)) {
+                                    if (my($filemap) = $line2 =~ / -output-file-map ([^ \\\\]+(?:\\\\ [^ \\\\]+)*) / ) {
+                                        $filemap =~ s/\\\\//g;
+                                        my $file_handle = IO::File->new( "< $filemap" )
+                                            || die "Could not open filemap '$filemap'";
+                                        my $json_text = join'', $file_handle->getlines();
+                                        my $json_map = decode_json( $json_text, { utf8  => 1 } );
+                                        my $filelist = "/tmp/filelist.txt";
+                                        my $swift_sources = join "\n", keys %$json_map;
+                                        IO::File->new( "> $filelist" )->print( $swift_sources );
+                                        $line =~ s/( -filelist )(\\S+)( )/$1$filelist$3/;
+                                        last;
+                                    }
+                                }
+                            }
                             # stop search
+                            print $line;
                             exit 0;
                         }
                     }
@@ -301,7 +319,7 @@ public class SwiftEval: NSObject {
             PERL
                 ) "$log" >"\(tmpfile).sh" && exit 0
             done
-            exit 1
+            exit 1;
             """) else {
             return nil
         }

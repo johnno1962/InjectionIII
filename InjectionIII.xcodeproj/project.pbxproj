@@ -105,6 +105,7 @@
 		BBB148DE1FAD53BE00CB6B33 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		BBB148E01FAD53BE00CB6B33 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BBB148E11FAD53BE00CB6B33 /* EvalApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EvalApp.entitlements; sourceTree = "<group>"; };
+		BBBEC42D1FC56522004188B3 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		BBCA01FE1FB0F10300E45F0F /* InjectionIII.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InjectionIII.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBCA02001FB0F10300E45F0F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BBCA02011FB0F10300E45F0F /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
@@ -240,6 +241,7 @@
 		BBB040621FB1798A007DDD0A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BBBEC42D1FC56522004188B3 /* XCTest.framework */,
 				BBB040631FB1798A007DDD0A /* ScriptingBridge.framework */,
 			);
 			name = Frameworks;
@@ -545,7 +547,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "SYMROOT=/tmp/Injection\n\"$DEVELOPER_BIN_DIR\"/xcodebuild SYMROOT=$SYMROOT PRODUCT_NAME=iOSInjection LD_RUNPATH_SEARCH_PATHS=\"$TOOLCHAIN_DIR/usr/lib/swift/iphonesimulator\" -arch x86_64 -sdk iphonesimulator -config Debug -target InjectionBundle &&\nrsync -au $SYMROOT/Debug-iphonesimulator/iOSInjection.bundle \"$CODESIGNING_FOLDER_PATH/Contents/Resources\" &&\n\"$DEVELOPER_BIN_DIR\"/xcodebuild SYMROOT=$SYMROOT PRODUCT_NAME=tvOSInjection LD_RUNPATH_SEARCH_PATHS=\"$TOOLCHAIN_DIR/usr/lib/swift/appletvsimulator\" -arch x86_64 -sdk appletvsimulator -config Debug -target InjectionBundle &&\nrsync -au $SYMROOT/Debug-appletvsimulator/tvOSInjection.bundle \"$CODESIGNING_FOLDER_PATH/Contents/Resources\"";
+			shellScript = "SYMROOT=/tmp/Injection\n\"$DEVELOPER_BIN_DIR\"/xcodebuild SYMROOT=$SYMROOT PRODUCT_NAME=iOSInjection LD_RUNPATH_SEARCH_PATHS=\"$TOOLCHAIN_DIR/usr/lib/swift/iphonesimulator $DEVELOPER_DIR/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks\" -arch x86_64 -sdk iphonesimulator -config Debug -target InjectionBundle &&\nrsync -au $SYMROOT/Debug-iphonesimulator/iOSInjection.bundle \"$CODESIGNING_FOLDER_PATH/Contents/Resources\" &&\n\"$DEVELOPER_BIN_DIR\"/xcodebuild SYMROOT=$SYMROOT PRODUCT_NAME=tvOSInjection LD_RUNPATH_SEARCH_PATHS=\"$TOOLCHAIN_DIR/usr/lib/swift/appletvsimulator $DEVELOPER_DIR/Platforms/AppleTVSimulator.platform/Developer/Library/Frameworks\" -arch x86_64 -sdk appletvsimulator -config Debug -target InjectionBundle &&\nrsync -au $SYMROOT/Debug-appletvsimulator/tvOSInjection.bundle \"$CODESIGNING_FOLDER_PATH/Contents/Resources\"";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -943,9 +945,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 9V5A8WE85E;
+				FRAMEWORK_SEARCH_PATHS = $PLATFORM_DIR/Developer/Library/Frameworks;
 				INFOPLIST_FILE = InjectionBundle/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/$(SWIFT_PLATFORM_TARGET_PREFIX)";
+				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/$(SWIFT_PLATFORM_TARGET_PREFIX) $PLATFORM_DIR/Developer/Library/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionBundle;
 				PRODUCT_NAME = macOSInjection;
@@ -962,9 +965,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 9V5A8WE85E;
+				FRAMEWORK_SEARCH_PATHS = $PLATFORM_DIR/Developer/Library/Frameworks;
 				INFOPLIST_FILE = InjectionBundle/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/$(SWIFT_PLATFORM_TARGET_PREFIX)";
+				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/$(SWIFT_PLATFORM_TARGET_PREFIX) $PLATFORM_DIR/Developer/Library/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionBundle;
 				PRODUCT_NAME = macOSInjection;

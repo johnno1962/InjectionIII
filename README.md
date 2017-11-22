@@ -19,6 +19,7 @@ Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/macOSInjection.b
 Once your application starts, a file watcher is started in the InjectionIII app and whenever
 you save a Swift or Objective-C source the target app is messaged to update the implementation.
 The file watcher can be disabled & enabled while the app is running using the status bar menu.
+If you inject a subclass of XCTest it will try running that individual test inside your application.
 
 Included is a manual implementation of ["code injection"](InjectionBundle/SwiftInjection.swift).
 If you are stopped in a class, you can edit the class' implementation, save it and type
