@@ -50,8 +50,9 @@
             for (NSString *swiftSource in changed) {
                 NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
                 if (now > lastInjected[swiftSource].doubleValue + MIN_INJECTION_INTERVAL) {
-                    [self writeString:swiftSource];
                     lastInjected[swiftSource] = [NSNumber numberWithDouble:now];
+                    [appDelegate setMenuIcon:@"InjectionBusy"];
+                    [self writeString:swiftSource];
                 }
             }
         else

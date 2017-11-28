@@ -10,6 +10,13 @@
 #import "SignerService.h"
 #import "InjectionServer.h"
 
+#import "HelperInstaller.h"
+#import "HelperProxy.h"
+
+#import <Carbon/Carbon.h>
+#import <AppKit/NSEvent.h>
+#import "DDHotKeyCenter.h"
+
 AppDelegate *appDelegate;
 
 @interface AppDelegate ()
@@ -19,6 +26,7 @@ AppDelegate *appDelegate;
 
 @implementation AppDelegate {
     IBOutlet NSMenu *statusMenu;
+    IBOutlet NSMenuItem *startItem;
     IBOutlet NSStatusItem *statusItem;
 }
 
@@ -37,6 +45,10 @@ AppDelegate *appDelegate;
     statusItem.title = @"";
 
     [self setMenuIcon:@"InjectionIdle"];
+
+    [[DDHotKeyCenter sharedHotKeyCenter] registerHotKeyWithKeyCode:kVK_ANSI_Equal
+                                                     modifierFlags:NSEventModifierFlagControl
+                                                            target:self action:@selector(autoInject:) object:nil];
 }
 
 - (void)setMenuIcon:(NSString *)tiffName {
@@ -46,12 +58,30 @@ AppDelegate *appDelegate;
     //        image.template = TRUE;
             statusItem.image = image;
             statusItem.alternateImage = statusItem.image;
+            startItem.enabled = [tiffName isEqualToString:@"InjectionIdle"];
         }
     });
 }
 
 - (IBAction)toggleState:(NSMenuItem *)sender {
     sender.state = !sender.state;
+}
+
+- (IBAction)autoInject:(NSMenuItem *)sender {
+    NSError *error = nil;
+
+    // Install helper tool
+    if ([HelperInstaller isInstalled] == NO && [HelperInstaller install:&error] == NO) {
+        NSLog(@"Couldn't install Smuggler Helper (domain: %@ code: %d)", error.domain, (int)error.code);
+        [[NSAlert alertWithError:error] runModal];
+    }
+
+    // Inject Simulator process
+    NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"iOSInjection" ofType:@"bundle"];
+    if ([HelperProxy inject:bundlePath error:&error] == FALSE) {
+        NSLog(@"Couldn't inject Simulator (domain: %@ code: %d)", error.domain, (int)error.code);
+        [[NSAlert alertWithError:error] runModal];
+    }
 }
 
 - (IBAction)donate:sender {
@@ -61,6 +91,8 @@ AppDelegate *appDelegate;
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
     // Insert code here to tear down your application
+    [[DDHotKeyCenter sharedHotKeyCenter] unregisterHotKeyWithKeyCode:kVK_ANSI_Equal
+                                                       modifierFlags:NSEventModifierFlagControl];
 }
 
 

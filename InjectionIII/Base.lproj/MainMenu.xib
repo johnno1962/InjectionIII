@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13196" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13529" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13196"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13529"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,7 +15,8 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate">
             <connections>
-                <outlet property="enableWatcher" destination="vsd-ll-3nr" id="SXY-RR-WAV"/>
+                <outlet property="enableWatcher" destination="0iA-WA-gxc" id="vVT-sI-q78"/>
+                <outlet property="startItem" destination="vsd-ll-3nr" id="ODN-wa-BTp"/>
                 <outlet property="statusMenu" destination="V8Q-mq-A2f" id="Epo-HD-J21"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
@@ -694,10 +695,22 @@
         </window>
         <menu autoenablesItems="NO" id="V8Q-mq-A2f">
             <items>
-                <menuItem title="File Watcher" state="on" id="vsd-ll-3nr">
+                <menuItem title="About Injection" id="08f-zd-aS5">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="toggleState:" target="Voe-Tx-rLC" id="NsG-Lf-czK"/>
+                        <action selector="orderFrontStandardAboutPanel:" target="-1" id="b6u-Vx-pO5"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Start Injection" keyEquivalent="=" id="vsd-ll-3nr">
+                    <modifierMask key="keyEquivalentModifierMask" control="YES"/>
+                    <connections>
+                        <action selector="autoInject:" target="Voe-Tx-rLC" id="YDX-ZY-Oim"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="File Watcher" state="on" id="0iA-WA-gxc">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="toggleState:" target="Voe-Tx-rLC" id="old-T7-DMa"/>
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="y1I-84-xAU"/>
@@ -714,7 +727,7 @@
                     </connections>
                 </menuItem>
             </items>
-            <point key="canvasLocation" x="74" y="400"/>
+            <point key="canvasLocation" x="112" y="603"/>
         </menu>
     </objects>
 </document>

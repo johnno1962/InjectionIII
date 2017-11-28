@@ -24,11 +24,11 @@
 + (void)load {
     // connect to InjetionIII.app using sicket
     if (InjectionClient *client = [self connectTo:INJECTION_ADDRESS]) {
-        NSLog(@"Injection connected, watching %@", [client readString]);
+        printf("Injection connected, watching %s\n", [client readString].UTF8String);
         [client run];
     }
     else
-        NSLog(@"Injection loaded but could not connect. Is InjectionIII.app running?");
+        printf("Injection loaded but could not connect. Is InjectionIII.app running?\n");
 
 }
 
@@ -47,7 +47,7 @@
     // As source file names come in, inject them
     while (NSString *swiftSource = [self readString])
         if ([swiftSource isEqualToString:@"WATCHER OFF"])
-            NSLog(@"The file watcher is turned off");
+            printf("The file watcher is turned off\n");
         else if ([swiftSource hasPrefix:@"SIGNED "])
             [writer writeString:[swiftSource substringFromIndex:@"SIGNED ".length]];
         else

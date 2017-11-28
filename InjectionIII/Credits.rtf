@@ -1,0 +1,75 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Menlo-Regular;\f2\fmodern\fcharset0 Courier;
+}
+{\colortbl;\red255\green255\blue255;\red63\green110\blue116;\red255\green255\blue255;\red83\green98\blue108;
+}
+{\*\expandedcolortbl;;\csgenericrgb\c24700\c43100\c45600;\csgenericrgb\c100000\c100000\c100000;\csgenericrgb\c32549\c38431\c42353;
+}
+\paperw11900\paperh16840\vieww9600\viewh8400\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\partightenfactor0
+
+\f0\fs24 \cf0 InjectionIII.app is a mostly Swift rewrite of {\field{\*\fldinst{HYPERLINK "https://github.com/johnno1962/injectionforxcode"}}{\fldrslt 
+\f1\fs22 injectionforxcode}} that runs in the menu bar. It works slightly differently from previous versions of injection in that it uses a file watcher to detect when a user saves a file in the current project to inject it. You can either use the "Start Injection" menu item to bootstrap injection into your application or include the following code in your application:\
+\
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\f2 \cf2 \cb3 #if DEBUG\cf0 \
+\cf2 Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle")?.load()\cf0 \
+\cf2 //for tvOS:\cf0 \
+\cf2 Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/tvOSInjection.bundle")?.load()\cf0 \
+\cf2 //Or for macOS:\cf0 \
+\cf2 Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/macOSInjection.bundle")?.load()\cf0 \
+\cf2 #endif\cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\partightenfactor0
+
+\f0 \cf0 \cb1 \
+For further help go to {\field{\*\fldinst{HYPERLINK "http://johnholdsworth.com/injection.html"}}{\fldrslt http://johnholdsworth.com/injection.html}}\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f1\fs22 \cf0 Copyright (C) 2016-7 John Holdsworth {\field{\*\fldinst{HYPERLINK "mailto:injectionIII@johnholdsworth.com"}}{\fldrslt injectionIII@johnholdsworth.com}} {\field{\*\fldinst{HYPERLINK "https://twitter.com/Injection4Xcode"}}{\fldrslt 
+\fs24 \cf4 \expnd0\expndtw0\kerning0
+@Injection4Xcode}}\
+\
+\pard\pardeftab720\partightenfactor0
+
+\fs24 \cf0 \expnd0\expndtw0\kerning0
+Permission is hereby granted, free of charge, to any person obtaining a copy\
+of this software and associated documentation files (the "Software"), to deal\
+in the Software without restriction, including without limitation the rights\
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\
+copies of the Software, and to permit persons to whom the Software is\
+furnished to do so, subject to the following conditions:\
+\
+The above copyright notice and this permission notice shall be included in\
+all copies or substantial portions of the Software.\
+\
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT \
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. \
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, \
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE \
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\fs22 \cf0 \kerning1\expnd0\expndtw0 \
+Included in this release is software from the following sources under their respective licenses:\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://github.com/davedelong/DDHotKey"}}{\fldrslt \cf0 davedelong/DDHotKey}} - create ^= hotkey for injection\
+\
+\pard\pardeftab720\partightenfactor0
+\cf0 \expnd0\expndtw0\kerning0
+The license for this framework is included in every source file, and is reproduced in its entirety here:\
+\
+Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.  The software is provided "as is", without warranty of any kind, including all implied warranties of merchantability and fitness. In no event shall the authors or copyright holders be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the software or the use or other dealings in the software.\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\cf0 \kerning1\expnd0\expndtw0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://github.com/rentzsch/mach_inject"}}{\fldrslt \cf0 rentzsch/mach_inject}} - inter-process code injection\
+\
+\pard\pardeftab720\partightenfactor0
+\cf0 \expnd0\expndtw0\kerning0
+//   Copyright (c) 2003-2016 Jonathan 'Wolf' Rentzsch: http://rentzsch.com\
+//   Some rights reserved: http://opensource.org/licenses/mit\
+//   https://github.com/rentzsch/mach_inject\
+}

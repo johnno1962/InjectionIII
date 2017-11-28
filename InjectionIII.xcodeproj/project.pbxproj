@@ -16,6 +16,17 @@
 		BB439B751FABA64300B4F50B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB439B731FABA64300B4F50B /* LaunchScreen.storyboard */; };
 		BB439B801FABA64300B4F50B /* SwiftEvalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B7F1FABA64300B4F50B /* SwiftEvalTests.swift */; };
 		BB439BB41FAC185200B4F50B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BB439BB31FAC185200B4F50B /* main.m */; };
+		BB6224451FC5B0E600AD7A3A /* HelperProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6224411FC5B0E300AD7A3A /* HelperProxy.m */; };
+		BB6224461FC5B0E600AD7A3A /* HelperInstaller.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6224441FC5B0E500AD7A3A /* HelperInstaller.m */; };
+		BB6224551FC5B1CB00AD7A3A /* mach_inject_bundle_stub.c in Sources */ = {isa = PBXBuildFile; fileRef = BB6224541FC5B1CB00AD7A3A /* mach_inject_bundle_stub.c */; };
+		BB6224571FC5B30400AD7A3A /* Bootstrap.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BB62244D1FC5B18700AD7A3A /* Bootstrap.bundle */; };
+		BB62246A1FC5B3B700AD7A3A /* Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6224641FC5B3B700AD7A3A /* Helper.m */; };
+		BB62246B1FC5B3B700AD7A3A /* mach_inject.c in Sources */ = {isa = PBXBuildFile; fileRef = BB6224651FC5B3B700AD7A3A /* mach_inject.c */; };
+		BB62246C1FC5B3B700AD7A3A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6224691FC5B3B700AD7A3A /* main.m */; };
+		BB6224731FC5BA8800AD7A3A /* com.johnholdsworth.InjectionIII.Helper in CopyFiles */ = {isa = PBXBuildFile; fileRef = BB62245C1FC5B37400AD7A3A /* com.johnholdsworth.InjectionIII.Helper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BB6306F71FCD16600021D30C /* DDHotKeyCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6306F51FCD16600021D30C /* DDHotKeyCenter.m */; };
+		BB6306F81FCD16600021D30C /* DDHotKeyUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6306F61FCD16600021D30C /* DDHotKeyUtilities.m */; };
+		BB6306FE1FCD1A410021D30C /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = BB6306FD1FCD1A410021D30C /* Credits.rtf */; };
 		BBB040641FB17A6C007DDD0A /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBB040631FB1798A007DDD0A /* ScriptingBridge.framework */; };
 		BBB148DA1FAD53BE00CB6B33 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB148D91FAD53BE00CB6B33 /* AppDelegate.swift */; };
 		BBB148DC1FAD53BE00CB6B33 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBB148DB1FAD53BE00CB6B33 /* Assets.xcassets */; };
@@ -54,6 +65,20 @@
 			remoteGlobalIDString = BB439B641FABA64300B4F50B;
 			remoteInfo = SwiftEval;
 		};
+		BB62246E1FC5B64200AD7A3A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BB439B5D1FABA64300B4F50B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BB62244C1FC5B18700AD7A3A;
+			remoteInfo = Bootstrap;
+		};
+		BB6224701FC5B64600AD7A3A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BB439B5D1FABA64300B4F50B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BB62245B1FC5B37400AD7A3A;
+			remoteInfo = com.jh.InjectionIII.Helper;
+		};
 		BBCA024E1FB106C000E45F0F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BB439B5D1FABA64300B4F50B /* Project object */;
@@ -72,6 +97,25 @@
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 1;
+		};
+		BB62245A1FC5B37400AD7A3A /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		BB6224721FC5BA6F00AD7A3A /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Library/LaunchServices;
+			dstSubfolderSpec = 1;
+			files = (
+				BB6224731FC5BA8800AD7A3A /* com.johnholdsworth.InjectionIII.Helper in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -94,6 +138,27 @@
 		BB439BAC1FAC030E00B4F50B /* SwiftEval.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SwiftEval.entitlements; sourceTree = "<group>"; };
 		BB439BB11FAC185200B4F50B /* signer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = signer; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB439BB31FAC185200B4F50B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		BB6224411FC5B0E300AD7A3A /* HelperProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelperProxy.m; sourceTree = "<group>"; };
+		BB6224421FC5B0E500AD7A3A /* HelperProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperProxy.h; sourceTree = "<group>"; };
+		BB6224431FC5B0E500AD7A3A /* HelperInstaller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperInstaller.h; sourceTree = "<group>"; };
+		BB6224441FC5B0E500AD7A3A /* HelperInstaller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelperInstaller.m; sourceTree = "<group>"; };
+		BB62244D1FC5B18700AD7A3A /* Bootstrap.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Bootstrap.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB62244F1FC5B18700AD7A3A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BB6224531FC5B1CB00AD7A3A /* mach_inject_bundle_stub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mach_inject_bundle_stub.h; sourceTree = "<group>"; };
+		BB6224541FC5B1CB00AD7A3A /* mach_inject_bundle_stub.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mach_inject_bundle_stub.c; sourceTree = "<group>"; };
+		BB62245C1FC5B37400AD7A3A /* com.johnholdsworth.InjectionIII.Helper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = com.johnholdsworth.InjectionIII.Helper; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB6224631FC5B3B600AD7A3A /* Info-Launchd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Launchd.plist"; sourceTree = "<group>"; };
+		BB6224641FC5B3B700AD7A3A /* Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Helper.m; sourceTree = "<group>"; };
+		BB6224651FC5B3B700AD7A3A /* mach_inject.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mach_inject.c; sourceTree = "<group>"; };
+		BB6224661FC5B3B700AD7A3A /* Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Helper.h; sourceTree = "<group>"; };
+		BB6224671FC5B3B700AD7A3A /* mach_inject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mach_inject.h; sourceTree = "<group>"; };
+		BB6224681FC5B3B700AD7A3A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BB6224691FC5B3B700AD7A3A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		BB6306F31FCD165F0021D30C /* DDHotKeyCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHotKeyCenter.h; sourceTree = "<group>"; };
+		BB6306F41FCD165F0021D30C /* DDHotKeyUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHotKeyUtilities.h; sourceTree = "<group>"; };
+		BB6306F51FCD16600021D30C /* DDHotKeyCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHotKeyCenter.m; sourceTree = "<group>"; };
+		BB6306F61FCD16600021D30C /* DDHotKeyUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHotKeyUtilities.m; sourceTree = "<group>"; };
+		BB6306FD1FCD1A410021D30C /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		BB67DBB21FB0CDA8000EAC8A /* SimpleSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SimpleSocket.h; sourceTree = "<group>"; };
 		BB67DBB31FB0CDA8000EAC8A /* SimpleSocket.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SimpleSocket.mm; sourceTree = "<group>"; };
 		BB67DBB51FB0D0F2000EAC8A /* SignerService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SignerService.h; sourceTree = "<group>"; };
@@ -152,6 +217,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BB62244A1FC5B18700AD7A3A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB6224591FC5B37400AD7A3A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BBB148D41FAD53BD00CB6B33 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -184,6 +263,9 @@
 				BB037DF31FAD808B004B267C /* README.md */,
 				BBCA01FF1FB0F10300E45F0F /* InjectionIII */,
 				BBCA02461FB1065D00E45F0F /* InjectionBundle */,
+				BB6224481FC5B13D00AD7A3A /* Bootstrap */,
+				BB62245D1FC5B37400AD7A3A /* Helper */,
+				BB6306F21FCD16140021D30C /* DDHotKey */,
 				BB439B671FABA64300B4F50B /* SwiftEval */,
 				BB439B7E1FABA64300B4F50B /* SwiftEvalTests */,
 				BB439BB21FAC185200B4F50B /* signer */,
@@ -202,6 +284,8 @@
 				BBB148D71FAD53BD00CB6B33 /* EvalApp.app */,
 				BBCA01FE1FB0F10300E45F0F /* InjectionIII.app */,
 				BBCA02451FB1065D00E45F0F /* macOSInjection.bundle */,
+				BB62244D1FC5B18700AD7A3A /* Bootstrap.bundle */,
+				BB62245C1FC5B37400AD7A3A /* com.johnholdsworth.InjectionIII.Helper */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -238,6 +322,41 @@
 			path = signer;
 			sourceTree = "<group>";
 		};
+		BB6224481FC5B13D00AD7A3A /* Bootstrap */ = {
+			isa = PBXGroup;
+			children = (
+				BB62244F1FC5B18700AD7A3A /* Info.plist */,
+				BB6224541FC5B1CB00AD7A3A /* mach_inject_bundle_stub.c */,
+				BB6224531FC5B1CB00AD7A3A /* mach_inject_bundle_stub.h */,
+			);
+			path = Bootstrap;
+			sourceTree = "<group>";
+		};
+		BB62245D1FC5B37400AD7A3A /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				BB6224661FC5B3B700AD7A3A /* Helper.h */,
+				BB6224641FC5B3B700AD7A3A /* Helper.m */,
+				BB6224631FC5B3B600AD7A3A /* Info-Launchd.plist */,
+				BB6224681FC5B3B700AD7A3A /* Info.plist */,
+				BB6224651FC5B3B700AD7A3A /* mach_inject.c */,
+				BB6224671FC5B3B700AD7A3A /* mach_inject.h */,
+				BB6224691FC5B3B700AD7A3A /* main.m */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		BB6306F21FCD16140021D30C /* DDHotKey */ = {
+			isa = PBXGroup;
+			children = (
+				BB6306F31FCD165F0021D30C /* DDHotKeyCenter.h */,
+				BB6306F51FCD16600021D30C /* DDHotKeyCenter.m */,
+				BB6306F41FCD165F0021D30C /* DDHotKeyUtilities.h */,
+				BB6306F61FCD16600021D30C /* DDHotKeyUtilities.m */,
+			);
+			path = DDHotKey;
+			sourceTree = "<group>";
+		};
 		BBB040621FB1798A007DDD0A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -262,6 +381,7 @@
 		BBCA01FF1FB0F10300E45F0F /* InjectionIII */ = {
 			isa = PBXGroup;
 			children = (
+				BB6306FD1FCD1A410021D30C /* Credits.rtf */,
 				BBCA025A1FB1132700E45F0F /* Xcode.h */,
 				BBCA02001FB0F10300E45F0F /* AppDelegate.h */,
 				BBCA02011FB0F10300E45F0F /* AppDelegate.mm */,
@@ -273,6 +393,10 @@
 				BB67DBB31FB0CDA8000EAC8A /* SimpleSocket.mm */,
 				BBE490CF1FB2368A003D41BB /* FileWatcher.h */,
 				BBE490CE1FB2368A003D41BB /* FileWatcher.m */,
+				BB6224431FC5B0E500AD7A3A /* HelperInstaller.h */,
+				BB6224441FC5B0E500AD7A3A /* HelperInstaller.m */,
+				BB6224421FC5B0E500AD7A3A /* HelperProxy.h */,
+				BB6224411FC5B0E300AD7A3A /* HelperProxy.m */,
 				BBCA02031FB0F10300E45F0F /* Assets.xcassets */,
 				BBCA025E1FB122C300E45F0F /* InjectionIdle.tif */,
 				BBCA025F1FB122C300E45F0F /* InjectionOK.tif */,
@@ -354,6 +478,40 @@
 			productReference = BB439BB11FAC185200B4F50B /* signer */;
 			productType = "com.apple.product-type.tool";
 		};
+		BB62244C1FC5B18700AD7A3A /* Bootstrap */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BB6224501FC5B18700AD7A3A /* Build configuration list for PBXNativeTarget "Bootstrap" */;
+			buildPhases = (
+				BB6224491FC5B18700AD7A3A /* Sources */,
+				BB62244A1FC5B18700AD7A3A /* Frameworks */,
+				BB62244B1FC5B18700AD7A3A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Bootstrap;
+			productName = Bootstrap;
+			productReference = BB62244D1FC5B18700AD7A3A /* Bootstrap.bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
+		BB62245B1FC5B37400AD7A3A /* com.johnholdsworth.InjectionIII.Helper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BB6224601FC5B37400AD7A3A /* Build configuration list for PBXNativeTarget "com.johnholdsworth.InjectionIII.Helper" */;
+			buildPhases = (
+				BB6224581FC5B37400AD7A3A /* Sources */,
+				BB6224591FC5B37400AD7A3A /* Frameworks */,
+				BB62245A1FC5B37400AD7A3A /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = com.johnholdsworth.InjectionIII.Helper;
+			productName = Helper;
+			productReference = BB62245C1FC5B37400AD7A3A /* com.johnholdsworth.InjectionIII.Helper */;
+			productType = "com.apple.product-type.tool";
+		};
 		BBB148D61FAD53BD00CB6B33 /* EvalApp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BBB148E41FAD53BE00CB6B33 /* Build configuration list for PBXNativeTarget "EvalApp" */;
@@ -375,14 +533,18 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = BBCA020C1FB0F10400E45F0F /* Build configuration list for PBXNativeTarget "InjectionIII" */;
 			buildPhases = (
+				BB6306FF1FCD1DAA0021D30C /* ShellScript */,
 				BBCA01FA1FB0F10300E45F0F /* Sources */,
 				BBCA01FB1FB0F10300E45F0F /* Frameworks */,
 				BBCA01FC1FB0F10300E45F0F /* Resources */,
+				BB6224721FC5BA6F00AD7A3A /* CopyFiles */,
 				BBCA02321FB0F86E00E45F0F /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				BB6224711FC5B64600AD7A3A /* PBXTargetDependency */,
+				BB62246F1FC5B64200AD7A3A /* PBXTargetDependency */,
 				BBCA024F1FB106C000E45F0F /* PBXTargetDependency */,
 			);
 			name = InjectionIII;
@@ -436,6 +598,14 @@
 						CreatedOnToolsVersion = 9.1;
 						ProvisioningStyle = Automatic;
 					};
+					BB62244C1FC5B18700AD7A3A = {
+						CreatedOnToolsVersion = 9.1;
+					};
+					BB62245B1FC5B37400AD7A3A = {
+						CreatedOnToolsVersion = 9.1;
+						LastSwiftMigration = 0910;
+						ProvisioningStyle = Manual;
+					};
 					BBB148D61FAD53BD00CB6B33 = {
 						CreatedOnToolsVersion = 9.1;
 						ProvisioningStyle = Automatic;
@@ -447,7 +617,7 @@
 					};
 					BBCA01FD1FB0F10300E45F0F = {
 						CreatedOnToolsVersion = 9.0.1;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.Sandbox = {
 								enabled = 0;
@@ -456,7 +626,7 @@
 					};
 					BBCA02441FB1065D00E45F0F = {
 						CreatedOnToolsVersion = 9.0.1;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -475,6 +645,8 @@
 			targets = (
 				BBCA01FD1FB0F10300E45F0F /* InjectionIII */,
 				BBCA02441FB1065D00E45F0F /* InjectionBundle */,
+				BB62244C1FC5B18700AD7A3A /* Bootstrap */,
+				BB62245B1FC5B37400AD7A3A /* com.johnholdsworth.InjectionIII.Helper */,
 				BB439BB01FAC185200B4F50B /* signer */,
 				BB439B641FABA64300B4F50B /* SwiftEval */,
 				BB439B7A1FABA64300B4F50B /* SwiftEvalTests */,
@@ -502,6 +674,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BB62244B1FC5B18700AD7A3A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BBB148D51FAD53BD00CB6B33 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -515,10 +694,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB6224571FC5B30400AD7A3A /* Bootstrap.bundle in Resources */,
 				BBE490DC1FB2C643003D41BB /* InjectionError.tif in Resources */,
 				BBCA02591FB112F500E45F0F /* App.icns in Resources */,
 				BBCA024D1FB1069A00E45F0F /* macOSInjection.bundle in Resources */,
 				BBCA02601FB122C300E45F0F /* InjectionIdle.tif in Resources */,
+				BB6306FE1FCD1A410021D30C /* Credits.rtf in Resources */,
 				BBCA02611FB122C300E45F0F /* InjectionOK.tif in Resources */,
 				BBCA02041FB0F10300E45F0F /* Assets.xcassets in Resources */,
 				BBCA02071FB0F10300E45F0F /* MainMenu.xib in Resources */,
@@ -536,6 +717,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		BB6306FF1FCD1DAA0021D30C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\nchmod +w \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		BBCA02321FB0F86E00E45F0F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -583,6 +778,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BB6224491FC5B18700AD7A3A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB6224551FC5B1CB00AD7A3A /* mach_inject_bundle_stub.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB6224581FC5B37400AD7A3A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB62246B1FC5B3B700AD7A3A /* mach_inject.c in Sources */,
+				BB62246C1FC5B3B700AD7A3A /* main.m in Sources */,
+				BB62246A1FC5B3B700AD7A3A /* Helper.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BBB148D31FAD53BD00CB6B33 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -599,9 +812,13 @@
 			files = (
 				BBCA020A1FB0F10400E45F0F /* main.m in Sources */,
 				BBCA02021FB0F10300E45F0F /* AppDelegate.mm in Sources */,
+				BB6306F81FCD16600021D30C /* DDHotKeyUtilities.m in Sources */,
+				BB6224461FC5B0E600AD7A3A /* HelperInstaller.m in Sources */,
+				BB6224451FC5B0E600AD7A3A /* HelperProxy.m in Sources */,
 				BBE490D01FB2368A003D41BB /* FileWatcher.m in Sources */,
 				BBCA02561FB1099500E45F0F /* InjectionServer.mm in Sources */,
 				BBCA022A1FB0F64800E45F0F /* SimpleSocket.mm in Sources */,
+				BB6306F71FCD16600021D30C /* DDHotKeyCenter.m in Sources */,
 				BBCA022F1FB0F70100E45F0F /* SignerService.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -624,6 +841,16 @@
 			isa = PBXTargetDependency;
 			target = BB439B641FABA64300B4F50B /* SwiftEval */;
 			targetProxy = BB439B7C1FABA64300B4F50B /* PBXContainerItemProxy */;
+		};
+		BB62246F1FC5B64200AD7A3A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BB62244C1FC5B18700AD7A3A /* Bootstrap */;
+			targetProxy = BB62246E1FC5B64200AD7A3A /* PBXContainerItemProxy */;
+		};
+		BB6224711FC5B64600AD7A3A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BB62245B1FC5B37400AD7A3A /* com.johnholdsworth.InjectionIII.Helper */;
+			targetProxy = BB6224701FC5B64600AD7A3A /* PBXContainerItemProxy */;
 		};
 		BBCA024F1FB106C000E45F0F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -707,8 +934,8 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					"HELPER_MACH_ID=\\\"$HELPER_MACH_ID\\\"",
 					"DEBUG=1",
-					"$(inherited)",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -716,6 +943,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HELPER_MACH_ID = com.johnholdsworth.InjectionIII.Helper.mach;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -762,12 +990,17 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"HELPER_MACH_ID=\\\"$HELPER_MACH_ID\\\"",
+					"DEBUG=1",
+				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HELPER_MACH_ID = com.johnholdsworth.InjectionIII.Helper.mach;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
@@ -868,6 +1101,91 @@
 			};
 			name = Release;
 		};
+		BB6224511FC5B18700AD7A3A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Bootstrap/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.Bootstrap;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		BB6224521FC5B18700AD7A3A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Bootstrap/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.Bootstrap;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
+		BB6224611FC5B37400AD7A3A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 9V5A8WE85E;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				OTHER_LDFLAGS = (
+					"-sectcreate",
+					__TEXT,
+					__info_plist,
+					Helper/Info.plist,
+					"-sectcreate",
+					__TEXT,
+					__launchd_plist,
+					"Helper/Info-Launchd.plist",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
+			};
+			name = Debug;
+		};
+		BB6224621FC5B37400AD7A3A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 9V5A8WE85E;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				OTHER_LDFLAGS = (
+					"-sectcreate",
+					__TEXT,
+					__info_plist,
+					Helper/Info.plist,
+					"-sectcreate",
+					__TEXT,
+					__launchd_plist,
+					"Helper/Info-Launchd.plist",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.0;
+			};
+			name = Release;
+		};
 		BBB148E21FAD53BE00CB6B33 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -908,8 +1226,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 9V5A8WE85E;
 				INFOPLIST_FILE = InjectionIII/Info.plist;
@@ -917,6 +1235,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -925,8 +1244,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 9V5A8WE85E;
 				INFOPLIST_FILE = InjectionIII/Info.plist;
@@ -934,6 +1253,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -941,8 +1261,8 @@
 		BBCA02491FB1065D00E45F0F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 9V5A8WE85E;
 				FRAMEWORK_SEARCH_PATHS = $PLATFORM_DIR/Developer/Library/Frameworks;
@@ -952,6 +1272,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionBundle;
 				PRODUCT_NAME = macOSInjection;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = bundle;
@@ -961,8 +1282,8 @@
 		BBCA024A1FB1065D00E45F0F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 9V5A8WE85E;
 				FRAMEWORK_SEARCH_PATHS = $PLATFORM_DIR/Developer/Library/Frameworks;
@@ -972,6 +1293,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionBundle;
 				PRODUCT_NAME = macOSInjection;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = bundle;
@@ -1013,6 +1335,24 @@
 			buildConfigurations = (
 				BB439BB61FAC185200B4F50B /* Debug */,
 				BB439BB71FAC185200B4F50B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BB6224501FC5B18700AD7A3A /* Build configuration list for PBXNativeTarget "Bootstrap" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BB6224511FC5B18700AD7A3A /* Debug */,
+				BB6224521FC5B18700AD7A3A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BB6224601FC5B37400AD7A3A /* Build configuration list for PBXNativeTarget "com.johnholdsworth.InjectionIII.Helper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BB6224611FC5B37400AD7A3A /* Debug */,
+				BB6224621FC5B37400AD7A3A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

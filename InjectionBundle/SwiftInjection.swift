@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#16 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#17 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -60,7 +60,8 @@ extension NSObject {
 public class SwiftInjection {
 
     static func inject(oldClass: AnyClass?, classNameOrFile: String) {
-        if let newClasses = SwiftEval.instance.rebuildClass(oldClass: oldClass, classNameOrFile: classNameOrFile, extra: nil) {
+        do {
+            let newClasses = try SwiftEval.instance.rebuildClass(oldClass: oldClass, classNameOrFile: classNameOrFile, extra: nil)
             let oldClasses = //oldClass != nil ? [oldClass!] :
                 newClasses.map { objc_getClass(class_getName($0)) as! AnyClass }
             for i in 0..<oldClasses.count {
@@ -119,6 +120,8 @@ public class SwiftInjection {
 
             let notification = Notification.Name("INJECTION_BUNDLE_NOTIFICATION")
             NotificationCenter.default.post(name: notification, object: oldClasses)
+        }
+        catch {
         }
     }
 
