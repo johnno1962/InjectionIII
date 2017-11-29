@@ -37,7 +37,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             DispatchQueue.main.async {
                 self.textView.string = err
             }
-            return nil
+            return NSError(domain: "SwiftEval", code: -1, userInfo: [NSLocalizedDescriptionKey: err])
         }
     }
 

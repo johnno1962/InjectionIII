@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#46 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#50 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -180,8 +180,8 @@ public class SwiftEval: NSObject {
         print("Compiling \(sourceFile)")
 
         guard shell(command: """
-            time (cd "\(projectDir.escaping("$"))" && \(compileCommand) -o \(tmpfile).o >\(tmpfile).log 2>&1)
-            """) else {
+                time (cd "\(projectDir.escaping("$"))" && \(compileCommand) -o \(tmpfile).o >\(tmpfile).log 2>&1)
+                """) else {
             throw evalError("Re-compilation failed (\(tmpfile).sh)\n\(try! String(contentsOfFile: "\(tmpfile).log"))")
         }
 
@@ -294,7 +294,7 @@ public class SwiftEval: NSObject {
                     $INPUT_RECORD_SEPARATOR = "\\r";
 
                     # format is gzip
-                    open GUNZIP, "/usr/bin/gunzip <\\"$ARGV[0]\\" |" or die;
+                    open GUNZIP, "/usr/bin/gunzip <\\"$ARGV[0]\\" 2>/dev/null |" or die;
 
                     # grep the log until there is a match
                     while (defined (my $line = <GUNZIP>)) {
@@ -484,6 +484,7 @@ public class SwiftEval: NSObject {
     }
 
     func shell(command: String) -> Bool {
+        try? command.write(toFile: "/tmp/command.sh", atomically: false, encoding: .utf8)
         debug(command)
 
         let pid = fork()

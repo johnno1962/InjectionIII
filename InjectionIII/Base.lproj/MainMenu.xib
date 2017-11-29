@@ -695,12 +695,6 @@
         </window>
         <menu autoenablesItems="NO" id="V8Q-mq-A2f">
             <items>
-                <menuItem title="About Injection" id="08f-zd-aS5">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <connections>
-                        <action selector="orderFrontStandardAboutPanel:" target="-1" id="b6u-Vx-pO5"/>
-                    </connections>
-                </menuItem>
                 <menuItem title="Start Injection" keyEquivalent="=" id="vsd-ll-3nr">
                     <modifierMask key="keyEquivalentModifierMask" control="YES"/>
                     <connections>
@@ -714,6 +708,12 @@
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="y1I-84-xAU"/>
+                <menuItem title="About Injection" id="08f-zd-aS5">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="orderFrontStandardAboutPanel:" target="-1" id="b6u-Vx-pO5"/>
+                    </connections>
+                </menuItem>
                 <menuItem title="Help/Donate" id="kFj-jW-1uq">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>

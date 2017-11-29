@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#17 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#23 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -113,8 +113,13 @@ public class SwiftInjection {
                     let app = NSApplication.shared
                     #endif
                     let seeds: [Any] =  [app.delegate as Any] + app.windows
-                    sweepValue(seeds, for: oldClass)
-                    seen.removeAll()
+                    SwiftSweeper(instanceTask: {
+                        (instance: AnyObject) in
+                        if object_getClass(instance) == oldClass {
+                            let proto = unsafeBitCast(instance, to: SwiftInjected.self)
+                            proto.injected?()
+                        }
+                    }).sweepValue(seeds)
                 }
             }
 
@@ -136,8 +141,21 @@ public class SwiftInjection {
             free(methods)
         }
     }
+}
 
-    static func sweepValue(_ value: Any, for targetClass: AnyClass) {
+class SwiftSweeper {
+
+    static var current: SwiftSweeper?
+
+    let instanceTask: (AnyObject) -> Void
+    var seen = [UnsafeRawPointer: Bool]()
+
+    init(instanceTask: @escaping (AnyObject) -> Void) {
+        self.instanceTask = instanceTask
+        SwiftSweeper.current = self
+    }
+
+    func sweepValue(_ value: Any) {
         let mirror = Mirror(reflecting: value)
         if var style = mirror.displayStyle {
             if _typeName(mirror.subjectType).hasPrefix("Swift.ImplicitlyUnwrappedOptional<") {
@@ -148,67 +166,53 @@ public class SwiftInjection {
                 fallthrough
             case .collection:
                 for (_, child) in mirror.children {
-                    sweepValue(child, for: targetClass)
+                    sweepValue(child)
                 }
                 return
             case .dictionary:
                 for (_, child) in mirror.children {
                     for (_, element) in Mirror(reflecting: child).children {
-                        sweepValue(element, for: targetClass)
+                        sweepValue(element)
                     }
                 }
                 return
             case .class:
-                sweepInstance(value as AnyObject, for: targetClass)
+                sweepInstance(value as AnyObject)
                 return
             case .optional:
                 if let some = mirror.children.first?.value {
-                    sweepValue(some, for: targetClass)
+                    sweepValue(some)
                 }
                 return
-            default:
-                break
-            }
-        }
-
-        if let style = mirror.displayStyle {
-            switch style {
             case .enum:
                 if let evals = mirror.children.first?.value {
-                    sweepValue(evals, for: targetClass)
+                    sweepValue(evals)
                 }
             case .tuple:
-                sweepMembers(value, for: targetClass)
+                fallthrough
             case .struct:
-                sweepMembers(value, for: targetClass)
-            default:
-                break
+                sweepMembers(value)
             }
         }
     }
 
-    static var seen = [UnsafeRawPointer: Bool]()
-
-    static func sweepInstance(_ instance: AnyObject, for targetClass: AnyClass) {
+    func sweepInstance(_ instance: AnyObject) {
         let reference = unsafeBitCast(instance, to: UnsafeRawPointer.self)
         if seen[reference] == nil {
             seen[reference] = true
 
-            if object_getClass(instance) == targetClass {
-                let proto = unsafeBitCast(instance, to: SwiftInjected.self)
-                proto.injected?()
-            }
+            instanceTask(instance)
 
-            sweepMembers(instance, for: targetClass)
-            instance.legacySweep?(for: targetClass)
+            sweepMembers(instance)
+            instance.legacySwiftSweep?()
         }
     }
 
-    static func sweepMembers(_ instance: Any, for targetClass: AnyClass) {
+    func sweepMembers(_ instance: Any) {
         var mirror: Mirror? = Mirror(reflecting: instance)
         while mirror != nil {
             for (_, value) in mirror!.children {
-                sweepValue(value, for: targetClass)
+                sweepValue(value)
             }
             mirror = mirror!.superclassMirror
         }
@@ -216,7 +220,7 @@ public class SwiftInjection {
 }
 
 extension NSObject {
-    @objc func legacySweep(for targetClass: AnyClass) {
+    @objc func legacySwiftSweep() {
         var icnt: UInt32 = 0, cls: AnyClass? = object_getClass(self)!
         let object = "@".utf16.first!
         while cls != nil && cls != NSObject.self && cls != NSURL.self {
@@ -232,7 +236,7 @@ extension NSObject {
                         (unsafeBitCast(self, to: UnsafePointer<Int8>.self) + ivar_getOffset(ivars[i]))
                             .withMemoryRebound(to: AnyObject?.self, capacity: 1) {
                                 if let obj = $0.pointee {
-                                    SwiftInjection.sweepInstance(obj, for: targetClass)
+                                    SwiftSweeper.current?.sweepInstance(obj)
                                 }
                         }
                     }
@@ -244,15 +248,21 @@ extension NSObject {
     }
 }
 
+extension NSSet {
+    @objc override func legacySwiftSweep() {
+        self.forEach { SwiftSweeper.current?.sweepInstance($0 as AnyObject) }
+    }
+}
+
 extension NSArray {
-    @objc override func legacySweep(for targetClass: AnyClass) {
-        self.forEach { SwiftInjection.sweepInstance($0 as AnyObject, for: targetClass) }
+    @objc override func legacySwiftSweep() {
+        self.forEach { SwiftSweeper.current?.sweepInstance($0 as AnyObject) }
     }
 }
 
 extension NSDictionary {
-    @objc override func legacySweep(for targetClass: AnyClass) {
-        self.allValues.forEach { SwiftInjection.sweepInstance($0 as AnyObject, for: targetClass) }
+    @objc override func legacySwiftSweep() {
+        self.allValues.forEach { SwiftSweeper.current?.sweepInstance($0 as AnyObject) }
     }
 }
 
