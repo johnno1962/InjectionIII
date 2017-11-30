@@ -16,7 +16,7 @@
 
 @implementation InjectionServer {
     FileWatcher *fileWatcher;
-    NSString *bundlePath;
+    NSString *bundlePath, *arch;
 }
 
 + (int)error:(NSString *)message {
@@ -41,17 +41,22 @@
 
     [appDelegate setMenuIcon:@"InjectionOK"];
 
-    // tell client app the infered project being watched
+    // tell client app the inferred project being watched
     [self writeString:projectRoot];
     bundlePath = [self readString];
+    arch = [self readString];
 
     [SwiftEval sharedInstance].bundlePath = ^NSString *() {
         return bundlePath;
     };
 
+    [SwiftEval sharedInstance].arch = ^NSString *() {
+        return arch;
+    };
+
     [SwiftEval sharedInstance].evalError = ^NSError *(NSString *message) {
         [self writeString:[@"LOG " stringByAppendingString:message]];
-        return [NSError new];
+        return [[NSError alloc] initWithDomain:@"SwiftEval" code:-1 userInfo:@{NSLocalizedDescriptionKey: message}];
     };
 
     NSMutableDictionary<NSString *, NSNumber *> *lastInjected = [NSMutableDictionary new];
@@ -90,11 +95,6 @@
 //                                 defaultButton:@"OK" alternateButton:nil otherButton:nil
 //                     informativeTextWithFormat:@"%@",
 //                  [dylib substringFromIndex:@"ERROR ".length]] runModal];
-//            BOOL response = FALSE;
-//            if ([dylib hasPrefix:@"SIGN "])
-//                response = [SignerService codesignDylib:[dylib substringFromIndex:@"SIGN ".length]];
-//            [appDelegate setMenuIcon:response ? @"InjectionOK" : @"InjectionError"];
-//            [self writeString:response ? @"SIGNED 1" : @"SIGNED 0"];
         });
 
     fileWatcher = nil;

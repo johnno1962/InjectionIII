@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#57 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#59 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -108,7 +108,13 @@ public class SwiftEval: NSObject {
 
     @objc public var signer: ((_: String) -> Bool)?
 
-    @objc public var bundlePath: (() -> String)?
+    @objc public var bundlePath = {
+        return Bundle.main.bundlePath
+    }
+
+    @objc public var arch = {
+        return "x86_64"
+    }
 
     /// Error handler
     @objc public var evalError = {
@@ -196,21 +202,18 @@ public class SwiftEval: NSObject {
             .range(at: 1)).flatMap { compileCommand[$0] } ?? "\(xcode)/Toolchains/XcodeDefault.xctoolchain"
 
         let osSpecific: String
-        let frameworkPath: String
+        var frameworkPath = bundlePath() + "/Frameworks"
         if compileCommand.contains("iPhoneSimulator.platform") {
             osSpecific = "-isysroot \(xcode)/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk -mios-simulator-version-min=9.0 -L\(toolchain)/usr/lib/swift/iphonesimulator -undefined dynamic_lookup"// -Xlinker -bundle_loader -Xlinker \"\(Bundle.main.executablePath!)\""
-            frameworkPath = (bundlePath?() ?? Bundle.main.bundlePath) + "/Frameworks"
         } else if compileCommand.contains("AppleTVSimulator.platform") {
             osSpecific = "-isysroot \(xcode)/Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator.sdk -mtvos-simulator-version-min=9.0 -L\(toolchain)/usr/lib/swift/appletvsimulator -undefined dynamic_lookup"// -Xlinker -bundle_loader -Xlinker \"\(Bundle.main.executablePath!)\""
-            frameworkPath = (bundlePath?() ?? Bundle.main.bundlePath) + "/Frameworks"
         } else {
             osSpecific = "-isysroot \(xcode)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -mmacosx-version-min=10.11 -L\(toolchain)/usr/lib/swift/macosx -undefined dynamic_lookup"
-            frameworkPath = (bundlePath?() ?? Bundle.main.bundlePath) + "/Contents/Frameworks"
+            frameworkPath = bundlePath() + "/Contents/Frameworks"
         }
 
-        let arch = compileCommand.contains(" i386") ? "i386" : "x86_64"
         guard shell(command: """
-            \(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch \(arch) -bundle \(osSpecific) -dead_strip -Xlinker -objc_abi_version -Xlinker 2 -fobjc-arc \(tmpfile).o -L "\(frameworkPath)" -F "\(frameworkPath)" -rpath "\(frameworkPath)" -o \(tmpfile).dylib
+            \(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch \(arch()) -bundle \(osSpecific) -dead_strip -Xlinker -objc_abi_version -Xlinker 2 -fobjc-arc \(tmpfile).o -L "\(frameworkPath)" -F "\(frameworkPath)" -rpath "\(frameworkPath)" -o \(tmpfile).dylib
             """) else {
             throw evalError("Link failed, check /tmp/command.sh")
         }
@@ -311,7 +314,7 @@ public class SwiftEval: NSObject {
 
                     # grep the log until there is a match
                     while (defined (my $line = <GUNZIP>)) {
-                        if ($line =~ m@\(regexp.escaping("\"$"))@o) {
+                        if ($line =~ m@\(regexp.escaping("\"$"))@o and $line =~ " \(arch())") {
                             # found compile command
                             # may need to extract file list
                             if ($line =~ / -filelist /) {

@@ -33,7 +33,6 @@ AppDelegate *appDelegate;
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
     appDelegate = self;
-//    [SignerService startServer:@":8899"];
     [InjectionServer startServer:INJECTION_ADDRESS];
 
     NSStatusBar *statusBar = [NSStatusBar systemStatusBar];
