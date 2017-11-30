@@ -31,6 +31,7 @@
 		BBB148DA1FAD53BE00CB6B33 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB148D91FAD53BE00CB6B33 /* AppDelegate.swift */; };
 		BBB148DC1FAD53BE00CB6B33 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBB148DB1FAD53BE00CB6B33 /* Assets.xcassets */; };
 		BBB148DF1FAD53BE00CB6B33 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBB148DD1FAD53BE00CB6B33 /* MainMenu.xib */; };
+		BBBFD2D01FCFEE300057D899 /* SwiftEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */; };
 		BBCA02021FB0F10300E45F0F /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = BBCA02011FB0F10300E45F0F /* AppDelegate.mm */; };
 		BBCA02041FB0F10300E45F0F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02031FB0F10300E45F0F /* Assets.xcassets */; };
 		BBCA02071FB0F10300E45F0F /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02051FB0F10300E45F0F /* MainMenu.xib */; };
@@ -820,6 +821,7 @@
 				BBCA022A1FB0F64800E45F0F /* SimpleSocket.mm in Sources */,
 				BB6306F71FCD16600021D30C /* DDHotKeyCenter.m in Sources */,
 				BBCA022F1FB0F70100E45F0F /* SignerService.m in Sources */,
+				BBBFD2D01FCFEE300057D899 /* SwiftEval.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

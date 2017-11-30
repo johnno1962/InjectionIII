@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#51 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#53 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -17,14 +17,6 @@ import Foundation
 
 private func debug(_ str: String) {
 //    print(str)
-}
-
-/// Error handler
-public var evalError = {
-    (_ message: String) -> Error in
-    print("*** \(message) ***")
-    _ = SwiftEval.instance.signer?("ERROR \(message)")
-    return NSError(domain: "SwiftEval", code: -1, userInfo: [NSLocalizedDescriptionKey: message])
 }
 
 extension NSObject {
@@ -57,7 +49,8 @@ extension NSObject {
 
         if NSObject.lastEvalByClass[className] != expression {
             do {
-                if let newClass = try SwiftEval.instance.rebuildClass(oldClass: oldClass, classNameOrFile: className, extra: extra).first {
+                let tmpfile = try SwiftEval.instance.rebuildClass(oldClass: oldClass, classNameOrFile: className, extra: extra)
+                if let newClass = try SwiftEval.instance.linkAndInject(tmpfile: tmpfile, oldClass: oldClass).first {
                     if NSStringFromClass(newClass) != NSStringFromClass(oldClass) {
                         NSLog("Class names different. Have the right class been loaded?")
                     }
@@ -115,10 +108,18 @@ public class SwiftEval: NSObject {
 
     @objc public var signer: ((_: String) -> Bool)?
 
+    /// Error handler
+    @objc public var evalError = {
+        (_ message: String) -> Error in
+        print("*** \(message) ***")
+        _ = SwiftEval.instance.signer?("ERROR \(message)")
+        return NSError(domain: "SwiftEval", code: -1, userInfo: [NSLocalizedDescriptionKey: message])
+    }
+
     var injectionNumber = 0
     var compileByClass = [String: (String, String)]()
 
-    func rebuildClass(oldClass: AnyClass?, classNameOrFile: String, extra: String?) throws -> [AnyClass] {
+    @objc public func rebuildClass(oldClass: AnyClass?, classNameOrFile: String, extra: String?) throws -> String {
         let sourceURL = URL(fileURLWithPath: classNameOrFile.contains("/") ? "/" + classNameOrFile : #file)
         guard let derivedData = findDerivedData(url: sourceURL) else {
             throw evalError("Could not locate derived data. Is the project under you home directory?")
@@ -177,7 +178,7 @@ public class SwiftEval: NSObject {
 
         let projectDir = projectFile.deletingLastPathComponent().path
 
-        print("Compiling \(sourceFile)")
+        _ = evalError("Compiling \(sourceFile)")
 
         guard shell(command: """
                 time (cd "\(projectDir.escaping("$"))" && \(compileCommand) -o \(tmpfile).o >\(tmpfile).log 2>&1)
@@ -185,12 +186,16 @@ public class SwiftEval: NSObject {
             throw evalError("Re-compilation failed (\(tmpfile).sh)\n\(try! String(contentsOfFile: "\(tmpfile).log"))")
         }
 
+        return tmpfile
+    }
+
+    func linkAndInject(tmpfile: String, oldClass: AnyClass? = nil) throws -> [AnyClass] {
         // link resulting object file to create dynamic library
 
         let xcode = "/Applications/Xcode.app/Contents/Developer"
-        let toolchain = ((try! NSRegularExpression(pattern: "\\s*(\\S+?\\.xctoolchain)", options: []))
+        let toolchain = /*((try! NSRegularExpression(pattern: "\\s*(\\S+?\\.xctoolchain)", options: []))
             .firstMatch(in: compileCommand, options: [], range: NSMakeRange(0, compileCommand.utf16.count))?
-            .range(at: 1)).flatMap { compileCommand[$0] } ?? "\(xcode)/Toolchains/XcodeDefault.xctoolchain"
+            .range(at: 1)).flatMap { compileCommand[$0] } ??*/ "\(xcode)/Toolchains/XcodeDefault.xctoolchain"
 
         #if os(iOS)
         let osSpecific = "-isysroot \(xcode)/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk -mios-simulator-version-min=11.1 -L\(toolchain)/usr/lib/swift/iphonesimulator -undefined dynamic_lookup"// -Xlinker -bundle_loader -Xlinker \"\(Bundle.main.executablePath!)\""

@@ -50,9 +50,14 @@
             printf("The file watcher is turned off\n");
         else if ([swiftSource hasPrefix:@"SIGNED "])
             [writer writeString:[swiftSource substringFromIndex:@"SIGNED ".length]];
+        else if ([swiftSource hasPrefix:@"LOG "])
+            printf("%s\n", [swiftSource substringFromIndex:@"LOG ".length].UTF8String);
         else
             dispatch_async(dispatch_get_main_queue(), ^{
-                [NSObject injectWithFile:swiftSource];
+                if ([swiftSource hasPrefix:@"INJECT "])
+                    [SwiftInjection injectWithTmpfile:[swiftSource substringFromIndex:@"INJECT ".length] error:nil];
+                else
+                    [NSObject injectWithFile:swiftSource];
             });
 }
 

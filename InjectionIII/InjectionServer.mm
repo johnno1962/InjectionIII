@@ -12,6 +12,8 @@
 #import "FileWatcher.h"
 #import "Xcode.h"
 
+#import "InjectionIII-Swift.h"
+
 @implementation InjectionServer {
     FileWatcher *fileWatcher;
 }
@@ -44,15 +46,24 @@
     NSMutableDictionary<NSString *, NSNumber *> *lastInjected = [NSMutableDictionary new];
     #define MIN_INJECTION_INTERVAL 1.
 
+    [SwiftEval sharedInstance].evalError = ^NSError* (NSString *message) {
+        [self writeString:[@"LOG " stringByAppendingString:message]];
+        return [[NSError alloc] initWithDomain:@"SwiftEval" code:-1
+                                      userInfo:@{NSLocalizedDescriptionKey: message}];
+    };
+
     // start up  afile watcher to write changed filenames to client app
     fileWatcher = [[FileWatcher alloc] initWithRoot:projectRoot plugin:^(NSArray *changed) {
         if (appDelegate.enableWatcher.state)
             for (NSString *swiftSource in changed) {
                 NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
                 if (now > lastInjected[swiftSource].doubleValue + MIN_INJECTION_INTERVAL) {
-                    lastInjected[swiftSource] = [NSNumber numberWithDouble:now];
                     [appDelegate setMenuIcon:@"InjectionBusy"];
-                    [self writeString:swiftSource];
+                    NSString *classNameOrFile = [[swiftSource substringFromIndex:1] stringByDeletingPathExtension];
+                    NSString *tmpfile = [[SwiftEval sharedInstance] rebuildClassWithOldClass:nil
+                                            classNameOrFile:classNameOrFile extra:nil error:nil];
+                    [self writeString:[@"INJECT " stringByAppendingString:tmpfile]];
+                    lastInjected[swiftSource] = [NSNumber numberWithDouble:now];
                 }
             }
         else

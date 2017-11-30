@@ -32,7 +32,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
-        evalError = {
+        SwiftEval.instance.evalError = {
             let err = $0
             DispatchQueue.main.async {
                 self.textView.string = err

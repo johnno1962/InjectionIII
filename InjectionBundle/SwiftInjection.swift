@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#25 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#26 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -57,94 +57,102 @@ extension NSObject {
     }
 }
 
-public class SwiftInjection {
+@objc
+public class SwiftInjection: NSObject {
 
     static let testQueue = DispatchQueue(label: "INTestQueue")
 
     static func inject(oldClass: AnyClass?, classNameOrFile: String) {
         do {
-            let newClasses = try SwiftEval.instance.rebuildClass(oldClass: oldClass, classNameOrFile: classNameOrFile, extra: nil)
-            let oldClasses = //oldClass != nil ? [oldClass!] :
-                newClasses.map { objc_getClass(class_getName($0)) as! AnyClass }
-            var testClasses = [AnyClass]()
-            for i in 0..<oldClasses.count {
-                let oldClass: AnyClass = oldClasses[i], newClass: AnyClass = newClasses[i]
+            let tmpfile = try SwiftEval.instance.rebuildClass(oldClass: oldClass,
+                                                              classNameOrFile: classNameOrFile, extra: nil)
+            try inject(tmpfile: tmpfile)
+        }
+        catch {
+        }
+    }
 
-                // old-school swizzle Objective-C class & instance methods
-                injection(swizzle: object_getClass(newClass), onto: object_getClass(oldClass))
-                injection(swizzle: newClass, onto: oldClass)
+    @objc
+    public class func inject(tmpfile: String) throws {
+        let newClasses = try SwiftEval.instance.linkAndInject(tmpfile: tmpfile)
+        let oldClasses = //oldClass != nil ? [oldClass!] :
+            newClasses.map { objc_getClass(class_getName($0)) as! AnyClass }
+        var testClasses = [AnyClass]()
+        for i in 0..<oldClasses.count {
+            let oldClass: AnyClass = oldClasses[i], newClass: AnyClass = newClasses[i]
 
-                // overwrite Swift vtable of existing class with implementations from new class
-                let existingClass = unsafeBitCast(oldClass, to: UnsafeMutablePointer<ClassMetadataSwift>.self)
-                let classMetadata = unsafeBitCast(newClass, to: UnsafeMutablePointer<ClassMetadataSwift>.self)
+            // old-school swizzle Objective-C class & instance methods
+            injection(swizzle: object_getClass(newClass), onto: object_getClass(oldClass))
+            injection(swizzle: newClass, onto: oldClass)
 
-                // Swift equivalent of Swizzling
-                if (classMetadata.pointee.Data & 0x1) == 1 {
-                    if classMetadata.pointee.ClassSize != existingClass.pointee.ClassSize {
-                        NSLog("\(oldClass) metadata size changed. Did you add a method?")
-                    }
+            // overwrite Swift vtable of existing class with implementations from new class
+            let existingClass = unsafeBitCast(oldClass, to: UnsafeMutablePointer<ClassMetadataSwift>.self)
+            let classMetadata = unsafeBitCast(newClass, to: UnsafeMutablePointer<ClassMetadataSwift>.self)
 
-                    func byteAddr<T>(_ location: UnsafeMutablePointer<T>) -> UnsafeMutablePointer<UInt8> {
-                        return location.withMemoryRebound(to: UInt8.self, capacity: 1) { $0 }
-                    }
-
-                    let vtableOffset = byteAddr(&existingClass.pointee.IVarDestroyer) - byteAddr(existingClass)
-                    let vtableLength = Int(existingClass.pointee.ClassSize -
-                        existingClass.pointee.ClassAddressPoint) - vtableOffset
-
-                    print("Injected '\(NSStringFromClass(oldClass))', vtable length: \(vtableLength)")
-                    memcpy(byteAddr(existingClass) + vtableOffset,
-                           byteAddr(classMetadata) + vtableOffset, vtableLength)
+            // Swift equivalent of Swizzling
+            if (classMetadata.pointee.Data & 0x1) == 1 {
+                if classMetadata.pointee.ClassSize != existingClass.pointee.ClassSize {
+                    NSLog("\(oldClass) metadata size changed. Did you add a method?")
                 }
 
-                if newClass.isSubclass(of: XCTestCase.self) {
-                    testClasses.append(newClass)
+                func byteAddr<T>(_ location: UnsafeMutablePointer<T>) -> UnsafeMutablePointer<UInt8> {
+                    return location.withMemoryRebound(to: UInt8.self, capacity: 1) { $0 }
+                }
+
+                let vtableOffset = byteAddr(&existingClass.pointee.IVarDestroyer) - byteAddr(existingClass)
+                let vtableLength = Int(existingClass.pointee.ClassSize -
+                    existingClass.pointee.ClassAddressPoint) - vtableOffset
+
+                print("Injected '\(NSStringFromClass(oldClass))', vtable length: \(vtableLength)")
+                memcpy(byteAddr(existingClass) + vtableOffset,
+                       byteAddr(classMetadata) + vtableOffset, vtableLength)
+            }
+
+            if newClass.isSubclass(of: XCTestCase.self) {
+                testClasses.append(newClass)
 //                    if ( [newClass isSubclassOfClass:objc_getClass("QuickSpec")] )
 //                    [[objc_getClass("_TtC5Quick5World") sharedWorld]
 //                    setCurrentExampleMetadata:nil];
-                }
-
-                // implement -injected() method using sweep of objects in application
-                else if class_getInstanceMethod(oldClass, #selector(SwiftInjected.injected)) != nil {
-                    #if os(iOS) || os(tvOS)
-                    let app = UIApplication.shared
-                    #else
-                    let app = NSApplication.shared
-                    #endif
-                    let seeds: [Any] =  [app.delegate as Any] + app.windows
-                    SwiftSweeper(instanceTask: {
-                        (instance: AnyObject) in
-                        if object_getClass(instance) == oldClass {
-                            let proto = unsafeBitCast(instance, to: SwiftInjected.self)
-                            proto.injected?()
-                        }
-                    }).sweepValue(seeds)
-                }
             }
 
-            // Thanks https://github.com/johnno1962/injectionforxcode/pull/234
-            if !testClasses.isEmpty {
-                testQueue.async {
-                    testQueue.suspend()
-                    let timer = Timer(timeInterval: 0, repeats:false, block: { _ in
-                        for newClass in testClasses {
-                            let suite0 = XCTestSuite(name: "Injected")
-                            let suite = XCTestSuite(forTestCaseClass: newClass)
-                            let tr = XCTestSuiteRun(test: suite)
-                            suite0.addTest(suite)
-                            suite0.perform(tr)
-                        }
-                        testQueue.resume()
-                    })
-                    RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
-                }
-            }
-            else {
-                let notification = Notification.Name("INJECTION_BUNDLE_NOTIFICATION")
-                NotificationCenter.default.post(name: notification, object: oldClasses)
+            // implement -injected() method using sweep of objects in application
+            else if class_getInstanceMethod(oldClass, #selector(SwiftInjected.injected)) != nil {
+                #if os(iOS) || os(tvOS)
+                let app = UIApplication.shared
+                #else
+                let app = NSApplication.shared
+                #endif
+                let seeds: [Any] =  [app.delegate as Any] + app.windows
+                SwiftSweeper(instanceTask: {
+                    (instance: AnyObject) in
+                    if object_getClass(instance) == oldClass {
+                        let proto = unsafeBitCast(instance, to: SwiftInjected.self)
+                        proto.injected?()
+                    }
+                }).sweepValue(seeds)
             }
         }
-        catch {
+
+        // Thanks https://github.com/johnno1962/injectionforxcode/pull/234
+        if !testClasses.isEmpty {
+            testQueue.async {
+                testQueue.suspend()
+                let timer = Timer(timeInterval: 0, repeats:false, block: { _ in
+                    for newClass in testClasses {
+                        let suite0 = XCTestSuite(name: "Injected")
+                        let suite = XCTestSuite(forTestCaseClass: newClass)
+                        let tr = XCTestSuiteRun(test: suite)
+                        suite0.addTest(suite)
+                        suite0.perform(tr)
+                    }
+                    testQueue.resume()
+                })
+                RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
+            }
+        }
+        else {
+            let notification = Notification.Name("INJECTION_BUNDLE_NOTIFICATION")
+            NotificationCenter.default.post(name: notification, object: oldClasses)
         }
     }
 
