@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#23 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#25 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -59,11 +59,14 @@ extension NSObject {
 
 public class SwiftInjection {
 
+    static let testQueue = DispatchQueue(label: "INTestQueue")
+
     static func inject(oldClass: AnyClass?, classNameOrFile: String) {
         do {
             let newClasses = try SwiftEval.instance.rebuildClass(oldClass: oldClass, classNameOrFile: classNameOrFile, extra: nil)
             let oldClasses = //oldClass != nil ? [oldClass!] :
                 newClasses.map { objc_getClass(class_getName($0)) as! AnyClass }
+            var testClasses = [AnyClass]()
             for i in 0..<oldClasses.count {
                 let oldClass: AnyClass = oldClasses[i], newClass: AnyClass = newClasses[i]
 
@@ -95,11 +98,7 @@ public class SwiftInjection {
                 }
 
                 if newClass.isSubclass(of: XCTestCase.self) {
-                    let suite0 = XCTestSuite(name: "Injected")
-                    let suite = XCTestSuite(forTestCaseClass: newClass)
-                    let tr = XCTestSuiteRun(test: suite)
-                    suite0.addTest(suite)
-                    suite0.perform(tr)
+                    testClasses.append(newClass)
 //                    if ( [newClass isSubclassOfClass:objc_getClass("QuickSpec")] )
 //                    [[objc_getClass("_TtC5Quick5World") sharedWorld]
 //                    setCurrentExampleMetadata:nil];
@@ -123,8 +122,27 @@ public class SwiftInjection {
                 }
             }
 
-            let notification = Notification.Name("INJECTION_BUNDLE_NOTIFICATION")
-            NotificationCenter.default.post(name: notification, object: oldClasses)
+            // Thanks https://github.com/johnno1962/injectionforxcode/pull/234
+            if !testClasses.isEmpty {
+                testQueue.async {
+                    testQueue.suspend()
+                    let timer = Timer(timeInterval: 0, repeats:false, block: { _ in
+                        for newClass in testClasses {
+                            let suite0 = XCTestSuite(name: "Injected")
+                            let suite = XCTestSuite(forTestCaseClass: newClass)
+                            let tr = XCTestSuiteRun(test: suite)
+                            suite0.addTest(suite)
+                            suite0.perform(tr)
+                        }
+                        testQueue.resume()
+                    })
+                    RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
+                }
+            }
+            else {
+                let notification = Notification.Name("INJECTION_BUNDLE_NOTIFICATION")
+                NotificationCenter.default.post(name: notification, object: oldClasses)
+            }
         }
         catch {
         }

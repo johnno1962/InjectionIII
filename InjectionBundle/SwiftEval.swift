@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#50 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#51 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -489,7 +489,7 @@ public class SwiftEval: NSObject {
 
         let pid = fork()
         if pid == 0 {
-            var args = Array<UnsafeMutablePointer<Int8>?>(repeating: nil, count: 4)
+            var args = [UnsafeMutablePointer<Int8>?](repeating: nil, count: 4)
             args[0] = strdup("/bin/bash")!
             args[1] = strdup("-c")!
             args[2] = strdup(command)!
