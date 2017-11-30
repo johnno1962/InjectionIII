@@ -5,13 +5,13 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#26 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#31 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
 //
 
-#if arch(x86_64) // simulator/macOS only
+#if arch(x86_64) || arch(i386) // simulator/macOS only
 import Foundation
 import XCTest
 
@@ -65,7 +65,7 @@ public class SwiftInjection: NSObject {
     static func inject(oldClass: AnyClass?, classNameOrFile: String) {
         do {
             let tmpfile = try SwiftEval.instance.rebuildClass(oldClass: oldClass,
-                                                              classNameOrFile: classNameOrFile, extra: nil)
+                                    classNameOrFile: classNameOrFile, extra: nil)
             try inject(tmpfile: tmpfile)
         }
         catch {
@@ -110,26 +110,9 @@ public class SwiftInjection: NSObject {
 
             if newClass.isSubclass(of: XCTestCase.self) {
                 testClasses.append(newClass)
-//                    if ( [newClass isSubclassOfClass:objc_getClass("QuickSpec")] )
-//                    [[objc_getClass("_TtC5Quick5World") sharedWorld]
-//                    setCurrentExampleMetadata:nil];
-            }
-
-            // implement -injected() method using sweep of objects in application
-            else if class_getInstanceMethod(oldClass, #selector(SwiftInjected.injected)) != nil {
-                #if os(iOS) || os(tvOS)
-                let app = UIApplication.shared
-                #else
-                let app = NSApplication.shared
-                #endif
-                let seeds: [Any] =  [app.delegate as Any] + app.windows
-                SwiftSweeper(instanceTask: {
-                    (instance: AnyObject) in
-                    if object_getClass(instance) == oldClass {
-                        let proto = unsafeBitCast(instance, to: SwiftInjected.self)
-                        proto.injected?()
-                    }
-                }).sweepValue(seeds)
+//                if ( [newClass isSubclassOfClass:objc_getClass("QuickSpec")] )
+//                [[objc_getClass("_TtC5Quick5World") sharedWorld]
+//                setCurrentExampleMetadata:nil];
             }
         }
 
@@ -151,6 +134,26 @@ public class SwiftInjection: NSObject {
             }
         }
         else {
+            let injectedClasses = oldClasses.filter {
+                class_getInstanceMethod($0, #selector(SwiftInjected.injected)) != nil }
+
+            // implement -injected() method using sweep of objects in application
+            if !injectedClasses.isEmpty {
+                #if os(iOS) || os(tvOS)
+                let app = UIApplication.shared
+                #else
+                let app = NSApplication.shared
+                #endif
+                let seeds: [Any] =  [app.delegate as Any] + app.windows
+                SwiftSweeper(instanceTask: {
+                    (instance: AnyObject) in
+                    if injectedClasses.contains(where: { $0 == object_getClass(instance) }) {
+                        let proto = unsafeBitCast(instance, to: SwiftInjected.self)
+                        proto.injected?()
+                    }
+                }).sweepValue(seeds)
+            }
+
             let notification = Notification.Name("INJECTION_BUNDLE_NOTIFICATION")
             NotificationCenter.default.post(name: notification, object: oldClasses)
         }

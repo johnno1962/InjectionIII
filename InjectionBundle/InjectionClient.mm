@@ -25,6 +25,7 @@
     // connect to InjetionIII.app using sicket
     if (InjectionClient *client = [self connectTo:INJECTION_ADDRESS]) {
         printf("Injection connected, watching %s\n", [client readString].UTF8String);
+        [client writeString:[[NSBundle mainBundle] bundlePath]];
         [client run];
     }
     else
@@ -33,31 +34,33 @@
 }
 
 - (void)runInBackground {
-    int codesignStatusPipe[2];
-    pipe(codesignStatusPipe);
-    SimpleSocket *reader = [[SimpleSocket alloc] initSocket:codesignStatusPipe[0]];
-    SimpleSocket *writer = [[SimpleSocket alloc] initSocket:codesignStatusPipe[1]];
-
-    // make available implementation of signing delegated to macOS app
-    [SwiftEval sharedInstance].signer = ^BOOL(NSString *_Nonnull dylib) {
-        [self writeString:dylib];
-        return [reader readString].boolValue;
-    };
+//    int codesignStatusPipe[2];
+//    pipe(codesignStatusPipe);
+//    SimpleSocket *reader = [[SimpleSocket alloc] initSocket:codesignStatusPipe[0]];
+//    SimpleSocket *writer = [[SimpleSocket alloc] initSocket:codesignStatusPipe[1]];
+//
+//    // make available implementation of signing delegated to macOS app
+//    [SwiftEval sharedInstance].signer = ^BOOL(NSString *_Nonnull dylib) {
+//        [self writeString:dylib];
+//        return [reader readString].boolValue;
+//    };
 
     // As source file names come in, inject them
     while (NSString *swiftSource = [self readString])
         if ([swiftSource isEqualToString:@"WATCHER OFF"])
             printf("The file watcher is turned off\n");
-        else if ([swiftSource hasPrefix:@"SIGNED "])
-            [writer writeString:[swiftSource substringFromIndex:@"SIGNED ".length]];
+//        else if ([swiftSource hasPrefix:@"SIGNED "])
+//            [writer writeString:[swiftSource substringFromIndex:@"SIGNED ".length]];
         else if ([swiftSource hasPrefix:@"LOG "])
             printf("%s\n", [swiftSource substringFromIndex:@"LOG ".length].UTF8String);
         else
             dispatch_async(dispatch_get_main_queue(), ^{
+                NSError *err;
                 if ([swiftSource hasPrefix:@"INJECT "])
-                    [SwiftInjection injectWithTmpfile:[swiftSource substringFromIndex:@"INJECT ".length] error:nil];
+                    [SwiftInjection injectWithTmpfile:[swiftSource substringFromIndex:@"INJECT ".length] error:&err];
                 else
                     [NSObject injectWithFile:swiftSource];
+                [self writeString:err ? [@"ERROR " stringByAppendingString:err.localizedDescription] : @"COMPLETE"];
             });
 }
 

@@ -5,14 +5,14 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#53 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#57 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
 //  version used in the associated injection version.
 //
 
-#if arch(x86_64) // simulator/macOS only
+#if arch(x86_64) || arch(i386) // simulator/macOS only
 import Foundation
 
 private func debug(_ str: String) {
@@ -108,6 +108,8 @@ public class SwiftEval: NSObject {
 
     @objc public var signer: ((_: String) -> Bool)?
 
+    @objc public var bundlePath: (() -> String)?
+
     /// Error handler
     @objc public var evalError = {
         (_ message: String) -> Error in
@@ -186,32 +188,31 @@ public class SwiftEval: NSObject {
             throw evalError("Re-compilation failed (\(tmpfile).sh)\n\(try! String(contentsOfFile: "\(tmpfile).log"))")
         }
 
-        return tmpfile
-    }
-
-    func linkAndInject(tmpfile: String, oldClass: AnyClass? = nil) throws -> [AnyClass] {
         // link resulting object file to create dynamic library
 
         let xcode = "/Applications/Xcode.app/Contents/Developer"
-        let toolchain = /*((try! NSRegularExpression(pattern: "\\s*(\\S+?\\.xctoolchain)", options: []))
+        let toolchain = ((try! NSRegularExpression(pattern: "\\s*(\\S+?\\.xctoolchain)", options: []))
             .firstMatch(in: compileCommand, options: [], range: NSMakeRange(0, compileCommand.utf16.count))?
-            .range(at: 1)).flatMap { compileCommand[$0] } ??*/ "\(xcode)/Toolchains/XcodeDefault.xctoolchain"
+            .range(at: 1)).flatMap { compileCommand[$0] } ?? "\(xcode)/Toolchains/XcodeDefault.xctoolchain"
 
-        #if os(iOS)
-        let osSpecific = "-isysroot \(xcode)/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk -mios-simulator-version-min=11.1 -L\(toolchain)/usr/lib/swift/iphonesimulator -undefined dynamic_lookup"// -Xlinker -bundle_loader -Xlinker \"\(Bundle.main.executablePath!)\""
-        let frameworkPath = Bundle.main.bundlePath + "/Frameworks"
-        #elseif os(tvOS)
-        let osSpecific = "-isysroot \(xcode)/Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator.sdk -mtvos-simulator-version-min=11.1 -L\(toolchain)/usr/lib/swift/appletvsimulator -undefined dynamic_lookup"// -Xlinker -bundle_loader -Xlinker \"\(Bundle.main.executablePath!)\""
-        let frameworkPath = Bundle.main.bundlePath + "/Frameworks"
-        #else
-        let osSpecific = "-isysroot \(xcode)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -mmacosx-version-min=10.12 -L\(toolchain)/usr/lib/swift/macosx -undefined dynamic_lookup"
-        let frameworkPath = Bundle.main.bundlePath + "/Contents/Frameworks"
-        #endif
+        let osSpecific: String
+        let frameworkPath: String
+        if compileCommand.contains("iPhoneSimulator.platform") {
+            osSpecific = "-isysroot \(xcode)/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk -mios-simulator-version-min=9.0 -L\(toolchain)/usr/lib/swift/iphonesimulator -undefined dynamic_lookup"// -Xlinker -bundle_loader -Xlinker \"\(Bundle.main.executablePath!)\""
+            frameworkPath = (bundlePath?() ?? Bundle.main.bundlePath) + "/Frameworks"
+        } else if compileCommand.contains("AppleTVSimulator.platform") {
+            osSpecific = "-isysroot \(xcode)/Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator.sdk -mtvos-simulator-version-min=9.0 -L\(toolchain)/usr/lib/swift/appletvsimulator -undefined dynamic_lookup"// -Xlinker -bundle_loader -Xlinker \"\(Bundle.main.executablePath!)\""
+            frameworkPath = (bundlePath?() ?? Bundle.main.bundlePath) + "/Frameworks"
+        } else {
+            osSpecific = "-isysroot \(xcode)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -mmacosx-version-min=10.11 -L\(toolchain)/usr/lib/swift/macosx -undefined dynamic_lookup"
+            frameworkPath = (bundlePath?() ?? Bundle.main.bundlePath) + "/Contents/Frameworks"
+        }
 
+        let arch = compileCommand.contains(" i386") ? "i386" : "x86_64"
         guard shell(command: """
-            \(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch x86_64 -bundle \(osSpecific) -dead_strip -Xlinker -objc_abi_version -Xlinker 2 -fobjc-arc \(tmpfile).o -L "\(frameworkPath)" -F "\(frameworkPath)" -rpath "\(frameworkPath)" -o \(tmpfile).dylib
+            \(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch \(arch) -bundle \(osSpecific) -dead_strip -Xlinker -objc_abi_version -Xlinker 2 -fobjc-arc \(tmpfile).o -L "\(frameworkPath)" -F "\(frameworkPath)" -rpath "\(frameworkPath)" -o \(tmpfile).dylib
             """) else {
-            throw evalError("Link failed")
+            throw evalError("Link failed, check /tmp/command.sh")
         }
 
         // codesign dylib
@@ -236,7 +237,12 @@ public class SwiftEval: NSObject {
             #endif
         }
 
-        // load patch .dylib into process with new version of class
+        return tmpfile
+    }
+
+    func linkAndInject(tmpfile: String, oldClass: AnyClass? = nil) throws -> [AnyClass] {
+
+        // load patched .dylib into process with new version of class
 
         print("Loading \(tmpfile).dylib. (Ignore any duplicate class warning)")
         guard let dl = dlopen("\(tmpfile).dylib", RTLD_NOW) else {
@@ -260,6 +266,8 @@ public class SwiftEval: NSObject {
         }
         else {
             // grep out symbols for classes being injected from object file
+
+            let xcode = "/Applications/Xcode.app/Contents/Developer"
             try injectGenerics(xcode: xcode, tmpfile: tmpfile, handle: dl)
 
             guard shell(command: """
@@ -270,8 +278,8 @@ public class SwiftEval: NSObject {
             guard var symbols = (try? String(contentsOfFile: "\(tmpfile).classes"))?.components(separatedBy: "\n") else {
                 throw evalError("Could not load class symbol list")
             }
-
             symbols.removeLast()
+
             return Set(symbols.flatMap { dlsym(dl, String($0.dropFirst())) }).map { unsafeBitCast($0, to: AnyClass.self) }
         }
     }
