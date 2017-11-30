@@ -24,8 +24,6 @@
 + (void)load {
     // connect to InjetionIII.app using sicket
     if (InjectionClient *client = [self connectTo:INJECTION_ADDRESS]) {
-        printf("Injection connected, watching %s\n", [client readString].UTF8String);
-        [client writeString:[[NSBundle mainBundle] bundlePath]];
         [client run];
     }
     else
@@ -34,6 +32,9 @@
 }
 
 - (void)runInBackground {
+    printf("Injection connected, watching %s\n", [self readString].UTF8String);
+    [self writeString:[[NSBundle mainBundle] bundlePath]];
+
 //    int codesignStatusPipe[2];
 //    pipe(codesignStatusPipe);
 //    SimpleSocket *reader = [[SimpleSocket alloc] initSocket:codesignStatusPipe[0]];
