@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#59 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#67 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -50,7 +50,7 @@ extension NSObject {
         if NSObject.lastEvalByClass[className] != expression {
             do {
                 let tmpfile = try SwiftEval.instance.rebuildClass(oldClass: oldClass, classNameOrFile: className, extra: extra)
-                if let newClass = try SwiftEval.instance.linkAndInject(tmpfile: tmpfile, oldClass: oldClass).first {
+                if let newClass = try SwiftEval.instance.loadAndInject(tmpfile: tmpfile, oldClass: oldClass).first {
                     if NSStringFromClass(newClass) != NSStringFromClass(oldClass) {
                         NSLog("Class names different. Have the right class been loaded?")
                     }
@@ -91,7 +91,7 @@ fileprivate extension String {
     subscript(range: NSRange) -> String? {
         return range.location != NSNotFound ? String(self[Range(range, in: self)!]) : nil
     }
-    func escaping(_ chars: String, _ template: String = "\\$0") -> String {
+    func escaping(_ chars: String, with template: String = "\\$0") -> String {
         return self.replacingOccurrences(of: "[\(chars)]",
             with: template.replacingOccurrences(of: "\\", with: "\\\\"), options: [.regularExpression])
     }
@@ -102,19 +102,18 @@ public class SwiftEval: NSObject {
 
     static var instance = SwiftEval()
 
+    @objc public class func reset() {
+        instance = SwiftEval()
+    }
+
     @objc public class func sharedInstance() -> SwiftEval {
         return instance
     }
 
     @objc public var signer: ((_: String) -> Bool)?
 
-    @objc public var bundlePath = {
-        return Bundle.main.bundlePath
-    }
-
-    @objc public var arch = {
-        return "x86_64"
-    }
+    @objc public var bundlePath = Bundle.main.bundlePath
+    @objc public var arch = "x86_64"
 
     /// Error handler
     @objc public var evalError = {
@@ -128,7 +127,7 @@ public class SwiftEval: NSObject {
     var compileByClass = [String: (String, String)]()
 
     @objc public func rebuildClass(oldClass: AnyClass?, classNameOrFile: String, extra: String?) throws -> String {
-        let sourceURL = URL(fileURLWithPath: classNameOrFile.contains("/") ? "/" + classNameOrFile : #file)
+        let sourceURL = URL(fileURLWithPath: classNameOrFile.hasPrefix("/") ? classNameOrFile : #file)
         guard let derivedData = findDerivedData(url: sourceURL) else {
             throw evalError("Could not locate derived data. Is the project under you home directory?")
         }
@@ -202,18 +201,18 @@ public class SwiftEval: NSObject {
             .range(at: 1)).flatMap { compileCommand[$0] } ?? "\(xcode)/Toolchains/XcodeDefault.xctoolchain"
 
         let osSpecific: String
-        var frameworkPath = bundlePath() + "/Frameworks"
+        var frameworkPath = bundlePath + "/Frameworks"
         if compileCommand.contains("iPhoneSimulator.platform") {
             osSpecific = "-isysroot \(xcode)/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk -mios-simulator-version-min=9.0 -L\(toolchain)/usr/lib/swift/iphonesimulator -undefined dynamic_lookup"// -Xlinker -bundle_loader -Xlinker \"\(Bundle.main.executablePath!)\""
         } else if compileCommand.contains("AppleTVSimulator.platform") {
             osSpecific = "-isysroot \(xcode)/Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator.sdk -mtvos-simulator-version-min=9.0 -L\(toolchain)/usr/lib/swift/appletvsimulator -undefined dynamic_lookup"// -Xlinker -bundle_loader -Xlinker \"\(Bundle.main.executablePath!)\""
         } else {
             osSpecific = "-isysroot \(xcode)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -mmacosx-version-min=10.11 -L\(toolchain)/usr/lib/swift/macosx -undefined dynamic_lookup"
-            frameworkPath = bundlePath() + "/Contents/Frameworks"
+            frameworkPath = bundlePath + "/Contents/Frameworks"
         }
 
         guard shell(command: """
-            \(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch \(arch()) -bundle \(osSpecific) -dead_strip -Xlinker -objc_abi_version -Xlinker 2 -fobjc-arc \(tmpfile).o -L "\(frameworkPath)" -F "\(frameworkPath)" -rpath "\(frameworkPath)" -o \(tmpfile).dylib
+            \(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch "\(arch)" -bundle \(osSpecific) -dead_strip -Xlinker -objc_abi_version -Xlinker 2 -fobjc-arc \(tmpfile).o -L "\(frameworkPath)" -F "\(frameworkPath)" -rpath "\(frameworkPath)" -o \(tmpfile).dylib
             """) else {
             throw evalError("Link failed, check /tmp/command.sh")
         }
@@ -243,7 +242,7 @@ public class SwiftEval: NSObject {
         return tmpfile
     }
 
-    func linkAndInject(tmpfile: String, oldClass: AnyClass? = nil) throws -> [AnyClass] {
+    func loadAndInject(tmpfile: String, oldClass: AnyClass? = nil) throws -> [AnyClass] {
 
         // load patched .dylib into process with new version of class
 
@@ -292,9 +291,11 @@ public class SwiftEval: NSObject {
         // Objective-C paths can only contain space and '
         // project file itself can only contain spaces
         // (logs of new build system escape ', $ and ")
-        let swiftEscaped = "\\Q\(classNameOrFile.escaping("'$", "\\E\\\\*$0\\Q"))\\E\\.(?:swift|mm?)"
-        let objcEscaped = "\\Q\(classNameOrFile.escaping(" '"))\\E\\.(?:swift|mm?)"
-        let regexp = " -(?:primary-file|c(?<! -frontend -c)) (?:\\\\?\"([^\"]*?/\(swiftEscaped))\\\\?\"|(\\S*?/\(objcEscaped))) "
+        let isFile = classNameOrFile.hasPrefix("/")
+        let sourceRegex = isFile ? "\\Q\(classNameOrFile)\\E" : "/\(classNameOrFile)\\.(?:swift|mm?)"
+        let swiftEscaped = (isFile ? "" : "[^\"]*?") + sourceRegex.escaping("'$", with: "\\E\\\\*$0\\Q")
+        let objcEscaped = (isFile ? "" : "\\S*?") + sourceRegex.escaping("' ")
+        var regexp = " -(?:primary-file|c(?<! -frontend -c)) (?:\\\\?\"(\(swiftEscaped))\\\\?\"|(\(objcEscaped))) "
 
         // messy but fast
         guard shell(command: """
@@ -313,8 +314,12 @@ public class SwiftEval: NSObject {
                     open GUNZIP, "/usr/bin/gunzip <\\"$ARGV[0]\\" 2>/dev/null |" or die;
 
                     # grep the log until there is a match
+                    my $realPath;
                     while (defined (my $line = <GUNZIP>)) {
-                        if ($line =~ m@\(regexp.escaping("\"$"))@o and $line =~ " \(arch())") {
+                        if ($line =~ /^\\s*cd /) {
+                            $realPath = $line;
+                        }
+                        elsif ($line =~ m@\(regexp.escaping("\"$"))@o and $line =~ " \(arch)") {
                             # found compile command
                             # may need to extract file list
                             if ($line =~ / -filelist /) {
@@ -332,6 +337,9 @@ public class SwiftEval: NSObject {
                                         last;
                                     }
                                 }
+                            }
+                            if ($realPath and (undef, $realPath) = $realPath =~ /cd (\\"?)(.*?)\\1\\r/) {
+                                print "cd \\"$realPath\\" && ";
                             }
                             # stop search
                             print $line;
@@ -354,25 +362,34 @@ public class SwiftEval: NSObject {
 
         // remove excess escaping in new build system
         compileCommand = compileCommand
+            // (logs of new build system escape ', $ and ")
             .replacingOccurrences(of: "\\\\([\"'\\\\])", with: "$1", options: [.regularExpression])
             .replacingOccurrences(of: " -pch-output-dir \\S+ ", with: " ", options: [.regularExpression])
 
-        // extract full path to file from compile command
+        if isFile {
+            return (compileCommand, classNameOrFile)
+        }
+
+        // for eval extract full path to file from compile command
+
+        let fileExtractor: NSRegularExpression
+        regexp = regexp.escaping("$")
 
         do {
-            let fileExtractor = try NSRegularExpression(pattern: regexp.escaping("$"), options: [])
-            guard let matches = fileExtractor.firstMatch(in: compileCommand, options: [],
-                                                         range: NSMakeRange(0, compileCommand.utf16.count)),
-                let sourceFile = compileCommand[matches.range(at: 1)] ??
-                                 compileCommand[matches.range(at: 2)] else {
-                throw evalError("Could not locate source file \(compileCommand)")
-            }
-
-            return (compileCommand, sourceFile)
+            fileExtractor = try NSRegularExpression(pattern: regexp, options: [])
         }
         catch {
-            throw evalError("Regexp parse error: \(error) -- \(regexp) -- \(regexp.escaping("$"))")
+            throw evalError("Regexp parse error: \(error) -- \(regexp)")
         }
+
+        guard let matches = fileExtractor.firstMatch(in: compileCommand, options: [],
+                                                     range: NSMakeRange(0, compileCommand.utf16.count)),
+            let sourceFile = compileCommand[matches.range(at: 1)] ??
+                             compileCommand[matches.range(at: 2)] else {
+            throw evalError("Could not locate source file \(compileCommand) -- \(regexp)")
+        }
+
+        return (compileCommand, sourceFile)
     }
 
     lazy var mainHandle = dlopen(nil, RTLD_NOLOAD)
@@ -503,6 +520,7 @@ public class SwiftEval: NSObject {
         try? command.write(toFile: "/tmp/command.sh", atomically: false, encoding: .utf8)
         debug(command)
 
+        #if os(iOS) || os(tvOS)
         let pid = fork()
         if pid == 0 {
             var args = [UnsafeMutablePointer<Int8>?](repeating: nil, count: 4)
@@ -518,6 +536,14 @@ public class SwiftEval: NSObject {
         var status: Int32 = 0
         while waitpid(pid, &status, 0) == -1 {}
         return status >> 8 == EXIT_SUCCESS
+        #else
+        let task = Process()
+        task.launchPath = "/bin/bash"
+        task.arguments = ["-c", command]
+        task.launch()
+        task.waitUntilExit()
+        return task.terminationStatus == EXIT_SUCCESS
+        #endif
     }
 }
 

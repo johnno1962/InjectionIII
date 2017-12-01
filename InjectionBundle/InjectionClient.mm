@@ -39,7 +39,6 @@
     [self writeString:@"i386"];
 #endif
 
-
     // As source file names come in, inject them
     while (NSString *swiftSource = [self readString])
         if ([swiftSource isEqualToString:@"WATCHER OFF"])

@@ -14,6 +14,8 @@
 
 #import "InjectionIII-Swift.h"
 
+static dispatch_queue_t injectionQueue;
+
 @implementation InjectionServer {
     FileWatcher *fileWatcher;
     NSString *bundlePath, *arch;
@@ -45,19 +47,7 @@
     [self writeString:projectRoot];
     bundlePath = [self readString];
     arch = [self readString];
-
-    [SwiftEval sharedInstance].bundlePath = ^NSString *() {
-        return bundlePath;
-    };
-
-    [SwiftEval sharedInstance].arch = ^NSString *() {
-        return arch;
-    };
-
-    [SwiftEval sharedInstance].evalError = ^NSError *(NSString *message) {
-        [self writeString:[@"LOG " stringByAppendingString:message]];
-        return [[NSError alloc] initWithDomain:@"SwiftEval" code:-1 userInfo:@{NSLocalizedDescriptionKey: message}];
-    };
+    [SwiftEval reset];
 
     NSMutableDictionary<NSString *, NSNumber *> *lastInjected = [NSMutableDictionary new];
     #define MIN_INJECTION_INTERVAL 1.
@@ -68,20 +58,34 @@
             for (NSString *swiftSource in changed) {
                 NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
                 if (now > lastInjected[swiftSource].doubleValue + MIN_INJECTION_INTERVAL) {
-                    [appDelegate setMenuIcon:@"InjectionBusy"];
-                    NSString *classNameOrFile = [[swiftSource substringFromIndex:1] stringByDeletingPathExtension];
-                    if (NSString *tmpfile = [[SwiftEval sharedInstance] rebuildClassWithOldClass:nil
-                                             classNameOrFile:classNameOrFile extra:nil error:nil]) {
-                        [self writeString:[@"INJECT " stringByAppendingString:tmpfile]];
-                        lastInjected[swiftSource] = [NSNumber numberWithDouble:now];
-                    }
-                    else
-                        [appDelegate setMenuIcon:@"InjectionError"];
+                    lastInjected[swiftSource] = [NSNumber numberWithDouble:now];
+
+                    if (!injectionQueue)
+                        injectionQueue = dispatch_queue_create("InjectionQueue", DISPATCH_QUEUE_SERIAL);
+
+                    dispatch_async(injectionQueue, ^{
+                        [appDelegate setMenuIcon:@"InjectionBusy"];
+
+                        __weak InjectionServer *weakSelf = self;
+                        [SwiftEval sharedInstance].evalError = ^NSError *(NSString *message) {
+                            [weakSelf writeString:[@"LOG " stringByAppendingString:message]];
+                            return [[NSError alloc] initWithDomain:@"SwiftEval" code:-1
+                                                          userInfo:@{NSLocalizedDescriptionKey: message}];
+                        };
+
+                        [SwiftEval sharedInstance].bundlePath = bundlePath;
+                        [SwiftEval sharedInstance].arch = arch;
+
+                        if (NSString *tmpfile = [[SwiftEval sharedInstance] rebuildClassWithOldClass:nil
+                                                 classNameOrFile:swiftSource extra:nil error:nil])
+                            [self writeString:[@"INJECT " stringByAppendingString:tmpfile]];
+                        else
+                            [appDelegate setMenuIcon:@"InjectionError"];
+                    });
                 }
             }
         else
             [self writeString:@"WATCHER OFF"];
-
     }];
 
     // read requests to codesign from client app

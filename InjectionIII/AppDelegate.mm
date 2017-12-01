@@ -54,7 +54,7 @@ AppDelegate *appDelegate;
     dispatch_async(dispatch_get_main_queue(), ^{
         if (NSString *path = [NSBundle.mainBundle pathForResource:tiffName ofType:@"tif"]) {
             NSImage *image = [[NSImage alloc] initWithContentsOfFile:path];
-    //        image.template = TRUE;
+//            image.template = TRUE;
             statusItem.image = image;
             statusItem.alternateImage = statusItem.image;
             startItem.enabled = [tiffName isEqualToString:@"InjectionIdle"];
@@ -73,6 +73,7 @@ AppDelegate *appDelegate;
     if ([HelperInstaller isInstalled] == NO && [HelperInstaller install:&error] == NO) {
         NSLog(@"Couldn't install Smuggler Helper (domain: %@ code: %d)", error.domain, (int)error.code);
         [[NSAlert alertWithError:error] runModal];
+        return;
     }
 
     // Inject Simulator process

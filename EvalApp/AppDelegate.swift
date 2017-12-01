@@ -34,8 +34,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Insert code here to initialize your application
         SwiftEval.instance.evalError = {
             let err = $0
-            DispatchQueue.main.async {
-                self.textView.string = err
+            if !err.hasPrefix("Compiling ") {
+                DispatchQueue.main.async {
+                    self.textView.string = err
+                }
             }
             return NSError(domain: "SwiftEval", code: -1, userInfo: [NSLocalizedDescriptionKey: err])
         }

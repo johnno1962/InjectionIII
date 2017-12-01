@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#31 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#36 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -52,8 +52,7 @@ extension NSObject {
 
     @objc
     public class func inject(file: String) {
-        let path = URL(fileURLWithPath: file).deletingPathExtension().path
-        SwiftInjection.inject(oldClass: nil, classNameOrFile: String(path.dropFirst()))
+        SwiftInjection.inject(oldClass: nil, classNameOrFile: file)
     }
 }
 
@@ -74,7 +73,7 @@ public class SwiftInjection: NSObject {
 
     @objc
     public class func inject(tmpfile: String) throws {
-        let newClasses = try SwiftEval.instance.linkAndInject(tmpfile: tmpfile)
+        let newClasses = try SwiftEval.instance.loadAndInject(tmpfile: tmpfile)
         let oldClasses = //oldClass != nil ? [oldClass!] :
             newClasses.map { objc_getClass(class_getName($0)) as! AnyClass }
         var testClasses = [AnyClass]()
@@ -253,9 +252,12 @@ extension NSObject {
         var icnt: UInt32 = 0, cls: AnyClass? = object_getClass(self)!
         let object = "@".utf16.first!
         while cls != nil && cls != NSObject.self && cls != NSURL.self {
-            #if os(OSX)
             let className = NSStringFromClass(cls!)
-            if cls != NSWindow.self && className.starts(with: "NS") {
+            if className.hasPrefix("_") {
+                return
+            }
+            #if os(OSX)
+            if className.starts(with: "NS") && cls != NSWindow.self {
                 return
             }
             #endif
@@ -264,6 +266,7 @@ extension NSObject {
                     if let type = ivar_getTypeEncoding(ivars[i]), type[0] == object {
                         (unsafeBitCast(self, to: UnsafePointer<Int8>.self) + ivar_getOffset(ivars[i]))
                             .withMemoryRebound(to: AnyObject?.self, capacity: 1) {
+//                                print("\(self) \(String(cString: ivar_getName(ivars[i])!))")
                                 if let obj = $0.pointee {
                                     SwiftSweeper.current?.sweepInstance(obj)
                                 }
