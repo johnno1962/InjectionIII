@@ -37,7 +37,6 @@
 		BBCA02071FB0F10300E45F0F /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02051FB0F10300E45F0F /* MainMenu.xib */; };
 		BBCA020A1FB0F10400E45F0F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCA02091FB0F10400E45F0F /* main.m */; };
 		BBCA022A1FB0F64800E45F0F /* SimpleSocket.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB67DBB31FB0CDA8000EAC8A /* SimpleSocket.mm */; };
-		BBCA022F1FB0F70100E45F0F /* SignerService.m in Sources */ = {isa = PBXBuildFile; fileRef = BB67DBB61FB0D0F2000EAC8A /* SignerService.m */; };
 		BBCA024D1FB1069A00E45F0F /* macOSInjection.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02451FB1065D00E45F0F /* macOSInjection.bundle */; };
 		BBCA02501FB107AF00E45F0F /* SwiftEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */; };
 		BBCA02511FB107AF00E45F0F /* SwiftInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */; };
@@ -318,6 +317,8 @@
 		BB439BB21FAC185200B4F50B /* signer */ = {
 			isa = PBXGroup;
 			children = (
+				BB67DBB51FB0D0F2000EAC8A /* SignerService.h */,
+				BB67DBB61FB0D0F2000EAC8A /* SignerService.m */,
 				BB439BB31FAC185200B4F50B /* main.m */,
 			);
 			path = signer;
@@ -388,8 +389,6 @@
 				BBCA02011FB0F10300E45F0F /* AppDelegate.mm */,
 				BBCA02541FB1099500E45F0F /* InjectionServer.h */,
 				BBCA02551FB1099500E45F0F /* InjectionServer.mm */,
-				BB67DBB51FB0D0F2000EAC8A /* SignerService.h */,
-				BB67DBB61FB0D0F2000EAC8A /* SignerService.m */,
 				BB67DBB21FB0CDA8000EAC8A /* SimpleSocket.h */,
 				BB67DBB31FB0CDA8000EAC8A /* SimpleSocket.mm */,
 				BBE490CF1FB2368A003D41BB /* FileWatcher.h */,
@@ -820,7 +819,6 @@
 				BBCA02561FB1099500E45F0F /* InjectionServer.mm in Sources */,
 				BBCA022A1FB0F64800E45F0F /* SimpleSocket.mm in Sources */,
 				BB6306F71FCD16600021D30C /* DDHotKeyCenter.m in Sources */,
-				BBCA022F1FB0F70100E45F0F /* SignerService.m in Sources */,
 				BBBFD2D01FCFEE300057D899 /* SwiftEval.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

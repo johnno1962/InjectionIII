@@ -31,8 +31,8 @@
 }
 
 - (void)runInBackground {
-    printf("Injection connected, watching %s\n", [self readString].UTF8String);
-    [self writeString:[[NSBundle mainBundle] bundlePath]];
+    printf("Injection connected, watching %s/...\n", [self readString].UTF8String);
+    [self writeString:[NSBundle mainBundle].privateFrameworksPath];
 #ifdef __LP64__
     [self writeString:@"x86_64"];
 #else
@@ -41,9 +41,7 @@
 
     // As source file names come in, inject them
     while (NSString *swiftSource = [self readString])
-        if ([swiftSource isEqualToString:@"WATCHER OFF"])
-            printf("The file watcher is turned off\n");
-        else if ([swiftSource hasPrefix:@"LOG "])
+        if ([swiftSource hasPrefix:@"LOG "])
             printf("%s\n", [swiftSource substringFromIndex:@"LOG ".length].UTF8String);
         else
             dispatch_async(dispatch_get_main_queue(), ^{

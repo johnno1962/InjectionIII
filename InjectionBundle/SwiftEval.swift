@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#69 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#77 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -102,17 +102,18 @@ public class SwiftEval: NSObject {
 
     static var instance = SwiftEval()
 
-    @objc public class func reset() {
-        instance = SwiftEval()
+    @objc public class func newInstance() -> SwiftEval {
+        return SwiftEval()
     }
 
-    @objc public class func sharedInstance() -> SwiftEval {
-        return instance
-    }
+    @objc public var xcodeDev = "/Applications/Xcode.app/Contents/Developer"
 
     @objc public var signer: ((_: String) -> Bool)?
 
-    @objc public var bundlePath = Bundle.main.bundlePath
+    @objc public var projectFile: String?
+
+    @objc public var frameworks = Bundle.main.privateFrameworksPath
+                                    ?? Bundle.main.bundlePath + "/Frameworks"
     @objc public var arch = "x86_64"
 
     /// Error handler
@@ -128,10 +129,14 @@ public class SwiftEval: NSObject {
 
     @objc public func rebuildClass(oldClass: AnyClass?, classNameOrFile: String, extra: String?) throws -> String {
         let sourceURL = URL(fileURLWithPath: classNameOrFile.hasPrefix("/") ? classNameOrFile : #file)
-        guard let derivedData = findDerivedData(url: sourceURL) else {
+        guard let derivedData = findDerivedData(url: URL(fileURLWithPath: NSHomeDirectory())) ??
+            findDerivedData(url: sourceURL) else {
             throw evalError("Could not locate derived data. Is the project under you home directory?")
         }
-        guard let (projectFile, logsDir) = findProject(for: sourceURL, derivedData: derivedData) else {
+        guard let (projectFile, logsDir) = self.projectFile
+            .flatMap({ logsDir(project: URL(fileURLWithPath: $0), derivedData: derivedData) })
+            .flatMap({ (URL(fileURLWithPath: self.projectFile!), $0) }) ??
+            findProject(for: sourceURL, derivedData: derivedData) else {
             throw evalError("Could not locate containg project or it's logs.")
         }
 
@@ -195,24 +200,21 @@ public class SwiftEval: NSObject {
 
         // link resulting object file to create dynamic library
 
-        let xcode = "/Applications/Xcode.app/Contents/Developer"
         let toolchain = ((try! NSRegularExpression(pattern: "\\s*(\\S+?\\.xctoolchain)", options: []))
             .firstMatch(in: compileCommand, options: [], range: NSMakeRange(0, compileCommand.utf16.count))?
-            .range(at: 1)).flatMap { compileCommand[$0] } ?? "\(xcode)/Toolchains/XcodeDefault.xctoolchain"
+            .range(at: 1)).flatMap { compileCommand[$0] } ?? "\(xcodeDev)/Toolchains/XcodeDefault.xctoolchain"
 
         let osSpecific: String
-        var frameworkPath = bundlePath + "/Frameworks"
         if compileCommand.contains("iPhoneSimulator.platform") {
-            osSpecific = "-isysroot \(xcode)/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk -mios-simulator-version-min=9.0 -L\(toolchain)/usr/lib/swift/iphonesimulator -undefined dynamic_lookup"// -Xlinker -bundle_loader -Xlinker \"\(Bundle.main.executablePath!)\""
+            osSpecific = "-isysroot \(xcodeDev)/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk -mios-simulator-version-min=9.0 -L\(toolchain)/usr/lib/swift/iphonesimulator -undefined dynamic_lookup"// -Xlinker -bundle_loader -Xlinker \"\(Bundle.main.executablePath!)\""
         } else if compileCommand.contains("AppleTVSimulator.platform") {
-            osSpecific = "-isysroot \(xcode)/Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator.sdk -mtvos-simulator-version-min=9.0 -L\(toolchain)/usr/lib/swift/appletvsimulator -undefined dynamic_lookup"// -Xlinker -bundle_loader -Xlinker \"\(Bundle.main.executablePath!)\""
+            osSpecific = "-isysroot \(xcodeDev)/Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator.sdk -mtvos-simulator-version-min=9.0 -L\(toolchain)/usr/lib/swift/appletvsimulator -undefined dynamic_lookup"// -Xlinker -bundle_loader -Xlinker \"\(Bundle.main.executablePath!)\""
         } else {
-            osSpecific = "-isysroot \(xcode)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -mmacosx-version-min=10.11 -L\(toolchain)/usr/lib/swift/macosx -undefined dynamic_lookup"
-            frameworkPath = bundlePath + "/Contents/Frameworks"
+            osSpecific = "-isysroot \(xcodeDev)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -mmacosx-version-min=10.11 -L\(toolchain)/usr/lib/swift/macosx -undefined dynamic_lookup"
         }
 
         guard shell(command: """
-            \(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch "\(arch)" -bundle \(osSpecific) -dead_strip -Xlinker -objc_abi_version -Xlinker 2 -fobjc-arc \(tmpfile).o -L "\(frameworkPath)" -F "\(frameworkPath)" -rpath "\(frameworkPath)" -o \(tmpfile).dylib
+            \(xcodeDev)/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch "\(arch)" -bundle \(osSpecific) -dead_strip -Xlinker -objc_abi_version -Xlinker 2 -fobjc-arc \(tmpfile).o -L "\(frameworks)" -F "\(frameworks)" -rpath "\(frameworks)" -o \(tmpfile).dylib
             """) else {
             throw evalError("Link failed, check /tmp/command.sh")
         }
@@ -232,7 +234,7 @@ public class SwiftEval: NSObject {
             }
             #else
             guard shell(command: """
-                export CODESIGN_ALLOCATE=\(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/bin/codesign_allocate; codesign --force -s '-' "\(tmpfile).dylib"
+                export CODESIGN_ALLOCATE=\(xcodeDev)/Toolchains/XcodeDefault.xctoolchain/usr/bin/codesign_allocate; codesign --force -s '-' "\(tmpfile).dylib"
                 """) else {
                 throw evalError("Codesign failed")
             }
@@ -269,11 +271,10 @@ public class SwiftEval: NSObject {
         else {
             // grep out symbols for classes being injected from object file
 
-            let xcode = "/Applications/Xcode.app/Contents/Developer"
-            try injectGenerics(xcode: xcode, tmpfile: tmpfile, handle: dl)
+            try injectGenerics(tmpfile: tmpfile, handle: dl)
 
             guard shell(command: """
-                \(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/bin/nm \(tmpfile).o | grep -E ' S _OBJC_CLASS_\\$_| __T0.*CN$' | awk '{print $3}' >\(tmpfile).classes
+                \(xcodeDev)/Toolchains/XcodeDefault.xctoolchain/usr/bin/nm \(tmpfile).o | grep -E ' S _OBJC_CLASS_\\$_| __T0.*CN$' | awk '{print $3}' >\(tmpfile).classes
                 """) else {
                 throw evalError("Could not list class symbols")
             }
@@ -394,10 +395,10 @@ public class SwiftEval: NSObject {
 
     lazy var mainHandle = dlopen(nil, RTLD_NOLOAD)
 
-    func injectGenerics(xcode: String, tmpfile: String, handle: UnsafeMutableRawPointer) throws {
+    func injectGenerics(tmpfile: String, handle: UnsafeMutableRawPointer) throws {
 
         guard shell(command: """
-            \(xcode)/Toolchains/XcodeDefault.xctoolchain/usr/bin/nm \(tmpfile).o | grep -E ' __T0.*CMn$' | awk '{print $3}' >\(tmpfile).generics
+            \(xcodeDev)/Toolchains/XcodeDefault.xctoolchain/usr/bin/nm \(tmpfile).o | grep -E ' __T0.*CMn$' | awk '{print $3}' >\(tmpfile).generics
             """) else {
                 throw evalError("Could not list generics symbols")
         }
@@ -463,17 +464,16 @@ public class SwiftEval: NSObject {
     }
 
     func findDerivedData(url: URL) -> URL? {
-        let dir = url.deletingLastPathComponent()
-        if dir.path == "/" {
+        if url.path == "/" {
             return nil
         }
 
-        let derived = dir.appendingPathComponent("Library/Developer/Xcode/DerivedData")
+        let derived = url.appendingPathComponent("Library/Developer/Xcode/DerivedData")
         if FileManager.default.fileExists(atPath: derived.path) {
             return derived
         }
 
-        return findDerivedData(url: dir)
+        return findDerivedData(url: url.deletingLastPathComponent())
     }
 
     func findProject(for source: URL, derivedData: URL) -> (projectFile: URL, logsDir: URL)? {
