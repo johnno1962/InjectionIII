@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#67 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#69 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -476,43 +476,46 @@ public class SwiftEval: NSObject {
         return findDerivedData(url: dir)
     }
 
-    func findProject(for source: URL, derivedData: URL) -> (URL, URL)? {
+    func findProject(for source: URL, derivedData: URL) -> (projectFile: URL, logsDir: URL)? {
         let dir = source.deletingLastPathComponent()
         if dir.path == "/" {
             return nil
         }
 
+        var candidate = findProject(for: dir, derivedData: derivedData)
+
         if let files = try? FileManager.default.contentsOfDirectory(atPath: dir.path),
             let project = file(withExt: "xcworkspace", in: files) ?? file(withExt: "xcodeproj", in: files),
-            let logs = logDir(project: dir.appendingPathComponent(project), derivedData: derivedData) {
-            return (dir.appendingPathComponent(project), logs)
+            let logsDir = logsDir(project: dir.appendingPathComponent(project), derivedData: derivedData),
+            mtime(logsDir) > candidate.flatMap({ mtime($0.logsDir) }) ?? 0 {
+                candidate = (dir.appendingPathComponent(project), logsDir)
         }
 
-        return findProject(for: dir, derivedData: derivedData)
+        return candidate
     }
 
     func file(withExt ext: String, in files: [String]) -> String? {
         return files.first { URL(fileURLWithPath: $0).pathExtension == ext }
     }
 
-    func logDir(project: URL, derivedData: URL) -> URL? {
+    func mtime(_ url: URL) -> time_t {
+        var info = stat()
+        return stat(url.path, &info) == 0 ? info.st_mtimespec.tv_sec : 0
+    }
+
+    func logsDir(project: URL, derivedData: URL) -> URL? {
         let filemgr = FileManager.default
         let projectPrefix = project.deletingPathExtension()
             .lastPathComponent.replacingOccurrences(of: " ", with: "_")
         let relativeDerivedData = project.deletingLastPathComponent()
             .appendingPathComponent("DerivedData/\(projectPrefix)/Logs/Build")
 
-        func mtime(_ path: String) -> time_t {
-            var info = stat()
-            return stat(path, &info) == 0 ? info.st_mtimespec.tv_sec : 0
-        }
-
         return ((try? filemgr.contentsOfDirectory(atPath: derivedData.path))?
             .filter { $0.starts(with: projectPrefix + "-") }
             .map { derivedData.appendingPathComponent($0 + "/Logs/Build") }
             ?? [] + [relativeDerivedData])
             .filter { filemgr.fileExists(atPath: $0.path) }
-            .sorted { mtime($0.path) > mtime($1.path) }
+            .sorted { mtime($0) > mtime($1) }
             .first
     }
 
