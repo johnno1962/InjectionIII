@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#36 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#38 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -61,7 +61,8 @@ public class SwiftInjection: NSObject {
 
     static let testQueue = DispatchQueue(label: "INTestQueue")
 
-    static func inject(oldClass: AnyClass?, classNameOrFile: String) {
+    @objc
+    public class func inject(oldClass: AnyClass?, classNameOrFile: String) {
         do {
             let tmpfile = try SwiftEval.instance.rebuildClass(oldClass: oldClass,
                                     classNameOrFile: classNameOrFile, extra: nil)
@@ -69,6 +70,29 @@ public class SwiftInjection: NSObject {
         }
         catch {
         }
+    }
+
+    @objc
+    public class func replayInjections() -> Int {
+        var injectionNumber = 0
+        do {
+            func mtime(_ path: String) -> time_t {
+                return SwiftEval.instance.mtime(URL(fileURLWithPath: path))
+            }
+            let execBuild = mtime(Bundle.main.executablePath!)
+
+            while true {
+                let tmpfile = "/tmp/eval\(injectionNumber+1)"
+                if mtime("\(tmpfile).dylib") < execBuild {
+                    break
+                }
+                try inject(tmpfile: tmpfile)
+                injectionNumber += 1
+            }
+        }
+        catch {
+        }
+        return injectionNumber
     }
 
     @objc

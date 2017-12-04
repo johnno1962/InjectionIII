@@ -5,11 +5,12 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#77 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#86 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
 //  version used in the associated injection version.
+//  Used as the basis of a new version of Injection.
 //
 
 #if arch(x86_64) || arch(i386) // simulator/macOS only
@@ -102,40 +103,40 @@ public class SwiftEval: NSObject {
 
     static var instance = SwiftEval()
 
-    @objc public class func newInstance() -> SwiftEval {
-        return SwiftEval()
-    }
-
-    @objc public var xcodeDev = "/Applications/Xcode.app/Contents/Developer"
-
     @objc public var signer: ((_: String) -> Bool)?
 
-    @objc public var projectFile: String?
-
+    // client specific info
     @objc public var frameworks = Bundle.main.privateFrameworksPath
                                     ?? Bundle.main.bundlePath + "/Frameworks"
     @objc public var arch = "x86_64"
+
+    // Xcode related info
+    @objc public var xcodeDev = "/Applications/Xcode.app/Contents/Developer"
+
+    @objc public var projectFile: String?
+    @objc public var derivedLogs: String?
 
     /// Error handler
     @objc public var evalError = {
         (_ message: String) -> Error in
         print("*** \(message) ***")
-        _ = SwiftEval.instance.signer?("ERROR \(message)")
         return NSError(domain: "SwiftEval", code: -1, userInfo: [NSLocalizedDescriptionKey: message])
     }
 
-    var injectionNumber = 0
-    var compileByClass = [String: (String, String)]()
+    @objc public var injectionNumber = 0
+    static var compileByClass = [String: (String, String)]()
 
     @objc public func rebuildClass(oldClass: AnyClass?, classNameOrFile: String, extra: String?) throws -> String {
+
+        // Largely obsolete section used find Xcode paths from source file being injected.
+
         let sourceURL = URL(fileURLWithPath: classNameOrFile.hasPrefix("/") ? classNameOrFile : #file)
         guard let derivedData = findDerivedData(url: URL(fileURLWithPath: NSHomeDirectory())) ??
             findDerivedData(url: sourceURL) else {
             throw evalError("Could not locate derived data. Is the project under you home directory?")
         }
-        guard let (projectFile, logsDir) = self.projectFile
-            .flatMap({ logsDir(project: URL(fileURLWithPath: $0), derivedData: derivedData) })
-            .flatMap({ (URL(fileURLWithPath: self.projectFile!), $0) }) ??
+        guard let (projectFile, logsDir) = derivedLogs.flatMap({
+            (URL(fileURLWithPath: self.projectFile!), URL(fileURLWithPath: $0)) }) ??
             findProject(for: sourceURL, derivedData: derivedData) else {
             throw evalError("Could not locate containg project or it's logs.")
         }
@@ -145,7 +146,7 @@ public class SwiftEval: NSObject {
         injectionNumber += 1
         let tmpfile = "/tmp/eval\(injectionNumber)"
 
-        guard var (compileCommand, sourceFile) = try compileByClass[classNameOrFile] ??
+        guard var (compileCommand, sourceFile) = try SwiftEval.compileByClass[classNameOrFile] ??
             findCompileCommand(logsDir: logsDir, classNameOrFile: classNameOrFile, tmpfile: tmpfile) else {
             throw evalError("""
                 Could not locate compile command for \(classNameOrFile)
@@ -153,7 +154,7 @@ public class SwiftEval: NSObject {
                 """)
         }
 
-        compileByClass[classNameOrFile] = (compileCommand, sourceFile)
+        SwiftEval.compileByClass[classNameOrFile] = (compileCommand, sourceFile)
 
         // load and patch class source if there is an extension to add
 
@@ -195,6 +196,7 @@ public class SwiftEval: NSObject {
         guard shell(command: """
                 time (cd "\(projectDir.escaping("$"))" && \(compileCommand) -o \(tmpfile).o >\(tmpfile).log 2>&1)
                 """) else {
+            SwiftEval.compileByClass.removeValue(forKey: classNameOrFile)
             throw evalError("Re-compilation failed (\(tmpfile).sh)\n\(try! String(contentsOfFile: "\(tmpfile).log"))")
         }
 
@@ -244,7 +246,7 @@ public class SwiftEval: NSObject {
         return tmpfile
     }
 
-    func loadAndInject(tmpfile: String, oldClass: AnyClass? = nil) throws -> [AnyClass] {
+    @objc func loadAndInject(tmpfile: String, oldClass: AnyClass? = nil) throws -> [AnyClass] {
 
         // load patched .dylib into process with new version of class
 
@@ -291,7 +293,6 @@ public class SwiftEval: NSObject {
         // path to project can contain spaces and '$&(){}
         // Objective-C paths can only contain space and '
         // project file itself can only contain spaces
-        // (logs of new build system escape ', $ and ")
         let isFile = classNameOrFile.hasPrefix("/")
         let sourceRegex = isFile ? "\\Q\(classNameOrFile)\\E" : "/\(classNameOrFile)\\.(?:swift|mm?)"
         let swiftEscaped = (isFile ? "" : "[^\"]*?") + sourceRegex.escaping("'$", with: "\\E\\\\*$0\\Q")
@@ -365,13 +366,14 @@ public class SwiftEval: NSObject {
         compileCommand = compileCommand
             // (logs of new build system escape ', $ and ")
             .replacingOccurrences(of: "\\\\([\"'\\\\])", with: "$1", options: [.regularExpression])
+            // pch file may no longer exist
             .replacingOccurrences(of: " -pch-output-dir \\S+ ", with: " ", options: [.regularExpression])
 
         if isFile {
             return (compileCommand, classNameOrFile)
         }
 
-        // for eval extract full path to file from compile command
+        // for eval() extract full path to file from compile command
 
         let fileExtractor: NSRegularExpression
         regexp = regexp.escaping("$")
@@ -523,7 +525,14 @@ public class SwiftEval: NSObject {
         try? command.write(toFile: "/tmp/command.sh", atomically: false, encoding: .utf8)
         debug(command)
 
-        #if os(iOS) || os(tvOS)
+        #if !(os(iOS) || os(tvOS))
+        let task = Process()
+        task.launchPath = "/bin/bash"
+        task.arguments = ["-c", command]
+        task.launch()
+        task.waitUntilExit()
+        return task.terminationStatus == EXIT_SUCCESS
+        #else
         let pid = fork()
         if pid == 0 {
             var args = [UnsafeMutablePointer<Int8>?](repeating: nil, count: 4)
@@ -539,21 +548,16 @@ public class SwiftEval: NSObject {
         var status: Int32 = 0
         while waitpid(pid, &status, 0) == -1 {}
         return status >> 8 == EXIT_SUCCESS
-        #else
-        let task = Process()
-        task.launchPath = "/bin/bash"
-        task.arguments = ["-c", command]
-        task.launch()
-        task.waitUntilExit()
-        return task.terminationStatus == EXIT_SUCCESS
         #endif
     }
 }
 
+#if os(iOS) || os(tvOS)
 @_silgen_name("fork")
 func fork() -> Int32
 @_silgen_name("execve")
 func execve(_ __file: UnsafePointer<Int8>!, _ __argv: UnsafePointer<UnsafeMutablePointer<Int8>?>!, _ __envp: UnsafePointer<UnsafeMutablePointer<Int8>?>!) -> Int32
 @_silgen_name("_NSGetEnviron")
 func _NSGetEnviron() -> UnsafePointer<UnsafePointer<UnsafeMutablePointer<Int8>?>?>!
+#endif
 #endif

@@ -27,6 +27,7 @@ Once injection is connected, a file watcher is started in the InjectionIII app a
 you save a Swift or Objective-C source the target app is messaged to update the implementation.
 The file watcher can be disabled & enabled while the app is running using the status bar menu.
 If you inject a subclass of XCTest it will try running that individual test inside your application.
+When you run your application without rebuilding (^⌘R), recent injections will be re-applied.
 
 Included is a manual implementation of ["code injection"](InjectionBundle/SwiftInjection.swift).
 If you are stopped in a class, you can edit the class' implementation, save it and type

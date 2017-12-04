@@ -1,5 +1,5 @@
 //
-//  AppDelegate.m
+//  AppDelegate.mm
 //  InjectionIII
 //
 //  Created by John Holdsworth on 06/11/2017.
@@ -70,10 +70,23 @@ AppDelegate *appDelegate;
     NSError *error = nil;
 
     // Install helper tool
-    if ([HelperInstaller isInstalled] == NO && [HelperInstaller install:&error] == NO) {
-        NSLog(@"Couldn't install Smuggler Helper (domain: %@ code: %d)", error.domain, (int)error.code);
-        [[NSAlert alertWithError:error] runModal];
-        return;
+    if ([HelperInstaller isInstalled] == NO) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        if ([[NSAlert alertWithMessageText:@"Injection Helper"
+                             defaultButton:@"OK" alternateButton:@"Cancel" otherButton:nil
+                 informativeTextWithFormat:@"InjectionIII needs to install a privileged helper to be able to inject code into "
+              "an app running in the iOS simulator. This is the standard macOS mechanism.\n"
+              "You can remove the helper at any time by deleting:\n"
+              "/Library/PrivilegedHelperTools/com.johnholdsworth.InjectorationIII.Helper.\n"
+              "If you'd rather not authorize, patch the app instead."] runModal] == NSAlertAlternateReturn)
+            return;
+#pragma clang diagnostic pop
+        if ([HelperInstaller install:&error] == NO) {
+            NSLog(@"Couldn't install Smuggler Helper (domain: %@ code: %d)", error.domain, (int)error.code);
+            [[NSAlert alertWithError:error] runModal];
+            return;
+        }
     }
 
     // Inject Simulator process

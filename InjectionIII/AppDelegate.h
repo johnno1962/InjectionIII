@@ -7,10 +7,12 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "InjectionServer.h"
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
 @property (weak) IBOutlet NSMenuItem *enableWatcher;
+@property (weak) InjectionServer *lastConnection;
 
 - (void)setMenuIcon:(NSString *)tiffName;
 

@@ -47,11 +47,11 @@ static void fileCallback(ConstFSEventStreamRef streamRef,
     NSMutableSet *changed = [NSMutableSet new];
 
     for (NSString *path in changes)
-        if ( [path rangeOfString:INJECTABLE_PATTERN
-                         options:NSRegularExpressionSearch].location != NSNotFound &&
+        if ([path rangeOfString:INJECTABLE_PATTERN
+                        options:NSRegularExpressionSearch].location != NSNotFound &&
             [path rangeOfString:@"DerivedData/|InjectionProject/|main.mm?$"
                         options:NSRegularExpressionSearch].location == NSNotFound &&
-            [fileManager fileExistsAtPath:path] )
+            [fileManager fileExistsAtPath:path])
             [changed addObject:path];
 
     //NSLog( @"filesChanged: %@", changed );

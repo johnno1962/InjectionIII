@@ -1,5 +1,5 @@
 //
-//  InjectionClient.m
+//  InjectionClient.mm
 //  InjectionBundle
 //
 //  Created by John Holdsworth on 06/11/2017.
@@ -38,8 +38,9 @@
 #else
     [self writeString:@"i386"];
 #endif
+    [self writeString:[NSBundle mainBundle].executablePath];
 
-    // As source file names come in, inject them
+    // As tmp file names come in, inject them
     while (NSString *swiftSource = [self readString])
         if ([swiftSource hasPrefix:@"LOG "])
             printf("%s\n", [swiftSource substringFromIndex:@"LOG ".length].UTF8String);

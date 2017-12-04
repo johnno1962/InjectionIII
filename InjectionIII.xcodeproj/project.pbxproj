@@ -31,6 +31,8 @@
 		BBB148DA1FAD53BE00CB6B33 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB148D91FAD53BE00CB6B33 /* AppDelegate.swift */; };
 		BBB148DC1FAD53BE00CB6B33 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBB148DB1FAD53BE00CB6B33 /* Assets.xcassets */; };
 		BBB148DF1FAD53BE00CB6B33 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBB148DD1FAD53BE00CB6B33 /* MainMenu.xib */; };
+		BBB64DC51FD450AF0020BE47 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = BB037DF31FAD808B004B267C /* README.md */; };
+		BBB64DC61FD450B40020BE47 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = BB037DF41FAD80D0004B267C /* LICENSE */; };
 		BBBFD2D01FCFEE300057D899 /* SwiftEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */; };
 		BBCA02021FB0F10300E45F0F /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = BBCA02011FB0F10300E45F0F /* AppDelegate.mm */; };
 		BBCA02041FB0F10300E45F0F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02031FB0F10300E45F0F /* Assets.xcassets */; };
@@ -55,6 +57,7 @@
 		BBE490D01FB2368A003D41BB /* FileWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BBE490CE1FB2368A003D41BB /* FileWatcher.m */; };
 		BBE490DB1FB2C643003D41BB /* InjectionBusy.tif in Resources */ = {isa = PBXBuildFile; fileRef = BBE490D91FB2C643003D41BB /* InjectionBusy.tif */; };
 		BBE490DC1FB2C643003D41BB /* InjectionError.tif in Resources */ = {isa = PBXBuildFile; fileRef = BBE490DA1FB2C643003D41BB /* InjectionError.tif */; };
+		BBEB704C1FD28C6F00127711 /* XcodeHash.m in Sources */ = {isa = PBXBuildFile; fileRef = BBEB704B1FD28C6F00127711 /* XcodeHash.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -193,6 +196,8 @@
 		BBE490CF1FB2368A003D41BB /* FileWatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileWatcher.h; sourceTree = "<group>"; };
 		BBE490D91FB2C643003D41BB /* InjectionBusy.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = InjectionBusy.tif; sourceTree = "<group>"; };
 		BBE490DA1FB2C643003D41BB /* InjectionError.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = InjectionError.tif; sourceTree = "<group>"; };
+		BBEB704A1FD28C6F00127711 /* XcodeHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XcodeHash.h; sourceTree = "<group>"; };
+		BBEB704B1FD28C6F00127711 /* XcodeHash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XcodeHash.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -385,6 +390,8 @@
 			children = (
 				BB6306FD1FCD1A410021D30C /* Credits.rtf */,
 				BBCA025A1FB1132700E45F0F /* Xcode.h */,
+				BBEB704A1FD28C6F00127711 /* XcodeHash.h */,
+				BBEB704B1FD28C6F00127711 /* XcodeHash.m */,
 				BBCA02001FB0F10300E45F0F /* AppDelegate.h */,
 				BBCA02011FB0F10300E45F0F /* AppDelegate.mm */,
 				BBCA02541FB1099500E45F0F /* InjectionServer.h */,
@@ -694,6 +701,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBB64DC61FD450B40020BE47 /* LICENSE in Resources */,
+				BBB64DC51FD450AF0020BE47 /* README.md in Resources */,
 				BB6224571FC5B30400AD7A3A /* Bootstrap.bundle in Resources */,
 				BBE490DC1FB2C643003D41BB /* InjectionError.tif in Resources */,
 				BBCA02591FB112F500E45F0F /* App.icns in Resources */,
@@ -811,6 +820,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BBCA020A1FB0F10400E45F0F /* main.m in Sources */,
+				BBEB704C1FD28C6F00127711 /* XcodeHash.m in Sources */,
 				BBCA02021FB0F10300E45F0F /* AppDelegate.mm in Sources */,
 				BB6306F81FCD16600021D30C /* DDHotKeyUtilities.m in Sources */,
 				BB6224461FC5B0E600AD7A3A /* HelperInstaller.m in Sources */,
