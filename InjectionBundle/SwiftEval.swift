@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#89 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#93 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -120,7 +120,7 @@ extension NSObject {
 
 fileprivate extension String {
     subscript(range: NSRange) -> String? {
-        return range.location != NSNotFound ? String(self[Range(range, in: self)!]) : nil
+        return Range(range, in: self).flatMap { String(self[$0]) }
     }
     func escaping(_ chars: String, with template: String = "\\$0") -> String {
         return self.replacingOccurrences(of: "[\(chars)]",
@@ -160,6 +160,9 @@ public class SwiftEval: NSObject {
     @objc public var injectionNumber = 0
     static var compileByClass = [String: (String, String)]()
 
+    static var buildCacheFile = "/tmp/eval_builds.txt"
+    static var longTermCache = NSMutableDictionary(contentsOfFile: buildCacheFile) ?? NSMutableDictionary()
+
     @objc public func rebuildClass(oldClass: AnyClass?, classNameOrFile: String, extra: String?) throws -> String {
 
         // Largely obsolete section used find Xcode paths from source file being injected.
@@ -185,14 +188,13 @@ public class SwiftEval: NSObject {
         let tmpfile = "/tmp/eval\(injectionNumber)"
 
         guard var (compileCommand, sourceFile) = try SwiftEval.compileByClass[classNameOrFile] ??
-            findCompileCommand(logsDir: logsDir, classNameOrFile: classNameOrFile, tmpfile: tmpfile) else {
+            findCompileCommand(logsDir: logsDir, classNameOrFile: classNameOrFile, tmpfile: tmpfile) ??
+            SwiftEval.longTermCache[classNameOrFile].flatMap({ ($0 as! String, classNameOrFile) }) else {
             throw evalError("""
                 Could not locate compile command for \(classNameOrFile)
                 Try a clean build. There are also restrictions on characters allowed in paths.
                 """)
         }
-
-        SwiftEval.compileByClass[classNameOrFile] = (compileCommand, sourceFile)
 
         // load and patch class source if there is an extension to add
 
@@ -236,6 +238,12 @@ public class SwiftEval: NSObject {
                 """) else {
             SwiftEval.compileByClass.removeValue(forKey: classNameOrFile)
             throw evalError("Re-compilation failed (\(tmpfile).sh)\n\(try! String(contentsOfFile: "\(tmpfile).log"))")
+        }
+
+        SwiftEval.compileByClass[classNameOrFile] = (compileCommand, sourceFile)
+        if SwiftEval.longTermCache[classNameOrFile] as? String != compileCommand && classNameOrFile.hasPrefix("/") {
+            SwiftEval.longTermCache[classNameOrFile] = compileCommand
+            SwiftEval.longTermCache.write(toFile: SwiftEval.buildCacheFile, atomically: false)
         }
 
         // link resulting object file to create dynamic library
