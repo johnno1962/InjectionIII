@@ -11,7 +11,8 @@ You can avoid the complications of code signing by using the pre-built binary wh
 and run the app. Injection no longer requires you to change your project as for iOS is always available
 if you use the "Start Injection" menu (or type control-=) each time you start your app.
 
-If you get tired of this you can and add one of the following to your applicationDidFinishLaunching:
+If you get tired of this or you want to develope tvOS or macOS you can and add one of the following
+to your applicationDidFinishLaunching:
 
 ```
 #if DEBUG
@@ -36,7 +37,10 @@ To detect this in your code to reload a view controller for example, add an @obj
 injected() method or subscribe to the `"INJECTION_BUNDLE_NOTIFICATION"`.
 
 Included in this release is "Xprobe" which allows you to browse the objects in
-you application as a graph and execute code against them.
+you application as a graph and execute code against them. If you want to build
+from source you'll need to use:
+
+    git clone https://github.com/johnno1962/InjectionIII --recurse-submodules
 
 ### Limitations
 
