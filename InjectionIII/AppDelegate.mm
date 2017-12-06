@@ -54,18 +54,6 @@ AppDelegate *appDelegate;
     [[DDHotKeyCenter sharedHotKeyCenter] registerHotKeyWithKeyCode:kVK_ANSI_Equal
                                                      modifierFlags:NSEventModifierFlagControl
                                                             target:self action:@selector(autoInject:) object:nil];
-
-#ifdef XPROBE_PORT
-    xprobePlugin = [XprobePluginMenuController new];
-    [xprobePlugin applicationDidFinishLaunching:aNotification];
-    xprobePlugin.injectionPlugin = self;
-#else
-    xprobeItem.hidden = true
-#endif
-}
-
-- (void)evalCode:(NSString *)swift {
-    [self.lastConnection writeString:[@"EVAL " stringByAppendingString:swift]];
 }
 
 - (void)setMenuIcon:(NSString *)tiffName {
@@ -117,8 +105,20 @@ AppDelegate *appDelegate;
 }
 
 - (IBAction)runXprobe:(NSMenuItem *)sender {
+    if (!xprobePlugin) {
+        xprobePlugin = [XprobePluginMenuController new];
+        #pragma clang diagnostic push
+        #pragma clang diagnostic ignored "-Wnonnull"
+        [xprobePlugin applicationDidFinishLaunching:nil];
+        #pragma clang diagnostic pop
+        xprobePlugin.injectionPlugin = self;
+    }
     [self.lastConnection writeString:@"XPROBE"];
     windowItem.hidden = FALSE;
+}
+
+- (void)evalCode:(NSString *)swift {
+    [self.lastConnection writeString:[@"EVAL " stringByAppendingString:swift]];
 }
 
 - (IBAction)donate:sender {
