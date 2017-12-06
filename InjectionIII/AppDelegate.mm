@@ -17,6 +17,12 @@
 #import <AppKit/NSEvent.h>
 #import "DDHotKeyCenter.h"
 
+#import "InjectionIII-Swift.h"
+
+#ifdef XPROBE_PORT
+#import "../XprobePlugin/Classes/XprobePluginMenuController.h"
+#endif
+
 AppDelegate *appDelegate;
 
 @interface AppDelegate ()
@@ -26,7 +32,7 @@ AppDelegate *appDelegate;
 
 @implementation AppDelegate {
     IBOutlet NSMenu *statusMenu;
-    IBOutlet NSMenuItem *startItem;
+    IBOutlet NSMenuItem *startItem, *xprobeItem, *windowItem;
     IBOutlet NSStatusItem *statusItem;
 }
 
@@ -48,6 +54,18 @@ AppDelegate *appDelegate;
     [[DDHotKeyCenter sharedHotKeyCenter] registerHotKeyWithKeyCode:kVK_ANSI_Equal
                                                      modifierFlags:NSEventModifierFlagControl
                                                             target:self action:@selector(autoInject:) object:nil];
+
+#ifdef XPROBE_PORT
+    xprobePlugin = [XprobePluginMenuController new];
+    [xprobePlugin applicationDidFinishLaunching:aNotification];
+    xprobePlugin.injectionPlugin = self;
+#else
+    xprobeItem.hidden = true
+#endif
+}
+
+- (void)evalCode:(NSString *)swift {
+    [self.lastConnection writeString:[@"EVAL " stringByAppendingString:swift]];
 }
 
 - (void)setMenuIcon:(NSString *)tiffName {
@@ -58,6 +76,7 @@ AppDelegate *appDelegate;
             statusItem.image = image;
             statusItem.alternateImage = statusItem.image;
             startItem.enabled = [tiffName isEqualToString:@"InjectionIdle"];
+            xprobeItem.enabled = !startItem.enabled;
         }
     });
 }
@@ -97,6 +116,11 @@ AppDelegate *appDelegate;
     }
 }
 
+- (IBAction)runXprobe:(NSMenuItem *)sender {
+    [self.lastConnection writeString:@"XPROBE"];
+    windowItem.hidden = FALSE;
+}
+
 - (IBAction)donate:sender {
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://johnholdsworth.com/cgi-bin/injection3.cgi"]];
 }
@@ -107,6 +131,5 @@ AppDelegate *appDelegate;
     [[DDHotKeyCenter sharedHotKeyCenter] unregisterHotKeyWithKeyCode:kVK_ANSI_Equal
                                                        modifierFlags:NSEventModifierFlagControl];
 }
-
 
 @end

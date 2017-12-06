@@ -7,6 +7,7 @@
 //
 
 #import "InjectionServer.h"
+#import "SignerService.h"
 #import "AppDelegate.h"
 #import "FileWatcher.h"
 #import <sys/stat.h>
@@ -45,7 +46,7 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
     NSLog(@"Connection with project file: %@", projectFile);
 
     // tell client app the inferred project being watched
-    [self writeString:projectRoot];
+    [self writeString:projectFile];
 
     SwiftEval *builder = [SwiftEval new];
 
@@ -121,22 +122,29 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
     else
         return;
 
+    __block NSTimeInterval pause = 0.;
+
     // start up a file watcher to write generated tmpfile path to client app
     FileWatcher *fileWatcher = [[FileWatcher alloc] initWithRoot:projectRoot plugin:^(NSArray *changed) {
-        for (NSString *swiftSource in changed) {
-            NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
-            if (now > lastInjected[swiftSource].doubleValue + MIN_INJECTION_INTERVAL) {
+        NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
+        for (NSString *swiftSource in changed)
+            if (now > lastInjected[swiftSource].doubleValue + MIN_INJECTION_INTERVAL && now > pause) {
                 lastInjected[swiftSource] = [NSNumber numberWithDouble:now];
                 inject(swiftSource);
             }
-        }
     }];
 
     // read status requests from client app
-    while (NSString *dylib = [self readString])
-        if ([dylib hasPrefix:@"COMPLETE"])
+    while (NSString *response = [self readString])
+        if ([response hasPrefix:@"COMPLETE"])
             [appDelegate setMenuIcon:@"InjectionOK"];
-        else if ([dylib hasPrefix:@"ERROR "])
+        else if ([response hasPrefix:@"PAUSE "])
+            pause = [NSDate timeIntervalSinceReferenceDate] +
+                [response substringFromIndex:@"PAUSE ".length].doubleValue;
+        else if ([response hasPrefix:@"SIGN "])
+            [self writeString:[SignerService codesignDylib:[response
+                substringFromIndex:@"SIGN ".length]] ? @"SIGNED 1" : @"SIGNED 0"];
+        else if ([response hasPrefix:@"ERROR "])
             [appDelegate setMenuIcon:@"InjectionError"];
 //            dispatch_async(dispatch_get_main_queue(), ^{
 //                [[NSAlert alertWithMessageText:@"Injection Error"

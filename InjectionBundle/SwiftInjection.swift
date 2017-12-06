@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#38 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#40 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -377,4 +377,37 @@ public struct ClassMetadataSwift {
 
 /** pointer to a function implementing a Swift method */
 public typealias SIMP = @convention(c) (_: AnyObject) -> Void
+
+#if swift(>=3.0)
+// not public in Swift3
+@_silgen_name("swift_demangle")
+private
+func _stdlib_demangleImpl(
+    mangledName: UnsafePointer<CChar>?,
+    mangledNameLength: UInt,
+    outputBuffer: UnsafeMutablePointer<UInt8>?,
+    outputBufferSize: UnsafeMutablePointer<UInt>?,
+    flags: UInt32
+    ) -> UnsafeMutablePointer<CChar>?
+
+public func _stdlib_demangleName(_ mangledName: String) -> String {
+    return mangledName.utf8CString.withUnsafeBufferPointer {
+        (mangledNameUTF8) in
+
+        let demangledNamePtr = _stdlib_demangleImpl(
+            mangledName: mangledNameUTF8.baseAddress,
+            mangledNameLength: UInt(mangledNameUTF8.count - 1),
+            outputBuffer: nil,
+            outputBufferSize: nil,
+            flags: 0)
+
+        if let demangledNamePtr = demangledNamePtr {
+            let demangledName = String(cString: demangledNamePtr)
+            free(demangledNamePtr)
+            return demangledName
+        }
+        return mangledName
+    }
+}
+#endif
 #endif

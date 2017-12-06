@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#86 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#89 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -20,13 +20,21 @@ private func debug(_ str: String) {
 //    print(str)
 }
 
+@objc protocol SwiftEvalImpl {
+    @objc optional func evalImpl(_ptr: UnsafeMutableRawPointer)
+}
+
 extension NSObject {
 
     private static var lastEvalByClass = [String: String]()
 
+    @objc public func evalSwift(_ expression: String) {
+        eval("{\n\(expression)\n}", (() -> ())?.self)?()
+    }
+
     /// eval() for String value
     public func eval(_ expression: String) -> String {
-        return eval("\"" + expression + "\"", String.self)
+        return eval("\"\(expression)\"", String.self)
     }
 
     /// eval() for value of any type
@@ -37,11 +45,37 @@ extension NSObject {
 
             extension \(className) {
 
-                @objc dynamic override func evalImpl(_ptr: UnsafeMutableRawPointer) {
-                    let _ptr = _ptr.assumingMemoryBound(to: \(type).self)
+                @objc func evalImpl(_ptr: UnsafeMutableRawPointer) {
+                    func xprint<T>(_ str: T) {
+                        if let xprobe = NSClassFromString("Xprobe") {
+                            #if swift(>=4.0)
+                            _ = (xprobe as AnyObject).perform(Selector(("xlog:")), with: "\\(str)")
+                            #elseif swift(>=3.0)
+                            Thread.detachNewThreadSelector(Selector(("xlog:")), toTarget:xprobe, with:"\\(str)" as NSString)
+                            #else
+                            NSThread.detachNewThreadSelector(Selector("xlog:"), toTarget:xprobe, withObject:"\\(str)" as NSString)
+                            #endif
+                        }
+                    }
+
+                    #if swift(>=3.0)
+                    struct XprobeOutputStream: TextOutputStream {
+                        var out = ""
+                        mutating func write(_ string: String) {
+                            out += string
+                        }
+                    }
+
+                    func xdump<T>(_ arg: T) {
+                        var stream = XprobeOutputStream()
+                        dump(arg, to: &stream)
+                        xprint(stream.out)
+                    }
+                    #endif
+
+                    let _ptr = _ptr.assumingMemoryBound(to: (\(type)).self)
                     _ptr.pointee = \(expression)
                 }
-
             }
 
             """
@@ -58,11 +92,11 @@ extension NSObject {
 
                     // swizzle new version of evalImpl onto class
 
-                    if let newMethod = class_getInstanceMethod(newClass, #selector(evalImpl(_ptr:))) {
-                        class_replaceMethod(oldClass, #selector(evalImpl(_ptr:)),
+                    let selector = #selector(SwiftEvalImpl.evalImpl(_ptr:))
+                    if let newMethod = class_getInstanceMethod(newClass, selector) {
+                        class_replaceMethod(oldClass, selector,
                                             method_getImplementation(newMethod),
                                             method_getTypeEncoding(newMethod))
-
                         NSObject.lastEvalByClass[className] = expression
                     }
                 }
@@ -76,15 +110,11 @@ extension NSObject {
         let ptr = UnsafeMutablePointer<T>.allocate(capacity: 1)
         bzero(ptr, MemoryLayout<T>.size)
         if NSObject.lastEvalByClass[className] == expression {
-            evalImpl(_ptr: ptr)
+            unsafeBitCast(self, to: SwiftEvalImpl.self).evalImpl?(_ptr: ptr)
         }
         let out = ptr.pointee
         ptr.deallocate(capacity: 1)
         return out
-    }
-
-    @objc dynamic func evalImpl(_ptr _: UnsafeMutableRawPointer) {
-        print("NSObject.evalImpl() called - no subclass implementation loaded")
     }
 }
 
@@ -102,6 +132,10 @@ fileprivate extension String {
 public class SwiftEval: NSObject {
 
     static var instance = SwiftEval()
+
+    @objc public class func sharedInstance() -> SwiftEval {
+        return instance
+    }
 
     @objc public var signer: ((_: String) -> Bool)?
 
@@ -135,8 +169,12 @@ public class SwiftEval: NSObject {
             findDerivedData(url: sourceURL) else {
             throw evalError("Could not locate derived data. Is the project under you home directory?")
         }
-        guard let (projectFile, logsDir) = derivedLogs.flatMap({
-            (URL(fileURLWithPath: self.projectFile!), URL(fileURLWithPath: $0)) }) ??
+        guard let (projectFile, logsDir) =
+            self.derivedLogs
+                .flatMap({ (URL(fileURLWithPath: self.projectFile!), URL(fileURLWithPath: $0)) }) ??
+            self.projectFile
+                .flatMap({ logsDir(project: URL(fileURLWithPath: $0), derivedData: derivedData) })
+                .flatMap({ (URL(fileURLWithPath: self.projectFile!), $0) }) ??
             findProject(for: sourceURL, derivedData: derivedData) else {
             throw evalError("Could not locate containg project or it's logs.")
         }
@@ -392,7 +430,7 @@ public class SwiftEval: NSObject {
             throw evalError("Could not locate source file \(compileCommand) -- \(regexp)")
         }
 
-        return (compileCommand, sourceFile)
+        return (compileCommand, sourceFile.replacingOccurrences(of: "\\$", with: "$"))
     }
 
     lazy var mainHandle = dlopen(nil, RTLD_NOLOAD)
@@ -508,7 +546,8 @@ public class SwiftEval: NSObject {
     func logsDir(project: URL, derivedData: URL) -> URL? {
         let filemgr = FileManager.default
         let projectPrefix = project.deletingPathExtension()
-            .lastPathComponent.replacingOccurrences(of: " ", with: "_")
+            .lastPathComponent.replacingOccurrences(of: "\\s+", with: "_",
+                                    options: .regularExpression, range: nil)
         let relativeDerivedData = project.deletingLastPathComponent()
             .appendingPathComponent("DerivedData/\(projectPrefix)/Logs/Build")
 

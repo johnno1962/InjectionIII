@@ -16,6 +16,7 @@
 		BB439B751FABA64300B4F50B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB439B731FABA64300B4F50B /* LaunchScreen.storyboard */; };
 		BB439B801FABA64300B4F50B /* SwiftEvalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B7F1FABA64300B4F50B /* SwiftEvalTests.swift */; };
 		BB439BB41FAC185200B4F50B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BB439BB31FAC185200B4F50B /* main.m */; };
+		BB56393C1FD5C25A002FFCEF /* SignerService.m in Sources */ = {isa = PBXBuildFile; fileRef = BB67DBB61FB0D0F2000EAC8A /* SignerService.m */; };
 		BB6224451FC5B0E600AD7A3A /* HelperProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6224411FC5B0E300AD7A3A /* HelperProxy.m */; };
 		BB6224461FC5B0E600AD7A3A /* HelperInstaller.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6224441FC5B0E500AD7A3A /* HelperInstaller.m */; };
 		BB6224551FC5B1CB00AD7A3A /* mach_inject_bundle_stub.c in Sources */ = {isa = PBXBuildFile; fileRef = BB6224541FC5B1CB00AD7A3A /* mach_inject_bundle_stub.c */; };
@@ -33,6 +34,22 @@
 		BBB148DF1FAD53BE00CB6B33 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBB148DD1FAD53BE00CB6B33 /* MainMenu.xib */; };
 		BBB64DC51FD450AF0020BE47 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = BB037DF31FAD808B004B267C /* README.md */; };
 		BBB64DC61FD450B40020BE47 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = BB037DF41FAD80D0004B267C /* LICENSE */; };
+		BBB64DD31FD56F570020BE47 /* XprobePluginMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBB64DD11FD56F570020BE47 /* XprobePluginMenuController.m */; };
+		BBB64DD41FD56F570020BE47 /* XprobeConsole.m in Sources */ = {isa = PBXBuildFile; fileRef = BBB64DD21FD56F570020BE47 /* XprobeConsole.m */; };
+		BBB64DDC1FD570220020BE47 /* graph-xdot.gv in Resources */ = {isa = PBXBuildFile; fileRef = BBB64DD61FD570210020BE47 /* graph-xdot.gv */; };
+		BBB64DDD1FD570220020BE47 /* CodeMirror in Resources */ = {isa = PBXBuildFile; fileRef = BBB64DD71FD570210020BE47 /* CodeMirror */; };
+		BBB64DDE1FD570220020BE47 /* xprobe.html in Resources */ = {isa = PBXBuildFile; fileRef = BBB64DD81FD570210020BE47 /* xprobe.html */; };
+		BBB64DDF1FD570220020BE47 /* canviz-0.1 in Resources */ = {isa = PBXBuildFile; fileRef = BBB64DD91FD570210020BE47 /* canviz-0.1 */; };
+		BBB64DE01FD570220020BE47 /* canviz.html in Resources */ = {isa = PBXBuildFile; fileRef = BBB64DDA1FD570220020BE47 /* canviz.html */; };
+		BBB64DE11FD570220020BE47 /* tiny_red.gif in Resources */ = {isa = PBXBuildFile; fileRef = BBB64DDB1FD570220020BE47 /* tiny_red.gif */; };
+		BBB64DE51FD571310020BE47 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BBB64DE41FD571300020BE47 /* libz.tbd */; };
+		BBB64DE61FD5717C0020BE47 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BBB64DE41FD571300020BE47 /* libz.tbd */; };
+		BBB64FDE1FD5744A0020BE47 /* XprobeConsole.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBB64FDC1FD5744A0020BE47 /* XprobeConsole.xib */; };
+		BBB64FDF1FD5744A0020BE47 /* XprobePluginMenuController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBB64FDD1FD5744A0020BE47 /* XprobePluginMenuController.xib */; };
+		BBB64FE11FD575260020BE47 /* XprobeSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB64FE01FD575260020BE47 /* XprobeSwift.swift */; };
+		BBB64FE61FD577EB0020BE47 /* SwiftSwizzler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB64FE51FD577EB0020BE47 /* SwiftSwizzler.swift */; };
+		BBB64FEA1FD583B60020BE47 /* Xprobe.mm in Sources */ = {isa = PBXBuildFile; fileRef = BBB64FE91FD583B60020BE47 /* Xprobe.mm */; };
+		BBB64FEC1FD585D50020BE47 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBB64FEB1FD585D50020BE47 /* WebKit.framework */; };
 		BBBFD2D01FCFEE300057D899 /* SwiftEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */; };
 		BBCA02021FB0F10300E45F0F /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = BBCA02011FB0F10300E45F0F /* AppDelegate.mm */; };
 		BBCA02041FB0F10300E45F0F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02031FB0F10300E45F0F /* Assets.xcassets */; };
@@ -126,6 +143,11 @@
 		BB037DF31FAD808B004B267C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BB037DF41FAD80D0004B267C /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftInjection.swift; sourceTree = "<group>"; };
+		BB1DEA9A1FD6A74800AF509F /* Xtrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Xtrace.h; path = XprobePlugin/Classes/Xtrace.h; sourceTree = "<group>"; };
+		BB1DEA9B1FD6A74900AF509F /* IvarAccess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IvarAccess.h; path = XprobePlugin/Classes/IvarAccess.h; sourceTree = "<group>"; };
+		BB1DEA9C1FD6A74900AF509F /* Xprobe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Xprobe.h; path = XprobePlugin/Classes/Xprobe.h; sourceTree = "<group>"; };
+		BB1DEA9D1FD6A74900AF509F /* XprobeConsole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XprobeConsole.h; path = XprobePlugin/Classes/XprobeConsole.h; sourceTree = "<group>"; };
+		BB1DEA9E1FD6A74900AF509F /* XprobePluginMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XprobePluginMenuController.h; path = XprobePlugin/Classes/XprobePluginMenuController.h; sourceTree = "<group>"; };
 		BB439B651FABA64300B4F50B /* SwiftEval.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftEval.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB439B681FABA64300B4F50B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BB439B6A1FABA64300B4F50B /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
@@ -141,6 +163,8 @@
 		BB439BAC1FAC030E00B4F50B /* SwiftEval.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SwiftEval.entitlements; sourceTree = "<group>"; };
 		BB439BB11FAC185200B4F50B /* signer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = signer; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB439BB31FAC185200B4F50B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		BB56393F1FD5D535002FFCEF /* Xprobe+Service.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = "Xprobe+Service.mm"; path = "XprobePlugin/Classes/Xprobe+Service.mm"; sourceTree = "<group>"; };
+		BB5639401FD5D535002FFCEF /* Xtrace.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = Xtrace.mm; path = XprobePlugin/Classes/Xtrace.mm; sourceTree = "<group>"; };
 		BB6224411FC5B0E300AD7A3A /* HelperProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelperProxy.m; sourceTree = "<group>"; };
 		BB6224421FC5B0E500AD7A3A /* HelperProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperProxy.h; sourceTree = "<group>"; };
 		BB6224431FC5B0E500AD7A3A /* HelperInstaller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperInstaller.h; sourceTree = "<group>"; };
@@ -173,6 +197,22 @@
 		BBB148DE1FAD53BE00CB6B33 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		BBB148E01FAD53BE00CB6B33 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BBB148E11FAD53BE00CB6B33 /* EvalApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EvalApp.entitlements; sourceTree = "<group>"; };
+		BBB64DD11FD56F570020BE47 /* XprobePluginMenuController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XprobePluginMenuController.m; path = XprobePlugin/Classes/XprobePluginMenuController.m; sourceTree = SOURCE_ROOT; };
+		BBB64DD21FD56F570020BE47 /* XprobeConsole.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XprobeConsole.m; path = XprobePlugin/Classes/XprobeConsole.m; sourceTree = SOURCE_ROOT; };
+		BBB64DD61FD570210020BE47 /* graph-xdot.gv */ = {isa = PBXFileReference; lastKnownFileType = text; name = "graph-xdot.gv"; path = "XprobePlugin/graph-xdot.gv"; sourceTree = SOURCE_ROOT; };
+		BBB64DD71FD570210020BE47 /* CodeMirror */ = {isa = PBXFileReference; lastKnownFileType = folder; name = CodeMirror; path = XprobePlugin/CodeMirror; sourceTree = SOURCE_ROOT; };
+		BBB64DD81FD570210020BE47 /* xprobe.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = xprobe.html; path = XprobePlugin/xprobe.html; sourceTree = SOURCE_ROOT; };
+		BBB64DD91FD570210020BE47 /* canviz-0.1 */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "canviz-0.1"; path = "XprobePlugin/canviz-0.1"; sourceTree = SOURCE_ROOT; };
+		BBB64DDA1FD570220020BE47 /* canviz.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = canviz.html; path = XprobePlugin/canviz.html; sourceTree = SOURCE_ROOT; };
+		BBB64DDB1FD570220020BE47 /* tiny_red.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = tiny_red.gif; path = XprobePlugin/tiny_red.gif; sourceTree = SOURCE_ROOT; };
+		BBB64DE41FD571300020BE47 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
+		BBB64FDC1FD5744A0020BE47 /* XprobeConsole.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = XprobeConsole.xib; path = XprobePlugin/Classes/XprobeConsole.xib; sourceTree = SOURCE_ROOT; };
+		BBB64FDD1FD5744A0020BE47 /* XprobePluginMenuController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = XprobePluginMenuController.xib; path = XprobePlugin/Classes/XprobePluginMenuController.xib; sourceTree = SOURCE_ROOT; };
+		BBB64FE01FD575260020BE47 /* XprobeSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = XprobeSwift.swift; path = XprobePlugin/XprobeSwift/XprobeSwift/XprobeSwift.swift; sourceTree = SOURCE_ROOT; };
+		BBB64FE41FD576AA0020BE47 /* XprobeSwift-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XprobeSwift-Bridging-Header.h"; sourceTree = "<group>"; };
+		BBB64FE51FD577EB0020BE47 /* SwiftSwizzler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SwiftSwizzler.swift; path = XprobePlugin/XprobeSwift/XprobeSwift/SwiftSwizzler.swift; sourceTree = SOURCE_ROOT; };
+		BBB64FE91FD583B60020BE47 /* Xprobe.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = Xprobe.mm; path = XprobePlugin/Classes/Xprobe.mm; sourceTree = SOURCE_ROOT; };
+		BBB64FEB1FD585D50020BE47 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/WebKit.framework; sourceTree = DEVELOPER_DIR; };
 		BBBEC42D1FC56522004188B3 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		BBCA01FE1FB0F10300E45F0F /* InjectionIII.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InjectionIII.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBCA02001FB0F10300E45F0F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -247,7 +287,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBB64FEC1FD585D50020BE47 /* WebKit.framework in Frameworks */,
 				BBB040641FB17A6C007DDD0A /* ScriptingBridge.framework in Frameworks */,
+				BBB64DE51FD571310020BE47 /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -255,6 +297,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBB64DE61FD5717C0020BE47 /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,6 +314,7 @@
 				BB6224481FC5B13D00AD7A3A /* Bootstrap */,
 				BB62245D1FC5B37400AD7A3A /* Helper */,
 				BB6306F21FCD16140021D30C /* DDHotKey */,
+				CEFB9ADB1FD58DB00034B410 /* Xprobe */,
 				BB439B671FABA64300B4F50B /* SwiftEval */,
 				BB439B7E1FABA64300B4F50B /* SwiftEvalTests */,
 				BB439BB21FAC185200B4F50B /* signer */,
@@ -367,6 +411,8 @@
 		BBB040621FB1798A007DDD0A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BBB64FEB1FD585D50020BE47 /* WebKit.framework */,
+				BBB64DE41FD571300020BE47 /* libz.tbd */,
 				BBBEC42D1FC56522004188B3 /* XCTest.framework */,
 				BBB040631FB1798A007DDD0A /* ScriptingBridge.framework */,
 			);
@@ -426,8 +472,36 @@
 				BBCA025C1FB114FF00E45F0F /* InjectionClient.mm */,
 				BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */,
 				BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */,
+				BBB64FE41FD576AA0020BE47 /* XprobeSwift-Bridging-Header.h */,
 			);
 			path = InjectionBundle;
+			sourceTree = "<group>";
+		};
+		CEFB9ADB1FD58DB00034B410 /* Xprobe */ = {
+			isa = PBXGroup;
+			children = (
+				BB1DEA9A1FD6A74800AF509F /* Xtrace.h */,
+				BB5639401FD5D535002FFCEF /* Xtrace.mm */,
+				BB1DEA9C1FD6A74900AF509F /* Xprobe.h */,
+				BBB64FE91FD583B60020BE47 /* Xprobe.mm */,
+				BB1DEA9B1FD6A74900AF509F /* IvarAccess.h */,
+				BB56393F1FD5D535002FFCEF /* Xprobe+Service.mm */,
+				BBB64FE01FD575260020BE47 /* XprobeSwift.swift */,
+				BBB64FE51FD577EB0020BE47 /* SwiftSwizzler.swift */,
+				BBB64DD91FD570210020BE47 /* canviz-0.1 */,
+				BBB64DDA1FD570220020BE47 /* canviz.html */,
+				BBB64DD71FD570210020BE47 /* CodeMirror */,
+				BBB64DD61FD570210020BE47 /* graph-xdot.gv */,
+				BBB64DDB1FD570220020BE47 /* tiny_red.gif */,
+				BBB64DD81FD570210020BE47 /* xprobe.html */,
+				BB1DEA9D1FD6A74900AF509F /* XprobeConsole.h */,
+				BBB64DD21FD56F570020BE47 /* XprobeConsole.m */,
+				BBB64FDC1FD5744A0020BE47 /* XprobeConsole.xib */,
+				BB1DEA9E1FD6A74900AF509F /* XprobePluginMenuController.h */,
+				BBB64DD11FD56F570020BE47 /* XprobePluginMenuController.m */,
+				BBB64FDD1FD5744A0020BE47 /* XprobePluginMenuController.xib */,
+			);
+			name = Xprobe;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -566,6 +640,7 @@
 				BBCA02411FB1065D00E45F0F /* Sources */,
 				BBCA02421FB1065D00E45F0F /* Frameworks */,
 				BBCA02431FB1065D00E45F0F /* Resources */,
+				BBE429591FD7D476009FBA8B /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -701,6 +776,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBB64FDE1FD5744A0020BE47 /* XprobeConsole.xib in Resources */,
+				BBB64FDF1FD5744A0020BE47 /* XprobePluginMenuController.xib in Resources */,
+				BBB64DDC1FD570220020BE47 /* graph-xdot.gv in Resources */,
+				BBB64DDD1FD570220020BE47 /* CodeMirror in Resources */,
+				BBB64DDE1FD570220020BE47 /* xprobe.html in Resources */,
+				BBB64DDF1FD570220020BE47 /* canviz-0.1 in Resources */,
+				BBB64DE01FD570220020BE47 /* canviz.html in Resources */,
+				BBB64DE11FD570220020BE47 /* tiny_red.gif in Resources */,
 				BBB64DC61FD450B40020BE47 /* LICENSE in Resources */,
 				BBB64DC51FD450AF0020BE47 /* README.md in Resources */,
 				BB6224571FC5B30400AD7A3A /* Bootstrap.bundle in Resources */,
@@ -751,7 +834,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "SYMROOT=/tmp/Injection\n\"$DEVELOPER_BIN_DIR\"/xcodebuild SYMROOT=$SYMROOT PRODUCT_NAME=iOSInjection LD_RUNPATH_SEARCH_PATHS=\"$DEVELOPER_DIR/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator $DEVELOPER_DIR/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks\" -arch x86_64 -arch i386 -sdk iphonesimulator -config Debug -target InjectionBundle &&\nrsync -au $SYMROOT/Debug-iphonesimulator/iOSInjection.bundle \"$CODESIGNING_FOLDER_PATH/Contents/Resources\" &&\n\"$DEVELOPER_BIN_DIR\"/xcodebuild SYMROOT=$SYMROOT PRODUCT_NAME=tvOSInjection LD_RUNPATH_SEARCH_PATHS=\"$DEVELOPER_DIR/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/appletvsimulator $DEVELOPER_DIR/Platforms/AppleTVSimulator.platform/Developer/Library/Frameworks\" -arch x86_64 -sdk appletvsimulator -config Debug -target InjectionBundle &&\nrsync -au $SYMROOT/Debug-appletvsimulator/tvOSInjection.bundle \"$CODESIGNING_FOLDER_PATH/Contents/Resources\"";
+			shellScript = "SYMROOT=/tmp/Injection\n\"$DEVELOPER_BIN_DIR\"/xcodebuild SYMROOT=$SYMROOT PRODUCT_NAME=iOSInjection LD_RUNPATH_SEARCH_PATHS=\"$DEVELOPER_DIR/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator @executable_path/../Frameworks\" -arch x86_64 -arch i386 -sdk iphonesimulator -config Debug -target InjectionBundle &&\nrsync -au $SYMROOT/Debug-iphonesimulator/iOSInjection.bundle \"$CODESIGNING_FOLDER_PATH/Contents/Resources\" &&\n\"$DEVELOPER_BIN_DIR\"/xcodebuild SYMROOT=$SYMROOT PRODUCT_NAME=tvOSInjection LD_RUNPATH_SEARCH_PATHS=\"$DEVELOPER_DIR/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/appletvsimulator $@executable_path/../Frameworks\" -arch x86_64 -sdk appletvsimulator -config Debug -target InjectionBundle &&\nrsync -au $SYMROOT/Debug-appletvsimulator/tvOSInjection.bundle \"$CODESIGNING_FOLDER_PATH/Contents/Resources\"";
+			showEnvVarsInLog = 0;
+		};
+		BBE429591FD7D476009FBA8B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "rsync -au \"$DEVELOPER_DIR/Platforms/AppleTVSimulator.platform/Developer/Library/Frameworks/XCTest.framework\" \"$CONFIGURATION_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH\"";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -819,6 +916,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBB64FEA1FD583B60020BE47 /* Xprobe.mm in Sources */,
+				BBB64DD31FD56F570020BE47 /* XprobePluginMenuController.m in Sources */,
+				BBB64DD41FD56F570020BE47 /* XprobeConsole.m in Sources */,
+				BB56393C1FD5C25A002FFCEF /* SignerService.m in Sources */,
 				BBCA020A1FB0F10400E45F0F /* main.m in Sources */,
 				BBEB704C1FD28C6F00127711 /* XcodeHash.m in Sources */,
 				BBCA02021FB0F10300E45F0F /* AppDelegate.mm in Sources */,
@@ -837,10 +938,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBCA025D1FB114FF00E45F0F /* InjectionClient.mm in Sources */,
+				BBCA02621FB1312A00E45F0F /* SimpleSocket.mm in Sources */,
 				BBCA02501FB107AF00E45F0F /* SwiftEval.swift in Sources */,
 				BBCA02511FB107AF00E45F0F /* SwiftInjection.swift in Sources */,
-				BBCA02621FB1312A00E45F0F /* SimpleSocket.mm in Sources */,
-				BBCA025D1FB114FF00E45F0F /* InjectionClient.mm in Sources */,
+				BBB64FE11FD575260020BE47 /* XprobeSwift.swift in Sources */,
+				BBB64FE61FD577EB0020BE47 /* SwiftSwizzler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -947,6 +1050,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"HELPER_MACH_ID=\\\"$HELPER_MACH_ID\\\"",
 					"DEBUG=1",
+					"XPROBE_PORT=8891",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -1006,6 +1110,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"HELPER_MACH_ID=\\\"$HELPER_MACH_ID\\\"",
 					"DEBUG=1",
+					"XPROBE_PORT=8891",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -1289,6 +1394,7 @@
 				REEXPORTED_FRAMEWORK_NAMES = "";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "InjectionBundle/XprobeSwift-Bridging-Header.h";
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Debug;
@@ -1309,6 +1415,7 @@
 				REEXPORTED_FRAMEWORK_NAMES = "";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "InjectionBundle/XprobeSwift-Bridging-Header.h";
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Release;

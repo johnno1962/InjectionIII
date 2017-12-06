@@ -35,6 +35,9 @@ If you are stopped in a class, you can edit the class' implementation, save it a
 To detect this in your code to reload a view controller for example, add an @objc
 injected() method or subscribe to the `"INJECTION_BUNDLE_NOTIFICATION"`.
 
+Included in this release is "Xprobe" which allows you to browse the objects in
+you application as a graph and execute code against them.
+
 ### Limitations
 
 To work, [method dispatch](https://www.raizlabs.com/dev/2016/12/swift-method-dispatch/)
@@ -106,3 +109,13 @@ This project includes code from [rentzsch/mach_inject](https://github.com/rentzs
 [erwanb/MachInjectSample](https://github.com/erwanb/MachInjectSample) and
 [davedelong/DDHotKey](https://github.com/davedelong/DDHotKey) under their
 respective licenses.
+
+This release includes a very slightly modified version of the excellent
+[canviz](https://code.google.com/p/canviz/) library to render "dot" files
+in an HTML canvas which is subject to an MIT license. The changes are to pass
+through the ID of the node to the node label tag (line 212), to reverse
+the rendering of nodes and the lines linking them (line 406) and to
+store edge paths so they can be colored (line 66 and 303) in "canviz-0.1/canviz.js".
+
+It now also includes [CodeMirror](http://codemirror.net/) JavaScript editor
+for the code to be evaluated using injection under an MIT license.
