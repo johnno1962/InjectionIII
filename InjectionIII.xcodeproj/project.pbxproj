@@ -834,7 +834,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "SYMROOT=/tmp/Injection\n\"$DEVELOPER_BIN_DIR\"/xcodebuild SYMROOT=$SYMROOT PRODUCT_NAME=iOSInjection LD_RUNPATH_SEARCH_PATHS=\"$DEVELOPER_DIR/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator $DEVELOPER_DIR/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks @executable_path/../Frameworks\" -arch x86_64 -arch i386 -sdk iphonesimulator -config Debug -target InjectionBundle &&\nrsync -au $SYMROOT/Debug-iphonesimulator/iOSInjection.bundle \"$CODESIGNING_FOLDER_PATH/Contents/Resources\" &&\n\"$DEVELOPER_BIN_DIR\"/xcodebuild SYMROOT=$SYMROOT PRODUCT_NAME=tvOSInjection LD_RUNPATH_SEARCH_PATHS=\"$DEVELOPER_DIR/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/appletvsimulator $DEVELOPER_DIR/Platforms/AppleTVSimulator.platform/Developer/Library/Frameworks @executable_path/../Frameworks\" -arch x86_64 -sdk appletvsimulator -config Debug -target InjectionBundle &&\nrsync -au $SYMROOT/Debug-appletvsimulator/tvOSInjection.bundle \"$CODESIGNING_FOLDER_PATH/Contents/Resources\"";
+			shellScript = "SYMROOT=/tmp/Injection\nexport PLATFORM_DIR_OS=$DEVELOPER_DIR/Platforms/iPhoneSimulator.platform &&\n\"$DEVELOPER_BIN_DIR\"/xcodebuild SYMROOT=$SYMROOT PRODUCT_NAME=iOSInjection LD_RUNPATH_SEARCH_PATHS=\"$DEVELOPER_DIR/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator $PLATFORM_DIR_OS/Developer/Library/Frameworks @loader_path/Frameworks\" -arch x86_64 -arch i386 -sdk iphonesimulator -config Debug -target InjectionBundle &&\nrsync -au $SYMROOT/Debug-iphonesimulator/iOSInjection.bundle \"$CODESIGNING_FOLDER_PATH/Contents/Resources\" &&\nexport PLATFORM_DIR_OS=$DEVELOPER_DIR/Platforms/AppleTVSimulator.platform &&\n\"$DEVELOPER_BIN_DIR\"/xcodebuild SYMROOT=$SYMROOT PRODUCT_NAME=tvOSInjection LD_RUNPATH_SEARCH_PATHS=\"$DEVELOPER_DIR/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/appletvsimulator $PLATFORM_DIR_OS/Developer/Library/Frameworks @loader_path/Frameworks\" -arch x86_64 -sdk appletvsimulator -config Debug -target InjectionBundle &&\nrsync -au $SYMROOT/Debug-appletvsimulator/tvOSInjection.bundle \"$CODESIGNING_FOLDER_PATH/Contents/Resources\"";
 			showEnvVarsInLog = 0;
 		};
 		BBE429591FD7D476009FBA8B /* ShellScript */ = {
@@ -848,7 +848,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "rsync -au \"$DEVELOPER_DIR/Platforms/AppleTVSimulator.platform/Developer/Library/Frameworks/XCTest.framework\" \"$CONFIGURATION_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH\"";
+			shellScript = "rsync -au --links \"${PLATFORM_DIR_OS:-$PLATFORM_DIR}/Developer/Library/Frameworks/XCTest.framework\" \"$CONFIGURATION_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH\"";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
