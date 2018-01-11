@@ -110,7 +110,10 @@
                     NSArray<NSString *> *parts = [args componentsSeparatedByString:@"^"];
                     int pathID = parts[0].intValue;
                     [self writeString:@"PAUSE 5"];
-                    [xprobePaths[pathID].object evalSwift:parts[3].stringByRemovingPercentEncoding];
+                    if ([xprobePaths[pathID].object respondsToSelector:@selector(evalSwift:)])
+                        [xprobePaths[pathID].object evalSwift:parts[3].stringByRemovingPercentEncoding];
+                    else
+                        printf("Eval only works on NSObject subclasses\n");
                     [Xprobe writeString:[NSString stringWithFormat:@"$('BUSY%d').hidden = true; ", pathID]];
                 }
 #endif

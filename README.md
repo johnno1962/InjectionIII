@@ -1,4 +1,4 @@
-# InjectionIII - overdue Swift rewrite of Injection
+# InjectionIII - overdue Swift4 rewrite of Injection
 
 ![Icon](http://johnholdsworth.com/Syringe_128.png)
 
@@ -7,14 +7,17 @@ has been built into an app: InjectionIII.app included in the repo which runs in 
 Code injection allows you to update the implementation of methods of a class incrementally
 in the iOS simulator without having to rebuild or restart your application saving developer time.
 You can avoid the complications of code signing by using the pre-built binary which is available to
-[download here](http://johnholdsworth.com/InjectionIII.app.zip). To use, copy/link it to /Applications
-and run the app. Injection no longer requires you to change your project as for iOS is always available
-if you use the "Start Injection" menu (or type control-=) each time you start your app.
+[download here](http://johnholdsworth.com/InjectionIII.app.zip).  For some reason you may need
+to take the app out of qurantine manually or it will report it as damaged when you run it: `xattr -d
+com.apple.quarantine ~/Downloads/InjectionIII.app`. To use, copy/link it to /Applications
+and run the app. Injection also expects to find your current Xcode at path /Appplications/Xcode.app.
+Injection no longer requires you to change your project as for iOS is always available if you use the
+"Start Injection" menu (or type control-=) each time you start your app.
 
-If you get tired of this or you want to develope tvOS or macOS you can and add one of the following
-to your applicationDidFinishLaunching:
+If you get tired of this or you want to develop 32 bit apps or tvOS or macOS you can and add one
+of the following to your applicationDidFinishLaunching:
 
-```
+```Swift
 #if DEBUG
 Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle")?.load()
 //for tvOS:
