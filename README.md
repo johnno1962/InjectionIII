@@ -53,6 +53,11 @@ injection will not work for final methods or methods in final classes or structs
 func injected()` method relies on a sweep of all objects in your application to find those of
 the class you have just injected which can fail. If you encounter problems, use the notification.
 
+If you are using Code Coverage, you will need to disable it or you may receive a:
+>	`Symbol not found: ___llvm_profile_runtime` error.`
+
+Go to `Edit Scheme -> Test -> Info -> Code Coverage` and (temporarily) disable.
+
 Be mindful of global state -- If the file you're injecting as non instance-level variables e.g. singletons
 they will be reset when you inject the code as the new implementations will refer to the newly loaded
 version of the class.
