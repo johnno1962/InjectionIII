@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#93 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#94 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -149,6 +149,7 @@ public class SwiftEval: NSObject {
 
     @objc public var projectFile: String?
     @objc public var derivedLogs: String?
+    @objc public var tmpDir = "/tmp"
 
     /// Error handler
     @objc public var evalError = {
@@ -179,13 +180,13 @@ public class SwiftEval: NSObject {
                 .flatMap({ logsDir(project: URL(fileURLWithPath: $0), derivedData: derivedData) })
                 .flatMap({ (URL(fileURLWithPath: self.projectFile!), $0) }) ??
             findProject(for: sourceURL, derivedData: derivedData) else {
-            throw evalError("Could not locate containg project or it's logs.")
+            throw evalError("Could not locate containing project or it's logs.")
         }
 
         // locate compile command for class
 
         injectionNumber += 1
-        let tmpfile = "/tmp/eval\(injectionNumber)"
+        let tmpfile = "\(tmpDir)/eval\(injectionNumber)"
 
         guard var (compileCommand, sourceFile) = try SwiftEval.compileByClass[classNameOrFile] ??
             findCompileCommand(logsDir: logsDir, classNameOrFile: classNameOrFile, tmpfile: tmpfile) ??

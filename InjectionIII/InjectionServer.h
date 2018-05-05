@@ -9,6 +9,7 @@
 #import "SimpleSocket.h"
 
 #define INJECTION_ADDRESS @":8898"
+#define INJECTION_KEY @"bvijkijyhbtrbrebzjbbzcfbbvvq"
 
 @interface InjectionServer : SimpleSocket
 

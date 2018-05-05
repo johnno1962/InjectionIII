@@ -7,31 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BB037DF51FAD80D0004B267C /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = BB037DF41FAD80D0004B267C /* LICENSE */; };
-		BB439B691FABA64300B4F50B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B681FABA64300B4F50B /* AppDelegate.swift */; };
-		BB439B6B1FABA64300B4F50B /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B6A1FABA64300B4F50B /* MasterViewController.swift */; };
-		BB439B6D1FABA64300B4F50B /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B6C1FABA64300B4F50B /* DetailViewController.swift */; };
-		BB439B701FABA64300B4F50B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB439B6E1FABA64300B4F50B /* Main.storyboard */; };
-		BB439B721FABA64300B4F50B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB439B711FABA64300B4F50B /* Assets.xcassets */; };
-		BB439B751FABA64300B4F50B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB439B731FABA64300B4F50B /* LaunchScreen.storyboard */; };
 		BB439B801FABA64300B4F50B /* SwiftEvalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B7F1FABA64300B4F50B /* SwiftEvalTests.swift */; };
-		BB439BB41FAC185200B4F50B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BB439BB31FAC185200B4F50B /* main.m */; };
 		BB56393C1FD5C25A002FFCEF /* SignerService.m in Sources */ = {isa = PBXBuildFile; fileRef = BB67DBB61FB0D0F2000EAC8A /* SignerService.m */; };
-		BB6224451FC5B0E600AD7A3A /* HelperProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6224411FC5B0E300AD7A3A /* HelperProxy.m */; };
-		BB6224461FC5B0E600AD7A3A /* HelperInstaller.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6224441FC5B0E500AD7A3A /* HelperInstaller.m */; };
-		BB6224551FC5B1CB00AD7A3A /* mach_inject_bundle_stub.c in Sources */ = {isa = PBXBuildFile; fileRef = BB6224541FC5B1CB00AD7A3A /* mach_inject_bundle_stub.c */; };
-		BB6224571FC5B30400AD7A3A /* Bootstrap.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BB62244D1FC5B18700AD7A3A /* Bootstrap.bundle */; };
-		BB62246A1FC5B3B700AD7A3A /* Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6224641FC5B3B700AD7A3A /* Helper.m */; };
-		BB62246B1FC5B3B700AD7A3A /* mach_inject.c in Sources */ = {isa = PBXBuildFile; fileRef = BB6224651FC5B3B700AD7A3A /* mach_inject.c */; };
-		BB62246C1FC5B3B700AD7A3A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6224691FC5B3B700AD7A3A /* main.m */; };
-		BB6224731FC5BA8800AD7A3A /* com.johnholdsworth.InjectionIII.Helper in CopyFiles */ = {isa = PBXBuildFile; fileRef = BB62245C1FC5B37400AD7A3A /* com.johnholdsworth.InjectionIII.Helper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BB6306F71FCD16600021D30C /* DDHotKeyCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6306F51FCD16600021D30C /* DDHotKeyCenter.m */; };
-		BB6306F81FCD16600021D30C /* DDHotKeyUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6306F61FCD16600021D30C /* DDHotKeyUtilities.m */; };
 		BB6306FE1FCD1A410021D30C /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = BB6306FD1FCD1A410021D30C /* Credits.rtf */; };
 		BBB040641FB17A6C007DDD0A /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBB040631FB1798A007DDD0A /* ScriptingBridge.framework */; };
-		BBB148DA1FAD53BE00CB6B33 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB148D91FAD53BE00CB6B33 /* AppDelegate.swift */; };
-		BBB148DC1FAD53BE00CB6B33 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBB148DB1FAD53BE00CB6B33 /* Assets.xcassets */; };
-		BBB148DF1FAD53BE00CB6B33 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBB148DD1FAD53BE00CB6B33 /* MainMenu.xib */; };
 		BBB64DC51FD450AF0020BE47 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = BB037DF31FAD808B004B267C /* README.md */; };
 		BBB64DC61FD450B40020BE47 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = BB037DF41FAD80D0004B267C /* LICENSE */; };
 		BBB64DD31FD56F570020BE47 /* XprobePluginMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBB64DD11FD56F570020BE47 /* XprobePluginMenuController.m */; };
@@ -65,12 +44,6 @@
 		BBCA02601FB122C300E45F0F /* InjectionIdle.tif in Resources */ = {isa = PBXBuildFile; fileRef = BBCA025E1FB122C300E45F0F /* InjectionIdle.tif */; };
 		BBCA02611FB122C300E45F0F /* InjectionOK.tif in Resources */ = {isa = PBXBuildFile; fileRef = BBCA025F1FB122C300E45F0F /* InjectionOK.tif */; };
 		BBCA02621FB1312A00E45F0F /* SimpleSocket.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB67DBB31FB0CDA8000EAC8A /* SimpleSocket.mm */; };
-		BBCA02631FB1313600E45F0F /* SwiftEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */; };
-		BBCA02641FB1313700E45F0F /* SwiftEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */; };
-		BBCA02651FB1313E00E45F0F /* SwiftInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */; };
-		BBCA02661FB1313F00E45F0F /* SwiftInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */; };
-		BBCA02671FB1316B00E45F0F /* SimpleSocket.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB67DBB31FB0CDA8000EAC8A /* SimpleSocket.mm */; };
-		BBCA02681FB1317400E45F0F /* SignerService.m in Sources */ = {isa = PBXBuildFile; fileRef = BB67DBB61FB0D0F2000EAC8A /* SignerService.m */; };
 		BBE490D01FB2368A003D41BB /* FileWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BBE490CE1FB2368A003D41BB /* FileWatcher.m */; };
 		BBE490DB1FB2C643003D41BB /* InjectionBusy.tif in Resources */ = {isa = PBXBuildFile; fileRef = BBE490D91FB2C643003D41BB /* InjectionBusy.tif */; };
 		BBE490DC1FB2C643003D41BB /* InjectionError.tif in Resources */ = {isa = PBXBuildFile; fileRef = BBE490DA1FB2C643003D41BB /* InjectionError.tif */; };
@@ -78,27 +51,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		BB439B7C1FABA64300B4F50B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BB439B5D1FABA64300B4F50B /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = BB439B641FABA64300B4F50B;
-			remoteInfo = SwiftEval;
-		};
-		BB62246E1FC5B64200AD7A3A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BB439B5D1FABA64300B4F50B /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = BB62244C1FC5B18700AD7A3A;
-			remoteInfo = Bootstrap;
-		};
-		BB6224701FC5B64600AD7A3A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BB439B5D1FABA64300B4F50B /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = BB62245B1FC5B37400AD7A3A;
-			remoteInfo = com.jh.InjectionIII.Helper;
-		};
 		BBCA024E1FB106C000E45F0F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BB439B5D1FABA64300B4F50B /* Project object */;
@@ -109,31 +61,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		BB439BAF1FAC185200B4F50B /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-		};
-		BB62245A1FC5B37400AD7A3A /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-		};
 		BB6224721FC5BA6F00AD7A3A /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = Contents/Library/LaunchServices;
 			dstSubfolderSpec = 1;
 			files = (
-				BB6224731FC5BA8800AD7A3A /* com.johnholdsworth.InjectionIII.Helper in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -148,7 +81,6 @@
 		BB1DEA9C1FD6A74900AF509F /* Xprobe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Xprobe.h; path = XprobePlugin/Classes/Xprobe.h; sourceTree = "<group>"; };
 		BB1DEA9D1FD6A74900AF509F /* XprobeConsole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XprobeConsole.h; path = XprobePlugin/Classes/XprobeConsole.h; sourceTree = "<group>"; };
 		BB1DEA9E1FD6A74900AF509F /* XprobePluginMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XprobePluginMenuController.h; path = XprobePlugin/Classes/XprobePluginMenuController.h; sourceTree = "<group>"; };
-		BB439B651FABA64300B4F50B /* SwiftEval.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftEval.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB439B681FABA64300B4F50B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BB439B6A1FABA64300B4F50B /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
 		BB439B6C1FABA64300B4F50B /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
@@ -161,7 +93,6 @@
 		BB439B811FABA64300B4F50B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftEval.swift; sourceTree = "<group>"; };
 		BB439BAC1FAC030E00B4F50B /* SwiftEval.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SwiftEval.entitlements; sourceTree = "<group>"; };
-		BB439BB11FAC185200B4F50B /* signer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = signer; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB439BB31FAC185200B4F50B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		BB56393F1FD5D535002FFCEF /* Xprobe+Service.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = "Xprobe+Service.mm"; path = "XprobePlugin/Classes/Xprobe+Service.mm"; sourceTree = "<group>"; };
 		BB5639401FD5D535002FFCEF /* Xtrace.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = Xtrace.mm; path = XprobePlugin/Classes/Xtrace.mm; sourceTree = "<group>"; };
@@ -169,11 +100,9 @@
 		BB6224421FC5B0E500AD7A3A /* HelperProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperProxy.h; sourceTree = "<group>"; };
 		BB6224431FC5B0E500AD7A3A /* HelperInstaller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperInstaller.h; sourceTree = "<group>"; };
 		BB6224441FC5B0E500AD7A3A /* HelperInstaller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelperInstaller.m; sourceTree = "<group>"; };
-		BB62244D1FC5B18700AD7A3A /* Bootstrap.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Bootstrap.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB62244F1FC5B18700AD7A3A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BB6224531FC5B1CB00AD7A3A /* mach_inject_bundle_stub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mach_inject_bundle_stub.h; sourceTree = "<group>"; };
 		BB6224541FC5B1CB00AD7A3A /* mach_inject_bundle_stub.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mach_inject_bundle_stub.c; sourceTree = "<group>"; };
-		BB62245C1FC5B37400AD7A3A /* com.johnholdsworth.InjectionIII.Helper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = com.johnholdsworth.InjectionIII.Helper; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB6224631FC5B3B600AD7A3A /* Info-Launchd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Launchd.plist"; sourceTree = "<group>"; };
 		BB6224641FC5B3B700AD7A3A /* Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Helper.m; sourceTree = "<group>"; };
 		BB6224651FC5B3B700AD7A3A /* mach_inject.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mach_inject.c; sourceTree = "<group>"; };
@@ -191,7 +120,6 @@
 		BB67DBB51FB0D0F2000EAC8A /* SignerService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SignerService.h; sourceTree = "<group>"; };
 		BB67DBB61FB0D0F2000EAC8A /* SignerService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SignerService.m; sourceTree = "<group>"; };
 		BBB040631FB1798A007DDD0A /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/ScriptingBridge.framework; sourceTree = DEVELOPER_DIR; };
-		BBB148D71FAD53BD00CB6B33 /* EvalApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EvalApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBB148D91FAD53BE00CB6B33 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BBB148DB1FAD53BE00CB6B33 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BBB148DE1FAD53BE00CB6B33 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
@@ -241,42 +169,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		BB439B621FABA64300B4F50B /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		BB439B781FABA64300B4F50B /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BB439BAE1FAC185200B4F50B /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BB62244A1FC5B18700AD7A3A /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BB6224591FC5B37400AD7A3A /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BBB148D41FAD53BD00CB6B33 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -327,14 +220,9 @@
 		BB439B661FABA64300B4F50B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				BB439B651FABA64300B4F50B /* SwiftEval.app */,
 				BB439B7B1FABA64300B4F50B /* SwiftEvalTests.xctest */,
-				BB439BB11FAC185200B4F50B /* signer */,
-				BBB148D71FAD53BD00CB6B33 /* EvalApp.app */,
 				BBCA01FE1FB0F10300E45F0F /* InjectionIII.app */,
 				BBCA02451FB1065D00E45F0F /* macOSInjection.bundle */,
-				BB62244D1FC5B18700AD7A3A /* Bootstrap.bundle */,
-				BB62245C1FC5B37400AD7A3A /* com.johnholdsworth.InjectionIII.Helper */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -507,23 +395,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		BB439B641FABA64300B4F50B /* SwiftEval */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = BB439B841FABA64300B4F50B /* Build configuration list for PBXNativeTarget "SwiftEval" */;
-			buildPhases = (
-				BB439B611FABA64300B4F50B /* Sources */,
-				BB439B621FABA64300B4F50B /* Frameworks */,
-				BB439B631FABA64300B4F50B /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = SwiftEval;
-			productName = SwiftEval;
-			productReference = BB439B651FABA64300B4F50B /* SwiftEval.app */;
-			productType = "com.apple.product-type.application";
-		};
 		BB439B7A1FABA64300B4F50B /* SwiftEvalTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BB439B871FABA64300B4F50B /* Build configuration list for PBXNativeTarget "SwiftEvalTests" */;
@@ -535,80 +406,11 @@
 			buildRules = (
 			);
 			dependencies = (
-				BB439B7D1FABA64300B4F50B /* PBXTargetDependency */,
 			);
 			name = SwiftEvalTests;
 			productName = SwiftEvalTests;
 			productReference = BB439B7B1FABA64300B4F50B /* SwiftEvalTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		BB439BB01FAC185200B4F50B /* signer */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = BB439BB51FAC185200B4F50B /* Build configuration list for PBXNativeTarget "signer" */;
-			buildPhases = (
-				BB439BAD1FAC185200B4F50B /* Sources */,
-				BB439BAE1FAC185200B4F50B /* Frameworks */,
-				BB439BAF1FAC185200B4F50B /* CopyFiles */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = signer;
-			productName = signer;
-			productReference = BB439BB11FAC185200B4F50B /* signer */;
-			productType = "com.apple.product-type.tool";
-		};
-		BB62244C1FC5B18700AD7A3A /* Bootstrap */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = BB6224501FC5B18700AD7A3A /* Build configuration list for PBXNativeTarget "Bootstrap" */;
-			buildPhases = (
-				BB6224491FC5B18700AD7A3A /* Sources */,
-				BB62244A1FC5B18700AD7A3A /* Frameworks */,
-				BB62244B1FC5B18700AD7A3A /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = Bootstrap;
-			productName = Bootstrap;
-			productReference = BB62244D1FC5B18700AD7A3A /* Bootstrap.bundle */;
-			productType = "com.apple.product-type.bundle";
-		};
-		BB62245B1FC5B37400AD7A3A /* com.johnholdsworth.InjectionIII.Helper */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = BB6224601FC5B37400AD7A3A /* Build configuration list for PBXNativeTarget "com.johnholdsworth.InjectionIII.Helper" */;
-			buildPhases = (
-				BB6224581FC5B37400AD7A3A /* Sources */,
-				BB6224591FC5B37400AD7A3A /* Frameworks */,
-				BB62245A1FC5B37400AD7A3A /* CopyFiles */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = com.johnholdsworth.InjectionIII.Helper;
-			productName = Helper;
-			productReference = BB62245C1FC5B37400AD7A3A /* com.johnholdsworth.InjectionIII.Helper */;
-			productType = "com.apple.product-type.tool";
-		};
-		BBB148D61FAD53BD00CB6B33 /* EvalApp */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = BBB148E41FAD53BE00CB6B33 /* Build configuration list for PBXNativeTarget "EvalApp" */;
-			buildPhases = (
-				BBB148D31FAD53BD00CB6B33 /* Sources */,
-				BBB148D41FAD53BD00CB6B33 /* Frameworks */,
-				BBB148D51FAD53BD00CB6B33 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = EvalApp;
-			productName = EvalApp;
-			productReference = BBB148D71FAD53BD00CB6B33 /* EvalApp.app */;
-			productType = "com.apple.product-type.application";
 		};
 		BBCA01FD1FB0F10300E45F0F /* InjectionIII */ = {
 			isa = PBXNativeTarget;
@@ -624,8 +426,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				BB6224711FC5B64600AD7A3A /* PBXTargetDependency */,
-				BB62246F1FC5B64200AD7A3A /* PBXTargetDependency */,
 				BBCA024F1FB106C000E45F0F /* PBXTargetDependency */,
 			);
 			name = InjectionIII;
@@ -661,48 +461,17 @@
 				LastUpgradeCheck = 0910;
 				ORGANIZATIONNAME = "John Holdsworth";
 				TargetAttributes = {
-					BB439B641FABA64300B4F50B = {
-						CreatedOnToolsVersion = 9.1;
-						LastSwiftMigration = 0910;
-						ProvisioningStyle = Automatic;
-						SystemCapabilities = {
-							com.apple.Keychain = {
-								enabled = 0;
-							};
-						};
-					};
 					BB439B7A1FABA64300B4F50B = {
 						CreatedOnToolsVersion = 9.1;
 						ProvisioningStyle = Automatic;
 						TestTargetID = BB439B641FABA64300B4F50B;
-					};
-					BB439BB01FAC185200B4F50B = {
-						CreatedOnToolsVersion = 9.1;
-						ProvisioningStyle = Automatic;
-					};
-					BB62244C1FC5B18700AD7A3A = {
-						CreatedOnToolsVersion = 9.1;
-					};
-					BB62245B1FC5B37400AD7A3A = {
-						CreatedOnToolsVersion = 9.1;
-						LastSwiftMigration = 0910;
-						ProvisioningStyle = Manual;
-					};
-					BBB148D61FAD53BD00CB6B33 = {
-						CreatedOnToolsVersion = 9.1;
-						ProvisioningStyle = Automatic;
-						SystemCapabilities = {
-							com.apple.Sandbox = {
-								enabled = 0;
-							};
-						};
 					};
 					BBCA01FD1FB0F10300E45F0F = {
 						CreatedOnToolsVersion = 9.0.1;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.Sandbox = {
-								enabled = 0;
+								enabled = 1;
 							};
 						};
 					};
@@ -727,48 +496,16 @@
 			targets = (
 				BBCA01FD1FB0F10300E45F0F /* InjectionIII */,
 				BBCA02441FB1065D00E45F0F /* InjectionBundle */,
-				BB62244C1FC5B18700AD7A3A /* Bootstrap */,
-				BB62245B1FC5B37400AD7A3A /* com.johnholdsworth.InjectionIII.Helper */,
-				BB439BB01FAC185200B4F50B /* signer */,
-				BB439B641FABA64300B4F50B /* SwiftEval */,
 				BB439B7A1FABA64300B4F50B /* SwiftEvalTests */,
-				BBB148D61FAD53BD00CB6B33 /* EvalApp */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		BB439B631FABA64300B4F50B /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BB439B751FABA64300B4F50B /* LaunchScreen.storyboard in Resources */,
-				BB439B721FABA64300B4F50B /* Assets.xcassets in Resources */,
-				BB037DF51FAD80D0004B267C /* LICENSE in Resources */,
-				BB439B701FABA64300B4F50B /* Main.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		BB439B791FABA64300B4F50B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BB62244B1FC5B18700AD7A3A /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BBB148D51FAD53BD00CB6B33 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BBB148DC1FAD53BE00CB6B33 /* Assets.xcassets in Resources */,
-				BBB148DF1FAD53BE00CB6B33 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -786,7 +523,6 @@
 				BBB64DE11FD570220020BE47 /* tiny_red.gif in Resources */,
 				BBB64DC61FD450B40020BE47 /* LICENSE in Resources */,
 				BBB64DC51FD450AF0020BE47 /* README.md in Resources */,
-				BB6224571FC5B30400AD7A3A /* Bootstrap.bundle in Resources */,
 				BBE490DC1FB2C643003D41BB /* InjectionError.tif in Resources */,
 				BBCA02591FB112F500E45F0F /* App.icns in Resources */,
 				BBCA024D1FB1069A00E45F0F /* macOSInjection.bundle in Resources */,
@@ -834,7 +570,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "SYMROOT=/tmp/Injection\nexport PLATFORM_DIR_OS=$DEVELOPER_DIR/Platforms/iPhoneSimulator.platform &&\n\"$DEVELOPER_BIN_DIR\"/xcodebuild SYMROOT=$SYMROOT PRODUCT_NAME=iOSInjection LD_RUNPATH_SEARCH_PATHS=\"$DEVELOPER_DIR/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator $PLATFORM_DIR_OS/Developer/Library/Frameworks @loader_path/Frameworks\" -arch x86_64 -arch i386 -sdk iphonesimulator -config Debug -target InjectionBundle &&\nrsync -au $SYMROOT/Debug-iphonesimulator/iOSInjection.bundle \"$CODESIGNING_FOLDER_PATH/Contents/Resources\" &&\nexport PLATFORM_DIR_OS=$DEVELOPER_DIR/Platforms/AppleTVSimulator.platform &&\n\"$DEVELOPER_BIN_DIR\"/xcodebuild SYMROOT=$SYMROOT PRODUCT_NAME=tvOSInjection LD_RUNPATH_SEARCH_PATHS=\"$DEVELOPER_DIR/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/appletvsimulator $PLATFORM_DIR_OS/Developer/Library/Frameworks @loader_path/Frameworks\" -arch x86_64 -sdk appletvsimulator -config Debug -target InjectionBundle &&\nrsync -au $SYMROOT/Debug-appletvsimulator/tvOSInjection.bundle \"$CODESIGNING_FOLDER_PATH/Contents/Resources\" &&\nfind $CODESIGNING_FOLDER_PATH/Contents/Resources/*.bundle -name '*.h' -delete";
+			shellScript = "SYMROOT=/tmp/Injection\nexport PLATFORM_DIR_OS=$DEVELOPER_DIR/Platforms/iPhoneSimulator.platform &&\n\"$DEVELOPER_BIN_DIR\"/xcodebuild SYMROOT=$SYMROOT PRODUCT_NAME=iOSInjection LD_RUNPATH_SEARCH_PATHS=\"$DEVELOPER_DIR/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator $PLATFORM_DIR_OS/Developer/Library/Frameworks @loader_path/Frameworks\" -arch x86_64 -sdk iphonesimulator -config Debug -target InjectionBundle &&\nrsync -au $SYMROOT/Debug-iphonesimulator/iOSInjection.bundle \"$CODESIGNING_FOLDER_PATH/Contents/Resources\" &&\nexport PLATFORM_DIR_OS=$DEVELOPER_DIR/Platforms/AppleTVSimulator.platform &&\n\"$DEVELOPER_BIN_DIR\"/xcodebuild SYMROOT=$SYMROOT PRODUCT_NAME=tvOSInjection LD_RUNPATH_SEARCH_PATHS=\"$DEVELOPER_DIR/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/appletvsimulator $PLATFORM_DIR_OS/Developer/Library/Frameworks @loader_path/Frameworks\" -arch x86_64 -sdk appletvsimulator -config Debug -target InjectionBundle &&\nrsync -au $SYMROOT/Debug-appletvsimulator/tvOSInjection.bundle \"$CODESIGNING_FOLDER_PATH/Contents/Resources\" &&\nfind $CODESIGNING_FOLDER_PATH/Contents/Resources/*.bundle -name '*.h' -delete";
 			showEnvVarsInLog = 0;
 		};
 		BBE429591FD7D476009FBA8B /* ShellScript */ = {
@@ -848,67 +584,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "rsync -au --links \"${PLATFORM_DIR_OS:-$PLATFORM_DIR}/Developer/Library/Frameworks/XCTest.framework\" \"$CONFIGURATION_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH\"";
+			shellScript = "#rsync -au --links \"${PLATFORM_DIR_OS:-$PLATFORM_DIR}/Developer/Library/Frameworks/XCTest.framework\" \"$CONFIGURATION_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH\"";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		BB439B611FABA64300B4F50B /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BB439B6D1FABA64300B4F50B /* DetailViewController.swift in Sources */,
-				BB439B6B1FABA64300B4F50B /* MasterViewController.swift in Sources */,
-				BBCA02661FB1313F00E45F0F /* SwiftInjection.swift in Sources */,
-				BB439B691FABA64300B4F50B /* AppDelegate.swift in Sources */,
-				BBCA02631FB1313600E45F0F /* SwiftEval.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		BB439B771FABA64300B4F50B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				BB439B801FABA64300B4F50B /* SwiftEvalTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BB439BAD1FAC185200B4F50B /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BBCA02681FB1317400E45F0F /* SignerService.m in Sources */,
-				BBCA02671FB1316B00E45F0F /* SimpleSocket.mm in Sources */,
-				BB439BB41FAC185200B4F50B /* main.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BB6224491FC5B18700AD7A3A /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BB6224551FC5B1CB00AD7A3A /* mach_inject_bundle_stub.c in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BB6224581FC5B37400AD7A3A /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BB62246B1FC5B3B700AD7A3A /* mach_inject.c in Sources */,
-				BB62246C1FC5B3B700AD7A3A /* main.m in Sources */,
-				BB62246A1FC5B3B700AD7A3A /* Helper.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BBB148D31FAD53BD00CB6B33 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BBCA02651FB1313E00E45F0F /* SwiftInjection.swift in Sources */,
-				BBB148DA1FAD53BE00CB6B33 /* AppDelegate.swift in Sources */,
-				BBCA02641FB1313700E45F0F /* SwiftEval.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -923,13 +609,9 @@
 				BBCA020A1FB0F10400E45F0F /* main.m in Sources */,
 				BBEB704C1FD28C6F00127711 /* XcodeHash.m in Sources */,
 				BBCA02021FB0F10300E45F0F /* AppDelegate.mm in Sources */,
-				BB6306F81FCD16600021D30C /* DDHotKeyUtilities.m in Sources */,
-				BB6224461FC5B0E600AD7A3A /* HelperInstaller.m in Sources */,
-				BB6224451FC5B0E600AD7A3A /* HelperProxy.m in Sources */,
 				BBE490D01FB2368A003D41BB /* FileWatcher.m in Sources */,
 				BBCA02561FB1099500E45F0F /* InjectionServer.mm in Sources */,
 				BBCA022A1FB0F64800E45F0F /* SimpleSocket.mm in Sources */,
-				BB6306F71FCD16600021D30C /* DDHotKeyCenter.m in Sources */,
 				BBBFD2D01FCFEE300057D899 /* SwiftEval.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -950,21 +632,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		BB439B7D1FABA64300B4F50B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = BB439B641FABA64300B4F50B /* SwiftEval */;
-			targetProxy = BB439B7C1FABA64300B4F50B /* PBXContainerItemProxy */;
-		};
-		BB62246F1FC5B64200AD7A3A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = BB62244C1FC5B18700AD7A3A /* Bootstrap */;
-			targetProxy = BB62246E1FC5B64200AD7A3A /* PBXContainerItemProxy */;
-		};
-		BB6224711FC5B64600AD7A3A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = BB62245B1FC5B37400AD7A3A /* com.johnholdsworth.InjectionIII.Helper */;
-			targetProxy = BB6224701FC5B64600AD7A3A /* PBXContainerItemProxy */;
-		};
 		BBCA024F1FB106C000E45F0F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = BBCA02441FB1065D00E45F0F /* InjectionBundle */;
@@ -1131,39 +798,6 @@
 			};
 			name = Release;
 		};
-		BB439B851FABA64300B4F50B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 9V5A8WE85E;
-				INFOPLIST_FILE = SwiftEval/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.SwiftEval;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		BB439B861FABA64300B4F50B /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 9V5A8WE85E;
-				INFOPLIST_FILE = SwiftEval/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.SwiftEval;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 		BB439B881FABA64300B4F50B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1198,155 +832,11 @@
 			};
 			name = Release;
 		};
-		BB439BB61FAC185200B4F50B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 9V5A8WE85E;
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-			};
-			name = Debug;
-		};
-		BB439BB71FAC185200B4F50B /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 9V5A8WE85E;
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-			};
-			name = Release;
-		};
-		BB6224511FC5B18700AD7A3A /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = Bootstrap/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.Bootstrap;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Debug;
-		};
-		BB6224521FC5B18700AD7A3A /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "";
-				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = Bootstrap/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.Bootstrap;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Release;
-		};
-		BB6224611FC5B37400AD7A3A /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 9V5A8WE85E;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				OTHER_LDFLAGS = (
-					"-sectcreate",
-					__TEXT,
-					__info_plist,
-					Helper/Info.plist,
-					"-sectcreate",
-					__TEXT,
-					__launchd_plist,
-					"Helper/Info-Launchd.plist",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SDKROOT = macosx;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
-			};
-			name = Debug;
-		};
-		BB6224621FC5B37400AD7A3A /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 9V5A8WE85E;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				OTHER_LDFLAGS = (
-					"-sectcreate",
-					__TEXT,
-					__info_plist,
-					Helper/Info.plist,
-					"-sectcreate",
-					__TEXT,
-					__launchd_plist,
-					"Helper/Info-Launchd.plist",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 4.0;
-			};
-			name = Release;
-		};
-		BBB148E21FAD53BE00CB6B33 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 9V5A8WE85E;
-				INFOPLIST_FILE = EvalApp/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.EvalApp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 4.0;
-			};
-			name = Debug;
-		};
-		BBB148E31FAD53BE00CB6B33 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 9V5A8WE85E;
-				INFOPLIST_FILE = EvalApp/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.EvalApp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 4.0;
-			};
-			name = Release;
-		};
 		BBCA020D1FB0F10400E45F0F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = InjectionIII/InjectionIII.entitlements;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -1365,6 +855,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = InjectionIII/InjectionIII.entitlements;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -1434,56 +925,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		BB439B841FABA64300B4F50B /* Build configuration list for PBXNativeTarget "SwiftEval" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BB439B851FABA64300B4F50B /* Debug */,
-				BB439B861FABA64300B4F50B /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		BB439B871FABA64300B4F50B /* Build configuration list for PBXNativeTarget "SwiftEvalTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BB439B881FABA64300B4F50B /* Debug */,
 				BB439B891FABA64300B4F50B /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		BB439BB51FAC185200B4F50B /* Build configuration list for PBXNativeTarget "signer" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BB439BB61FAC185200B4F50B /* Debug */,
-				BB439BB71FAC185200B4F50B /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		BB6224501FC5B18700AD7A3A /* Build configuration list for PBXNativeTarget "Bootstrap" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BB6224511FC5B18700AD7A3A /* Debug */,
-				BB6224521FC5B18700AD7A3A /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		BB6224601FC5B37400AD7A3A /* Build configuration list for PBXNativeTarget "com.johnholdsworth.InjectionIII.Helper" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BB6224611FC5B37400AD7A3A /* Debug */,
-				BB6224621FC5B37400AD7A3A /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		BBB148E41FAD53BE00CB6B33 /* Build configuration list for PBXNativeTarget "EvalApp" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BBB148E21FAD53BE00CB6B33 /* Debug */,
-				BBB148E31FAD53BE00CB6B33 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

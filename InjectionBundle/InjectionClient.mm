@@ -65,8 +65,10 @@
 
 - (void)runInBackground {
     NSString *projectFile = [self readString];
-    printf("Injection connected, watching %s/...\n",
+    NSString *tmpDir = [self readString];
+    printf("Injection connected, watching %s/**\n",
            projectFile.stringByDeletingLastPathComponent.UTF8String);
+    [self writeString:INJECTION_KEY];
     [self writeString:[NSBundle mainBundle].privateFrameworksPath];
 #ifdef __LP64__
     [self writeString:@"x86_64"];
@@ -76,6 +78,7 @@
     [self writeString:[NSBundle mainBundle].executablePath];
 
     [SwiftEval sharedInstance].projectFile = projectFile;
+    [SwiftEval sharedInstance].tmpDir = tmpDir;
     [SwiftEval sharedInstance].injectionNumber = 100;
 
     int codesignStatusPipe[2];
@@ -98,8 +101,10 @@
         else
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSError *err;
+//                if ([swiftSource hasPrefix:@"INJECT "])
+//                    [SwiftInjection injectWithTmpfile:[swiftSource substringFromIndex:@"INJECT ".length] error:&err];
                 if ([swiftSource hasPrefix:@"INJECT "])
-                    [SwiftInjection injectWithTmpfile:[swiftSource substringFromIndex:@"INJECT ".length] error:&err];
+                    [SwiftInjection injectWithOldClass:nil classNameOrFile:[swiftSource substringFromIndex:@"INJECT ".length]];
 #ifdef XPROBE_PORT
                 else if ([swiftSource hasPrefix:@"XPROBE"]) {
                     [Xprobe connectTo:NULL retainObjects:YES];
