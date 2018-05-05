@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -672,10 +672,16 @@
         </window>
         <menu autoenablesItems="NO" id="V8Q-mq-A2f">
             <items>
-                <menuItem title="Start Injection" keyEquivalent="=" id="vsd-ll-3nr">
+                <menuItem title="Start Injection" hidden="YES" keyEquivalent="=" id="vsd-ll-3nr">
                     <modifierMask key="keyEquivalentModifierMask" control="YES"/>
                     <connections>
                         <action selector="autoInject:" target="Voe-Tx-rLC" id="YDX-ZY-Oim"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Open Project" id="XlL-4Y-oKk">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="openProject:" target="Voe-Tx-rLC" id="ZLH-lf-p4H"/>
                     </connections>
                 </menuItem>
                 <menuItem title="File Watcher" state="on" id="0iA-WA-gxc">

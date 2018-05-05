@@ -39,14 +39,31 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
 }
 
 - (void)runInBackground {
-    XcodeApplication *xcode = (XcodeApplication *)[SBApplication
-                       applicationWithBundleIdentifier:XcodeBundleID];
-    XcodeWorkspaceDocument *workspace = [xcode activeWorkspaceDocument];
-    NSString *projectFile = workspace.file.path, *projectRoot = projectFile.stringByDeletingLastPathComponent;
+    NSString *projectFile = appDelegate.selectedProject;
+    if (!projectFile) {
+        XcodeApplication *xcode = (XcodeApplication *)[SBApplication
+                           applicationWithBundleIdentifier:XcodeBundleID];
+        XcodeWorkspaceDocument *workspace = [xcode activeWorkspaceDocument];
+        projectFile = workspace.file.path;
+    }
+
+    if (!projectFile) {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [appDelegate openProject:self];
+        });
+        projectFile = appDelegate.selectedProject;
+    }
+    if (!projectFile)
+        return;
+
+    NSString *projectRoot = projectFile.stringByDeletingLastPathComponent;
     NSLog(@"Connection with project file: %@", projectFile);
 
     // tell client app the inferred project being watched
     [self writeString:projectFile];
+    [self writeString:NSHomeDirectory()];
+    if (![[self readString] isEqualToString:INJECTION_KEY])
+        return;
 
     SwiftEval *builder = [SwiftEval new];
 
@@ -94,11 +111,11 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
         dispatch_async(injectionQueue, ^{
             if (watcherState == NSControlStateValueOn) {
                 [appDelegate setMenuIcon:@"InjectionBusy"];
-                if (NSString *tmpfile = [builder rebuildClassWithOldClass:nil
-                                                          classNameOrFile:swiftSource extra:nil error:nil])
-                    [self writeString:[@"INJECT " stringByAppendingString:tmpfile]];
-                else
-                    [appDelegate setMenuIcon:@"InjectionError"];
+//                if (NSString *tmpfile = [builder rebuildClassWithOldClass:nil
+//                                                          classNameOrFile:swiftSource extra:nil error:nil])
+                    [self writeString:[@"INJECT " stringByAppendingString:swiftSource]];
+//                else
+//                    [appDelegate setMenuIcon:@"InjectionError"];
             }
             else
                 [self writeString:@"LOG The file watcher is turned off"];

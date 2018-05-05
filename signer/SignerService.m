@@ -11,10 +11,10 @@
 @implementation SignerService
 
 + (BOOL)codesignDylib:(NSString *)dylib {
-    NSString *command = [NSString stringWithFormat:@"(file \"%@\" | grep 'Mach-O 64-bit bundle x86_64' >/dev/null) && "
+    NSString *command = [NSString stringWithFormat:@""
                          "(export CODESIGN_ALLOCATE=/Applications/Xcode.app"
                          "/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/codesign_allocate; "
-                         "/usr/bin/codesign --force -s '-' \"%@\")", dylib, dylib];
+                         "/usr/bin/codesign --force -s '-' \"%@\")", dylib];
     return system(command.UTF8String) >> 8 == EXIT_SUCCESS;
 }
 

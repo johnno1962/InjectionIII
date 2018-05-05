@@ -10,12 +10,12 @@
 #import "SignerService.h"
 #import "InjectionServer.h"
 
-#import "HelperInstaller.h"
-#import "HelperProxy.h"
+//#import "HelperInstaller.h"
+//#import "HelperProxy.h"
 
-#import <Carbon/Carbon.h>
-#import <AppKit/NSEvent.h>
-#import "DDHotKeyCenter.h"
+//#import <Carbon/Carbon.h>
+//#import <AppKit/NSEvent.h>
+//#import "DDHotKeyCenter.h"
 
 #import "InjectionIII-Swift.h"
 
@@ -50,10 +50,35 @@ AppDelegate *appDelegate;
     statusItem.title = @"";
 
     [self setMenuIcon:@"InjectionIdle"];
-
+#if 0
     [[DDHotKeyCenter sharedHotKeyCenter] registerHotKeyWithKeyCode:kVK_ANSI_Equal
                                                      modifierFlags:NSEventModifierFlagControl
                                                             target:self action:@selector(autoInject:) object:nil];
+#endif
+}
+
+- (IBAction)openProject:sender {
+    NSOpenPanel *open = [NSOpenPanel new];
+    open.prompt = NSLocalizedString(@"Select Project Directory", @"Project Directory");
+    //    open.allowsMultipleSelection = TRUE;
+    open.canChooseDirectories = TRUE;
+    open.canChooseFiles = FALSE;
+    //    open.showsHiddenFiles = TRUE;
+    if ([open runModal] == NSFileHandlingPanelOKButton) {
+        NSArray<NSString *> *fileList = [[NSFileManager defaultManager]
+                                         contentsOfDirectoryAtPath:open.URL.path error:NULL];
+        if(NSString *projectFile =
+           [self fileWithExtension:@"xcworkspace" inFiles:fileList] ?:
+           [self fileWithExtension:@"xcodeproj" inFiles:fileList])
+            self.selectedProject = [open.URL.path stringByAppendingPathComponent:projectFile];
+    }
+}
+
+- (NSString * _Nullable)fileWithExtension:(NSString * _Nonnull)extension inFiles:(NSArray * _Nonnull)files {
+    for (NSString *file in files)
+        if ([file.pathExtension isEqualToString:extension])
+            return file;
+    return nil;
 }
 
 - (void)setMenuIcon:(NSString *)tiffName {
@@ -74,8 +99,8 @@ AppDelegate *appDelegate;
 }
 
 - (IBAction)autoInject:(NSMenuItem *)sender {
+#if 0
     NSError *error = nil;
-
     // Install helper tool
     if ([HelperInstaller isInstalled] == NO) {
 #pragma clang diagnostic push
@@ -102,6 +127,7 @@ AppDelegate *appDelegate;
         NSLog(@"Couldn't inject Simulator (domain: %@ code: %d)", error.domain, (int)error.code);
         [[NSAlert alertWithError:error] runModal];
     }
+#endif
 }
 
 - (IBAction)runXprobe:(NSMenuItem *)sender {
@@ -128,8 +154,10 @@ AppDelegate *appDelegate;
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
     // Insert code here to tear down your application
+#if 0
     [[DDHotKeyCenter sharedHotKeyCenter] unregisterHotKeyWithKeyCode:kVK_ANSI_Equal
                                                        modifierFlags:NSEventModifierFlagControl];
+#endif
 }
 
 @end
