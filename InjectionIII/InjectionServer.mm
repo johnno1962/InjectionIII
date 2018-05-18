@@ -23,7 +23,10 @@ static dispatch_queue_t injectionQueue = dispatch_queue_create("InjectionQueue",
 static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
 #define MIN_INJECTION_INTERVAL 1.
 
-@implementation InjectionServer
+@implementation InjectionServer {
+    void (^injector)(NSArray *changed);
+    FileWatcher *fileWatcher;
+}
 
 + (int)error:(NSString *)message {
     int saveno = errno;
@@ -39,7 +42,11 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
 }
 
 - (void)runInBackground {
+    [self writeString:NSHomeDirectory()];
+
     NSString *projectFile = appDelegate.selectedProject;
+    static BOOL MAS = false;
+
     if (!projectFile) {
         XcodeApplication *xcode = (XcodeApplication *)[SBApplication
                            applicationWithBundleIdentifier:XcodeBundleID];
@@ -52,16 +59,14 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
             [appDelegate openProject:self];
         });
         projectFile = appDelegate.selectedProject;
+        MAS = true;
     }
     if (!projectFile)
         return;
 
-    NSString *projectRoot = projectFile.stringByDeletingLastPathComponent;
     NSLog(@"Connection with project file: %@", projectFile);
 
     // tell client app the inferred project being watched
-    [self writeString:projectFile];
-    [self writeString:NSHomeDirectory()];
     if (![[self readString] isEqualToString:INJECTION_KEY])
         return;
 
@@ -111,11 +116,15 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
         dispatch_async(injectionQueue, ^{
             if (watcherState == NSControlStateValueOn) {
                 [appDelegate setMenuIcon:@"InjectionBusy"];
-//                if (NSString *tmpfile = [builder rebuildClassWithOldClass:nil
-//                                                          classNameOrFile:swiftSource extra:nil error:nil])
-                    [self writeString:[@"INJECT " stringByAppendingString:swiftSource]];
+//                if (!MAS) {
+//                    if (NSString *tmpfile = [builder rebuildClassWithOldClass:nil
+//                                                              classNameOrFile:swiftSource extra:nil error:nil])
+//                        [self writeString:[@"LOAD " stringByAppendingString:tmpfile]];
+//                    else
+//                        [appDelegate setMenuIcon:@"InjectionError"];
+//                }
 //                else
-//                    [appDelegate setMenuIcon:@"InjectionError"];
+                    [self writeString:[@"INJECT " stringByAppendingString:swiftSource]];
             }
             else
                 [self writeString:@"LOG The file watcher is turned off"];
@@ -133,7 +142,8 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
         };
         time_t executableBuild = mtime(executable);
         for(NSString *source in lastInjected)
-            if (mtime(source) > executableBuild)
+            if (![source hasSuffix:@"storyboard"] && ![source hasSuffix:@"xib"] &&
+                mtime(source) > executableBuild)
                 inject(source);
     }
     else
@@ -142,14 +152,17 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
     __block NSTimeInterval pause = 0.;
 
     // start up a file watcher to write generated tmpfile path to client app
-    FileWatcher *fileWatcher = [[FileWatcher alloc] initWithRoot:projectRoot plugin:^(NSArray *changed) {
+
+    injector = ^(NSArray *changed) {
         NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
         for (NSString *swiftSource in changed)
             if (now > lastInjected[swiftSource].doubleValue + MIN_INJECTION_INTERVAL && now > pause) {
                 lastInjected[swiftSource] = [NSNumber numberWithDouble:now];
                 inject(swiftSource);
             }
-    }];
+    };
+
+    [self setProject:projectFile];
 
     // read status requests from client app
     while (NSString *response = [self readString])
@@ -171,8 +184,17 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
 //            });
 
     // client app disconnected
+    injector = nil;
     fileWatcher = nil;
     [appDelegate setMenuIcon:@"InjectionIdle"];
+}
+
+- (void)setProject:(NSString *)project {
+    if (!injector) return;
+    [self writeString:[@"PROJECT " stringByAppendingString:project]];
+    fileWatcher = [[FileWatcher alloc]
+                   initWithRoot:project.stringByDeletingLastPathComponent
+                   plugin:injector];
 }
 
 - (void)dealloc {

@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#41 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#44 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -173,6 +173,11 @@ public class SwiftInjection: NSObject {
                     if injectedClasses.contains(where: { $0 == object_getClass(instance) }) {
                         let proto = unsafeBitCast(instance, to: SwiftInjected.self)
                         proto.injected?()
+                        #if os(iOS) || os(tvOS)
+                        if let vc = instance as? UIViewController {
+                            flash(vc: vc)
+                        }
+                        #endif
                     }
                 }).sweepValue(seeds)
             }
@@ -181,6 +186,24 @@ public class SwiftInjection: NSObject {
             NotificationCenter.default.post(name: notification, object: oldClasses)
         }
     }
+
+    #if os(iOS) || os(tvOS)
+    @objc(flash:)
+    public class func flash(vc: UIViewController) {
+        DispatchQueue.main.async {
+            let v = UIView(frame: vc.view.frame)
+            v.backgroundColor = .white
+            v.alpha = 0.3
+            vc.view.addSubview(v)
+            UIView.animate(withDuration: 0.2,
+                           delay: 0.0,
+                           options: UIViewAnimationOptions.curveEaseIn,
+                           animations: {
+                            v.alpha = 0.0
+            }, completion: { _ in v.removeFromSuperview() })
+        }
+    }
+    #endif
 
     static func injection(swizzle newClass: AnyClass?, onto oldClass: AnyClass?) {
         var methodCount: UInt32 = 0
