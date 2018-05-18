@@ -58,9 +58,15 @@ AppDelegate *appDelegate;
 }
 
 - (IBAction)openProject:sender {
+    [self application:NSApp openFile:nil];
+}
+
+- (BOOL)application:(NSApplication *)theApplication openFile:(NSString *)filename {
     NSOpenPanel *open = [NSOpenPanel new];
     open.prompt = NSLocalizedString(@"Select Project Directory", @"Project Directory");
     //    open.allowsMultipleSelection = TRUE;
+    if (filename)
+        open.directory = filename;
     open.canChooseDirectories = TRUE;
     open.canChooseFiles = FALSE;
     //    open.showsHiddenFiles = TRUE;
@@ -69,9 +75,15 @@ AppDelegate *appDelegate;
                                          contentsOfDirectoryAtPath:open.URL.path error:NULL];
         if(NSString *projectFile =
            [self fileWithExtension:@"xcworkspace" inFiles:fileList] ?:
-           [self fileWithExtension:@"xcodeproj" inFiles:fileList])
+           [self fileWithExtension:@"xcodeproj" inFiles:fileList]) {
             self.selectedProject = [open.URL.path stringByAppendingPathComponent:projectFile];
+            [self.lastConnection setProject:self.selectedProject];
+            [[NSDocumentController sharedDocumentController]
+             noteNewRecentDocumentURL:open.URL];
+            return TRUE;
+        }
     }
+    return FALSE;
 }
 
 - (NSString * _Nullable)fileWithExtension:(NSString * _Nonnull)extension inFiles:(NSArray * _Nonnull)files {

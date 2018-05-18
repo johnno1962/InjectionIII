@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#define INJECTABLE_PATTERN @"[^~]\\.(mm?|swift)$"
+#define INJECTABLE_PATTERN @"[^~]\\.(mm?|swift|storyboard|xib)$"
 
 typedef void (^InjectionCallback)(NSArray *filesChanged);
 

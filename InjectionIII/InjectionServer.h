@@ -13,4 +13,6 @@
 
 @interface InjectionServer : SimpleSocket
 
+- (void)setProject:(NSString *)project;
+
 @end
