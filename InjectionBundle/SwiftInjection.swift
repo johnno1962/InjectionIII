@@ -237,9 +237,7 @@ class SwiftSweeper {
                 style = .optional
             }
             switch style {
-            case .set:
-                fallthrough
-            case .collection:
+            case .set, .collection:
                 for (_, child) in mirror.children {
                     sweepValue(child)
                 }
@@ -254,18 +252,11 @@ class SwiftSweeper {
             case .class:
                 sweepInstance(value as AnyObject)
                 return
-            case .optional:
-                if let some = mirror.children.first?.value {
-                    sweepValue(some)
-                }
-                return
-            case .enum:
+            case .optional, .enum:
                 if let evals = mirror.children.first?.value {
                     sweepValue(evals)
                 }
-            case .tuple:
-                fallthrough
-            case .struct:
+            case .tuple, .struct:
                 sweepMembers(value)
             }
         }
