@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#103 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#104 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -389,7 +389,7 @@ public class SwiftEval: NSObject {
             try injectGenerics(tmpfile: tmpfile, handle: dl)
 
             guard shell(command: """
-                \(xcodeDev)/Toolchains/XcodeDefault.xctoolchain/usr/bin/nm \(tmpfile).o | grep -E ' S _OBJC_CLASS_\\$_| __T0.*CN$' | awk '{print $3}' >\(tmpfile).classes
+                \(xcodeDev)/Toolchains/XcodeDefault.xctoolchain/usr/bin/nm \(tmpfile).o | grep -E ' S _OBJC_CLASS_\\$_| _(_T0|\\$S).*CN$' | awk '{print $3}' >\(tmpfile).classes
                 """) else {
                 throw evalError("Could not list class symbols")
             }
