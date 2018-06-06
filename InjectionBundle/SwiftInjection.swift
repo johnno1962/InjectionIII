@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#44 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#45 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -237,9 +237,7 @@ class SwiftSweeper {
                 style = .optional
             }
             switch style {
-            case .set:
-                fallthrough
-            case .collection:
+            case .set, .collection:
                 for (_, child) in mirror.children {
                     sweepValue(child)
                 }
@@ -254,18 +252,11 @@ class SwiftSweeper {
             case .class:
                 sweepInstance(value as AnyObject)
                 return
-            case .optional:
-                if let some = mirror.children.first?.value {
-                    sweepValue(some)
-                }
-                return
-            case .enum:
+            case .optional, .enum:
                 if let evals = mirror.children.first?.value {
                     sweepValue(evals)
                 }
-            case .tuple:
-                fallthrough
-            case .struct:
+            case .tuple, .struct:
                 sweepMembers(value)
             }
         }
