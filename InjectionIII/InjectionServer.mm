@@ -39,15 +39,6 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
 }
 
 - (void)runInBackground {
-    XcodeApplication *xcode = (XcodeApplication *)[SBApplication
-                       applicationWithBundleIdentifier:XcodeBundleID];
-    XcodeWorkspaceDocument *workspace = [xcode activeWorkspaceDocument];
-    NSString *projectFile = workspace.file.path, *projectRoot = projectFile.stringByDeletingLastPathComponent;
-    NSLog(@"Connection with project file: %@", projectFile);
-
-    // tell client app the inferred project being watched
-    [self writeString:projectFile];
-
     SwiftEval *builder = [SwiftEval new];
 
     // client spcific data for building
@@ -55,6 +46,32 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
         builder.frameworks = frameworks;
     else
         return;
+    
+    //traverse all workspaceDocuments and find out which workspace is connecting
+    NSString *projectFile;
+    NSString *projectRoot;
+    BOOL getProjectFile = NO;
+    XcodeApplication *xcode = (XcodeApplication *)[SBApplication
+                                                       applicationWithBundleIdentifier:XcodeBundleID];
+    for (XcodeWorkspaceDocument *tmpWorkspaceDocument in xcode.workspaceDocuments) {
+        NSString* projectName = [builder.frameworks stringByDeletingLastPathComponent];
+        projectName = [[projectName lastPathComponent] stringByDeletingPathExtension];
+        
+        if ([tmpWorkspaceDocument.file.path containsString:projectName]) {
+            projectFile = tmpWorkspaceDocument.file.path;
+            projectRoot = projectFile.stringByDeletingLastPathComponent;
+            NSLog(@"Connection with project file: %@", projectFile);
+            builder.projectFile = projectFile;
+            // tell client app the inferred project being watched
+            [self writeString:projectFile];
+            getProjectFile = YES;
+            break;
+        }
+    }
+    
+    if (getProjectFile == NO) {
+        return;
+    }
 
     if (NSString *arch = [self readString])
         builder.arch = arch;
@@ -65,9 +82,6 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
     if (NSRunningApplication *xcode = [NSRunningApplication
                                        runningApplicationsWithBundleIdentifier:XcodeBundleID].firstObject)
         builder.xcodeDev = [xcode.bundleURL.path stringByAppendingPathComponent:@"Contents/Developer"];
-
-
-    builder.projectFile = projectFile;
 
     NSString *projectName = projectFile.stringByDeletingPathExtension.lastPathComponent;
     NSString *derivedLogs = [NSString stringWithFormat:@"%@/Library/Developer/Xcode/DerivedData/%@-%@/Logs/Build",
