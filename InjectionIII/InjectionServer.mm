@@ -39,15 +39,6 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
 }
 
 - (void)runInBackground {
-    XcodeApplication *xcode = (XcodeApplication *)[SBApplication
-                       applicationWithBundleIdentifier:XcodeBundleID];
-    XcodeWorkspaceDocument *workspace = [xcode activeWorkspaceDocument];
-    NSString *projectFile = workspace.file.path, *projectRoot = projectFile.stringByDeletingLastPathComponent;
-    NSLog(@"Connection with project file: %@", projectFile);
-
-    // tell client app the inferred project being watched
-    [self writeString:projectFile];
-
     SwiftEval *builder = [SwiftEval new];
 
     // client spcific data for building
@@ -55,6 +46,19 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
         builder.frameworks = frameworks;
     else
         return;
+    
+    // auto-select-project
+    NSString *projectFile = [self findConnectingProject:builder.frameworks];
+    if (projectFile.length > 0) {
+        NSLog(@"project file: %@ being watched", projectFile);
+        builder.projectFile = projectFile;
+        // tell client app the inferred project being watched
+        [self writeString:projectFile];
+    }else{
+        // can't find a project to watch
+        NSLog(@"error: can not find a project to watch");
+        return;
+    }
 
     if (NSString *arch = [self readString])
         builder.arch = arch;
@@ -65,9 +69,6 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
     if (NSRunningApplication *xcode = [NSRunningApplication
                                        runningApplicationsWithBundleIdentifier:XcodeBundleID].firstObject)
         builder.xcodeDev = [xcode.bundleURL.path stringByAppendingPathComponent:@"Contents/Developer"];
-
-
-    builder.projectFile = projectFile;
 
     NSString *projectName = projectFile.stringByDeletingPathExtension.lastPathComponent;
     NSString *derivedLogs = [NSString stringWithFormat:@"%@/Library/Developer/Xcode/DerivedData/%@-%@/Logs/Build",
@@ -123,7 +124,7 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
         return;
 
     __block NSTimeInterval pause = 0.;
-
+    NSString *projectRoot = builder.projectFile.stringByDeletingLastPathComponent;
     // start up a file watcher to write generated tmpfile path to client app
     FileWatcher *fileWatcher = [[FileWatcher alloc] initWithRoot:projectRoot plugin:^(NSArray *changed) {
         NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
@@ -156,6 +157,32 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
     // client app disconnected
     fileWatcher = nil;
     [appDelegate setMenuIcon:@"InjectionIdle"];
+}
+
+- (NSString *)findConnectingProject:(NSString *) builderFrameworksPath
+{
+    NSString *projectFile = @"";
+    XcodeApplication *xcode = (XcodeApplication *)[SBApplication
+                                                   applicationWithBundleIdentifier:XcodeBundleID];
+    //traverse all workspaceDocuments and find out which workspace is connecting
+    for (XcodeWorkspaceDocument *tmpWorkspaceDocument in xcode.workspaceDocuments) {
+        NSString* projectName = [builderFrameworksPath stringByDeletingLastPathComponent];
+        projectName = [[projectName lastPathComponent] stringByDeletingPathExtension];
+        if ([tmpWorkspaceDocument.file.path containsString:projectName]) {
+            projectFile = tmpWorkspaceDocument.file.path;
+            NSLog(@"find connecting project file: %@", projectFile);
+            break;
+        }
+    }
+    
+    //fall-back to the activeWorkspaceDocument.file.path
+    //if it doesn’t find a workspace with the binary's name.
+    if (projectFile.length == 0) {
+        XcodeWorkspaceDocument *workspace = [xcode activeWorkspaceDocument];
+        projectFile = workspace.file.path;
+        NSLog(@"activeWorkspace project file: %@", projectFile);
+    }
+    return projectFile;
 }
 
 - (void)dealloc {
