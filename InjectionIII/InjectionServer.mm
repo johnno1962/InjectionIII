@@ -47,29 +47,16 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
     else
         return;
     
-    //traverse all workspaceDocuments and find out which workspace is connecting
-    NSString *projectFile;
-    NSString *projectRoot;
-    BOOL getProjectFile = NO;
-    XcodeApplication *xcode = (XcodeApplication *)[SBApplication
-                                                       applicationWithBundleIdentifier:XcodeBundleID];
-    for (XcodeWorkspaceDocument *tmpWorkspaceDocument in xcode.workspaceDocuments) {
-        NSString* projectName = [builder.frameworks stringByDeletingLastPathComponent];
-        projectName = [[projectName lastPathComponent] stringByDeletingPathExtension];
-        
-        if ([tmpWorkspaceDocument.file.path containsString:projectName]) {
-            projectFile = tmpWorkspaceDocument.file.path;
-            projectRoot = projectFile.stringByDeletingLastPathComponent;
-            NSLog(@"Connection with project file: %@", projectFile);
-            builder.projectFile = projectFile;
-            // tell client app the inferred project being watched
-            [self writeString:projectFile];
-            getProjectFile = YES;
-            break;
-        }
-    }
-    
-    if (getProjectFile == NO) {
+    // auto-select-project
+    NSString *projectFile = [self findConnectingProject:builder.frameworks];
+    if (projectFile.length > 0) {
+        NSLog(@"project file: %@ being watched", projectFile);
+        builder.projectFile = projectFile;
+        // tell client app the inferred project being watched
+        [self writeString:projectFile];
+    }else{
+        // can't find a project to watch
+        NSLog(@"error: can not find a project to watch");
         return;
     }
 
@@ -137,7 +124,7 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
         return;
 
     __block NSTimeInterval pause = 0.;
-
+    NSString *projectRoot = builder.projectFile.stringByDeletingLastPathComponent;
     // start up a file watcher to write generated tmpfile path to client app
     FileWatcher *fileWatcher = [[FileWatcher alloc] initWithRoot:projectRoot plugin:^(NSArray *changed) {
         NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
@@ -170,6 +157,32 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
     // client app disconnected
     fileWatcher = nil;
     [appDelegate setMenuIcon:@"InjectionIdle"];
+}
+
+- (NSString *)findConnectingProject:(NSString *) builderFrameworksPath
+{
+    NSString *projectFile = @"";
+    XcodeApplication *xcode = (XcodeApplication *)[SBApplication
+                                                   applicationWithBundleIdentifier:XcodeBundleID];
+    //traverse all workspaceDocuments and find out which workspace is connecting
+    for (XcodeWorkspaceDocument *tmpWorkspaceDocument in xcode.workspaceDocuments) {
+        NSString* projectName = [builderFrameworksPath stringByDeletingLastPathComponent];
+        projectName = [[projectName lastPathComponent] stringByDeletingPathExtension];
+        if ([tmpWorkspaceDocument.file.path containsString:projectName]) {
+            projectFile = tmpWorkspaceDocument.file.path;
+            NSLog(@"find connecting project file: %@", projectFile);
+            break;
+        }
+    }
+    
+    //fall-back to the activeWorkspaceDocument.file.path
+    //if it doesn’t find a workspace with the binary's name.
+    if (projectFile.length == 0) {
+        XcodeWorkspaceDocument *workspace = [xcode activeWorkspaceDocument];
+        projectFile = workspace.file.path;
+        NSLog(@"activeWorkspace project file: %@", projectFile);
+    }
+    return projectFile;
 }
 
 - (void)dealloc {
