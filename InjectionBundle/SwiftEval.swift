@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#104 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#109 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -183,7 +183,10 @@ public class SwiftEval: NSObject {
                     .flatMap({ logsDir(project: URL(fileURLWithPath: $0), derivedData: derivedData) })
                     .flatMap({ (URL(fileURLWithPath: self.projectFile!), $0) }) ??
                 findProject(for: sourceURL, derivedData: derivedData) else {
-                    throw evalError("Could not locate containing project or it's logs.")
+                    throw evalError("""
+                        Could not locate containing project or it's logs.
+                        Have you customised the DerivedData path?
+                        """)
         }
 
         return (projectFile, logsDir)
@@ -259,7 +262,9 @@ public class SwiftEval: NSObject {
             SwiftEval.longTermCache[classNameOrFile].flatMap({ ($0 as! String, classNameOrFile) }) else {
             throw evalError("""
                 Could not locate compile command for \(classNameOrFile)
-                Try a clean build. There are also restrictions on characters allowed in paths.
+                (Injection does not work with Whole Module Optimization.
+                There are also restrictions on characters allowed in paths.
+                All paths are also case sensitive is another thing to check.)
                 """)
         }
 
@@ -481,6 +486,8 @@ public class SwiftEval: NSObject {
 
         // remove excess escaping in new build system
         compileCommand = compileCommand
+            // escape ( & ) outside quotes
+            .replacingOccurrences(of: "[()](?=(?:(?:[^\"]*\"){2})*[^\"]$)", with: "\\\\$0", options: [.regularExpression])
             // (logs of new build system escape ', $ and ")
             .replacingOccurrences(of: "\\\\([\"'\\\\])", with: "$1", options: [.regularExpression])
             // pch file may no longer exist
@@ -587,9 +594,12 @@ public class SwiftEval: NSObject {
             return nil
         }
 
-        let derived = url.appendingPathComponent("Library/Developer/Xcode/DerivedData")
-        if FileManager.default.fileExists(atPath: derived.path) {
-            return derived
+        for relative in ["DerivedData", "build/DerivedData",
+                         "Library/Developer/Xcode/DerivedData"] {
+            let derived = url.appendingPathComponent(relative)
+            if FileManager.default.fileExists(atPath: derived.path) {
+                return derived
+            }
         }
 
         return findDerivedData(url: url.deletingLastPathComponent())
@@ -627,8 +637,8 @@ public class SwiftEval: NSObject {
         let projectPrefix = project.deletingPathExtension()
             .lastPathComponent.replacingOccurrences(of: "\\s+", with: "_",
                                     options: .regularExpression, range: nil)
-        let relativeDerivedData = project.deletingLastPathComponent()
-            .appendingPathComponent("DerivedData/\(projectPrefix)/Logs/Build")
+        let relativeDerivedData = derivedData
+            .appendingPathComponent("\(projectPrefix)/Logs/Build")
 
         return ((try? filemgr.contentsOfDirectory(atPath: derivedData.path))?
             .filter { $0.starts(with: projectPrefix + "-") }
