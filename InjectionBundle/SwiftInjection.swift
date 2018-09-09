@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#45 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#48 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -157,8 +157,16 @@ public class SwiftInjection: NSObject {
             }
         }
         else {
-            let injectedClasses = oldClasses.filter {
-                class_getInstanceMethod($0, #selector(SwiftInjected.injected)) != nil }
+            var injectedClasses = [AnyClass]()
+            for cls in oldClasses {
+                if class_getInstanceMethod(cls, #selector(SwiftInjected.injected)) != nil {
+                    injectedClasses.append(cls)
+                    let kvoName = "NSKVONotifying_" + NSStringFromClass(cls)
+                    if let kvoCls = NSClassFromString(kvoName) {
+                        injectedClasses.append(kvoCls)
+                    }
+                }
+            }
 
             // implement -injected() method using sweep of objects in application
             if !injectedClasses.isEmpty {
