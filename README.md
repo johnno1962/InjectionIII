@@ -44,6 +44,14 @@ you application as a graph and execute code against them. If you want to build
 from source you'll need to use:
 
     git clone https://github.com/johnno1962/InjectionIII --recurse-submodules
+    
+### Available downloads
+
+| Xcode 9 | Xcode 10 |
+| ------------- | ------------- |
+| [Mac app store](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12) | [Direct download](http://johnholdsworth.com/InjectionX.app.zip) |
+
+The reason for multiple versions is routed in Swift not being AB stable yet, this means that there will be one version per Xcode release, hence numerous versions being available for download.
 
 ### Limitations
 
