@@ -10,10 +10,16 @@
 #import "InjectionServer.h"
 
 #ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
-#if __has_include("tvOSInjection-Swift.h")
+#if __has_include("tvOSInjection10-Swift.h")
+#import "tvOSInjection10-Swift.h"
+#elif __has_include("tvOSInjection-Swift.h")
 #import "tvOSInjection-Swift.h"
 #else
+#if __has_include("iOSInjection10-Swift.h")
+#import "iOSInjection10-Swift.h"
+#else
 #import "iOSInjection-Swift.h"
+#endif
 #import <UIKit/UIKit.h>
 
 @implementation NSObject (Remapper)
@@ -53,7 +59,11 @@ static struct {
 @end
 #endif
 #else
+#if __has_include("macOSInjection10-Swift.h")
+#import "macOSInjection10-Swift.h"
+#else
 #import "macOSInjection-Swift.h"
+#endif
 #endif
 
 #ifdef XPROBE_PORT
@@ -144,7 +154,7 @@ static struct {
                     [SwiftInjection injectWithTmpfile:[swiftSource substringFromIndex:@"LOAD ".length] error:&err];
                 else if ([swiftSource hasPrefix:@"INJECT "]) {
                     NSString *changed = [swiftSource substringFromIndex:@"INJECT ".length];
-#if __has_include("iOSInjection-Swift.h")
+#if __has_include("iOSInjection-Swift.h") || __has_include("iOSInjection10-Swift.h")
                     if ([changed hasSuffix:@"storyboard"] || [changed hasSuffix:@"xib"]) {
                         static NSMutableDictionary *allOrder;
                         static dispatch_once_t once;

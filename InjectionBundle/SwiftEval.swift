@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#109 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#110 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -463,7 +463,7 @@ public class SwiftEval: NSObject {
                                 }
                             }
                             if ($realPath and (undef, $realPath) = $realPath =~ /cd (\\"?)(.*?)\\1\\r/) {
-                                print "cd \\"$realPath\\" && ";
+            #                                print "cd \\"$realPath\\" && ";
                             }
                             # stop search
                             print $line;
@@ -486,8 +486,8 @@ public class SwiftEval: NSObject {
 
         // remove excess escaping in new build system
         compileCommand = compileCommand
-            // escape ( & ) outside quotes
-            .replacingOccurrences(of: "[()](?=(?:(?:[^\"]*\"){2})*[^\"]$)", with: "\\\\$0", options: [.regularExpression])
+//            // escape ( & ) outside quotes
+//            .replacingOccurrences(of: "[()](?=(?:(?:[^\"]*\"){2})*[^\"]$)", with: "\\\\$0", options: [.regularExpression])
             // (logs of new build system escape ', $ and ")
             .replacingOccurrences(of: "\\\\([\"'\\\\])", with: "$1", options: [.regularExpression])
             // pch file may no longer exist
