@@ -18,8 +18,22 @@ static void fileCallback(ConstFSEventStreamRef streamRef,
                          const FSEventStreamEventFlags eventFlags[],
                          const FSEventStreamEventId eventIds[]) {
     FileWatcher *self = (__bridge FileWatcher *)clientCallBackInfo;
-    [self performSelectorOnMainThread:@selector(filesChanged:)
-                           withObject:(__bridge id)eventPaths waitUntilDone:NO];
+    // Check that the event flags include an item renamed flag, this helps avoid
+    // unnecessary injection, such as triggering injection when switching between
+    // files in Xcode.
+    BOOL shouldRespondToFileChange = NO;
+    for (int i = 0; i < numEvents; i++) {
+        uint32 flag = eventFlags[i];
+        if (flag & kFSEventStreamEventFlagItemRenamed) {
+            shouldRespondToFileChange = YES;
+            break;
+        }
+    }
+
+    if (shouldRespondToFileChange == YES) {
+        [self performSelectorOnMainThread:@selector(filesChanged:)
+                               withObject:(__bridge id)eventPaths waitUntilDone:NO];
+    }
 }
 
 - (instancetype)initWithRoot:(NSString *)projectRoot plugin:(InjectionCallback)callback;
