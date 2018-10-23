@@ -215,7 +215,9 @@
 				BB439B661FABA64300B4F50B /* Products */,
 				BBB040621FB1798A007DDD0A /* Frameworks */,
 			);
+			indentWidth = 4;
 			sourceTree = "<group>";
+			tabWidth = 4;
 		};
 		BB439B661FABA64300B4F50B /* Products */ = {
 			isa = PBXGroup;
