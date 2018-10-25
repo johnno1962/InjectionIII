@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 John Holdsworth. All rights reserved.
 //
 
-#import "UserDefaults.h"
 #import "FileWatcher.h"
 
 @implementation FileWatcher {
@@ -40,7 +39,6 @@ static void fileCallback(ConstFSEventStreamRef streamRef,
 - (instancetype)initWithRoot:(NSString *)projectRoot plugin:(InjectionCallback)callback;
 {
     if ((self = [super init])) {
-        self.projectRoot = projectRoot;
         self.callback = callback;
         static struct FSEventStreamContext context;
         context.info = (__bridge void *)self;
@@ -70,57 +68,12 @@ static void fileCallback(ConstFSEventStreamRef streamRef,
             [fileManager fileExistsAtPath:path]) {
 
             [changed addObject:path];
-
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:UserDefaultsTDDEnabled]) {
-                NSArray *matchedTests = [self searchForTestWithFile:path projectRoot:self.projectRoot fileManager:fileManager];
-                [changed addObjectsFromArray:matchedTests];
-            }
         }
     }
 
     //NSLog( @"filesChanged: %@", changed );
     if (changed.count)
         self.callback([[changed objectEnumerator] allObjects]);
-}
-
-- (NSArray *)searchForTestWithFile:(NSString *)injectedFile projectRoot:(NSString *)projectRoot fileManager:(NSFileManager *)fileManager;
-{
-    NSString *injectedFileName = [[injectedFile lastPathComponent] stringByDeletingPathExtension];
-    NSURL *projectUrl = [NSURL URLWithString:projectRoot];
-    NSDirectoryEnumerator *enumerator = [fileManager enumeratorAtURL:projectUrl
-                                          includingPropertiesForKeys:@[NSURLNameKey, NSURLIsDirectoryKey]
-                                                             options:NSDirectoryEnumerationSkipsHiddenFiles
-                                                        errorHandler:^BOOL(NSURL *url, NSError *error)
-                                         {
-                                             if (error) {
-                                                 NSLog(@"[Error] %@ (%@)", error, url);
-                                                 return NO;
-                                             }
-
-                                             return YES;
-                                         }];
-
-    NSMutableArray *matchedTests = [NSMutableArray array];
-    for (NSURL *fileURL in enumerator) {
-        NSString *filename;
-        NSNumber *isDirectory;
-
-        [fileURL getResourceValue:&filename forKey:NSURLNameKey error:nil];
-        [fileURL getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:nil];
-
-        if ([filename hasPrefix:@"_"] && [isDirectory boolValue]) {
-            [enumerator skipDescendants];
-            continue;
-        }
-
-        if (![isDirectory boolValue] &&
-            ![[filename lastPathComponent] isEqualToString:[injectedFile lastPathComponent]] &&
-            [[filename lowercaseString] containsString:[injectedFileName lowercaseString]]) {
-            [matchedTests addObject:fileURL.path];
-        }
-    }
-
-    return matchedTests;
 }
 
 - (void)dealloc;

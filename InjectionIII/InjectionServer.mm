@@ -14,6 +14,7 @@
 
 #import "Xcode.h"
 #import "XcodeHash.h"
+#import "UserDefaults.h"
 
 #import "InjectionIII-Swift.h"
 
@@ -155,7 +156,16 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
 
     injector = ^(NSArray *changed) {
         NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
-        for (NSString *swiftSource in changed)
+        NSMutableArray *changedFiles = [NSMutableArray arrayWithArray:changed];
+
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:UserDefaultsTDDEnabled]) {
+            NSArray *matchedTests = [InjectionServer searchForTestWithFiles:changed
+                                                                projectRoot:projectFile.stringByDeletingLastPathComponent
+                                                                fileManager:[NSFileManager defaultManager]];
+            [changedFiles addObjectsFromArray:matchedTests];
+        }
+
+        for (NSString *swiftSource in changedFiles)
             if (now > lastInjected[swiftSource].doubleValue + MIN_INJECTION_INTERVAL && now > pause) {
                 lastInjected[swiftSource] = [NSNumber numberWithDouble:now];
                 inject(swiftSource);
@@ -195,6 +205,49 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
     fileWatcher = [[FileWatcher alloc]
                    initWithRoot:project.stringByDeletingLastPathComponent
                    plugin:injector];
+}
+
++ (NSArray *)searchForTestWithFiles:(NSArray *)injectedFiles projectRoot:(NSString *)projectRoot fileManager:(NSFileManager *)fileManager;
+{
+    NSMutableArray *matchedTests = [NSMutableArray array];
+    for (NSString *injectedFile in injectedFiles) {
+        NSString *injectedFileName = [[injectedFile lastPathComponent] stringByDeletingPathExtension];
+        NSURL *projectUrl = [NSURL URLWithString:projectRoot];
+        NSDirectoryEnumerator *enumerator = [fileManager enumeratorAtURL:projectUrl
+                                              includingPropertiesForKeys:@[NSURLNameKey, NSURLIsDirectoryKey]
+                                                                 options:NSDirectoryEnumerationSkipsHiddenFiles
+                                                            errorHandler:^BOOL(NSURL *url, NSError *error)
+                                             {
+                                                 if (error) {
+                                                     NSLog(@"[Error] %@ (%@)", error, url);
+                                                     return NO;
+                                                 }
+
+                                                 return YES;
+                                             }];
+
+
+        for (NSURL *fileURL in enumerator) {
+            NSString *filename;
+            NSNumber *isDirectory;
+
+            [fileURL getResourceValue:&filename forKey:NSURLNameKey error:nil];
+            [fileURL getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:nil];
+
+            if ([filename hasPrefix:@"_"] && [isDirectory boolValue]) {
+                [enumerator skipDescendants];
+                continue;
+            }
+
+            if (![isDirectory boolValue] &&
+                ![[filename lastPathComponent] isEqualToString:[injectedFile lastPathComponent]] &&
+                [[filename lowercaseString] containsString:[injectedFileName lowercaseString]]) {
+                [matchedTests addObject:fileURL.path];
+            }
+        }
+    }
+
+    return matchedTests;
 }
 
 - (void)dealloc {
