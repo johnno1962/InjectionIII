@@ -166,6 +166,7 @@
 		BBE490DA1FB2C643003D41BB /* InjectionError.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = InjectionError.tif; sourceTree = "<group>"; };
 		BBEB704A1FD28C6F00127711 /* XcodeHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XcodeHash.h; sourceTree = "<group>"; };
 		BBEB704B1FD28C6F00127711 /* XcodeHash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XcodeHash.m; sourceTree = "<group>"; };
+		BDB6A7CE21824C800001CF95 /* UserDefaults.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserDefaults.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -350,6 +351,7 @@
 				BBCA02581FB112F500E45F0F /* App.icns */,
 				BBCA02091FB0F10400E45F0F /* main.m */,
 				BBCA020B1FB0F10400E45F0F /* InjectionIII.entitlements */,
+				BDB6A7CE21824C800001CF95 /* UserDefaults.h */,
 			);
 			path = InjectionIII;
 			sourceTree = "<group>";

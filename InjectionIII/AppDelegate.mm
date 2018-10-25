@@ -18,6 +18,7 @@
 //#import "DDHotKeyCenter.h"
 
 #import "InjectionIII-Swift.h"
+#import "UserDefaults.h"
 
 #ifdef XPROBE_PORT
 #import "../XprobePlugin/Classes/XprobePluginMenuController.h"
@@ -32,7 +33,7 @@ AppDelegate *appDelegate;
 
 @implementation AppDelegate {
     IBOutlet NSMenu *statusMenu;
-    IBOutlet NSMenuItem *startItem, *xprobeItem, *windowItem;
+    IBOutlet NSMenuItem *startItem, *xprobeItem, *enabledTDDItem, *windowItem;
     IBOutlet NSStatusItem *statusItem;
 }
 
@@ -49,6 +50,10 @@ AppDelegate *appDelegate;
     statusItem.enabled = TRUE;
     statusItem.title = @"";
 
+    enabledTDDItem.state = ([[NSUserDefaults standardUserDefaults] boolForKey:UserDefaultsTDDEnabled])
+        ? NSControlStateValueOn
+        : NSControlStateValueOff;
+
     [self setMenuIcon:@"InjectionIdle"];
 #if 0
     [[DDHotKeyCenter sharedHotKeyCenter] registerHotKeyWithKeyCode:kVK_ANSI_Equal
@@ -59,6 +64,15 @@ AppDelegate *appDelegate;
 
 - (IBAction)openProject:sender {
     [self application:NSApp openFile:nil];
+}
+
+- (IBAction)toggleTDD:(NSMenuItem *)sender {
+    [self toggleState:sender];
+
+    BOOL newSetting = sender.state == NSControlStateValueOn;
+
+    [[NSUserDefaults standardUserDefaults] setBool:newSetting forKey:UserDefaultsTDDEnabled];
+    NSLog(@"sender: %ld", (long)[sender state]);
 }
 
 - (BOOL)application:(NSApplication *)theApplication openFile:(NSString *)filename {
