@@ -104,7 +104,7 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
 
     // callback on errors
     builder.evalError = ^NSError *(NSString *message) {
-        [self writeString:[@"LOG " stringByAppendingString:message]];
+        [self writeCommand:InjectionLog withString:message];
         return [[NSError alloc] initWithDomain:@"SwiftEval" code:-1
                                       userInfo:@{NSLocalizedDescriptionKey: message}];
     };
@@ -125,10 +125,10 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
 //                        [appDelegate setMenuIcon:@"InjectionError"];
 //                }
 //                else
-                    [self writeString:[@"INJECT " stringByAppendingString:swiftSource]];
+                    [self writeCommand:InjectionInject withString:swiftSource];
             }
             else
-                [self writeString:@"LOG The file watcher is turned off"];
+                [self writeCommand:InjectionLog withString:@"The file watcher is turned off"];
         });
     };
 
@@ -180,23 +180,36 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
     [self setProject:projectFile];
 
     // read status requests from client app
-    while (NSString *response = [self readString])
-        if ([response hasPrefix:@"COMPLETE"])
+    InjectionCommand command;
+    while ((command = (InjectionCommand)[self readInt]) != InjectionEOF) {
+        switch (command) {
+        case InjectionComplete:
             [appDelegate setMenuIcon:@"InjectionOK"];
-        else if ([response hasPrefix:@"PAUSE "])
+            break;
+        case InjectionPause:
             pause = [NSDate timeIntervalSinceReferenceDate] +
-                [response substringFromIndex:@"PAUSE ".length].doubleValue;
-        else if ([response hasPrefix:@"SIGN "])
-            [self writeString:[SignerService codesignDylib:[response
-                substringFromIndex:@"SIGN ".length]] ? @"SIGNED 1" : @"SIGNED 0"];
-        else if ([response hasPrefix:@"ERROR "])
+                [self readString].doubleValue;
+            break;
+        case InjectionSign: {
+            BOOL signedOK = [SignerService codesignDylib:[self readString]];
+            [self writeCommand:InjectionSigned withString: signedOK ? @"1": @"0"];
+            break;
+        }
+        case InjectionError:
             [appDelegate setMenuIcon:@"InjectionError"];
+            NSLog(@"Injection error: %@", [self readString]);
 //            dispatch_async(dispatch_get_main_queue(), ^{
 //                [[NSAlert alertWithMessageText:@"Injection Error"
 //                                 defaultButton:@"OK" alternateButton:nil otherButton:nil
 //                     informativeTextWithFormat:@"%@",
 //                  [dylib substringFromIndex:@"ERROR ".length]] runModal];
 //            });
+            break;
+        default:
+            NSLog(@"InjectionServer: Unexpected case %d", command);
+            break;
+        }
+    }
 
     // client app disconnected
     injector = nil;
@@ -206,7 +219,7 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
 
 - (void)setProject:(NSString *)project {
     if (!injector) return;
-    [self writeString:[@"PROJECT " stringByAppendingString:project]];
+    [self writeCommand:InjectionProject withString:project];
     fileWatcher = [[FileWatcher alloc]
                    initWithRoot:project.stringByDeletingLastPathComponent
                    plugin:injector];

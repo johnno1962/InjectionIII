@@ -165,12 +165,12 @@ AppDelegate *appDelegate;
         #pragma clang diagnostic pop
         xprobePlugin.injectionPlugin = self;
     }
-    [self.lastConnection writeString:@"XPROBE"];
+    [self.lastConnection writeCommand:InjectionXprobe withString:@""];
     windowItem.hidden = FALSE;
 }
 
 - (void)evalCode:(NSString *)swift {
-    [self.lastConnection writeString:[@"EVAL " stringByAppendingString:swift]];
+    [self.lastConnection writeCommand:InjectionEval withString:swift];
 }
 
 - (IBAction)donate:sender {

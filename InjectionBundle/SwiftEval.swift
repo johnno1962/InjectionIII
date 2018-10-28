@@ -342,7 +342,7 @@ public class SwiftEval: NSObject {
         // codesign dylib
 
         if signer != nil {
-            guard signer!("SIGN \(tmpfile).dylib") else {
+            guard signer!("\(tmpfile).dylib") else {
                 throw evalError("Codesign failed")
             }
         }
