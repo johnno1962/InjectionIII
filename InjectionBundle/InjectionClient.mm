@@ -130,114 +130,56 @@ static struct {
 
     // make available implementation of signing delegated to macOS app
     [SwiftEval sharedInstance].signer = ^BOOL(NSString *_Nonnull dylib) {
-        [self writeString:dylib];
+        [self writeCommand:InjectionSign withString:dylib];
         return [reader readString].boolValue;
     };
 
     // As tmp file names come in, inject them
-    while (NSString *swiftSource = [self readString])
-        if ([swiftSource hasPrefix:@"PROJECT "]) {
-            NSString *projectFile = [swiftSource substringFromIndex:@"PROJECT ".length];
+    InjectionCommand command;
+    while ((command = (InjectionCommand)[self readInt]) != InjectionEOF) {
+        switch (command) {
+        case InjectionProject: {
+            NSString *projectFile = [self readString];
             [SwiftEval sharedInstance].projectFile = projectFile;
             [SwiftEval sharedInstance].derivedLogs = nil;
             printf("Injection connected, watching %s/**\n",
                    projectFile.stringByDeletingLastPathComponent.UTF8String);
+            break;
         }
-        else if ([swiftSource hasPrefix:@"LOG "])
-            printf("%s\n", [swiftSource substringFromIndex:@"LOG ".length].UTF8String);
-        else if ([swiftSource hasPrefix:@"SIGNED "])
-            [writer writeString:[swiftSource substringFromIndex:@"SIGNED ".length]];
-        else
+        case InjectionLog:
+            printf("%s\n", [self readString].UTF8String);
+            break;
+        case InjectionSigned:
+            [writer writeString:[self readString]];
+            break;
+        default: {
+            NSString *changed = [self readString];
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSError *err = nil;
-                if ([swiftSource hasPrefix:@"LOAD "])
-                    [SwiftInjection injectWithTmpfile:[swiftSource substringFromIndex:@"LOAD ".length] error:&err];
-                else if ([swiftSource hasPrefix:@"INJECT "]) {
-                    NSString *changed = [swiftSource substringFromIndex:@"INJECT ".length];
+                switch (command) {
+                case InjectionLoad:
+                    [SwiftInjection injectWithTmpfile:changed error:&err];
+                    break;
+                case InjectionInject: {
 #if __has_include("iOSInjection-Swift.h") || __has_include("iOSInjection10-Swift.h")
                     if ([changed hasSuffix:@"storyboard"] || [changed hasSuffix:@"xib"]) {
-                        static NSMutableDictionary *allOrder;
-                        static dispatch_once_t once;
-
-                        dispatch_once(&once, ^{
-                            Class proxyClass = objc_getClass("UIProxyObject");
-                            method_exchangeImplementations(
-                                class_getClassMethod(proxyClass,
-                                @selector(my_addMappingFromIdentifier:toObject:forCoder:)),
-                                class_getClassMethod(proxyClass,
-                                @selector(addMappingFromIdentifier:toObject:forCoder:)));
-                            method_exchangeImplementations(
-                                class_getClassMethod(proxyClass,
-                                @selector(my_mappedObjectForCoder:withIdentifier:)),
-                                class_getClassMethod(proxyClass,
-                                @selector(mappedObjectForCoder:withIdentifier:)));
-                            allOrder = [NSMutableDictionary new];
-                       });
-
-                        @try {
-                            UIViewController *visibleVC = [UIApplication sharedApplication]
-                                                    .windows.firstObject.rootViewController;
-                            if (UIViewController *child =
-                                visibleVC.childViewControllers.firstObject)
-                                visibleVC = child;
-                            if ([visibleVC respondsToSelector:@selector(viewControllers)])
-                                visibleVC = [(UISplitViewController *)visibleVC
-                                             viewControllers].lastObject;
-                            if ([visibleVC respondsToSelector:@selector(visibleViewController)])
-                                visibleVC = [(UINavigationController *)visibleVC
-                                             visibleViewController];
-
-                            NSString *nibName = visibleVC.nibName;
-
-                            if (!(remapper.order = allOrder[nibName])) {
-                                remapper.inputIndexes = [NSMutableDictionary new];
-                                remapper.output = [NSMutableArray new];
-                                allOrder[nibName] = remapper.order = [NSMutableArray new];
-
-                                [visibleVC _loadViewFromNibNamed:visibleVC.nibName
-                                                          bundle:visibleVC.nibBundle];
-
-                                remapper.inputIndexes = nil;
-                                remapper.output = nil;
-                            }
-
-                            [[SwiftEval sharedInstance] rebuildWithStoryboard:changed error:&err];
-                            if (err)
-                                return;
-
-                            remapper.output = [NSMutableArray new];
-                            remapper.orderIndex = 0;
-
-                            [visibleVC _loadViewFromNibNamed:visibleVC.nibName
-                                                      bundle:visibleVC.nibBundle];
-                            [visibleVC viewDidLoad];
-                            [visibleVC viewWillAppear:NO];
-                            [visibleVC viewDidAppear:NO];
-
-#ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
-                            [SwiftInjection flash:visibleVC];
-#endif
-                        }
-                        @catch(NSException *e) {
-                            printf("Problem reloading nib: %s\n", e.reason.UTF8String);
-                        }
-
-                        remapper.output = nil;
+                        if (![self injectUI:changed])
+                            return;
                     }
                     else
 #endif
                         [SwiftInjection injectWithOldClass:nil classNameOrFile:changed];
+                    break;
                 }
 #ifdef XPROBE_PORT
-                else if ([swiftSource hasPrefix:@"XPROBE"]) {
+                case InjectionXprobe:
                     [Xprobe connectTo:NULL retainObjects:YES];
                     [Xprobe search:@""];
-                }
-                else if ([swiftSource hasPrefix:@"EVAL "]) {
-                    NSString *args = [swiftSource substringFromIndex:@"EVAL ".length];
-                    NSArray<NSString *> *parts = [args componentsSeparatedByString:@"^"];
+                    break;
+                case InjectionEval: {
+                    NSArray<NSString *> *parts = [changed componentsSeparatedByString:@"^"];
                     int pathID = parts[0].intValue;
-                    [self writeString:@"PAUSE 5"];
+                    [self writeCommand:InjectionPause withString:@"5"];
                     if ([xprobePaths[pathID].object respondsToSelector:@selector(evalSwift:)])
                         [xprobePaths[pathID].object evalSwift:parts[3].stringByRemovingPercentEncoding];
                     else
@@ -245,8 +187,91 @@ static struct {
                     [Xprobe writeString:[NSString stringWithFormat:@"$('BUSY%d').hidden = true; ", pathID]];
                 }
 #endif
-                [self writeString:err ? [@"ERROR " stringByAppendingString:err.localizedDescription] : @"COMPLETE"];
+                default:
+                    [self writeCommand:InjectionError withString:@"Invalid command"];
+                    break;
+                }
+
+                [self writeCommand:err ? InjectionError : InjectionComplete
+                        withString:err ? err.localizedDescription : nil];
             });
+        }
+        }
+    }
 }
+
+#if __has_include("iOSInjection-Swift.h") || __has_include("iOSInjection10-Swift.h")
+- (BOOL)injectUI:(NSString *)changed {
+    static NSMutableDictionary *allOrder;
+    static dispatch_once_t once;
+
+    dispatch_once(&once, ^{
+        Class proxyClass = objc_getClass("UIProxyObject");
+        method_exchangeImplementations(
+           class_getClassMethod(proxyClass,
+                                @selector(my_addMappingFromIdentifier:toObject:forCoder:)),
+           class_getClassMethod(proxyClass,
+                                @selector(addMappingFromIdentifier:toObject:forCoder:)));
+        method_exchangeImplementations(
+           class_getClassMethod(proxyClass,
+                                @selector(my_mappedObjectForCoder:withIdentifier:)),
+           class_getClassMethod(proxyClass,
+                                @selector(mappedObjectForCoder:withIdentifier:)));
+        allOrder = [NSMutableDictionary new];
+    });
+
+    @try {
+        UIViewController *visibleVC = [UIApplication sharedApplication]
+        .windows.firstObject.rootViewController;
+        if (UIViewController *child =
+            visibleVC.childViewControllers.firstObject)
+            visibleVC = child;
+        if ([visibleVC respondsToSelector:@selector(viewControllers)])
+            visibleVC = [(UISplitViewController *)visibleVC
+                         viewControllers].lastObject;
+        if ([visibleVC respondsToSelector:@selector(visibleViewController)])
+            visibleVC = [(UINavigationController *)visibleVC
+                         visibleViewController];
+
+        NSString *nibName = visibleVC.nibName;
+
+        if (!(remapper.order = allOrder[nibName])) {
+            remapper.inputIndexes = [NSMutableDictionary new];
+            remapper.output = [NSMutableArray new];
+            allOrder[nibName] = remapper.order = [NSMutableArray new];
+
+            [visibleVC _loadViewFromNibNamed:visibleVC.nibName
+                                      bundle:visibleVC.nibBundle];
+
+            remapper.inputIndexes = nil;
+            remapper.output = nil;
+        }
+
+        NSError *err = nil;
+        [[SwiftEval sharedInstance] rebuildWithStoryboard:changed error:&err];
+        if (err)
+            return FALSE;
+
+        remapper.output = [NSMutableArray new];
+        remapper.orderIndex = 0;
+
+        [visibleVC _loadViewFromNibNamed:visibleVC.nibName
+                                  bundle:visibleVC.nibBundle];
+        [visibleVC viewDidLoad];
+        [visibleVC viewWillAppear:NO];
+        [visibleVC viewDidAppear:NO];
+
+#ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
+        [SwiftInjection flash:visibleVC];
+#endif
+    }
+    @catch(NSException *e) {
+        printf("Problem reloading nib: %s\n", e.reason.UTF8String);
+    }
+
+    remapper.output = nil;
+    return true;
+}
+#endif
 
 @end

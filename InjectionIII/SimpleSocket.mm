@@ -134,9 +134,16 @@
     [[self class] error:@"-[Networking run] not implemented in subclass"];
 }
 
+- (int)readInt {
+    int32_t anint;
+    if (read(clientSocket, &anint, sizeof anint) != sizeof anint)
+        return ~0;
+    return anint;
+}
+
 - (NSString *)readString {
-    uint32_t length;
-    if (read(clientSocket, &length, sizeof length) != sizeof length)
+    uint32_t length = [self readInt];
+    if (length == ~0)
         return nil;
     char utf8[length + 1];
     if (read(clientSocket, utf8, length) != length)
@@ -152,6 +159,11 @@
         write(clientSocket, utf8, length) != length)
         return FALSE;
     return TRUE;
+}
+
+- (BOOL)writeCommand:(int)command withString:(NSString *)string {
+    return write(clientSocket, &command, sizeof command) == sizeof command &&
+        (!string || [self writeString:string]);
 }
 
 - (void)dealloc {

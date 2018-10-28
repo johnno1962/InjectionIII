@@ -26,8 +26,10 @@
 - (void)run;
 - (void)runInBackground;
 
+- (int)readInt;
 - (NSString *_Nullable)readString;
 - (BOOL)writeString:(NSString *_Nonnull)string;
+- (BOOL)writeCommand:(int)command withString:(NSString *_Nullable)string;
 
 @end
 

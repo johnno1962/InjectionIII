@@ -16,3 +16,22 @@
 - (void)setProject:(NSString *)project;
 
 @end
+
+typedef NS_ENUM(int, InjectionCommand) {
+    // responses from bundle
+    InjectionComplete,
+    InjectionPause,
+    InjectionSign,
+    InjectionError,
+
+    // commands to Bundle
+    InjectionProject,
+    InjectionLog,
+    InjectionSigned,
+    InjectionLoad,
+    InjectionInject,
+    InjectionXprobe,
+    InjectionEval,
+
+    InjectionEOF = ~0
+};
