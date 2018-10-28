@@ -229,7 +229,7 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
 {
     NSMutableArray *matchedTests = [NSMutableArray array];
     NSString *injectedFileName = [[injectedFile lastPathComponent] stringByDeletingPathExtension];
-    NSURL *projectUrl = [NSURL URLWithString:projectRoot];
+    NSURL *projectUrl = [NSURL URLWithString:[self urlEncodeString:projectRoot]];
     NSDirectoryEnumerator *enumerator = [fileManager enumeratorAtURL:projectUrl
                                           includingPropertiesForKeys:@[NSURLNameKey, NSURLIsDirectoryKey]
                                                              options:NSDirectoryEnumerationSkipsHiddenFiles
@@ -264,6 +264,13 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
     }
 
     return matchedTests;
+}
+
++ (nullable NSString *)urlEncodeString:(NSString *)string {
+    NSString *unreserved = @"-._~/?";
+    NSMutableCharacterSet *allowed = [NSMutableCharacterSet alphanumericCharacterSet];
+    [allowed addCharactersInString:unreserved];
+    return [string stringByAddingPercentEncodingWithAllowedCharacters: allowed];
 }
 
 - (void)dealloc {
