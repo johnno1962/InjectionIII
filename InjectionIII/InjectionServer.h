@@ -14,6 +14,7 @@
 @interface InjectionServer : SimpleSocket
 
 - (void)setProject:(NSString *)project;
+- (void)injectPending;
 
 @end
 
