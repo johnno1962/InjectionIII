@@ -13,9 +13,9 @@
 //#import "HelperInstaller.h"
 //#import "HelperProxy.h"
 
-//#import <Carbon/Carbon.h>
-//#import <AppKit/NSEvent.h>
-//#import "DDHotKeyCenter.h"
+#import <Carbon/Carbon.h>
+#import <AppKit/NSEvent.h>
+#import "DDHotKeyCenter.h"
 
 #import "InjectionIII-Swift.h"
 #import "UserDefaults.h"
@@ -55,11 +55,9 @@ AppDelegate *appDelegate;
         : NSControlStateValueOff;
 
     [self setMenuIcon:@"InjectionIdle"];
-#if 0
     [[DDHotKeyCenter sharedHotKeyCenter] registerHotKeyWithKeyCode:kVK_ANSI_Equal
                                                      modifierFlags:NSEventModifierFlagControl
                                                             target:self action:@selector(autoInject:) object:nil];
-#endif
 }
 
 - (IBAction)openProject:sender {
@@ -125,6 +123,7 @@ AppDelegate *appDelegate;
 }
 
 - (IBAction)autoInject:(NSMenuItem *)sender {
+    [self.lastConnection injectPending];
 #if 0
     NSError *error = nil;
     // Install helper tool
@@ -180,10 +179,8 @@ AppDelegate *appDelegate;
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
     // Insert code here to tear down your application
-#if 0
     [[DDHotKeyCenter sharedHotKeyCenter] unregisterHotKeyWithKeyCode:kVK_ANSI_Equal
                                                        modifierFlags:NSEventModifierFlagControl];
-#endif
 }
 
 @end

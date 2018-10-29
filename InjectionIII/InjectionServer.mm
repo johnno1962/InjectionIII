@@ -27,6 +27,7 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
 @implementation InjectionServer {
     void (^injector)(NSArray *changed);
     FileWatcher *fileWatcher;
+    NSMutableArray *pending;
 }
 
 + (int)error:(NSString *)message {
@@ -111,6 +112,7 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
 
     [appDelegate setMenuIcon:@"InjectionOK"];
     appDelegate.lastConnection = self;
+    pending = [NSMutableArray new];
 
     auto inject = ^(NSString *swiftSource) {
         NSControlStateValue watcherState = appDelegate.enableWatcher.state;
@@ -157,7 +159,6 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
     NSMutableDictionary<NSString *, NSArray *> *testCache = [NSMutableDictionary new];
 
     injector = ^(NSArray *changed) {
-        NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
         NSMutableArray *changedFiles = [NSMutableArray arrayWithArray:changed];
 
         if ([[NSUserDefaults standardUserDefaults] boolForKey:UserDefaultsTDDEnabled]) {
@@ -170,11 +171,16 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
             }
         }
 
+        NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
         for (NSString *swiftSource in changedFiles)
-            if (now > lastInjected[swiftSource].doubleValue + MIN_INJECTION_INTERVAL && now > pause) {
-                lastInjected[swiftSource] = [NSNumber numberWithDouble:now];
-                inject(swiftSource);
-            }
+            if (![pending containsObject:swiftSource])
+                if (now > lastInjected[swiftSource].doubleValue + MIN_INJECTION_INTERVAL && now > pause) {
+                    lastInjected[swiftSource] = [NSNumber numberWithDouble:now];
+                    [pending addObject:swiftSource];
+                }
+
+        if (appDelegate.enableWatcher.state == NSControlStateValueOn)
+            [self injectPending];
     };
 
     [self setProject:projectFile];
@@ -215,6 +221,14 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
     injector = nil;
     fileWatcher = nil;
     [appDelegate setMenuIcon:@"InjectionIdle"];
+}
+
+- (void)injectPending {
+    for (NSString *swiftSource in pending)
+        dispatch_async(injectionQueue, ^{
+            [self writeCommand:InjectionInject withString:swiftSource];
+        });
+    [pending removeAllObjects];
 }
 
 - (void)setProject:(NSString *)project {
