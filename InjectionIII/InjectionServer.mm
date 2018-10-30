@@ -172,14 +172,20 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
         }
 
         NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
+        BOOL automatic = appDelegate.enableWatcher.state == NSControlStateValueOn;
         for (NSString *swiftSource in changedFiles)
             if (![pending containsObject:swiftSource])
                 if (now > lastInjected[swiftSource].doubleValue + MIN_INJECTION_INTERVAL && now > pause) {
                     lastInjected[swiftSource] = [NSNumber numberWithDouble:now];
                     [pending addObject:swiftSource];
+                    if (!automatic)
+                        [self writeCommand:InjectionLog
+                                withString:[NSString stringWithFormat:
+                                            @"'%@' saved, type ctrl-= to inject",
+                                            swiftSource.lastPathComponent]];
                 }
 
-        if (appDelegate.enableWatcher.state == NSControlStateValueOn)
+        if (automatic)
             [self injectPending];
     };
 
