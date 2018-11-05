@@ -14,8 +14,7 @@
 #import "tvOSInjection10-Swift.h"
 #elif __has_include("tvOSInjection-Swift.h")
 #import "tvOSInjection-Swift.h"
-#else
-#if __has_include("iOSInjection10-Swift.h")
+#elif __has_include("iOSInjection10-Swift.h")
 #import "iOSInjection10-Swift.h"
 #else
 #import "iOSInjection-Swift.h"
@@ -57,7 +56,6 @@ static struct {
 @interface UIViewController (StoryboardInjection)
 - (void)_loadViewFromNibNamed:(NSString *)a0 bundle:(NSBundle *)a1;
 @end
-#endif
 #else
 #if __has_include("macOSInjection10-Swift.h")
 #import "macOSInjection10-Swift.h"
@@ -161,7 +159,7 @@ static struct {
                     [SwiftInjection injectWithTmpfile:changed error:&err];
                     break;
                 case InjectionInject: {
-#if __has_include("iOSInjection-Swift.h") || __has_include("iOSInjection10-Swift.h")
+#ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
                     if ([changed hasSuffix:@"storyboard"] || [changed hasSuffix:@"xib"]) {
                         if (![self injectUI:changed])
                             return;
@@ -200,7 +198,7 @@ static struct {
     }
 }
 
-#if __has_include("iOSInjection-Swift.h") || __has_include("iOSInjection10-Swift.h")
+#ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
 - (BOOL)injectUI:(NSString *)changed {
     static NSMutableDictionary *allOrder;
     static dispatch_once_t once;
