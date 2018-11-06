@@ -219,17 +219,23 @@ static struct {
     });
 
     @try {
-        UIViewController *visibleVC = [UIApplication sharedApplication]
-        .windows.firstObject.rootViewController;
+        UIViewController *rootViewController = [UIApplication sharedApplication].windows.firstObject.rootViewController;
+        UINavigationController *navigationController = (UINavigationController*)rootViewController;
+        UIViewController *visibleVC = rootViewController;
+
         if (UIViewController *child =
             visibleVC.childViewControllers.firstObject)
             visibleVC = child;
         if ([visibleVC respondsToSelector:@selector(viewControllers)])
             visibleVC = [(UISplitViewController *)visibleVC
                          viewControllers].lastObject;
+
         if ([visibleVC respondsToSelector:@selector(visibleViewController)])
             visibleVC = [(UINavigationController *)visibleVC
                          visibleViewController];
+        if (!visibleVC.nibName && [navigationController respondsToSelector:@selector(topViewController)]) {
+          visibleVC = [navigationController topViewController];
+        }
 
         NSString *nibName = visibleVC.nibName;
 
