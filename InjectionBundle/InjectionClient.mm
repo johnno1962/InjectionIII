@@ -21,48 +21,6 @@
 #endif
 #import <UIKit/UIKit.h>
 
-#ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
-
-@interface UIViewController (ViewControllerRecursion)
-- (NSArray*)allViewControllersRecursive;
-    @end
-
-@implementation UIViewController (ViewControllerRecursion)
-
-- (NSArray*)allViewControllersRecursive {
-    NSMutableArray *viewControllers = [NSMutableArray new];
-    [viewControllers addObject:self];
-    [viewControllers addObjectsFromArray:[self childViewControllersRecursive]];
-    [viewControllers addObjectsFromArray:[self presentedViewControllers]];
-    return viewControllers;
-}
-
-- (NSArray*)childViewControllersRecursive
-    {
-        NSMutableArray *viewControllers = [NSMutableArray new];
-        for (UIViewController *viewController in self.childViewControllers) {
-            [viewControllers addObject:viewController];
-            if ([viewController.childViewControllers count] > 0) {
-                [viewControllers addObjectsFromArray:(NSArray*)[viewController childViewControllersRecursive]];
-            }
-        }
-        return viewControllers;
-    }
-
-- (NSArray*)presentedViewControllers
-    {
-        NSMutableArray *viewControllers = [NSMutableArray new];
-
-        if (self.presentedViewController) {
-            [viewControllers addObject: self.presentedViewController];
-            [viewControllers addObjectsFromArray: [self.presentedViewController presentedViewControllers]];
-        }
-
-        return viewControllers;
-    }
-    @end
-#endif
-
 @implementation NSObject (Remapper)
 
 static struct {
@@ -262,14 +220,8 @@ static struct {
 
     @try {
         UIViewController *rootViewController = [UIApplication sharedApplication].windows.firstObject.rootViewController;
-        UIViewController *visibleVC = rootViewController;
-
-        NSMutableArray *viewControllers = [NSMutableArray new];
         UINavigationController *navigationController = (UINavigationController*)rootViewController;
-        if (navigationController) {
-            UIViewController *visibleViewController = [navigationController visibleViewController];
-            [viewControllers addObjectsFromArray:[visibleViewController allViewControllersRecursive]];
-        }
+        UIViewController *visibleVC = rootViewController;
 
         if (UIViewController *child =
             visibleVC.childViewControllers.firstObject)
@@ -277,23 +229,15 @@ static struct {
         if ([visibleVC respondsToSelector:@selector(viewControllers)])
             visibleVC = [(UISplitViewController *)visibleVC
                          viewControllers].lastObject;
+
         if ([visibleVC respondsToSelector:@selector(visibleViewController)])
             visibleVC = [(UINavigationController *)visibleVC
                          visibleViewController];
+        if (!visibleVC.nibName && navigationController) {
+          visibleVC = [navigationController topViewController];
+        }
 
         NSString *nibName = visibleVC.nibName;
-        NSString *filename = [changed lastPathComponent];
-
-        // Try and resolve the view controller by matching description to storyboard/nib name
-        for (UIViewController *viewController in viewControllers) {
-          if (viewController.nibName) {
-            if ([[[viewController debugDescription] lowercaseString] containsString:[[filename stringByDeletingPathExtension] lowercaseString]]) {
-              nibName = viewController.nibName;
-              visibleVC = viewController;
-              break;
-            }
-          }
-        }
 
         if (!(remapper.order = allOrder[nibName])) {
             remapper.inputIndexes = [NSMutableDictionary new];
