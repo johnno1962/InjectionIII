@@ -220,7 +220,7 @@ public class SwiftEval: NSObject {
                         if ($line =~ /^\\s*cd /) {
                             $realPath = $line;
                         }
-                        elsif (my ($product) = $line =~ m@\\.xcent --timestamp=none (.*)\\r@o) {
+                        elsif (my ($product) = $line =~ m@\\.xcent --timestamp=none (.*\\.app)\\r@o) {
                             print $product;
                             exit 0;
                         }
