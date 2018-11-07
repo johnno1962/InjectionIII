@@ -238,11 +238,11 @@ public class SwiftEval: NSObject {
 
         let resources = try! String(contentsOfFile: "\(tmpfile).sh")
                             .trimmingCharacters(in: .whitespaces)
-        let extensionName = storyboard.contains("storyboard") ? "storyboard" : "nib"
+
         guard shell(command: """
-          (cd "\(resources)" && for i in 1 2 3 4 5; do if (find . -name '*.\(extensionName)' -a -newer "\(storyboard)" | grep .\(extensionName) >/dev/null); then break; fi; sleep 1; done; while (ps auxww | grep -v grep | grep "/ibtool " >/dev/null); do sleep 1; done; for i in `find . -name '*.\(extensionName)'`; do cp -rf "$i" "\(Bundle.main.bundlePath)/$i"; done >\(logfile) 2>&1)
-          """) else {
-            throw evalError("Re-compilation failed (\(tmpDir)/command.sh)\n\(try! String(contentsOfFile: logfile))")
+            (cd "\(resources)" && for i in 1 2 3 4 5; do if (find . -name '*.nib' -a -newer "\(storyboard)" | grep .nib >/dev/null); then break; fi; sleep 1; done; while (ps auxww | grep -v grep | grep "/ibtool " >/dev/null); do sleep 1; done; for i in `find . -name '*.nib'`; do cp -rf "$i" "\(Bundle.main.bundlePath)/$i"; done >\(logfile) 2>&1)
+            """) else {
+                throw evalError("Re-compilation failed (\(tmpDir)/command.sh)\n\(try! String(contentsOfFile: logfile))")
         }
         _ = evalError("Copied \(storyboard)")
     }
