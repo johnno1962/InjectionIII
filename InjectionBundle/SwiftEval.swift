@@ -244,6 +244,7 @@ public class SwiftEval: NSObject {
             """) else {
                 throw evalError("Re-compilation failed (\(tmpDir)/command.sh)\n\(try! String(contentsOfFile: logfile))")
         }
+
         _ = evalError("Copied \(storyboard)")
     }
 
