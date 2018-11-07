@@ -233,7 +233,7 @@ static struct {
         if ([visibleVC respondsToSelector:@selector(visibleViewController)])
             visibleVC = [(UINavigationController *)visibleVC
                          visibleViewController];
-        if (!visibleVC.nibName && navigationController) {
+        if (!visibleVC.nibName && [navigationController respondsToSelector:@selector(topViewController)]) {
           visibleVC = [navigationController topViewController];
         }
 
