@@ -158,7 +158,7 @@ public class SwiftEval: NSObject {
     /// Error handler
     @objc public var evalError = {
         (_ message: String) -> Error in
-        print("*** \(message) ***")
+        print("💉 *** \(message) ***")
         return NSError(domain: "SwiftEval", code: -1, userInfo: [NSLocalizedDescriptionKey: message])
     }
 

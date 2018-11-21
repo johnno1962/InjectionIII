@@ -115,7 +115,7 @@ public class SwiftInjection: NSObject {
             // Swift equivalent of Swizzling
             if (classMetadata.pointee.Data & 0x1) == 1 {
                 if classMetadata.pointee.ClassSize != existingClass.pointee.ClassSize {
-                    NSLog("\(oldClass) metadata size changed. Did you add a method?")
+                    NSLog("💉 \(oldClass) metadata size changed. Did you add a method?")
                 }
 
                 func byteAddr<T>(_ location: UnsafeMutablePointer<T>) -> UnsafeMutablePointer<UInt8> {
@@ -126,7 +126,7 @@ public class SwiftInjection: NSObject {
                 let vtableLength = Int(existingClass.pointee.ClassSize -
                     existingClass.pointee.ClassAddressPoint) - vtableOffset
 
-                print("Injected '\(NSStringFromClass(oldClass))'")
+                print("💉 Injected '\(NSStringFromClass(oldClass))'")
                 memcpy(byteAddr(existingClass) + vtableOffset,
                        byteAddr(classMetadata) + vtableOffset, vtableLength)
             }
