@@ -104,7 +104,7 @@ static struct {
     if (InjectionClient *client = [self connectTo:INJECTION_ADDRESS])
         [client run];
     else
-        printf("Injection loaded but could not connect. Is InjectionIII.app running?\n");
+        printf("💉 Injection loaded but could not connect. Is InjectionIII.app running?\n");
 
 }
 
