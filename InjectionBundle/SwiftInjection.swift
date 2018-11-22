@@ -158,13 +158,13 @@ public class SwiftInjection: NSObject {
         } else {
             var injectedClasses = [AnyClass]()
             for cls in oldClasses {
-                //if class_getInstanceMethod(cls, #selector(SwiftInjected.injected)) != nil {
+                if class_getInstanceMethod(cls, #selector(SwiftInjected.injected)) != nil {
                     injectedClasses.append(cls)
                     let kvoName = "NSKVONotifying_" + NSStringFromClass(cls)
                     if let kvoCls = NSClassFromString(kvoName) {
                         injectedClasses.append(kvoCls)
                     }
-                //}
+                }
             }
 
             // implement -injected() method using sweep of objects in application
@@ -181,15 +181,20 @@ public class SwiftInjection: NSObject {
                         let proto = unsafeBitCast(instance, to: SwiftInjected.self)
 
                         if instance.responds(to: _Selector("injected")) == true {
+                            if SwiftEval.sharedInstance().vaccineEnabled {
+                                let vaccine = Vaccine()
+                                vaccine.performInjection(on: instance)
+                                proto.injected?()
+                                return
+                            }
+
                             proto.injected?()
+
                             #if os(iOS) || os(tvOS)
                             if let vc = instance as? UIViewController {
                                 flash(vc: vc)
                             }
                             #endif
-                        } else if SwiftEval.sharedInstance().vaccineEnabled {
-                            let vaccine = Vaccine()
-                            vaccine.performInjection(on: instance)
                         }
                     }
                 }).sweepValue(seeds)
