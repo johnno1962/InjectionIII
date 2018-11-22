@@ -366,6 +366,7 @@ public class SwiftEval: NSObject {
 
     @objc func loadAndInject(tmpfile: String, oldClass: AnyClass? = nil) throws -> [AnyClass] {
 
+        print("💉 Loading .dylib - Ignore any duplicate class warning...")
         // load patched .dylib into process with new version of class
         guard let dl = dlopen("\(tmpfile).dylib", RTLD_NOW) else {
             throw evalError("dlopen() error: \(String(cString: dlerror()))")
