@@ -136,7 +136,7 @@ static struct {
     InjectionCommand command;
     while ((command = (InjectionCommand)[self readInt]) != InjectionEOF) {
         switch (command) {
-        case InjectionUserDefaultsChanged: {
+        case InjectionVaccineSettingChanged: {
             NSString *string = [self readString];
             NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
             id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
