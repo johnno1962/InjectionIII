@@ -240,6 +240,7 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
 - (void)setProject:(NSString *)project {
     if (!injector) return;
     [self writeCommand:InjectionProject withString:project];
+    [self writeCommand:InjectionVaccineSettingChanged withString:[appDelegate vaccineConfiguration]];
     fileWatcher = [[FileWatcher alloc]
                    initWithRoot:project.stringByDeletingLastPathComponent
                    plugin:injector];

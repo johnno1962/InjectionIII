@@ -33,7 +33,7 @@ AppDelegate *appDelegate;
 
 @implementation AppDelegate {
     IBOutlet NSMenu *statusMenu;
-    IBOutlet NSMenuItem *startItem, *xprobeItem, *enabledTDDItem, *enableVaccine, *windowItem;
+    IBOutlet NSMenuItem *startItem, *xprobeItem, *enabledTDDItem, *enableVaccineItem, *windowItem;
     IBOutlet NSStatusItem *statusItem;
 }
 
@@ -50,7 +50,10 @@ AppDelegate *appDelegate;
     statusItem.enabled = TRUE;
     statusItem.title = @"";
 
-    enabledTDDItem.state = ([[NSUserDefaults standardUserDefaults] boolForKey:UserDefaultsTDDEnabled])
+    enabledTDDItem.state = ([[NSUserDefaults standardUserDefaults] boolForKey:UserDefaultsTDDEnabled] == YES)
+        ? NSControlStateValueOn
+        : NSControlStateValueOff;
+    enableVaccineItem.state = ([[NSUserDefaults standardUserDefaults] boolForKey:UserDefaultsVaccineEnabled] == YES)
         ? NSControlStateValueOn
         : NSControlStateValueOff;
 
@@ -74,16 +77,20 @@ AppDelegate *appDelegate;
     [self toggleState:sender];
     BOOL newSetting = sender.state == NSControlStateValueOn;
     [[NSUserDefaults standardUserDefaults] setBool:newSetting forKey:UserDefaultsVaccineEnabled];
+    [self.lastConnection writeCommand:InjectionVaccineSettingChanged withString:[appDelegate vaccineConfiguration]];
+}
 
-    NSNumber *value = [NSNumber numberWithBool:newSetting];
+- (NSString *)vaccineConfiguration {
+    BOOL vaccineSetting = [[NSUserDefaults standardUserDefaults] boolForKey:UserDefaultsVaccineEnabled];
+    NSNumber *value = [NSNumber numberWithBool:vaccineSetting];
     NSString *key = [NSString stringWithString:UserDefaultsVaccineEnabled];
     NSDictionary *dictionary = [NSDictionary dictionaryWithObjects:@[value] forKeys:@[key]];
     NSError *err;
     NSData *jsonData = [NSJSONSerialization  dataWithJSONObject:dictionary
-                                                         options:0
-                                                           error:&err];
-    NSString *userDefaults = [[NSString alloc] initWithData:jsonData   encoding:NSUTF8StringEncoding];
-    [self.lastConnection writeCommand:InjectionUserDefaultsChanged withString:userDefaults];
+                                                        options:0
+                                                          error:&err];
+    NSString *configuration = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    return configuration;
 }
 
 - (BOOL)application:(NSApplication *)theApplication openFile:(NSString *)filename {
