@@ -155,17 +155,16 @@ public class SwiftInjection: NSObject {
                 })
                 RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
             }
-        }
-        else {
+        } else {
             var injectedClasses = [AnyClass]()
             for cls in oldClasses {
-                if class_getInstanceMethod(cls, #selector(SwiftInjected.injected)) != nil {
+                //if class_getInstanceMethod(cls, #selector(SwiftInjected.injected)) != nil {
                     injectedClasses.append(cls)
                     let kvoName = "NSKVONotifying_" + NSStringFromClass(cls)
                     if let kvoCls = NSClassFromString(kvoName) {
                         injectedClasses.append(kvoCls)
                     }
-                }
+                //}
             }
 
             // implement -injected() method using sweep of objects in application
@@ -180,12 +179,18 @@ public class SwiftInjection: NSObject {
                     (instance: AnyObject) in
                     if injectedClasses.contains(where: { $0 == object_getClass(instance) }) {
                         let proto = unsafeBitCast(instance, to: SwiftInjected.self)
-                        proto.injected?()
-                        #if os(iOS) || os(tvOS)
-                        if let vc = instance as? UIViewController {
-                            flash(vc: vc)
+
+                        if instance.responds(to: _Selector("injected")) == true {
+                            proto.injected?()
+                            #if os(iOS) || os(tvOS)
+                            if let vc = instance as? UIViewController {
+                                flash(vc: vc)
+                            }
+                            #endif
+                        } else {
+                            let vaccine = Vaccine()
+                            vaccine.performInjection(on: instance)
                         }
-                        #endif
                     }
                 }).sweepValue(seeds)
             }
@@ -193,6 +198,10 @@ public class SwiftInjection: NSObject {
             let notification = Notification.Name("INJECTION_BUNDLE_NOTIFICATION")
             NotificationCenter.default.post(name: notification, object: oldClasses)
         }
+    }
+
+    public class func _Selector(_ string: String) -> Selector {
+        return Selector(string)
     }
 
     #if os(iOS) || os(tvOS)
