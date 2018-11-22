@@ -9,3 +9,4 @@
 #import "AppDelegate.h"
 
 NSString *const UserDefaultsTDDEnabled = @"Enabled TDD";
+NSString *const UserDefaultsVaccineEnabled = @"Enabled Vaccine";

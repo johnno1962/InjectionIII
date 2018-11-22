@@ -136,6 +136,18 @@ static struct {
     InjectionCommand command;
     while ((command = (InjectionCommand)[self readInt]) != InjectionEOF) {
         switch (command) {
+        case InjectionUserDefaultsChanged: {
+            NSString *string = [self readString];
+            NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
+            id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+
+            NSDictionary *dictionary = (NSDictionary *)json;
+            if (dictionary != nil) {
+                NSNumber *vaccineEnabled = [dictionary valueForKey:@"Enabled Vaccine"];
+                [SwiftEval sharedInstance].vaccineEnabled = [vaccineEnabled boolValue];
+            }
+            break;
+        }
         case InjectionProject: {
             NSString *projectFile = [self readString];
             [SwiftEval sharedInstance].projectFile = projectFile;

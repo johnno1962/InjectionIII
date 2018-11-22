@@ -33,7 +33,7 @@ AppDelegate *appDelegate;
 
 @implementation AppDelegate {
     IBOutlet NSMenu *statusMenu;
-    IBOutlet NSMenuItem *startItem, *xprobeItem, *enabledTDDItem, *windowItem;
+    IBOutlet NSMenuItem *startItem, *xprobeItem, *enabledTDDItem, *enableVaccine, *windowItem;
     IBOutlet NSStatusItem *statusItem;
 }
 
@@ -66,11 +66,24 @@ AppDelegate *appDelegate;
 
 - (IBAction)toggleTDD:(NSMenuItem *)sender {
     [self toggleState:sender];
-
     BOOL newSetting = sender.state == NSControlStateValueOn;
-
     [[NSUserDefaults standardUserDefaults] setBool:newSetting forKey:UserDefaultsTDDEnabled];
-    NSLog(@"sender: %ld", (long)[sender state]);
+}
+
+- (IBAction)toggleVaccine:(NSMenuItem *)sender {
+    [self toggleState:sender];
+    BOOL newSetting = sender.state == NSControlStateValueOn;
+    [[NSUserDefaults standardUserDefaults] setBool:newSetting forKey:UserDefaultsVaccineEnabled];
+
+    NSNumber *value = [NSNumber numberWithBool:newSetting];
+    NSString *key = [NSString stringWithString:UserDefaultsVaccineEnabled];
+    NSDictionary *dictionary = [NSDictionary dictionaryWithObjects:@[value] forKeys:@[key]];
+    NSError *err;
+    NSData *jsonData = [NSJSONSerialization  dataWithJSONObject:dictionary
+                                                         options:0
+                                                           error:&err];
+    NSString *userDefaults = [[NSString alloc] initWithData:jsonData   encoding:NSUTF8StringEncoding];
+    [self.lastConnection writeCommand:InjectionUserDefaultsChanged withString:userDefaults];
 }
 
 - (BOOL)application:(NSApplication *)theApplication openFile:(NSString *)filename {

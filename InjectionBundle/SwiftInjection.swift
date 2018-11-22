@@ -187,7 +187,7 @@ public class SwiftInjection: NSObject {
                                 flash(vc: vc)
                             }
                             #endif
-                        } else {
+                        } else if SwiftEval.sharedInstance().vaccineEnabled {
                             let vaccine = Vaccine()
                             vaccine.performInjection(on: instance)
                         }

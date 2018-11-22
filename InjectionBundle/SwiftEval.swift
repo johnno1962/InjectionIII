@@ -138,6 +138,7 @@ public class SwiftEval: NSObject {
     }
 
     @objc public var signer: ((_: String) -> Bool)?
+    @objc public var vaccineEnabled: Bool = false
 
     // client specific info
     @objc public var frameworks = Bundle.main.privateFrameworksPath
