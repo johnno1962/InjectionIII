@@ -104,7 +104,7 @@ static struct {
     if (InjectionClient *client = [self connectTo:INJECTION_ADDRESS])
         [client run];
     else
-        printf("Injection loaded but could not connect. Is InjectionIII.app running?\n");
+        printf("💉 Injection loaded but could not connect. Is InjectionIII.app running?\n");
 
 }
 
@@ -140,7 +140,7 @@ static struct {
             NSString *projectFile = [self readString];
             [SwiftEval sharedInstance].projectFile = projectFile;
             [SwiftEval sharedInstance].derivedLogs = nil;
-            printf("Injection connected, watching %s/**\n",
+            printf("💉 Injection connected, watching %s/**\n",
                    projectFile.stringByDeletingLastPathComponent.UTF8String);
             break;
         }

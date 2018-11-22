@@ -158,7 +158,7 @@ public class SwiftEval: NSObject {
     /// Error handler
     @objc public var evalError = {
         (_ message: String) -> Error in
-        print("*** \(message) ***")
+        print("💉 *** \(message) ***")
         return NSError(domain: "SwiftEval", code: -1, userInfo: [NSLocalizedDescriptionKey: message])
     }
 
@@ -366,12 +366,12 @@ public class SwiftEval: NSObject {
 
     @objc func loadAndInject(tmpfile: String, oldClass: AnyClass? = nil) throws -> [AnyClass] {
 
+        print("💉 Loading .dylib - Ignore any duplicate class warning...")
         // load patched .dylib into process with new version of class
-
-        print("Loading .dylib - Ignore any duplicate class warning...")
         guard let dl = dlopen("\(tmpfile).dylib", RTLD_NOW) else {
             throw evalError("dlopen() error: \(String(cString: dlerror()))")
         }
+        print("💉 Loaded .dylib - Ignore any duplicate class warning...")
 
         if oldClass != nil {
             // find patched version of class using symbol for existing
