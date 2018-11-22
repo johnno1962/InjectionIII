@@ -23,22 +23,60 @@ extension View {
 
 class Vaccine {
     func performInjection(on object: AnyObject) {
-        CATransaction.begin()
-        CATransaction.lock()
         switch object {
         case let viewController as ViewController:
+            CATransaction.begin()
+            CATransaction.setAnimationDuration(1.0)
+            CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+
+            defer { CATransaction.commit() }
+
+            let snapshotView = createSnapshot(from: viewController.view)
+            if let snapshotView = snapshotView {
+                #if os(macOS)
+                viewController.view.window?.contentView?.addSubview(snapshotView)
+                #else
+                let maskView = UIView()
+                maskView.frame.size = snapshotView.frame.size
+                maskView.frame.origin.y = viewController.navigationController?.navigationBar.frame.maxY ?? 0
+                maskView.backgroundColor = .white
+                snapshotView.mask = maskView
+                viewController.view.window?.addSubview(snapshotView)
+                #endif
+            }
+
             let oldScrollViews = indexScrollViews(on: viewController)
+
             reload(viewController.parent ?? viewController)
+
             syncOldScrollViews(oldScrollViews, with: indexScrollViews(on: viewController))
+
+            if let snapshotView = snapshotView {
+                #if os(macOS)
+                NSAnimationContext.runAnimationGroup({ (context) in
+                    context.allowsImplicitAnimation = true
+                    context.duration = 0.25
+                    snapshotView.animator().alphaValue = 0.0
+                }, completionHandler: {
+                    snapshotView.removeFromSuperview()
+                })
+                #else
+                UIView.animate(withDuration: 1.0,
+                               delay: 0.0,
+                               options: [.allowAnimatedContent,
+                                         .beginFromCurrentState,
+                                         .layoutSubviews],
+                               animations: {
+                                snapshotView.alpha = 0.5
+                }) { _ in
+                    snapshotView.removeFromSuperview()
+                }
+                #endif
+            }
         case let view as View:
             reload(view)
         default:
             break
-        }
-        let nearFuture = DispatchTime.now() + 0.3
-        DispatchQueue.main.asyncAfter(deadline: nearFuture) {
-            CATransaction.unlock()
-            CATransaction.commit()
         }
     }
 
@@ -59,10 +97,10 @@ class Vaccine {
         #if os(macOS)
         view.animator().perform(selector)
         #else
-            UIView.animate(withDuration: 0.3, delay: 0.0, options: [.allowAnimatedContent,
-                                                                  .beginFromCurrentState,
-                                                                  .layoutSubviews], animations: {
-            view.perform(selector)
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: [.allowAnimatedContent,
+                                                                .beginFromCurrentState,
+                                                                .layoutSubviews], animations: {
+                                                                    view.perform(selector)
         }, completion: nil)
         #endif
     }
@@ -139,7 +177,36 @@ class Vaccine {
         }
     }
 
+    private func createSnapshot(from view: View) -> View? {
+        #if os(macOS)
+        let snapshot = NSImageView()
+        snapshot.image = view.snapshot
+        snapshot.frame.size = view.frame.size
+        return snapshot
+        #else
+        return view.snapshotView(afterScreenUpdates: false)
+        #endif
+    }
+
     private func _Selector(_ string: String) -> Selector {
         return Selector(string)
     }
 }
+
+#if os(macOS)
+fileprivate extension NSView {
+    var snapshot: NSImage {
+        guard let bitmapRep = bitmapImageRepForCachingDisplay(in: bounds) else { return NSImage() }
+        cacheDisplay(in: bounds, to: bitmapRep)
+        let image = NSImage()
+        image.addRepresentation(bitmapRep)
+        bitmapRep.size = bounds.size.doubleScale()
+        return image
+    }
+}
+fileprivate extension CGSize {
+    func doubleScale() -> CGSize {
+        return CGSize(width: width * 2, height: height * 2)
+    }
+}
+#endif
