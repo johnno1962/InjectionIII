@@ -155,8 +155,7 @@ public class SwiftInjection: NSObject {
                 })
                 RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
             }
-        }
-        else {
+        } else {
             var injectedClasses = [AnyClass]()
             for cls in oldClasses {
                 if class_getInstanceMethod(cls, #selector(SwiftInjected.injected)) != nil {
@@ -180,7 +179,15 @@ public class SwiftInjection: NSObject {
                     (instance: AnyObject) in
                     if injectedClasses.contains(where: { $0 == object_getClass(instance) }) {
                         let proto = unsafeBitCast(instance, to: SwiftInjected.self)
+                        if SwiftEval.sharedInstance().vaccineEnabled {
+                            let vaccine = Vaccine()
+                            vaccine.performInjection(on: instance)
+                            proto.injected?()
+                            return
+                        }
+
                         proto.injected?()
+
                         #if os(iOS) || os(tvOS)
                         if let vc = instance as? UIViewController {
                             flash(vc: vc)
