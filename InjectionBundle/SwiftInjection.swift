@@ -202,10 +202,6 @@ public class SwiftInjection: NSObject {
         }
     }
 
-    public class func _Selector(_ string: String) -> Selector {
-        return Selector(string)
-    }
-
     #if os(iOS) || os(tvOS)
     @objc(flash:)
     public class func flash(vc: UIViewController) {
