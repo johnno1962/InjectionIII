@@ -34,7 +34,26 @@ class Vaccine {
             }
 
             let oldScrollViews = indexScrollViews(on: viewController)
+
+            #if os(macOS)
             reload(viewController.parent ?? viewController)
+            #else
+            // Opt-out from performing Vaccine reloads in parent
+            // if the parent is either a navigation controller or
+            // a tab bar controller.
+            if let parentViewController = viewController.parent {
+              if parentViewController is UINavigationController {
+                reload(viewController)
+              } else if parentViewController is UITabBarController {
+                reload(viewController)
+              } else {
+                reload(parentViewController)
+              }
+            } else {
+              reload(viewController)
+            }
+            #endif
+
             syncOldScrollViews(oldScrollViews, with: indexScrollViews(on: viewController))
             cleanSnapshotViewIfNeeded(snapshotView, viewController: viewController)
         case let view as View:
