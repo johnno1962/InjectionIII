@@ -273,13 +273,18 @@ static struct {
 
         [visibleVC _loadViewFromNibNamed:visibleVC.nibName
                                   bundle:visibleVC.nibBundle];
-        [visibleVC viewDidLoad];
-        [visibleVC viewWillAppear:NO];
-        [visibleVC viewDidAppear:NO];
+
+        if ([SwiftEval sharedInstance].vaccineEnabled == YES) {
+            [SwiftInjection vaccine:visibleVC];
+        } else {
+            [visibleVC viewDidLoad];
+            [visibleVC viewWillAppear:NO];
+            [visibleVC viewDidAppear:NO];
 
 #ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
-        [SwiftInjection flash:visibleVC];
+            [SwiftInjection flash:visibleVC];
 #endif
+        }
     }
     @catch(NSException *e) {
         printf("Problem reloading nib: %s\n", e.reason.UTF8String);

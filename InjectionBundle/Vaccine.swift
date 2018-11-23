@@ -25,54 +25,18 @@ class Vaccine {
     func performInjection(on object: AnyObject) {
         switch object {
         case let viewController as ViewController:
-            CATransaction.begin()
-            CATransaction.setAnimationDuration(1.0)
-            CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
-
-            defer { CATransaction.commit() }
-
-            let snapshotView = createSnapshot(from: viewController.view)
-            if let snapshotView = snapshotView {
-                #if os(macOS)
-                viewController.view.window?.contentView?.addSubview(snapshotView)
-                #else
-                let maskView = UIView()
-                maskView.frame.size = snapshotView.frame.size
-                maskView.frame.origin.y = viewController.navigationController?.navigationBar.frame.maxY ?? 0
-                maskView.backgroundColor = .white
-                snapshotView.mask = maskView
-                viewController.view.window?.addSubview(snapshotView)
-                #endif
+            var snapshotView: View? = createSnapshotViewIfNeeded(for: viewController)
+            if viewController.nibName == nil {
+                CATransaction.begin()
+                CATransaction.setAnimationDuration(1.0)
+                CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+                defer { CATransaction.commit() }
             }
 
             let oldScrollViews = indexScrollViews(on: viewController)
-
             reload(viewController.parent ?? viewController)
-
             syncOldScrollViews(oldScrollViews, with: indexScrollViews(on: viewController))
-
-            if let snapshotView = snapshotView {
-                #if os(macOS)
-                NSAnimationContext.runAnimationGroup({ (context) in
-                    context.allowsImplicitAnimation = true
-                    context.duration = 0.25
-                    snapshotView.animator().alphaValue = 0.0
-                }, completionHandler: {
-                    snapshotView.removeFromSuperview()
-                })
-                #else
-                UIView.animate(withDuration: 1.0,
-                               delay: 0.0,
-                               options: [.allowAnimatedContent,
-                                         .beginFromCurrentState,
-                                         .layoutSubviews],
-                               animations: {
-                                snapshotView.alpha = 0.5
-                }) { _ in
-                    snapshotView.removeFromSuperview()
-                }
-                #endif
-            }
+            cleanSnapshotViewIfNeeded(snapshotView, viewController: viewController)
         case let view as View:
             reload(view)
         default:
@@ -103,6 +67,50 @@ class Vaccine {
                                                                     view.perform(selector)
         }, completion: nil)
         #endif
+    }
+
+    private func createSnapshotViewIfNeeded(for viewController: ViewController) -> View? {
+        if let snapshotView = createSnapshot(from: viewController.view), viewController.nibName == nil {
+            #if os(macOS)
+            viewController.view.window?.contentView?.addSubview(snapshotView)
+            #else
+            let maskView = UIView()
+            maskView.frame.size = snapshotView.frame.size
+            maskView.frame.origin.y = viewController.navigationController?.navigationBar.frame.maxY ?? 0
+            maskView.backgroundColor = .white
+            snapshotView.mask = maskView
+            viewController.view.window?.addSubview(snapshotView)
+            #endif
+
+            return snapshotView
+
+        }
+        return nil
+    }
+
+    private func cleanSnapshotViewIfNeeded(_ snapshotView: View?, viewController: ViewController) {
+        if let snapshotView = snapshotView, viewController.nibName == nil {
+            #if os(macOS)
+            NSAnimationContext.runAnimationGroup({ (context) in
+                context.allowsImplicitAnimation = true
+                context.duration = 0.25
+                snapshotView.animator().alphaValue = 0.0
+            }, completionHandler: {
+                snapshotView.removeFromSuperview()
+            })
+            #else
+            UIView.animate(withDuration: 1.0,
+                           delay: 0.0,
+                           options: [.allowAnimatedContent,
+                                     .beginFromCurrentState,
+                                     .layoutSubviews],
+                           animations: {
+                            snapshotView.alpha = 0.5
+            }) { _ in
+                snapshotView.removeFromSuperview()
+            }
+            #endif
+        }
     }
 
     private func clean(view: View) {
@@ -184,7 +192,7 @@ class Vaccine {
         snapshot.frame.size = view.frame.size
         return snapshot
         #else
-        return view.snapshotView(afterScreenUpdates: false)
+        return view.snapshotView(afterScreenUpdates: true)
         #endif
     }
 
