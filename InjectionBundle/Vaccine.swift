@@ -124,7 +124,7 @@ class Vaccine {
                                      .beginFromCurrentState,
                                      .layoutSubviews],
                            animations: {
-                            snapshotView.alpha = 0.5
+                            snapshotView.alpha = 0.0
             }) { _ in
                 snapshotView.removeFromSuperview()
             }
