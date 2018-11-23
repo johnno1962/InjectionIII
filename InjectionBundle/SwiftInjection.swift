@@ -179,23 +179,20 @@ public class SwiftInjection: NSObject {
                     (instance: AnyObject) in
                     if injectedClasses.contains(where: { $0 == object_getClass(instance) }) {
                         let proto = unsafeBitCast(instance, to: SwiftInjected.self)
-
-                        if instance.responds(to: _Selector("injected")) == true {
-                            if SwiftEval.sharedInstance().vaccineEnabled {
-                                let vaccine = Vaccine()
-                                vaccine.performInjection(on: instance)
-                                proto.injected?()
-                                return
-                            }
-
+                        if SwiftEval.sharedInstance().vaccineEnabled {
+                            let vaccine = Vaccine()
+                            vaccine.performInjection(on: instance)
                             proto.injected?()
-
-                            #if os(iOS) || os(tvOS)
-                            if let vc = instance as? UIViewController {
-                                flash(vc: vc)
-                            }
-                            #endif
+                            return
                         }
+
+                        proto.injected?()
+
+                        #if os(iOS) || os(tvOS)
+                        if let vc = instance as? UIViewController {
+                            flash(vc: vc)
+                        }
+                        #endif
                     }
                 }).sweepValue(seeds)
             }
