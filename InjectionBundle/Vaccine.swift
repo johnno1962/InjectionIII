@@ -38,7 +38,7 @@ class Vaccine {
             #if os(macOS)
             reload(viewController.parent ?? viewController)
             #else
-            // Opt-out from performing Vaccine reloads in parent
+            // Opt-out from performing Vaccine reloads on parent
             // if the parent is either a navigation controller or
             // a tab bar controller.
             if let parentViewController = viewController.parent {
