@@ -118,7 +118,7 @@ class Vaccine {
                 snapshotView.removeFromSuperview()
             })
             #else
-            UIView.animate(withDuration: 1.0,
+            UIView.animate(withDuration: 0.25,
                            delay: 0.0,
                            options: [.allowAnimatedContent,
                                      .beginFromCurrentState,
