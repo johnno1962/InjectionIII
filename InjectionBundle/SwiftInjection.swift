@@ -180,8 +180,7 @@ public class SwiftInjection: NSObject {
                     if injectedClasses.contains(where: { $0 == object_getClass(instance) }) {
                         let proto = unsafeBitCast(instance, to: SwiftInjected.self)
                         if SwiftEval.sharedInstance().vaccineEnabled {
-                            let vaccine = Vaccine()
-                            vaccine.performInjection(on: instance)
+                            performVaccineInjection(instance)
                             proto.injected?()
                             return
                         }
@@ -200,6 +199,12 @@ public class SwiftInjection: NSObject {
             let notification = Notification.Name("INJECTION_BUNDLE_NOTIFICATION")
             NotificationCenter.default.post(name: notification, object: oldClasses)
         }
+    }
+
+    @objc(vaccine:)
+    public class func performVaccineInjection(_ object: AnyObject) {
+        let vaccine = Vaccine()
+        vaccine.performInjection(on: object)
     }
 
     #if os(iOS) || os(tvOS)
