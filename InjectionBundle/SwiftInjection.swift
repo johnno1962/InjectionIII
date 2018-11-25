@@ -314,8 +314,13 @@ extension NSObject {
             if className.hasPrefix("_") {
                 return
             }
+
+            if className.starts(with: "NS") {
+                return
+            }
+
             #if os(OSX)
-            if className.starts(with: "NS") && cls != NSWindow.self {
+            if cls != NSWindow.self {
                 return
             }
             #endif
