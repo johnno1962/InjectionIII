@@ -315,14 +315,12 @@ extension NSObject {
                 return
             }
 
-            if className.starts(with: "NS") {
-                return
-            }
-
             #if os(OSX)
-            if cls != NSWindow.self {
+            if className.starts(with: "NS") && cls != NSWindow.self {
                 return
             }
+            #else
+            if className.starts(with: "NS") { return }
             #endif
             if let ivars = class_copyIvarList(cls, &icnt) {
                 for i in 0 ..< Int(icnt) {
