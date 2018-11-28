@@ -289,7 +289,7 @@ class SwiftSweeper {
         if seen[reference] == nil {
             seen[reference] = true
             if debugSweep {
-                print("Sweeping instance \(reference) of class \(NSStringFromClass(type(of: instance)))")
+                print("Sweeping instance \(reference) of class \(type(of: instance))")
             }
 
             instanceTask(instance)
