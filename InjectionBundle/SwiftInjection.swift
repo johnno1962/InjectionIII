@@ -15,6 +15,8 @@
 import Foundation
 import XCTest
 
+private let debugSweep = getenv("DEBUG_SWEEP") != nil
+
 @objc public protocol SwiftInjected {
     @objc optional func injected()
 }
@@ -286,6 +288,9 @@ class SwiftSweeper {
         let reference = unsafeBitCast(instance, to: UnsafeRawPointer.self)
         if seen[reference] == nil {
             seen[reference] = true
+            if debugSweep {
+                print("Sweeping instance \(reference) of class \(NSStringFromClass(type(of: instance)))")
+            }
 
             instanceTask(instance)
 
