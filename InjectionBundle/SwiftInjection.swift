@@ -117,11 +117,7 @@ public class SwiftInjection: NSObject {
             // Swift equivalent of Swizzling
             if (classMetadata.pointee.Data & 0x1) == 1 {
                 if classMetadata.pointee.ClassSize != existingClass.pointee.ClassSize {
-                    NSLog("💉 \(oldClass) metadata size changed. Did you add a method?")
-
-                    if !(newClass.superclass() == NSObject.self) {
-                        print("💉 ⚠️ Adding or removing methods on Swift classes is not supported. Your application will likely crash. ⚠️")
-                    }
+                    NSLog("💉 ⚠️ Adding or removing methods on Swift classes is not supported. Your application will likely crash. ⚠️")
                 }
 
                 func byteAddr<T>(_ location: UnsafeMutablePointer<T>) -> UnsafeMutablePointer<UInt8> {
