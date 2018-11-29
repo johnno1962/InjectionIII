@@ -120,7 +120,7 @@ public class SwiftInjection: NSObject {
                     NSLog("💉 \(oldClass) metadata size changed. Did you add a method?")
 
                     if !(newClass.superclass() == NSObject.self) {
-                        NSLog("💉 ⚠️ Adding or removing methods on Swift classes is not supported. Your application will likely crash. ⚠️")
+                        print("💉 ⚠️ Adding or removing methods on Swift classes is not supported. Your application will likely crash. ⚠️")
                     }
                 }
 
