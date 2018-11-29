@@ -118,6 +118,10 @@ public class SwiftInjection: NSObject {
             if (classMetadata.pointee.Data & 0x1) == 1 {
                 if classMetadata.pointee.ClassSize != existingClass.pointee.ClassSize {
                     NSLog("💉 \(oldClass) metadata size changed. Did you add a method?")
+
+                    if !(newClass.superclass() == NSObject.self) {
+                        NSLog("💉 ⚠️ Adding or removing functions on pure Swift classes is not supported. Your application will eventually crash. Inherit from NSObject while developing to avoid unexpected crashes. ⚠️")
+                    }
                 }
 
                 func byteAddr<T>(_ location: UnsafeMutablePointer<T>) -> UnsafeMutablePointer<UInt8> {
