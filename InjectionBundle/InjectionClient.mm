@@ -267,14 +267,19 @@ static struct {
         [[SwiftEval sharedInstance] rebuildWithStoryboard:changed error:&err];
         if (err)
             return FALSE;
-
-        remapper.output = [NSMutableArray new];
-        remapper.orderIndex = 0;
+    
+        void (^resetRemapper)(void) = ^{
+            remapper.output = [NSMutableArray new];
+            remapper.orderIndex = 0;
+        };
+        
+        resetRemapper();
 
         [visibleVC _loadViewFromNibNamed:visibleVC.nibName
                                   bundle:visibleVC.nibBundle];
 
         if ([SwiftEval sharedInstance].vaccineEnabled == YES) {
+            resetRemapper();
             [SwiftInjection vaccine:visibleVC];
         } else {
             [visibleVC viewDidLoad];
