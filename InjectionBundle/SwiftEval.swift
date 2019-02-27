@@ -186,6 +186,7 @@ public class SwiftEval: NSObject {
                 findProject(for: sourceURL, derivedData: derivedData) else {
                     throw evalError("""
                         Could not locate containing project or it's logs.
+                        On macOS you need to turn off the App Sandbox.
                         Have you customised the DerivedData path?
                         """)
         }
@@ -367,12 +368,12 @@ public class SwiftEval: NSObject {
 
     @objc func loadAndInject(tmpfile: String, oldClass: AnyClass? = nil) throws -> [AnyClass] {
 
-        print("💉 Loading .dylib - Ignore any duplicate class warning...")
+        print("💉 Loading .dylib ...")
         // load patched .dylib into process with new version of class
         guard let dl = dlopen("\(tmpfile).dylib", RTLD_NOW) else {
             throw evalError("dlopen() error: \(String(cString: dlerror()))")
         }
-        print("💉 Loaded .dylib - Ignore any duplicate class warning...")
+        print("💉 Loaded .dylib - Ignore any duplicate class warning ^")
 
         if oldClass != nil {
             // find patched version of class using symbol for existing
