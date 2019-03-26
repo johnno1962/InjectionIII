@@ -13,6 +13,8 @@ com.apple.quarantine ~/Downloads/InjectionIII.app`. To use, copy/link it to /App
 and run the app. Injection also expects to find your current Xcode at path /Appplications/Xcode.app.
 Finally, you'll need to add one of the following to your application's applicationDidFinishLaunching:
 
+Xcode 10.2 and later:
+
 ```Swift
 #if DEBUG
 Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle")?.load()
@@ -22,7 +24,7 @@ Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/tvOSInjection.bu
 Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/macOSInjection.bundle")?.load()
 #endif
 ```
-Or, for Xcode 10:
+Xcode 10.1:
 
 ```Swift
 #if DEBUG

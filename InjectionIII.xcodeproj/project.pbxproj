@@ -37,7 +37,7 @@
 		BBCA02071FB0F10300E45F0F /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02051FB0F10300E45F0F /* MainMenu.xib */; };
 		BBCA020A1FB0F10400E45F0F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BBCA02091FB0F10400E45F0F /* main.m */; };
 		BBCA022A1FB0F64800E45F0F /* SimpleSocket.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB67DBB31FB0CDA8000EAC8A /* SimpleSocket.mm */; };
-		BBCA024D1FB1069A00E45F0F /* macOSInjection10.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02451FB1065D00E45F0F /* macOSInjection10.bundle */; };
+		BBCA024D1FB1069A00E45F0F /* macOSInjection.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02451FB1065D00E45F0F /* macOSInjection.bundle */; };
 		BBCA02501FB107AF00E45F0F /* SwiftEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */; };
 		BBCA02511FB107AF00E45F0F /* SwiftInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */; };
 		BBCA02561FB1099500E45F0F /* InjectionServer.mm in Sources */ = {isa = PBXBuildFile; fileRef = BBCA02551FB1099500E45F0F /* InjectionServer.mm */; };
@@ -153,7 +153,7 @@
 		BBCA02081FB0F10400E45F0F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BBCA02091FB0F10400E45F0F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		BBCA020B1FB0F10400E45F0F /* InjectionIII.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = InjectionIII.entitlements; sourceTree = "<group>"; };
-		BBCA02451FB1065D00E45F0F /* macOSInjection10.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = macOSInjection10.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		BBCA02451FB1065D00E45F0F /* macOSInjection.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = macOSInjection.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBCA02471FB1065D00E45F0F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BBCA02541FB1099500E45F0F /* InjectionServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InjectionServer.h; sourceTree = "<group>"; };
 		BBCA02551FB1099500E45F0F /* InjectionServer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = InjectionServer.mm; sourceTree = "<group>"; };
@@ -229,7 +229,7 @@
 			children = (
 				BB439B7B1FABA64300B4F50B /* SwiftEvalTests.xctest */,
 				BBCA01FE1FB0F10300E45F0F /* InjectionIII.app */,
-				BBCA02451FB1065D00E45F0F /* macOSInjection10.bundle */,
+				BBCA02451FB1065D00E45F0F /* macOSInjection.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -457,7 +457,7 @@
 			);
 			name = InjectionBundle;
 			productName = InjectionBundle;
-			productReference = BBCA02451FB1065D00E45F0F /* macOSInjection10.bundle */;
+			productReference = BBCA02451FB1065D00E45F0F /* macOSInjection.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -534,7 +534,7 @@
 				BBB64DC51FD450AF0020BE47 /* README.md in Resources */,
 				BBE490DC1FB2C643003D41BB /* InjectionError.tif in Resources */,
 				BBCA02591FB112F500E45F0F /* App.icns in Resources */,
-				BBCA024D1FB1069A00E45F0F /* macOSInjection10.bundle in Resources */,
+				BBCA024D1FB1069A00E45F0F /* macOSInjection.bundle in Resources */,
 				BBCA02601FB122C300E45F0F /* InjectionIdle.tif in Resources */,
 				BB6306FE1FCD1A410021D30C /* Credits.rtf in Resources */,
 				BBCA02611FB122C300E45F0F /* InjectionOK.tif in Resources */,
@@ -579,7 +579,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "SYMROOT=/tmp/Injection10\nexport PLATFORM_DIR_OS=$DEVELOPER_DIR/Platforms/iPhoneSimulator.platform &&\n\"$DEVELOPER_BIN_DIR\"/xcodebuild SYMROOT=$SYMROOT PRODUCT_NAME=iOSInjection10 LD_RUNPATH_SEARCH_PATHS=\"$DEVELOPER_DIR/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator $PLATFORM_DIR_OS/Developer/Library/Frameworks @loader_path/Frameworks\" -arch x86_64 -sdk iphonesimulator -config Debug -target InjectionBundle &&\n/Applications/Xcode941.app/Contents/Developer/usr/bin/xcodebuild SYMROOT=/tmp/Injection PRODUCT_NAME=iOSInjection LD_RUNPATH_SEARCH_PATHS=\"$DEVELOPER_DIR/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator $PLATFORM_DIR_OS/Developer/Library/Frameworks @loader_path/Frameworks\" -arch x86_64 -sdk iphonesimulator -config Debug -target InjectionBundle &&\nrsync -au $SYMROOT/Debug-iphonesimulator/iOSInjection10.bundle /tmp/Injection/Debug-iphonesimulator/iOSInjection.bundle \"$CODESIGNING_FOLDER_PATH/Contents/Resources\" &&\nexport PLATFORM_DIR_OS=$DEVELOPER_DIR/Platforms/AppleTVSimulator.platform &&\n\"$DEVELOPER_BIN_DIR\"/xcodebuild SYMROOT=$SYMROOT PRODUCT_NAME=tvOSInjection10 LD_RUNPATH_SEARCH_PATHS=\"$DEVELOPER_DIR/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/appletvsimulator $PLATFORM_DIR_OS/Developer/Library/Frameworks @loader_path/Frameworks\" -arch x86_64 -sdk appletvsimulator -config Debug -target InjectionBundle &&\n/Applications/Xcode941.app/Contents/Developer/usr/bin/xcodebuild SYMROOT=/tmp/Injection PRODUCT_NAME=tvOSInjection LD_RUNPATH_SEARCH_PATHS=\"$DEVELOPER_DIR/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/appletvsimulator $PLATFORM_DIR_OS/Developer/Library/Frameworks @loader_path/Frameworks\" -arch x86_64 -sdk appletvsimulator -config Debug -target InjectionBundle &&\nrsync -au $SYMROOT/Debug-appletvsimulator/tvOSInjection10.bundle /tmp/Injection/Debug-appletvsimulator/tvOSInjection.bundle \"$CODESIGNING_FOLDER_PATH/Contents/Resources\" &&\nexport PLATFORM_DIR_OS=$DEVELOPER_DIR/Platforms/MacOS.platform &&\n/Applications/Xcode941.app/Contents/Developer/usr/bin/xcodebuild SYMROOT=/tmp/Injection PRODUCT_NAME=macOSInjection LD_RUNPATH_SEARCH_PATHS=\"$DEVELOPER_DIR/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator $PLATFORM_DIR_OS/Developer/Library/Frameworks @loader_path/Frameworks\" -arch x86_64 -config Debug -target InjectionBundle &&\nrsync -au /tmp/Injection/Debug/macOSInjection.bundle \"$CODESIGNING_FOLDER_PATH/Contents/Resources\" &&\nfind $CODESIGNING_FOLDER_PATH/Contents/Resources/*.bundle -name '*.h' -delete\n";
+			shellScript = "SYMROOT=/tmp/Injection\nexport PLATFORM_DIR_OS=$DEVELOPER_DIR/Platforms/iPhoneSimulator.platform &&\n\"$DEVELOPER_BIN_DIR\"/xcodebuild SYMROOT=$SYMROOT PRODUCT_NAME=iOSInjection LD_RUNPATH_SEARCH_PATHS=\"$DEVELOPER_DIR/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator $PLATFORM_DIR_OS/Developer/Library/Frameworks @loader_path/Frameworks\" -arch x86_64 -sdk iphonesimulator -config Debug -target InjectionBundle &&\n/Applications/Xcode101.app/Contents/Developer/usr/bin/xcodebuild SYMROOT=/tmp/Injection10 PRODUCT_NAME=iOSInjection10 LD_RUNPATH_SEARCH_PATHS=\"$DEVELOPER_DIR/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator $PLATFORM_DIR_OS/Developer/Library/Frameworks @loader_path/Frameworks\" -arch x86_64 -sdk iphonesimulator -config Debug -target InjectionBundle &&\nrsync -au $SYMROOT/Debug-iphonesimulator/iOSInjection.bundle /tmp/Injection10/Debug-iphonesimulator/iOSInjection10.bundle \"$CODESIGNING_FOLDER_PATH/Contents/Resources\" &&\nexport PLATFORM_DIR_OS=$DEVELOPER_DIR/Platforms/AppleTVSimulator.platform &&\n\"$DEVELOPER_BIN_DIR\"/xcodebuild SYMROOT=$SYMROOT PRODUCT_NAME=tvOSInjection LD_RUNPATH_SEARCH_PATHS=\"$DEVELOPER_DIR/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/appletvsimulator $PLATFORM_DIR_OS/Developer/Library/Frameworks @loader_path/Frameworks\" -arch x86_64 -sdk appletvsimulator -config Debug -target InjectionBundle &&\n/Applications/Xcode101.app/Contents/Developer/usr/bin/xcodebuild SYMROOT=/tmp/Injection10 PRODUCT_NAME=tvOSInjection10 LD_RUNPATH_SEARCH_PATHS=\"$DEVELOPER_DIR/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/appletvsimulator $PLATFORM_DIR_OS/Developer/Library/Frameworks @loader_path/Frameworks\" -arch x86_64 -sdk appletvsimulator -config Debug -target InjectionBundle &&\nrsync -au $SYMROOT/Debug-appletvsimulator/tvOSInjection.bundle /tmp/Injection10/Debug-appletvsimulator/tvOSInjection10.bundle \"$CODESIGNING_FOLDER_PATH/Contents/Resources\" &&\nexport PLATFORM_DIR_OS=$DEVELOPER_DIR/Platforms/MacOS.platform &&\n/Applications/Xcode101.app/Contents/Developer/usr/bin/xcodebuild SYMROOT=/tmp/Injection10 PRODUCT_NAME=macOSInjection10 LD_RUNPATH_SEARCH_PATHS=\"$DEVELOPER_DIR/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator $PLATFORM_DIR_OS/Developer/Library/Frameworks @loader_path/Frameworks\" -arch x86_64 -config Debug -target InjectionBundle &&\nrsync -au /tmp/Injection10/Debug/macOSInjection10.bundle \"$CODESIGNING_FOLDER_PATH/Contents/Resources\" &&\nfind $CODESIGNING_FOLDER_PATH/Contents/Resources/*.bundle -name '*.h' -delete\n";
 			showEnvVarsInLog = 0;
 		};
 		BBE429591FD7D476009FBA8B /* ShellScript */ = {
@@ -894,7 +894,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionBundle;
-				PRODUCT_NAME = macOSInjection10;
+				PRODUCT_NAME = macOSInjection;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				REEXPORTED_FRAMEWORK_NAMES = "";
 				SDKROOT = macosx;
@@ -915,7 +915,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionBundle;
-				PRODUCT_NAME = macOSInjection10;
+				PRODUCT_NAME = macOSInjection;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				REEXPORTED_FRAMEWORK_NAMES = "";
 				SDKROOT = macosx;
