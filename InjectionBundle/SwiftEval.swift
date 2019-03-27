@@ -396,7 +396,7 @@ public class SwiftEval: NSObject {
             try injectGenerics(tmpfile: tmpfile, handle: dl)
 
             guard shell(command: """
-                \(xcodeDev)/Toolchains/XcodeDefault.xctoolchain/usr/bin/nm \(tmpfile).o | grep -E ' S _OBJC_CLASS_\\$_| _(_T0|\\$S).*CN$' | awk '{print $3}' >\(tmpfile).classes
+                \(xcodeDev)/Toolchains/XcodeDefault.xctoolchain/usr/bin/nm \(tmpfile).o | grep -E ' S _OBJC_CLASS_\\$_| _(_T0|\\$S|\\$s).*CN$' | awk '{print $3}' >\(tmpfile).classes
                 """) else {
                 throw evalError("Could not list class symbols")
             }
