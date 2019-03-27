@@ -115,8 +115,12 @@ public class SwiftInjection: NSObject {
             let classMetadata = unsafeBitCast(newClass, to: UnsafeMutablePointer<ClassMetadataSwift>.self)
 
             // Is this a Swift class?
-            if (classMetadata.pointee.Data & 0x1) == 1 {
-                // Swift equivalent of Swizzling
+
+            let oldSwiftCondition = classMetadata.pointee.Data & 0x1 == 1
+            let newSwiftCondition = classMetadata.pointee.Data & 0x3 != 0
+            let isSwiftClass = newSwiftCondition || oldSwiftCondition
+            if isSwiftClass {
+              // Swift equivalent of Swizzling
                 if classMetadata.pointee.ClassSize != existingClass.pointee.ClassSize {
                     print("💉 ⚠️ Adding or removing methods on Swift classes is not supported. Your application will likely crash. ⚠️")
                 }
