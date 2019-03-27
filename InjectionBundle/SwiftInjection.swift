@@ -115,7 +115,7 @@ public class SwiftInjection: NSObject {
             let classMetadata = unsafeBitCast(newClass, to: UnsafeMutablePointer<ClassMetadataSwift>.self)
 
             // Is this a Swift class?
-
+            // Reference: https://github.com/apple/swift/blob/master/include/swift/ABI/Metadata.h#L1195
             let oldSwiftCondition = classMetadata.pointee.Data & 0x1 == 1
             let newSwiftCondition = classMetadata.pointee.Data & 0x3 != 0
             let isSwiftClass = newSwiftCondition || oldSwiftCondition
