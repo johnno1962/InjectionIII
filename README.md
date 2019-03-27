@@ -57,7 +57,7 @@ from source you'll need to use:
     
 ### Available downloads
 
-| Xcode 9.3/4, Xcode 10 |
+| Xcode 10.1, Xcode 10.2 |
 | ------------- |
 | [Mac app store](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12) |
 
