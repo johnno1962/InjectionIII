@@ -371,7 +371,11 @@ public class SwiftEval: NSObject {
         print("💉 Loading .dylib ...")
         // load patched .dylib into process with new version of class
         guard let dl = dlopen("\(tmpfile).dylib", RTLD_NOW) else {
-            throw evalError("dlopen() error: \(String(cString: dlerror()))")
+            let error = String(cString: dlerror())
+            if error.contains("___llvm_profile_runtime") {
+                print("💉 Loading .dylib has failed, try turning off collection of test coverage in your scheme")
+            }
+            throw evalError("dlopen() error: \(error)")
         }
         print("💉 Loaded .dylib - Ignore any duplicate class warning ^")
 
