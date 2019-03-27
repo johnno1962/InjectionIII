@@ -115,8 +115,12 @@ public class SwiftInjection: NSObject {
             let classMetadata = unsafeBitCast(newClass, to: UnsafeMutablePointer<ClassMetadataSwift>.self)
 
             // Is this a Swift class?
-            if (classMetadata.pointee.Data & 0x1) == 1 {
-                // Swift equivalent of Swizzling
+            // Reference: https://github.com/apple/swift/blob/master/include/swift/ABI/Metadata.h#L1195
+            let oldSwiftCondition = classMetadata.pointee.Data & 0x1 == 1
+            let newSwiftCondition = classMetadata.pointee.Data & 0x3 != 0
+            let isSwiftClass = newSwiftCondition || oldSwiftCondition
+            if isSwiftClass {
+              // Swift equivalent of Swizzling
                 if classMetadata.pointee.ClassSize != existingClass.pointee.ClassSize {
                     print("💉 ⚠️ Adding or removing methods on Swift classes is not supported. Your application will likely crash. ⚠️")
                 }
@@ -129,7 +133,7 @@ public class SwiftInjection: NSObject {
                 let vtableLength = Int(existingClass.pointee.ClassSize -
                     existingClass.pointee.ClassAddressPoint) - vtableOffset
 
-                print("💉 Injected '\(NSStringFromClass(oldClass))'")
+                print("💉 Injected '\(oldClass)'")
                 memcpy(byteAddr(existingClass) + vtableOffset,
                        byteAddr(classMetadata) + vtableOffset, vtableLength)
             }

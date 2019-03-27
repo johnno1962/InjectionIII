@@ -371,7 +371,11 @@ public class SwiftEval: NSObject {
         print("💉 Loading .dylib ...")
         // load patched .dylib into process with new version of class
         guard let dl = dlopen("\(tmpfile).dylib", RTLD_NOW) else {
-            throw evalError("dlopen() error: \(String(cString: dlerror()))")
+            let error = String(cString: dlerror())
+            if error.contains("___llvm_profile_runtime") {
+                print("💉 Loading .dylib has failed, try turning off collection of test coverage in your scheme")
+            }
+            throw evalError("dlopen() error: \(error)")
         }
         print("💉 Loaded .dylib - Ignore any duplicate class warning ^")
 
@@ -396,7 +400,7 @@ public class SwiftEval: NSObject {
             try injectGenerics(tmpfile: tmpfile, handle: dl)
 
             guard shell(command: """
-                \(xcodeDev)/Toolchains/XcodeDefault.xctoolchain/usr/bin/nm \(tmpfile).o | grep -E ' S _OBJC_CLASS_\\$_| _(_T0|\\$S).*CN$' | awk '{print $3}' >\(tmpfile).classes
+                \(xcodeDev)/Toolchains/XcodeDefault.xctoolchain/usr/bin/nm \(tmpfile).o | grep -E ' S _OBJC_CLASS_\\$_| _(_T0|\\$S|\\$s).*CN$' | awk '{print $3}' >\(tmpfile).classes
                 """) else {
                 throw evalError("Could not list class symbols")
             }
