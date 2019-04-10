@@ -76,6 +76,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B53A8EE3226937350016D773 /* InjectionEnum.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InjectionEnum.h; sourceTree = "<group>"; };
 		BB037DF31FAD808B004B267C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BB037DF41FAD80D0004B267C /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftInjection.swift; sourceTree = "<group>"; };
@@ -335,6 +336,7 @@
 				BBEB704B1FD28C6F00127711 /* XcodeHash.m */,
 				BBCA02001FB0F10300E45F0F /* AppDelegate.h */,
 				BBCA02011FB0F10300E45F0F /* AppDelegate.mm */,
+				B53A8EE3226937350016D773 /* InjectionEnum.h */,
 				BBCA02541FB1099500E45F0F /* InjectionServer.h */,
 				BBCA02551FB1099500E45F0F /* InjectionServer.mm */,
 				BB67DBB21FB0CDA8000EAC8A /* SimpleSocket.h */,

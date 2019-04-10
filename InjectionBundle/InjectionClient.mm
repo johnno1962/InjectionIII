@@ -7,7 +7,7 @@
 //
 
 #import "InjectionClient.h"
-#import "InjectionServer.h"
+#import "InjectionEnum.h"
 
 #ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
 #if __has_include("tvOSInjection10-Swift.h")
@@ -17,9 +17,17 @@
 #elif __has_include("iOSInjection10-Swift.h")
 #import "iOSInjection10-Swift.h"
 #else
+
+#if __has_include("iOSInjection-Swift.h")
 #import "iOSInjection-Swift.h"
+#elif __has_include("InjectionIII/InjectionIII-Swift.h")
+#import "InjectionIII/InjectionIII-Swift.h"
 #endif
+
+#endif
+
 #import <UIKit/UIKit.h>
+#import <objc/runtime.h>
 
 @implementation NSObject (Remapper)
 
