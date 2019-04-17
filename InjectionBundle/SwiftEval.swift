@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#111 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#114 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -222,7 +222,7 @@ public class SwiftEval: NSObject {
                         if ($line =~ /^\\s*cd /) {
                             $realPath = $line;
                         }
-                        elsif (my ($product) = $line =~ m@\\.xcent --timestamp=none (.*\\.app)\\r@o) {
+                        elsif (my ($product) = $line =~ m@/usr/bin/ibtool.*? --link (\\S+\\.app)@o) {
                             print $product;
                             exit 0;
                         }
