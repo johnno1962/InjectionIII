@@ -9,7 +9,8 @@ Pod::Spec.new do |s|
   s.source = { :git => 'https://github.com/johnno1962/InjectionIII.git', :tag => s.version }
 
   s.ios.deployment_target = '10.0'
-  s.osx.deployment_target = '10.14'
+  s.osx.deployment_target = '10.12'
+  s.tvos.deployment_target = '10.0'
   s.swift_version = '4.0'
 
   s.library     = 'z'
