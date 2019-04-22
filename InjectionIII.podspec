@@ -8,8 +8,8 @@ Pod::Spec.new do |s|
   s.author = 'John Holdsworth'
   s.source = { :git => 'https://github.com/johnno1962/InjectionIII.git', :tag => s.version }
 
-  s.platform = :ios, '9.0'
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '10.0'
+  s.osx.deployment_target = '10.14'
   s.swift_version = '4.0'
 
   s.library     = 'z'

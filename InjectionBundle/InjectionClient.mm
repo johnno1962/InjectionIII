@@ -68,7 +68,13 @@ static struct {
 #if __has_include("macOSInjection10-Swift.h")
 #import "macOSInjection10-Swift.h"
 #else
+
+#if __has_include("macOSInjection-Swift.h")
 #import "macOSInjection-Swift.h"
+#elif __has_include("InjectionIII/InjectionIII-Swift.h")
+#import "InjectionIII/InjectionIII-Swift.h"
+#endif
+
 #endif
 #endif
 
