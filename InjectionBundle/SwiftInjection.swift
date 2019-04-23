@@ -11,9 +11,7 @@
 //  from SwiftEval.swift to recompile and reload class.
 //
 
-#if arch(x86_64) || arch(i386) // simulator/macOS only
 import Foundation
-import XCTest
 
 private let debugSweep = getenv("DEBUG_SWEEP") != nil
 
@@ -21,50 +19,16 @@ private let debugSweep = getenv("DEBUG_SWEEP") != nil
     @objc optional func injected()
 }
 
-#if os(iOS) || os(tvOS)
-import UIKit
-
-extension UIViewController {
-
-    /// inject a UIView controller and redraw
-    public func injectVC() {
-        inject()
-        for subview in self.view.subviews {
-            subview.removeFromSuperview()
-        }
-        if let sublayers = self.view.layer.sublayers {
-            for sublayer in sublayers {
-                sublayer.removeFromSuperlayer()
-            }
-        }
-        viewDidLoad()
-    }
-}
-#else
-import Cocoa
-#endif
-
-extension NSObject {
-
-    public func inject() {
-        if let oldClass: AnyClass = object_getClass(self) {
-            SwiftInjection.inject(oldClass: oldClass, classNameOrFile: "\(oldClass)")
-        }
-    }
-
-    @objc
-    public class func inject(file: String) {
-        SwiftInjection.inject(oldClass: nil, classNameOrFile: file)
-    }
-}
 
 @objc
 public class SwiftInjection: NSObject {
-
-    static let testQueue = DispatchQueue(label: "INTestQueue")
-
+    
+    // Functions just implemented if they are going to use XCTest framework
+    func appendTestClass(_ newClass: AnyClass) {}
+    func proceedTestClasses() {}
+    
     @objc
-    public class func inject(oldClass: AnyClass?, classNameOrFile: String) {
+    public func inject(oldClass: AnyClass?, classNameOrFile: String) {
         do {
             let tmpfile = try SwiftEval.instance.rebuildClass(oldClass: oldClass,
                                     classNameOrFile: classNameOrFile, extra: nil)
@@ -73,32 +37,9 @@ public class SwiftInjection: NSObject {
         catch {
         }
     }
-
+    
     @objc
-    public class func replayInjections() -> Int {
-        var injectionNumber = 0
-        do {
-            func mtime(_ path: String) -> time_t {
-                return SwiftEval.instance.mtime(URL(fileURLWithPath: path))
-            }
-            let execBuild = mtime(Bundle.main.executablePath!)
-
-            while true {
-                let tmpfile = "/tmp/eval\(injectionNumber+1)"
-                if mtime("\(tmpfile).dylib") < execBuild {
-                    break
-                }
-                try inject(tmpfile: tmpfile)
-                injectionNumber += 1
-            }
-        }
-        catch {
-        }
-        return injectionNumber
-    }
-
-    @objc
-    public class func inject(tmpfile: String) throws {
+    public func inject(tmpfile: String) throws {
         let newClasses = try SwiftEval.instance.loadAndInject(tmpfile: tmpfile)
         let oldClasses = //oldClass != nil ? [oldClass!] :
             newClasses.map { objc_getClass(class_getName($0)) as! AnyClass }
@@ -138,101 +79,62 @@ public class SwiftInjection: NSObject {
                        byteAddr(classMetadata) + vtableOffset, vtableLength)
             }
 
-            if newClass.isSubclass(of: XCTestCase.self) {
-                testClasses.append(newClass)
-//                if ( [newClass isSubclassOfClass:objc_getClass("QuickSpec")] )
-//                [[objc_getClass("_TtC5Quick5World") sharedWorld]
-//                setCurrentExampleMetadata:nil];
-            }
+            appendTestClass(newClass)
         }
-
-        // Thanks https://github.com/johnno1962/injectionforxcode/pull/234
-        if !testClasses.isEmpty {
-            testQueue.async {
-                testQueue.suspend()
-                let timer = Timer(timeInterval: 0, repeats:false, block: { _ in
-                    for newClass in testClasses {
-                        let suite0 = XCTestSuite(name: "Injected")
-                        let suite = XCTestSuite(forTestCaseClass: newClass)
-                        let tr = XCTestSuiteRun(test: suite)
-                        suite0.addTest(suite)
-                        suite0.perform(tr)
-                    }
-                    testQueue.resume()
-                })
-                RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
-            }
-        } else {
-            var injectedClasses = [AnyClass]()
-            for cls in oldClasses {
-                if class_getInstanceMethod(cls, #selector(SwiftInjected.injected)) != nil {
-                    injectedClasses.append(cls)
-                    let kvoName = "NSKVONotifying_" + NSStringFromClass(cls)
-                    if let kvoCls = NSClassFromString(kvoName) {
-                        injectedClasses.append(kvoCls)
-                    }
+        
+        proceedTestClasses()
+        
+        var injectedClasses = [AnyClass]()
+        for cls in oldClasses {
+            if class_getInstanceMethod(cls, #selector(SwiftInjected.injected)) != nil {
+                injectedClasses.append(cls)
+                let kvoName = "NSKVONotifying_" + NSStringFromClass(cls)
+                if let kvoCls = NSClassFromString(kvoName) {
+                    injectedClasses.append(kvoCls)
                 }
             }
-
-            // implement -injected() method using sweep of objects in application
-            if !injectedClasses.isEmpty {
-                #if os(iOS) || os(tvOS)
-                let app = UIApplication.shared
-                #else
-                let app = NSApplication.shared
-                #endif
-                let seeds: [Any] =  [app.delegate as Any] + app.windows
-                SwiftSweeper(instanceTask: {
-                    (instance: AnyObject) in
-                    if injectedClasses.contains(where: { $0 == object_getClass(instance) }) {
-                        let proto = unsafeBitCast(instance, to: SwiftInjected.self)
-                        if SwiftEval.sharedInstance().vaccineEnabled {
-                            performVaccineInjection(instance)
-                            proto.injected?()
-                            return
-                        }
-
-                        proto.injected?()
-
-                        #if os(iOS) || os(tvOS)
-                        if let vc = instance as? UIViewController {
-                            flash(vc: vc)
-                        }
-                        #endif
-                    }
-                }).sweepValue(seeds)
-            }
-
-            let notification = Notification.Name("INJECTION_BUNDLE_NOTIFICATION")
-            NotificationCenter.default.post(name: notification, object: oldClasses)
         }
+
+        // implement -injected() method using sweep of objects in application
+        if !injectedClasses.isEmpty {
+            #if os(iOS) || os(tvOS)
+            let app = UIApplication.shared
+            #else
+            let app = NSApplication.shared
+            #endif
+            let seeds: [Any] =  [app.delegate as Any] + app.windows
+            SwiftSweeper(instanceTask: {
+                (instance: AnyObject) in
+                if injectedClasses.contains(where: { $0 == object_getClass(instance) }) {
+                    let proto = unsafeBitCast(instance, to: SwiftInjected.self)
+                    if SwiftEval.sharedInstance().vaccineEnabled {
+                        self.performVaccineInjection(instance)
+                        proto.injected?()
+                        return
+                    }
+
+                    proto.injected?()
+
+                    #if os(iOS) || os(tvOS)
+                    if let vc = instance as? UIViewController {
+                        vc.flashToUpdate()
+                    }
+                    #endif
+                }
+            }).sweepValue(seeds)
+        }
+        
+        let notification = Notification.Name("INJECTION_BUNDLE_NOTIFICATION")
+        NotificationCenter.default.post(name: notification, object: oldClasses)
     }
 
     @objc(vaccine:)
-    public class func performVaccineInjection(_ object: AnyObject) {
+    public func performVaccineInjection(_ object: AnyObject) {
         let vaccine = Vaccine()
         vaccine.performInjection(on: object)
     }
 
-    #if os(iOS) || os(tvOS)
-    @objc(flash:)
-    public class func flash(vc: UIViewController) {
-        DispatchQueue.main.async {
-            let v = UIView(frame: vc.view.frame)
-            v.backgroundColor = .white
-            v.alpha = 0.3
-            vc.view.addSubview(v)
-            UIView.animate(withDuration: 0.2,
-                           delay: 0.0,
-                           options: UIViewAnimationOptions.curveEaseIn,
-                           animations: {
-                            v.alpha = 0.0
-            }, completion: { _ in v.removeFromSuperview() })
-        }
-    }
-    #endif
-
-    static func injection(swizzle newClass: AnyClass?, onto oldClass: AnyClass?) {
+    func injection(swizzle newClass: AnyClass?, onto oldClass: AnyClass?) {
         var methodCount: UInt32 = 0
         if let methods = class_copyMethodList(newClass, &methodCount) {
             for i in 0 ..< Int(methodCount) {
@@ -453,5 +355,4 @@ public func _stdlib_demangleName(_ mangledName: String) -> String {
         return mangledName
     }
 }
-#endif
 #endif

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B5BEC895226F89A400C96067 /* NSObjectSwiftInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BEC894226F89A400C96067 /* NSObjectSwiftInjection.swift */; };
+		B5BEC897226F8A5500C96067 /* UIViewControllerSwiftInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BEC896226F8A5500C96067 /* UIViewControllerSwiftInjection.swift */; };
+		B5BEC899226F938000C96067 /* XCTestSwiftInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BEC898226F938000C96067 /* XCTestSwiftInjection.swift */; };
+		B5BEC8A1226FB69B00C96067 /* XCTestInjectionClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = B5BEC8A0226FB69B00C96067 /* XCTestInjectionClient.mm */; };
 		BB439B801FABA64300B4F50B /* SwiftEvalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B7F1FABA64300B4F50B /* SwiftEvalTests.swift */; };
 		BB56393C1FD5C25A002FFCEF /* SignerService.m in Sources */ = {isa = PBXBuildFile; fileRef = BB67DBB61FB0D0F2000EAC8A /* SignerService.m */; };
 		BB6306FE1FCD1A410021D30C /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = BB6306FD1FCD1A410021D30C /* Credits.rtf */; };
@@ -77,6 +81,13 @@
 
 /* Begin PBXFileReference section */
 		B53A8EE3226937350016D773 /* InjectionEnum.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InjectionEnum.h; sourceTree = "<group>"; };
+		B5BEC894226F89A400C96067 /* NSObjectSwiftInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObjectSwiftInjection.swift; sourceTree = "<group>"; };
+		B5BEC896226F8A5500C96067 /* UIViewControllerSwiftInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerSwiftInjection.swift; sourceTree = "<group>"; };
+		B5BEC898226F938000C96067 /* XCTestSwiftInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestSwiftInjection.swift; sourceTree = "<group>"; };
+		B5BEC89C226FB64600C96067 /* CoreInjectionClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreInjectionClient.h; sourceTree = "<group>"; };
+		B5BEC89D226FB64600C96067 /* CoreInjectionClient.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CoreInjectionClient.mm; sourceTree = "<group>"; };
+		B5BEC89F226FB69B00C96067 /* XCTestInjectionClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XCTestInjectionClient.h; sourceTree = "<group>"; };
+		B5BEC8A0226FB69B00C96067 /* XCTestInjectionClient.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = XCTestInjectionClient.mm; sourceTree = "<group>"; };
 		BB037DF31FAD808B004B267C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BB037DF41FAD80D0004B267C /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftInjection.swift; sourceTree = "<group>"; };
@@ -368,10 +379,17 @@
 				BBCA02471FB1065D00E45F0F /* Info.plist */,
 				BBCA025B1FB114FF00E45F0F /* InjectionClient.h */,
 				BBCA025C1FB114FF00E45F0F /* InjectionClient.mm */,
+				B5BEC89C226FB64600C96067 /* CoreInjectionClient.h */,
+				B5BEC89D226FB64600C96067 /* CoreInjectionClient.mm */,
+				B5BEC89F226FB69B00C96067 /* XCTestInjectionClient.h */,
+				B5BEC8A0226FB69B00C96067 /* XCTestInjectionClient.mm */,
 				BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */,
 				BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */,
+				B5BEC898226F938000C96067 /* XCTestSwiftInjection.swift */,
 				BBB64FE41FD576AA0020BE47 /* XprobeSwift-Bridging-Header.h */,
 				BD35949D21A6C5DE0020EB94 /* Vaccine.swift */,
+				B5BEC894226F89A400C96067 /* NSObjectSwiftInjection.swift */,
+				B5BEC896226F8A5500C96067 /* UIViewControllerSwiftInjection.swift */,
 			);
 			path = InjectionBundle;
 			sourceTree = "<group>";
@@ -636,10 +654,14 @@
 				BBCA02501FB107AF00E45F0F /* SwiftEval.swift in Sources */,
 				BD35949E21A6C5DE0020EB94 /* Vaccine.swift in Sources */,
 				BBCA02511FB107AF00E45F0F /* SwiftInjection.swift in Sources */,
+				B5BEC8A1226FB69B00C96067 /* XCTestInjectionClient.mm in Sources */,
 				BBB64FE11FD575260020BE47 /* XprobeSwift.swift in Sources */,
 				BBB64FE61FD577EB0020BE47 /* SwiftSwizzler.swift in Sources */,
 				BBCA02621FB1312A00E45F0F /* SimpleSocket.mm in Sources */,
 				BBCA025D1FB114FF00E45F0F /* InjectionClient.mm in Sources */,
+				B5BEC899226F938000C96067 /* XCTestSwiftInjection.swift in Sources */,
+				B5BEC895226F89A400C96067 /* NSObjectSwiftInjection.swift in Sources */,
+				B5BEC897226F8A5500C96067 /* UIViewControllerSwiftInjection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

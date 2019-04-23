@@ -8,6 +8,12 @@
 
 #import "SimpleSocket.h"
 
+@class SwiftInjection;
+
 @interface InjectionClient : SimpleSocket
+
+@property (nonatomic, strong, readonly) SwiftInjection *swiftInjection;
+
++ (void)createInjectionClient;
 
 @end

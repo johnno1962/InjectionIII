@@ -13,7 +13,6 @@
 //  Used as the basis of a new version of Injection.
 //
 
-#if arch(x86_64) || arch(i386) // simulator/macOS only
 import Foundation
 
 private func debug(_ str: String) {
@@ -693,5 +692,4 @@ func fork() -> Int32
 func execve(_ __file: UnsafePointer<Int8>!, _ __argv: UnsafePointer<UnsafeMutablePointer<Int8>?>!, _ __envp: UnsafePointer<UnsafeMutablePointer<Int8>?>!) -> Int32
 @_silgen_name("_NSGetEnviron")
 func _NSGetEnviron() -> UnsafePointer<UnsafePointer<UnsafeMutablePointer<Int8>?>?>!
-#endif
 #endif

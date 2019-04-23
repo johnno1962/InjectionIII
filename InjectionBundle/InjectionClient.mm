@@ -113,13 +113,12 @@ static struct {
 
 @implementation InjectionClient
 
-+ (void)load {
-    // connect to InjetionIII.app using sicket
++ (void)createInjectionClient {
+    // connect to InjetionIII.app using socket
     if (InjectionClient *client = [self connectTo:INJECTION_ADDRESS])
         [client run];
     else
         printf("💉 Injection loaded but could not connect. Is InjectionIII.app running?\n");
-
 }
 
 - (void)runInBackground {
@@ -182,7 +181,7 @@ static struct {
                 NSError *err = nil;
                 switch (command) {
                 case InjectionLoad:
-                    [SwiftInjection injectWithTmpfile:changed error:&err];
+                    [self.swiftInjection injectWithTmpfile:changed error:&err];
                     break;
                 case InjectionInject: {
 #ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
@@ -192,7 +191,7 @@ static struct {
                     }
                     else
 #endif
-                        [SwiftInjection injectWithOldClass:nil classNameOrFile:changed];
+                        [self.swiftInjection injectWithOldClass:nil classNameOrFile:changed];
                     break;
                 }
 #ifdef XPROBE_PORT
@@ -294,14 +293,14 @@ static struct {
 
         if ([SwiftEval sharedInstance].vaccineEnabled == YES) {
             resetRemapper();
-            [SwiftInjection vaccine:visibleVC];
+            [self.swiftInjection vaccine:visibleVC];
         } else {
             [visibleVC viewDidLoad];
             [visibleVC viewWillAppear:NO];
             [visibleVC viewDidAppear:NO];
 
 #ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
-            [SwiftInjection flash:visibleVC];
+            [visibleVC flashToUpdate];
 #endif
         }
     }
