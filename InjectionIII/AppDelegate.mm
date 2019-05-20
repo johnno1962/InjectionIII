@@ -80,6 +80,10 @@ AppDelegate *appDelegate;
     [self.lastConnection writeCommand:InjectionVaccineSettingChanged withString:[appDelegate vaccineConfiguration]];
 }
 
+- (IBAction)traceApp:(NSMenuItem *)sender {
+    [self.lastConnection writeCommand:InjectionTrace withString:nil];
+}
+
 - (NSString *)vaccineConfiguration {
     BOOL vaccineSetting = [[NSUserDefaults standardUserDefaults] boolForKey:UserDefaultsVaccineEnabled];
     NSNumber *value = [NSNumber numberWithBool:vaccineSetting];

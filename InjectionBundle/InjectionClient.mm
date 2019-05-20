@@ -162,6 +162,16 @@ static struct {
         case InjectionSigned:
             [writer writeString:[self readString]];
             break;
+        case InjectionTrace: {
+            void *handle = dlopen(NULL, RTLD_NOW);
+            void *main = dlsym(handle ?: RTLD_DEFAULT, "main");
+            Dl_info info;
+            if (main && dladdr(main, &info) && info.dli_fname) {
+                printf("💉 Tracing class methods in: %s\n", info.dli_fname);
+                [SwiftTrace traceBundlePath:(const int8_t *)info.dli_fname];
+            }
+            break;
+        }
         default: {
             NSString *changed = [self readString];
             dispatch_async(dispatch_get_main_queue(), ^{
