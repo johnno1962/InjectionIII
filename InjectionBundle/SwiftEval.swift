@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#114 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#115 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -186,7 +186,7 @@ public class SwiftEval: NSObject {
                 findProject(for: sourceURL, derivedData: derivedData) else {
                     throw evalError("""
                         Could not locate containing project or it's logs.
-                        On macOS you need to turn off the App Sandbox.
+                        For a macOS app you need to turn off the App Sandbox.
                         Have you customised the DerivedData path?
                         """)
         }
