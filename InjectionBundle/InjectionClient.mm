@@ -168,7 +168,7 @@ static struct {
             Dl_info info;
             if (main && dladdr(main, &info) && info.dli_fname) {
                 printf("💉 Tracing class' methods in: %s\n", info.dli_fname);
-                [SwiftTrace traceBundlePath:(const int8_t *)info.dli_fname];
+                [SwiftTrace traceWithBundlePath:(const int8_t *)info.dli_fname];
             }
             break;
         }
