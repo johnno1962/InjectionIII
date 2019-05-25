@@ -227,6 +227,7 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
     injector = nil;
     fileWatcher = nil;
     [appDelegate setMenuIcon:@"InjectionIdle"];
+    [appDelegate.traceItem setState:NSOffState];
 }
 
 - (void)injectPending {

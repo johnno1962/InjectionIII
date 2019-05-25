@@ -20,6 +20,7 @@
                 <outlet property="enabledTDDItem" destination="Mdd-tb-kGc" id="ccs-nb-DKk"/>
                 <outlet property="startItem" destination="vsd-ll-3nr" id="ODN-wa-BTp"/>
                 <outlet property="statusMenu" destination="V8Q-mq-A2f" id="Epo-HD-J21"/>
+                <outlet property="traceItem" destination="Kkx-ex-NCv" id="EXz-O7-K34"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
                 <outlet property="windowItem" destination="aUF-d1-5bR" id="MxW-hd-aZ7"/>
                 <outlet property="xprobeItem" destination="R6p-Yl-7qz" id="Ebf-Kl-PWB"/>

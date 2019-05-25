@@ -81,7 +81,9 @@ AppDelegate *appDelegate;
 }
 
 - (IBAction)traceApp:(NSMenuItem *)sender {
-    [self.lastConnection writeCommand:InjectionTrace withString:nil];
+    [self toggleState:sender];
+    [self.lastConnection writeCommand:sender.state == NSControlStateValueOn ?
+                      InjectionTrace : InjectionUntrace withString:nil];
 }
 
 - (NSString *)vaccineConfiguration {
