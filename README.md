@@ -6,11 +6,8 @@ This start-over implementation on [Injection for Xcode](https://github.com/johnn
 has been built into an app: InjectionIII.app included in the repo which runs in the status bar.
 Code injection allows you to update the implementation of methods of a class incrementally
 in the iOS simulator without having to rebuild or restart your application saving developer time.
-You can avoid the complications of code signing by using the pre-built binary which is available to
-[download here](http://johnholdsworth.com/InjectionIII.app.zip).  For some reason you may need
-to take the app out of qurantine manually or it will report it as damaged when you run it: `xattr -d
-com.apple.quarantine ~/Downloads/InjectionIII.app`. To use, copy/link it to /Applications
-and run the app. Injection also expects to find your current Xcode at path /Appplications/Xcode.app.
+You can avoid code signing complications  by using the  binary from the mac app store.
+ Injection also expects to find your current Xcode at path /Appplications/Xcode.app.
 Finally, you'll need to add one of the following to your application's applicationDidFinishLaunching:
 
 Xcode 10.2 and later:
@@ -57,7 +54,7 @@ from source you'll need to use:
     
 ### Available downloads
 
-| Xcode 10.1, Xcode 10.2 |
+| Xcode 10.1, Xcode 10.2* |
 | ------------- |
 | [Mac app store](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12) |
 

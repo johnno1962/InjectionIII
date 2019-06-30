@@ -1,3 +1,6 @@
 [submodule "XprobePlugin"]
 	path = XprobePlugin
 	url = https://github.com/johnno1962/XprobePlugin
+[submodule "SwiftTrace"]
+	path = SwiftTrace
+	url = https://github.com/johnno1962/SwiftTrace
