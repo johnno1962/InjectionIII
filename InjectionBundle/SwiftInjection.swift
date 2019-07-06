@@ -164,8 +164,14 @@ public class SwiftInjection: NSObject {
             }
         } else {
             var injectedClasses = [AnyClass]()
+            let injectedSEL = #selector(SwiftInjected.injected)
+            typealias ClassIMP = @convention(c) (AnyClass, Selector) -> ()
             for cls in oldClasses {
-                if class_getInstanceMethod(cls, #selector(SwiftInjected.injected)) != nil {
+                if let classMethod = class_getClassMethod(cls, injectedSEL) {
+                    let classIMP = method_getImplementation(classMethod)
+                    unsafeBitCast(classIMP, to: ClassIMP.self)(cls, injectedSEL)
+                }
+                if class_getInstanceMethod(cls, injectedSEL) != nil {
                     injectedClasses.append(cls)
                     let kvoName = "NSKVONotifying_" + NSStringFromClass(cls)
                     if let kvoCls = NSClassFromString(kvoName) {
