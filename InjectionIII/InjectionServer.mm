@@ -49,12 +49,12 @@ static NSMutableDictionary *projectInjected = [NSMutableDictionary new];
     NSString *projectFile = appDelegate.selectedProject;
     static BOOL MAS = false;
 
-    if (!projectFile) {
-        XcodeApplication *xcode = (XcodeApplication *)[SBApplication
-                           applicationWithBundleIdentifier:XcodeBundleID];
-        XcodeWorkspaceDocument *workspace = [xcode activeWorkspaceDocument];
-        projectFile = workspace.file.path;
-    }
+//    if (!projectFile) {
+//        XcodeApplication *xcode = (XcodeApplication *)[SBApplication
+//                           applicationWithBundleIdentifier:XcodeBundleID];
+//        XcodeWorkspaceDocument *workspace = [xcode activeWorkspaceDocument];
+//        projectFile = workspace.file.path;
+//    }
 
     if (!projectFile) {
         dispatch_sync(dispatch_get_main_queue(), ^{
