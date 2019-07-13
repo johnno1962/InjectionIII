@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#116 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#118 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -399,7 +399,7 @@ public class SwiftEval: NSObject {
         else {
             // grep out symbols for classes being injected from object file
 
-            try injectGenerics(tmpfile: tmpfile, handle: dl)
+//            try injectGenerics(tmpfile: tmpfile, handle: dl)
 
             guard shell(command: """
                 \(xcodeDev)/Toolchains/XcodeDefault.xctoolchain/usr/bin/nm \(tmpfile).o | grep -E ' S _OBJC_CLASS_\\$_| _(_T0|\\$S|\\$s).*CN$' | awk '{print $3}' >\(tmpfile).classes
@@ -686,14 +686,16 @@ class ScriptRunner {
         pipe(&commandsPipe)
         pipe(&statusesPipe)
 
-        if fork() == 0 {
-            let commandsIn = fdopen(commandsPipe[ForReading], "r")
-            let statusesOut = fdopen(statusesPipe[ForWriting], "w")
-            var script = [Int8](repeating: 0, count: 4096)
+        commandsOut = fdopen(commandsPipe[ForWriting], "w")
+        statusesIn = fdopen(statusesPipe[ForReading], "r")
+        setbuf(commandsOut, nil)
+
+        if fork() == 0,
+            let commandsIn = fdopen(commandsPipe[ForReading], "r"),
+            let statusesOut = fdopen(statusesPipe[ForWriting], "w") {
             setbuf(statusesOut, nil)
 
-            while fgets(&script, Int32(script.count), commandsIn) != nil {
-                script[strlen(&script)-1] = 0
+            while let script = readLine(stream: commandsIn) {
                 let pid = fork()
                 if pid == 0 {
                     var argv = [UnsafeMutablePointer<Int8>?](repeating: nil, count: 4)
@@ -710,17 +712,20 @@ class ScriptRunner {
 
             exit(0)
         }
+    }
 
-        commandsOut = fdopen(commandsPipe[ForWriting], "w")
-        statusesIn = fdopen(statusesPipe[ForReading], "r")
-        setbuf(commandsOut, nil)
+    func readLine(stream: UnsafeMutablePointer<FILE>) -> String? {
+        var buffer = [Int8](repeating: 0, count: 4096)
+        if let input = fgets(&buffer, Int32(buffer.count), stream) {
+            input[strlen(input)-1] = 0
+            return String(cString: input)
+        }
+        return nil
     }
 
     func run(script: String) -> Bool {
         fputs("\(script)\n", commandsOut)
-        var buffer = [Int8](repeating: 0, count: 10)
-        fgets(&buffer, Int32(buffer.count), statusesIn)
-        return buffer[0] == "0".utf8.first!
+        return readLine(stream: statusesIn) == "0"
     }
 }
 
