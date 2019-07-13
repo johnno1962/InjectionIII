@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#116 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#119 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -132,8 +132,6 @@ fileprivate extension String {
 public class SwiftEval: NSObject {
 
     static var instance = SwiftEval()
-
-    let runner = ScriptRunner()
 
     @objc public class func sharedInstance() -> SwiftEval {
         return instance
@@ -662,19 +660,24 @@ public class SwiftEval: NSObject {
         try! command.write(toFile: commandFile, atomically: false, encoding: .utf8)
         debug(command)
 
-        #if !(os(iOS) || os(tvOS))
+        #if os(iOS) || os(tvOS)
+        return runner.run(script: commandFile)
+        #else
         let task = Process()
         task.launchPath = "/bin/bash"
         task.arguments = ["-c", command]
         task.launch()
         task.waitUntilExit()
         return task.terminationStatus == EXIT_SUCCESS
-        #else
-        return runner.run(script: commandFile)
         #endif
     }
+
+    #if os(iOS) || os(tvOS)
+    let runner = ScriptRunner()
+    #endif
 }
 
+#if os(iOS) || os(tvOS)
 class ScriptRunner {
     let commandsOut: UnsafeMutablePointer<FILE>
     let statusesIn: UnsafeMutablePointer<FILE>
@@ -689,11 +692,12 @@ class ScriptRunner {
         if fork() == 0 {
             let commandsIn = fdopen(commandsPipe[ForReading], "r")
             let statusesOut = fdopen(statusesPipe[ForWriting], "w")
-            var script = [Int8](repeating: 0, count: 4096)
+            var buffer = [Int8](repeating: 0, count: 4096)
             setbuf(statusesOut, nil)
 
-            while fgets(&script, Int32(script.count), commandsIn) != nil {
-                script[strlen(&script)-1] = 0
+            while let script = fgets(&buffer, Int32(buffer.count), commandsIn) {
+                script[strlen(script)-1] = 0
+
                 let pid = fork()
                 if pid == 0 {
                     var argv = [UnsafeMutablePointer<Int8>?](repeating: nil, count: 4)
@@ -729,3 +733,5 @@ func fork() -> Int32
 @_silgen_name("execve")
 func execve(_ __file: UnsafePointer<Int8>!, _ __argv: UnsafePointer<UnsafeMutablePointer<Int8>?>!, _ __envp: UnsafePointer<UnsafeMutablePointer<Int8>?>!) -> Int32
 #endif
+#endif
+
