@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#115 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#116 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -132,6 +132,8 @@ fileprivate extension String {
 public class SwiftEval: NSObject {
 
     static var instance = SwiftEval()
+
+    let runner = ScriptRunner()
 
     @objc public class func sharedInstance() -> SwiftEval {
         return instance
@@ -656,7 +658,8 @@ public class SwiftEval: NSObject {
     }
 
     func shell(command: String) -> Bool {
-        try? command.write(toFile: "\(tmpDir)/command.sh", atomically: false, encoding: .utf8)
+        let commandFile = "\(tmpDir)/command.sh"
+        try! command.write(toFile: commandFile, atomically: false, encoding: .utf8)
         debug(command)
 
         #if !(os(iOS) || os(tvOS))
@@ -667,31 +670,62 @@ public class SwiftEval: NSObject {
         task.waitUntilExit()
         return task.terminationStatus == EXIT_SUCCESS
         #else
-        let pid = fork()
-        if pid == 0 {
-            var args = [UnsafeMutablePointer<Int8>?](repeating: nil, count: 4)
-            args[0] = strdup("/bin/bash")!
-            args[1] = strdup("-c")!
-            args[2] = strdup(command)!
-            args.withUnsafeMutableBufferPointer {
-                _ = execve($0.baseAddress![0], $0.baseAddress!, nil) // _NSGetEnviron().pointee)
-                fatalError("execve() fails \(String(cString: strerror(errno)))")
-            }
-        }
-
-        var status: Int32 = 0
-        while waitpid(pid, &status, 0) == -1 {}
-        return status >> 8 == EXIT_SUCCESS
+        return runner.run(script: commandFile)
         #endif
     }
 }
 
-#if os(iOS) || os(tvOS)
+class ScriptRunner {
+    let commandsOut: UnsafeMutablePointer<FILE>
+    let statusesIn: UnsafeMutablePointer<FILE>
+
+    init() {
+        let ForReading = 0, ForWriting = 1
+        var commandsPipe = [Int32](repeating: 0, count: 2)
+        var statusesPipe = [Int32](repeating: 0, count: 2)
+        pipe(&commandsPipe)
+        pipe(&statusesPipe)
+
+        if fork() == 0 {
+            let commandsIn = fdopen(commandsPipe[ForReading], "r")
+            let statusesOut = fdopen(statusesPipe[ForWriting], "w")
+            var script = [Int8](repeating: 0, count: 4096)
+            setbuf(statusesOut, nil)
+
+            while fgets(&script, Int32(script.count), commandsIn) != nil {
+                script[strlen(&script)-1] = 0
+                let pid = fork()
+                if pid == 0 {
+                    var argv = [UnsafeMutablePointer<Int8>?](repeating: nil, count: 4)
+                    argv[0] = strdup("/bin/bash")!
+                    argv[1] = strdup(script)!
+                    _ = execve(argv[0], &argv, nil)
+                    fatalError("execve() fails \(String(cString: strerror(errno)))")
+                }
+
+                var status: Int32 = 0
+                while waitpid(pid, &status, 0) == -1 {}
+                fputs("\(status >> 8)\n", statusesOut)
+            }
+
+            exit(0)
+        }
+
+        commandsOut = fdopen(commandsPipe[ForWriting], "w")
+        statusesIn = fdopen(statusesPipe[ForReading], "r")
+        setbuf(commandsOut, nil)
+    }
+
+    func run(script: String) -> Bool {
+        fputs("\(script)\n", commandsOut)
+        var buffer = [Int8](repeating: 0, count: 10)
+        fgets(&buffer, Int32(buffer.count), statusesIn)
+        return buffer[0] == "0".utf8.first!
+    }
+}
+
 @_silgen_name("fork")
 func fork() -> Int32
 @_silgen_name("execve")
 func execve(_ __file: UnsafePointer<Int8>!, _ __argv: UnsafePointer<UnsafeMutablePointer<Int8>?>!, _ __envp: UnsafePointer<UnsafeMutablePointer<Int8>?>!) -> Int32
-@_silgen_name("_NSGetEnviron")
-func _NSGetEnviron() -> UnsafePointer<UnsafePointer<UnsafeMutablePointer<Int8>?>?>!
-#endif
 #endif
