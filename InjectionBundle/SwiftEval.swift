@@ -397,7 +397,7 @@ public class SwiftEval: NSObject {
         else {
             // grep out symbols for classes being injected from object file
 
-            try injectGenerics(tmpfile: tmpfile, handle: dl)
+            // try injectGenerics(tmpfile: tmpfile, handle: dl)
 
             guard shell(command: """
                 \(xcodeDev)/Toolchains/XcodeDefault.xctoolchain/usr/bin/nm \(tmpfile).o | grep -E ' S _OBJC_CLASS_\\$_| _(_T0|\\$S|\\$s).*CN$' | awk '{print $3}' >\(tmpfile).classes
@@ -693,6 +693,9 @@ class ScriptRunner {
             let commandsIn = fdopen(commandsPipe[ForReading], "r")
             let statusesOut = fdopen(statusesPipe[ForWriting], "w")
             var buffer = [Int8](repeating: 0, count: 4096)
+
+            close(commandsPipe[ForWriting])
+            close(statusesPipe[ForReading])
             setbuf(statusesOut, nil)
 
             while let script = fgets(&buffer, Int32(buffer.count), commandsIn) {
@@ -700,7 +703,7 @@ class ScriptRunner {
 
                 let pid = fork()
                 if pid == 0 {
-                    var argv = [UnsafeMutablePointer<Int8>?](repeating: nil, count: 4)
+                    var argv = [UnsafeMutablePointer<Int8>?](repeating: nil, count: 3)
                     argv[0] = strdup("/bin/bash")!
                     argv[1] = strdup(script)!
                     _ = execve(argv[0], &argv, nil)
@@ -717,6 +720,9 @@ class ScriptRunner {
 
         commandsOut = fdopen(commandsPipe[ForWriting], "w")
         statusesIn = fdopen(statusesPipe[ForReading], "r")
+
+        close(commandsPipe[ForReading])
+        close(statusesPipe[ForWriting])
         setbuf(commandsOut, nil)
     }
 
@@ -734,4 +740,3 @@ func fork() -> Int32
 func execve(_ __file: UnsafePointer<Int8>!, _ __argv: UnsafePointer<UnsafeMutablePointer<Int8>?>!, _ __envp: UnsafePointer<UnsafeMutablePointer<Int8>?>!) -> Int32
 #endif
 #endif
-
