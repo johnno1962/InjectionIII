@@ -75,7 +75,7 @@ The App Tracing functionality uses the trampoline implementation from [
 If you are using Code Coverage, you will need to disable it or you may receive a:
 >	`Symbol not found: ___llvm_profile_runtime` error.`
 
-Go to `Edit Scheme -> Test -> Info -> Code Coverage` and (temporarily) disable.
+Go to `Edit Scheme -> Test -> Options -> Code Coverage` and (temporarily) disable.
 
 Be mindful of global state -- If the file you're injecting as non instance-level variables e.g. singletons, static or global vars
 they will be reset when you inject the code as the new method implementations will refer to the newly loaded
