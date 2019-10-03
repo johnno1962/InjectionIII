@@ -363,6 +363,7 @@ public class SwiftEval: NSObject {
             #endif
         }
 
+        // Reset dylib to prevent macOS 10.15 from blocking it
         let url = URL(fileURLWithPath: "\(tmpfile).dylib")
         let dylib = try Data(contentsOf: url)
         try filemgr.removeItem(at: url)
