@@ -103,9 +103,12 @@ static struct {
     // connect to InjetionIII.app using sicket
     if (InjectionClient *client = [self connectTo:INJECTION_ADDRESS])
         [client run];
-    else
+    else {
         printf("💉 Injection loaded but could not connect. Is InjectionIII.app running?\n");
-
+#ifndef __IPHONE_OS_VERSION_MIN_REQUIRED
+        printf("⚠️ For a macOS app you need to turn off the sandbox to connect. ⚠️\n");
+#endif
+    }
 }
 
 - (void)runInBackground {
