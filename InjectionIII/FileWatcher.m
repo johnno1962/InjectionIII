@@ -24,7 +24,7 @@ static void fileCallback(ConstFSEventStreamRef streamRef,
     BOOL shouldRespondToFileChange = NO;
     for (int i = 0; i < numEvents; i++) {
         uint32 flag = eventFlags[i];
-        if (flag & kFSEventStreamEventFlagItemRenamed) {
+        if (flag & (kFSEventStreamEventFlagItemRenamed | kFSEventStreamEventFlagItemModified)) {
             shouldRespondToFileChange = YES;
             break;
         }
