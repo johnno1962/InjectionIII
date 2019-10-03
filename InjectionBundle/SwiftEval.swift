@@ -363,6 +363,12 @@ public class SwiftEval: NSObject {
             #endif
         }
 
+        // Reset dylib to prevent macOS 10.15 from blocking it
+        let dylib = try Data(contentsOf: URL(fileURLWithPath: "\(tmpfile).dylib"))
+        let url = URL(fileURLWithPath: "\(tmpfile).dylib")
+        try filemgr.removeItem(at: url)
+        try dylib.write(to: url)
+
         return tmpfile
     }
 
