@@ -80,6 +80,8 @@
         [self error:@"Could not set SO_NOSIGPIPE: %s"];
     else if (setsockopt(newSocket, IPPROTO_TCP, TCP_NODELAY, (void *)&optval, sizeof(optval)) < 0)
         [self error:@"Could not set TCP_NODELAY: %s"];
+    else if (fcntl(newSocket, F_SETFD, FD_CLOEXEC) < 0)
+        [self error:@"Could not set FD_CLOEXEC: %s"];
     else
         return newSocket;
     return -1;

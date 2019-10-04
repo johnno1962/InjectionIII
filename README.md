@@ -22,17 +22,6 @@ Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/tvOSInjection.bu
 Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/macOSInjection.bundle")?.load()
 #endif
 ```
-Xcode 10.1 (Swift 4.2):
-
-```Swift
-#if DEBUG
-Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection10.bundle")?.load()
-//for tvOS:
-Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/tvOSInjection10.bundle")?.load()
-//Or for macOS:
-Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/macOSInjection10.bundle")?.load()
-#endif
-```
 
 Adding one of these lines loads a bundle included in the `InjectionIII.app`'s
 resources which connects over a local socket to the macOS app.
@@ -60,7 +49,7 @@ from source you'll need to use:
     
 ### Available downloads
 
-| Xcode 10.1, Xcode 10.2+ |
+| Xcode 10.2+ |
 | ------------- |
 | [Mac app store](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12) |
 
