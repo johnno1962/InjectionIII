@@ -113,7 +113,7 @@ extension NSObject {
             unsafeBitCast(self, to: SwiftEvalImpl.self).evalImpl?(_ptr: ptr)
         }
         let out = ptr.pointee
-        ptr.deallocate(capacity: 1)
+        ptr.deallocate()
         return out
     }
 }
@@ -364,8 +364,8 @@ public class SwiftEval: NSObject {
         }
 
         // Reset dylib to prevent macOS 10.15 from blocking it
-        let dylib = try Data(contentsOf: URL(fileURLWithPath: "\(tmpfile).dylib"))
         let url = URL(fileURLWithPath: "\(tmpfile).dylib")
+        let dylib = try Data(contentsOf: url)
         try filemgr.removeItem(at: url)
         try dylib.write(to: url)
 
@@ -415,7 +415,7 @@ public class SwiftEval: NSObject {
             }
             symbols.removeLast()
 
-            return Set(symbols.flatMap { dlsym(dl, String($0.dropFirst())) }).map { unsafeBitCast($0, to: AnyClass.self) }
+            return Set(symbols.compactMap { dlsym(dl, String($0.dropFirst())) }).map { unsafeBitCast($0, to: AnyClass.self) }
         }
     }
 
