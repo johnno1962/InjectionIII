@@ -29,7 +29,7 @@ class Vaccine {
             if viewController.nibName == nil {
                 CATransaction.begin()
                 CATransaction.setAnimationDuration(1.0)
-                CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+                CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut))
                 defer { CATransaction.commit() }
             }
 
@@ -180,7 +180,7 @@ class Vaccine {
             }
         }
 
-        for childViewController in viewController.childViewControllers {
+        for childViewController in viewController.children {
             for case let scrollView as ScrollView in childViewController.view.subviews {
                 scrollViews.append(scrollView)
             }

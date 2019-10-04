@@ -160,7 +160,7 @@ public class SwiftInjection: NSObject {
                     }
                     testQueue.resume()
                 })
-                RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
+                RunLoop.main.add(timer, forMode: RunLoop.Mode.common)
             }
         } else {
             var injectedClasses = [AnyClass]()
@@ -230,7 +230,7 @@ public class SwiftInjection: NSObject {
             vc.view.addSubview(v)
             UIView.animate(withDuration: 0.2,
                            delay: 0.0,
-                           options: UIViewAnimationOptions.curveEaseIn,
+                           options: UIView.AnimationOptions.curveEaseIn,
                            animations: {
                             v.alpha = 0.0
             }, completion: { _ in v.removeFromSuperview() })
