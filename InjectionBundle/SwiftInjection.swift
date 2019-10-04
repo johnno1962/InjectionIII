@@ -291,6 +291,8 @@ class SwiftSweeper {
                 }
             case .tuple, .struct:
                 sweepMembers(value)
+            @unknown default:
+                break
             }
         }
     }

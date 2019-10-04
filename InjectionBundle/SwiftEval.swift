@@ -403,20 +403,27 @@ public class SwiftEval: NSObject {
         else {
             // grep out symbols for classes being injected from object file
 
-            // try injectGenerics(tmpfile: tmpfile, handle: dl)
+            let classSymbolNames = try extractClasSymbols(tmpfile: tmpfile)
 
-            guard shell(command: """
-                \(xcodeDev)/Toolchains/XcodeDefault.xctoolchain/usr/bin/nm \(tmpfile).o | grep -E ' S _OBJC_CLASS_\\$_| _(_T0|\\$S|\\$s).*CN$' | awk '{print $3}' >\(tmpfile).classes
-                """) else {
-                throw evalError("Could not list class symbols")
-            }
-            guard var symbols = (try? String(contentsOfFile: "\(tmpfile).classes"))?.components(separatedBy: "\n") else {
-                throw evalError("Could not load class symbol list")
-            }
-            symbols.removeLast()
-
-            return Set(symbols.compactMap { dlsym(dl, String($0.dropFirst())) }).map { unsafeBitCast($0, to: AnyClass.self) }
+            return Set(classSymbolNames.compactMap {
+                dlsym(dl, String($0.dropFirst())) })
+                .map { unsafeBitCast($0, to: AnyClass.self) }
         }
+    }
+
+    func extractClasSymbols(tmpfile: String) throws -> [String] {
+
+        guard shell(command: """
+            \(xcodeDev)/Toolchains/XcodeDefault.xctoolchain/usr/bin/nm \(tmpfile).o | grep -E ' S _OBJC_CLASS_\\$_| _(_T0|\\$S|\\$s).*CN$' | awk '{print $3}' >\(tmpfile).classes
+            """) else {
+            throw evalError("Could not list class symbols")
+        }
+        guard var symbols = (try? String(contentsOfFile: "\(tmpfile).classes"))?.components(separatedBy: "\n") else {
+            throw evalError("Could not load class symbol list")
+        }
+        symbols.removeLast()
+
+        return symbols
     }
 
     func findCompileCommand(logsDir: URL, classNameOrFile: String, tmpfile: String) throws -> (compileCommand: String, sourceFile: String)? {
@@ -529,76 +536,6 @@ public class SwiftEval: NSObject {
         }
 
         return (compileCommand, sourceFile.replacingOccurrences(of: "\\$", with: "$"))
-    }
-
-    lazy var mainHandle = dlopen(nil, RTLD_NOLOAD)
-
-    func injectGenerics(tmpfile: String, handle: UnsafeMutableRawPointer) throws {
-
-        guard shell(command: """
-            \(xcodeDev)/Toolchains/XcodeDefault.xctoolchain/usr/bin/nm \(tmpfile).o | grep -E ' __T0.*CMn$' | awk '{print $3}' >\(tmpfile).generics
-            """) else {
-                throw evalError("Could not list generics symbols")
-        }
-        guard var generics = (try? String(contentsOfFile: "\(tmpfile).generics"))?.components(separatedBy: "\n") else {
-            throw evalError("Could not load generics symbol list")
-        }
-        generics.removeLast()
-
-        struct NominalTypeDescriptor {
-            let Name: UInt32 = 0, NumFields: UInt32 = 0
-            let FieldOffsetVectorOffset: UInt32 = 0, FieldNames: UInt32 = 0
-            let GetFieldTypes: UInt32 = 0, SadnessAndKind: UInt32 = 0
-        }
-
-        struct TargetGenericMetadata {
-            let CreateFunction: uintptr_t = 0, MetadataSize: UInt32 = 0
-            let NumKeyArguments: UInt16 = 0, AddressPoint: UInt16 = 0
-
-            let PrivateData1: uintptr_t = 0, PrivateData2: uintptr_t = 0
-            let PrivateData3: uintptr_t = 0, PrivateData4: uintptr_t = 0
-            let PrivateData5: uintptr_t = 0, PrivateData6: uintptr_t = 0
-            let PrivateData7: uintptr_t = 0, PrivateData8: uintptr_t = 0
-            let PrivateData9: uintptr_t = 0, PrivateData10: uintptr_t = 0
-            let PrivateData11: uintptr_t = 0, PrivateData12: uintptr_t = 0
-            let PrivateData13: uintptr_t = 0, PrivateData14: uintptr_t = 0
-            let PrivateData15: uintptr_t = 0, PrivateData16: uintptr_t = 0
-
-            let Destructor: uintptr_t = 0, Witness: uintptr_t = 0
-            let MetaClass: uintptr_t = 0, SuperClass: uintptr_t = 0
-            let CacheData1: uintptr_t = 0, CacheData2: uintptr_t = 0
-            let Data: uintptr_t = 0
-
-            let Flags: UInt32 = 0, InstanceAddressPoint: UInt32 = 0
-            let InstanceSize: UInt32 = 0
-            let InstanceAlignMask: UInt16 = 0, Reserved: UInt16 = 0
-            let ClassSize: UInt32 = 0, ClassAddressPoint: UInt32 = 0
-
-            var DescriptionOffset: uintptr_t = 0
-        }
-
-        func getPattern(handle: UnsafeMutableRawPointer!, sym: String) -> UnsafeMutablePointer<TargetGenericMetadata>? {
-            if let desc = dlsym(handle, String(sym.dropFirst()))?
-                .assumingMemoryBound(to: NominalTypeDescriptor.self),
-                desc.pointee.SadnessAndKind != 0 {
-                return desc.withMemoryRebound(to: UInt8.self, capacity: 1) {
-                    ($0 + Int(desc.pointee.SadnessAndKind) + 5 * MemoryLayout<UInt32>.size)
-                        .withMemoryRebound(to: TargetGenericMetadata.self, capacity: 1) {
-                            $0
-                    }
-                }
-            }
-            return nil
-        }
-
-        for generic in generics {
-            if let newpattern = getPattern(handle: handle, sym: generic),
-                let oldpattern = getPattern(handle: mainHandle, sym: generic) {
-                let save = oldpattern.pointee.DescriptionOffset
-                memcpy(oldpattern, newpattern, Int(oldpattern.pointee.MetadataSize))
-                oldpattern.pointee.DescriptionOffset = save
-            }
-        }
     }
 
     func findDerivedData(url: URL) -> URL? {
