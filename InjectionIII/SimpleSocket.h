@@ -17,6 +17,7 @@
 
 + (void)startServer:(NSString *_Nonnull)address;
 + (void)runServer:(NSString *_Nonnull)address;
++ (int)error:(NSString *_Nonnull)message;
 
 + (instancetype _Nullable)connectTo:(NSString *_Nonnull)address;
 + (BOOL)parseV4Address:(NSString *_Nonnull)address into:(struct sockaddr_storage *_Nonnull)serverAddr;
