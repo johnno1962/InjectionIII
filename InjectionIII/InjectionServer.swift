@@ -17,7 +17,6 @@ public class InjectionServer: SimpleSocket {
     var fileWatchers = [FileWatcher]()
     var pending = [String]()
 
-    @objc(error:)
     override public class func error(_ message: String) -> Int32 {
         let saveno = errno
         DispatchQueue.main.sync {
@@ -248,7 +247,6 @@ public class InjectionServer: SimpleSocket {
         appDelegate.traceItem.state = NSControl.StateValue.off
     }
 
-    @objc (watchDirectory:)
     public func watchDirectory(_ directory: String) {
         fileWatchers.append(FileWatcher(root:directory,
                                         callback:injector!))
@@ -328,6 +326,6 @@ public class InjectionServer: SimpleSocket {
     }
 
     deinit {
-        NSLog("- [\(self) dealloc]")
+        NSLog("\(self).deinit()")
     }
 }

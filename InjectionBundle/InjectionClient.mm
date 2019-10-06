@@ -219,7 +219,7 @@ static struct {
 #endif
                 default:
                     [self writeCommand:InjectionError withString:[NSString
-                          stringWithFormat:@"Invalid command ", command]];
+                          stringWithFormat:@"Invalid command #%d", command]];
                     break;
                 }
 
