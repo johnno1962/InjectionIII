@@ -694,7 +694,7 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <accessibility description="Add Project"/>
                     <connections>
-                        <action selector="addProject:" target="Voe-Tx-rLC" id="Z4L-RL-lKH"/>
+                        <action selector="addDirectory:" target="Voe-Tx-rLC" id="Z4L-RL-lKH"/>
                     </connections>
                 </menuItem>
                 <menuItem title="File Watcher" state="on" toolTip="Enable/Disable file watcher" id="0iA-WA-gxc">
@@ -730,7 +730,7 @@
                         <action selector="runXprobe:" target="Voe-Tx-rLC" id="OLt-ZD-lyd"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Trace (Beta)" toolTip="Log app messaging" id="Kkx-ex-NCv">
+                <menuItem title="Trace" toolTip="Log app messaging" id="Kkx-ex-NCv">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <accessibility description="Trace App"/>
                     <connections>

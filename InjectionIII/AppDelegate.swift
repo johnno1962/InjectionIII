@@ -5,6 +5,8 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
+//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#9 $
+//
 
 import Cocoa
 
@@ -56,50 +58,6 @@ class AppDelegate : NSObject, NSApplicationDelegate {
                target:self, action:#selector(autoInject(_:)), object:nil)
     }
 
-    @IBAction func openProject(_ sender: Any) {
-        _ = application(NSApp, openFile:"")
-    }
-
-    @IBAction func addProject(_ sender: Any) {
-        let open = NSOpenPanel()
-        open.prompt = NSLocalizedString("Add Project Directory", tableName: "Project Directory", comment: "Project Directory")
-        open.canChooseDirectories = true
-        open.canChooseFiles = true
-        if open.runModal().rawValue == NSFileHandlingPanelOKButton {
-            let directory = open.url!.path
-            appDelegate.watchedDirectories.insert(directory)
-            self.lastConnection?.watchDirectory(directory)
-        }
-    }
-
-    @IBAction func toggleTDD(_ sender: NSMenuItem) {
-        toggleState(sender)
-        let newSetting = sender.state == NSControl.StateValue.on
-        UserDefaults.standard.set(newSetting, forKey:UserDefaultsTDDEnabled)
-    }
-
-    @IBAction func toggleVaccine(_ sender: NSMenuItem) {
-        toggleState(sender)
-        let newSetting = sender.state == NSControl.StateValue.on
-        UserDefaults.standard.set(newSetting, forKey:UserDefaultsVaccineEnabled)
-        self.lastConnection?.sendCommand(.vaccineSettingChanged, with:vaccineConfiguration())
-    }
-
-    @IBAction func traceApp(_ sender: NSMenuItem) {
-        toggleState(sender)
-        self.lastConnection?.sendCommand(sender.state == NSControl.StateValue.on ?
-            .trace : .untrace, with: nil)
-    }
-
-    func vaccineConfiguration() -> String {
-        let vaccineSetting = UserDefaults.standard.bool(forKey: UserDefaultsVaccineEnabled)
-        let dictionary = [UserDefaultsVaccineEnabled: vaccineSetting]
-        let jsonData = try! JSONSerialization
-            .data(withJSONObject: dictionary, options:[])
-        let configuration = String(data: jsonData, encoding: .utf8)!
-        return configuration
-    }
-
     func application(_ theApplication: NSApplication, openFile filename: String) -> Bool {
         let open = NSOpenPanel()
         open.prompt = NSLocalizedString("Select Project Directory", tableName: "Project Directory", comment: "Project Directory")
@@ -108,9 +66,9 @@ class AppDelegate : NSObject, NSApplicationDelegate {
             open.directoryURL = URL(fileURLWithPath: filename)
         }
         open.canChooseDirectories = true
-        open.canChooseFiles = true
-        //    open.showsHiddenFiles = TRUE;
-        if open.runModal().rawValue == NSFileHandlingPanelOKButton {
+        open.canChooseFiles = false
+        // open.showsHiddenFiles = TRUE;
+        if open.runModal() == .OK {
             let fileList = try? FileManager.default
                 .contentsOfDirectory(atPath: open.url!.path)
             if let fileList = fileList, let projectFile =
@@ -150,6 +108,52 @@ class AppDelegate : NSObject, NSApplicationDelegate {
                 self.xprobeItem.isEnabled = !self.startItem.isEnabled
             }
         }
+    }
+
+    @IBAction func openProject(_ sender: Any) {
+        _ = application(NSApp, openFile:"")
+    }
+
+    @IBAction func addDirectory(_ sender: Any) {
+        let open = NSOpenPanel()
+        open.prompt = NSLocalizedString("Add Project Directory", tableName: "Project Directory", comment: "Project Directory")
+        open.allowsMultipleSelection = true
+        open.canChooseDirectories = true
+        open.canChooseFiles = false
+        if open.runModal() == .OK {
+            for url in open.urls {
+                appDelegate.watchedDirectories.insert(url.path)
+                self.lastConnection?.watchDirectory(url.path)
+            }
+        }
+    }
+
+    @IBAction func toggleTDD(_ sender: NSMenuItem) {
+        toggleState(sender)
+        let newSetting = sender.state == NSControl.StateValue.on
+        UserDefaults.standard.set(newSetting, forKey:UserDefaultsTDDEnabled)
+    }
+
+    @IBAction func toggleVaccine(_ sender: NSMenuItem) {
+        toggleState(sender)
+        let newSetting = sender.state == NSControl.StateValue.on
+        UserDefaults.standard.set(newSetting, forKey:UserDefaultsVaccineEnabled)
+        self.lastConnection?.sendCommand(.vaccineSettingChanged, with:vaccineConfiguration())
+    }
+
+    @IBAction func traceApp(_ sender: NSMenuItem) {
+        toggleState(sender)
+        self.lastConnection?.sendCommand(sender.state == NSControl.StateValue.on ?
+            .trace : .untrace, with: nil)
+    }
+
+    func vaccineConfiguration() -> String {
+        let vaccineSetting = UserDefaults.standard.bool(forKey: UserDefaultsVaccineEnabled)
+        let dictionary = [UserDefaultsVaccineEnabled: vaccineSetting]
+        let jsonData = try! JSONSerialization
+            .data(withJSONObject: dictionary, options:[])
+        let configuration = String(data: jsonData, encoding: .utf8)!
+        return configuration
     }
 
     @IBAction func toggleState(_ sender: NSMenuItem) {
