@@ -723,7 +723,7 @@
                         <action selector="runXprobe:" target="Voe-Tx-rLC" id="OLt-ZD-lyd"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Trace (Beta)" toolTip="Log app messaging" id="Kkx-ex-NCv">
+                <menuItem title="Trace" id="Kkx-ex-NCv">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <accessibility description="Trace App"/>
                     <connections>
