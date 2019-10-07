@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15400" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15400"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -649,12 +649,13 @@
                     </menu>
                 </menuItem>
             </items>
+            <point key="canvasLocation" x="141" y="154"/>
         </menu>
         <window title="InjectionIII" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="480" height="360"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -668,8 +669,9 @@
                         <action selector="autoInject:" target="Voe-Tx-rLC" id="YDX-ZY-Oim"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Open Project" id="XlL-4Y-oKk">
+                <menuItem title="Open Project" toolTip="Select Project directory to watch for file edits" id="XlL-4Y-oKk">
                     <modifierMask key="keyEquivalentModifierMask"/>
+                    <accessibility description="Open Project"/>
                     <connections>
                         <action selector="openProject:" target="Voe-Tx-rLC" id="ZLH-lf-p4H"/>
                     </connections>
@@ -687,32 +689,43 @@
                         </items>
                     </menu>
                 </menuItem>
-                <menuItem title="File Watcher" state="on" id="0iA-WA-gxc">
+                <menuItem title="Add Directory" toolTip="Select additional project directory to watch" id="335-34-Y36">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <accessibility description="Add Project"/>
+                    <connections>
+                        <action selector="addProject:" target="Voe-Tx-rLC" id="Z4L-RL-lKH"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="File Watcher" state="on" toolTip="Enable/Disable file watcher" id="0iA-WA-gxc">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="toggleState:" target="Voe-Tx-rLC" id="old-T7-DMa"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Enable Vaccine" id="cCv-GY-3Rv" userLabel="Enabled Vaccine">
+                <menuItem title="Enable Vaccine" toolTip="Enable Vaccine" id="cCv-GY-3Rv" userLabel="Enabled Vaccine">
                     <modifierMask key="keyEquivalentModifierMask"/>
+                    <accessibility description="Enable Vaccine"/>
                     <connections>
                         <action selector="toggleVaccine:" target="Voe-Tx-rLC" id="6d6-vp-FLr"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Enable TDD" id="Mdd-tb-kGc">
+                <menuItem title="Enable TDD" toolTip="Enable running tests on file change" id="Mdd-tb-kGc">
                     <modifierMask key="keyEquivalentModifierMask"/>
+                    <accessibility description="Enable TDD"/>
                     <connections>
                         <action selector="toggleTDD:" target="Voe-Tx-rLC" id="hjO-wo-Oy4"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Run Xprobe" id="R6p-Yl-7qz">
+                <menuItem title="Run Xprobe" toolTip="Inspect app object state" id="R6p-Yl-7qz">
                     <modifierMask key="keyEquivalentModifierMask"/>
+                    <accessibility description="Open Xprobe"/>
                     <connections>
                         <action selector="runXprobe:" target="Voe-Tx-rLC" id="OLt-ZD-lyd"/>
                     </connections>
                 </menuItem>
                 <menuItem title="Trace" id="Kkx-ex-NCv">
                     <modifierMask key="keyEquivalentModifierMask"/>
+                    <accessibility description="Trace App"/>
                     <connections>
                         <action selector="traceApp:" target="Voe-Tx-rLC" id="5zd-Ho-CaT"/>
                     </connections>
@@ -755,8 +768,9 @@
                         <action selector="donate:" target="Voe-Tx-rLC" id="Scj-Z3-yFA"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Quit Injection" id="LUw-n8-2Gj">
+                <menuItem title="Quit Injection" toolTip="Quit InjectionIII" id="LUw-n8-2Gj">
                     <modifierMask key="keyEquivalentModifierMask"/>
+                    <accessibility description="Quit"/>
                     <connections>
                         <action selector="terminate:" target="-3" id="rW8-Je-8vQ"/>
                     </connections>

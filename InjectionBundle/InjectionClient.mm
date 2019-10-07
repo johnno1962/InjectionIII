@@ -151,12 +151,16 @@ static struct {
             }
             break;
         }
-        case InjectionProject: {
+        case InjectionConnected: {
             NSString *projectFile = [self readString];
             [SwiftEval sharedInstance].projectFile = projectFile;
             [SwiftEval sharedInstance].derivedLogs = nil;
-            printf("💉 Injection connected, watching %s/**\n",
-                   projectFile.stringByDeletingLastPathComponent.UTF8String);
+            printf("💉 Injection connected 👍\n");
+            break;
+        }
+        case InjectionWatching: {
+            NSString *directory = [self readString];
+            printf("💉 Watching %s/**\n", directory.UTF8String);
             break;
         }
         case InjectionLog:

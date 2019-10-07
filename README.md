@@ -39,6 +39,9 @@ injected()` class or instance method.  The instance `@objc
 func injected()` method relies on a "sweep" of all objects in your application to find those of
 the class you have just injected which can be unreliable using `unowned` instance variables in particular. If you encounter problems, subscribe to the `"INJECTION_BUNDLE_NOTIFICATION"` instead.
 
+If your project is organised across multiple directories, after you have selected the main project, you can add directories to be watched for file changes using the "Add Directory"
+menu item. This list resets when you select a new project.
+
 Included in this release is "Xprobe" which allows you to browse the objects in
 you application through a web-like interface and execute code against them.
 
