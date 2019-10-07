@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#9 $
+//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#11 $
 //
 
 import Cocoa
@@ -45,11 +45,9 @@ class AppDelegate : NSObject, NSApplicationDelegate {
         statusItem.title = ""
 
         enabledTDDItem.state = UserDefaults.standard.bool(forKey:UserDefaultsTDDEnabled)
-            ? NSControl.StateValue.on
-            : NSControl.StateValue.off
+            ? .on : .off
         enableVaccineItem.state = UserDefaults.standard.bool(forKey:UserDefaultsVaccineEnabled)
-            ? NSControl.StateValue.on
-            : NSControl.StateValue.off
+            ? .on : .off
 
         setMenuIcon("InjectionIdle")
         DDHotKeyCenter.shared()?
@@ -61,7 +59,6 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     func application(_ theApplication: NSApplication, openFile filename: String) -> Bool {
         let open = NSOpenPanel()
         open.prompt = NSLocalizedString("Select Project Directory", tableName: "Project Directory", comment: "Project Directory")
-        //    open.allowsMultipleSelection = TRUE;
         if filename != "" {
             open.directoryURL = URL(fileURLWithPath: filename)
         }
@@ -130,13 +127,13 @@ class AppDelegate : NSObject, NSApplicationDelegate {
 
     @IBAction func toggleTDD(_ sender: NSMenuItem) {
         toggleState(sender)
-        let newSetting = sender.state == NSControl.StateValue.on
+        let newSetting = sender.state == .on
         UserDefaults.standard.set(newSetting, forKey:UserDefaultsTDDEnabled)
     }
 
     @IBAction func toggleVaccine(_ sender: NSMenuItem) {
         toggleState(sender)
-        let newSetting = sender.state == NSControl.StateValue.on
+        let newSetting = sender.state == .on
         UserDefaults.standard.set(newSetting, forKey:UserDefaultsVaccineEnabled)
         self.lastConnection?.sendCommand(.vaccineSettingChanged, with:vaccineConfiguration())
     }
@@ -157,8 +154,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     }
 
     @IBAction func toggleState(_ sender: NSMenuItem) {
-        sender.state = sender.state == NSControl.StateValue.on ?
-            NSControl.StateValue.off : NSControl.StateValue.on
+        sender.state = sender.state == .on ? .off : .on
     }
 
     @IBAction func autoInject(_ sender: NSMenuItem) {
