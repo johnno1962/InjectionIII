@@ -96,9 +96,6 @@ public class InjectionServer: SimpleSocket {
         if FileManager.default.fileExists(atPath:derivedLogs) {
             builder.derivedLogs = derivedLogs
         }
-        else {
-            NSLog("Bad estimate of Derived Logs: \(projectFile) -> \(derivedLogs)")
-        }
 
         // callback on errors
         builder.evalError = {
@@ -215,6 +212,10 @@ public class InjectionServer: SimpleSocket {
             switch command {
             case .complete:
                 appDelegate.setMenuIcon("InjectionOK")
+                if appDelegate.frontItem.state == NSControl.StateValue.on {
+                    NSWorkspace.shared.open(URL(fileURLWithPath:
+                        builder.xcodeDev + "/Applications/Simulator.app"))
+                }
                 break
             case .pause:
                 pause = NSDate.timeIntervalSinceReferenceDate + Double(readString() ?? "0.0")!

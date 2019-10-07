@@ -13,15 +13,21 @@ var appDelegate: AppDelegate!
 @NSApplicationMain
 class AppDelegate : NSObject, NSApplicationDelegate {
 
-    @IBOutlet weak var enableWatcher: NSMenuItem!, traceItem: NSMenuItem!
+    @IBOutlet var window: NSWindow!
+    @IBOutlet weak var enableWatcher: NSMenuItem!
+    @IBOutlet weak var traceItem: NSMenuItem!
+    @IBOutlet weak var statusMenu: NSMenu!
+    @IBOutlet weak var startItem: NSMenuItem!
+    @IBOutlet weak var xprobeItem: NSMenuItem!
+    @IBOutlet weak var enabledTDDItem: NSMenuItem!
+    @IBOutlet weak var enableVaccineItem: NSMenuItem!
+    @IBOutlet weak var windowItem: NSMenuItem!
+    @IBOutlet weak var frontItem: NSMenuItem!
+    @IBOutlet var statusItem: NSStatusItem!
+
     var watchedDirectories = Set<String>()
     weak var lastConnection: InjectionServer?
     var selectedProject: String?
-    @IBOutlet var window: NSWindow!
-
-    @IBOutlet var statusMenu: NSMenu!
-    @IBOutlet var startItem: NSMenuItem!, xprobeItem: NSMenuItem!, enabledTDDItem: NSMenuItem!, enableVaccineItem: NSMenuItem!, windowItem: NSMenuItem!
-    @IBOutlet var statusItem: NSStatusItem!
 
     @objc func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
@@ -135,8 +141,8 @@ class AppDelegate : NSObject, NSApplicationDelegate {
 
     func setMenuIcon(_ tiffName: String) {
         DispatchQueue.main.async {
-            if let path = Bundle.main.path(forResource: tiffName, ofType:"tif") {
-                let image = NSImage(contentsOfFile: path)!
+            if let path = Bundle.main.path(forResource: tiffName, ofType:"tif"),
+                let image = NSImage(contentsOfFile: path) {
     //            image.template = TRUE;
                 self.statusItem.image = image
                 self.statusItem.alternateImage = self.statusItem.image
