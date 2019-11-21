@@ -70,7 +70,8 @@ class AppDelegate : NSObject, NSApplicationDelegate {
                 .contentsOfDirectory(atPath: open.url!.path)
             if let fileList = fileList, let projectFile =
                fileWithExtension("xcworkspace", inFiles: fileList) ??
-               fileWithExtension("xcodeproj", inFiles: fileList),
+               fileWithExtension("xcodeproj", inFiles: fileList) ??
+                fileList.filter({$0 == "Package.swift"}).first,
                 let url = open.url {
                 self.selectedProject = url
                     .appendingPathComponent(projectFile).path
