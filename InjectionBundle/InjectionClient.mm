@@ -7,7 +7,6 @@
 //
 
 #import "InjectionClient.h"
-#import "InjectionServer.h"
 
 #ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
 #if __has_include("tvOSInjection10-Swift.h")
@@ -215,10 +214,12 @@ static struct {
                     else
                         printf("Eval only works on NSObject subclasses\n");
                     [Xprobe writeString:[NSString stringWithFormat:@"$('BUSY%d').hidden = true; ", pathID]];
+                    break;
                 }
 #endif
                 default:
-                    [self writeCommand:InjectionError withString:@"Invalid command"];
+                    [self writeCommand:InjectionError withString:[NSString
+                          stringWithFormat:@"Invalid command #%d", command]];
                     break;
                 }
 

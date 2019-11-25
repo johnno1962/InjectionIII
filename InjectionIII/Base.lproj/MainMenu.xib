@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15400" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15400"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15505"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -13,11 +13,12 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customObject id="Voe-Tx-rLC" customClass="AppDelegate">
+        <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="InjectionIII">
             <connections>
                 <outlet property="enableVaccineItem" destination="cCv-GY-3Rv" id="Joe-DQ-AWO"/>
                 <outlet property="enableWatcher" destination="0iA-WA-gxc" id="vVT-sI-q78"/>
                 <outlet property="enabledTDDItem" destination="Mdd-tb-kGc" id="ccs-nb-DKk"/>
+                <outlet property="frontItem" destination="wFq-Rv-gfa" id="MPU-fL-HYl"/>
                 <outlet property="startItem" destination="vsd-ll-3nr" id="ODN-wa-BTp"/>
                 <outlet property="statusMenu" destination="V8Q-mq-A2f" id="Epo-HD-J21"/>
                 <outlet property="traceItem" destination="Kkx-ex-NCv" id="EXz-O7-K34"/>
@@ -693,13 +694,19 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <accessibility description="Add Project"/>
                     <connections>
-                        <action selector="addProject:" target="Voe-Tx-rLC" id="Z4L-RL-lKH"/>
+                        <action selector="addDirectory:" target="Voe-Tx-rLC" id="Z4L-RL-lKH"/>
                     </connections>
                 </menuItem>
                 <menuItem title="File Watcher" state="on" toolTip="Enable/Disable file watcher" id="0iA-WA-gxc">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="toggleState:" target="Voe-Tx-rLC" id="old-T7-DMa"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Order Front" toolTip="Order Front SImulator" id="wFq-Rv-gfa">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="toggleState:" target="Voe-Tx-rLC" id="LCw-9g-CaP"/>
                     </connections>
                 </menuItem>
                 <menuItem title="Enable Vaccine" toolTip="Enable Vaccine" id="cCv-GY-3Rv" userLabel="Enabled Vaccine">
@@ -723,7 +730,7 @@
                         <action selector="runXprobe:" target="Voe-Tx-rLC" id="OLt-ZD-lyd"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Trace" id="Kkx-ex-NCv">
+                <menuItem title="Trace" toolTip="Log app messaging" id="Kkx-ex-NCv">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <accessibility description="Trace App"/>
                     <connections>
@@ -778,5 +785,6 @@
             </items>
             <point key="canvasLocation" x="112" y="602.5"/>
         </menu>
+        <userDefaultsController representsSharedInstance="YES" id="mc2-qN-cFK"/>
     </objects>
 </document>

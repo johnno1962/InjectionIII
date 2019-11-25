@@ -8,6 +8,38 @@
 
 #import "SimpleSocket.h"
 
+#define INJECTION_ADDRESS @":8898"
+#define INJECTION_KEY @"bvijkijyhbtrbrebzjbbzcfbbvvq"
+
 @interface InjectionClient : SimpleSocket
 
 @end
+
+typedef NS_ENUM(int, InjectionCommand) {
+    // commands to Bundle
+    InjectionConnected,
+    InjectionWatching,
+    InjectionLog,
+    InjectionSigned,
+    InjectionLoad,
+    InjectionInject,
+    InjectionXprobe,
+    InjectionEval,
+    InjectionVaccineSettingChanged,
+
+    InjectionTrace,
+    InjectionUntrace,
+
+    InjectionEOF = ~0
+};
+
+typedef NS_ENUM(int, InjectionResponse) {
+    // responses from bundle
+    InjectionComplete,
+    InjectionPause,
+    InjectionSign,
+    InjectionError,
+
+    InjectionExit = ~0
+};
+
