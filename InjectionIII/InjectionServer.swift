@@ -15,10 +15,10 @@ var projectInjected = ["": ["": Date.timeIntervalSinceReferenceDate]]
 let MIN_INJECTION_INTERVAL = 1.0
 
 public class InjectionServer: SimpleSocket {
-    var injector: ((_ changed: NSArray) -> Void)? = nil
+    var injector: ((_ changed: NSArray, _ ideProcPath:String) -> Void)? = nil
     var fileWatchers = [FileWatcher]()
     var pending = [String]()
-
+    var lastIdeProcPath = ""
     override public class func error(_ message: String) -> Int32 {
         let saveno = errno
         DispatchQueue.main.sync {
@@ -162,7 +162,7 @@ public class InjectionServer: SimpleSocket {
         var testCache = [String: [String]]()
 
         injector = {
-            (changed: NSArray) in
+            (changed: NSArray, ideProcPath: String) in
             var changed = changed as! [String]
 
             if UserDefaults.standard.bool(forKey: UserDefaultsTDDEnabled) {
@@ -195,7 +195,7 @@ public class InjectionServer: SimpleSocket {
                     }
                 }
             }
-
+            self.lastIdeProcPath = ideProcPath
             if (automatic) {
                 self.injectPending()
             }
@@ -259,6 +259,7 @@ public class InjectionServer: SimpleSocket {
     @objc public func injectPending() {
         for swiftSource in pending {
             injectionQueue.async {
+                self.sendCommand(.ideProcPath, with: self.lastIdeProcPath)
                 self.sendCommand(.inject, with:swiftSource)
             }
         }

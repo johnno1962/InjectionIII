@@ -164,6 +164,8 @@ public class SwiftEval: NSObject {
     }
 
     @objc public var injectionNumber = 0
+    @objc public var lastIdeProcPath = ""
+
     static var compileByClass = [String: (String, String)]()
 
     static var buildCacheFile = "/tmp/eval_builds.plist"
@@ -173,10 +175,10 @@ public class SwiftEval: NSObject {
         // Largely obsolete section used find Xcode paths from source file being injected.
 
         let sourceURL = URL(fileURLWithPath: classNameOrFile.hasPrefix("/") ? classNameOrFile : #file)
-        guard let derivedData = findDerivedData(url: URL(fileURLWithPath: NSHomeDirectory())) ??
+        guard let derivedData = findDerivedData(url: URL(fileURLWithPath: NSHomeDirectory()), ideProcPath: self.lastIdeProcPath) ??
             (self.projectFile != nil ?
-                findDerivedData(url: URL(fileURLWithPath: self.projectFile!)) :
-                findDerivedData(url: sourceURL)) else {
+                findDerivedData(url: URL(fileURLWithPath: self.projectFile!), ideProcPath: self.lastIdeProcPath) :
+                findDerivedData(url: sourceURL, ideProcPath: self.lastIdeProcPath)) else {
                 throw evalError("Could not locate derived data. Is the project under your home directory?")
         }
         guard let (projectFile, logsDir) =
@@ -540,20 +542,53 @@ public class SwiftEval: NSObject {
         return (compileCommand, sourceFile.replacingOccurrences(of: "\\$", with: "$"))
     }
 
-    func findDerivedData(url: URL) -> URL? {
+    func getAppCodeDerivedData(procPath: String) -> String {
+        //Default with current year
+        let derivedDataPath = { (year: Int, pathSelector: String) -> String in
+            "Library/Caches/\(year > 2019 ? "JetBrains/" : "")\(pathSelector)/DerivedData"
+        }
+
+        let year = Calendar.current.component(.year, from: Date())
+        let month = Calendar.current.component(.month, from: Date())
+
+        let defaultPath = derivedDataPath(year, "AppCode\(month / 4 == 0 ? year - 1 : year).\(month / 4 + (month / 4 == 0 ? 3 : 0))")
+
+        var plistPath = URL(fileURLWithPath: procPath)
+        plistPath.deleteLastPathComponent()
+        plistPath.deleteLastPathComponent()
+        plistPath = plistPath.appendingPathComponent("Info.plist")
+
+        guard let dictionary = NSDictionary(contentsOf: plistPath) as? Dictionary<String, Any> else { return defaultPath }
+        guard let jvmOptions = dictionary["JVMOptions"] as? Dictionary<String, Any> else { return defaultPath }
+        guard let properties = jvmOptions["Properties"] as? Dictionary<String, Any> else { return defaultPath }
+        guard let pathSelector: String = properties["idea.paths.selector"] as? String else { return defaultPath }
+
+        let components = pathSelector.replacingOccurrences(of: "AppCode", with: "").components(separatedBy: ".")
+        guard components.count == 2 else { return defaultPath }
+
+        guard let realYear = Int(components[0]) else { return defaultPath }
+        return derivedDataPath(realYear, pathSelector)
+    }
+
+    func findDerivedData(url: URL, ideProcPath: String) -> URL? {
         if url.path == "/" {
             return nil
         }
 
-        for relative in ["DerivedData", "build/DerivedData",
-                         "Library/Developer/Xcode/DerivedData"] {
+        var relativeDirs = ["DerivedData", "build/DerivedData"]
+        if ideProcPath.lowercased().contains("appcode") {
+            relativeDirs.append(getAppCodeDerivedData(procPath: ideProcPath))
+        } else {
+            relativeDirs.append("Library/Developer/Xcode/DerivedData")
+        }
+        for relative in relativeDirs {
             let derived = url.appendingPathComponent(relative)
             if FileManager.default.fileExists(atPath: derived.path) {
                 return derived
             }
         }
 
-        return findDerivedData(url: url.deletingLastPathComponent())
+        return findDerivedData(url: url.deletingLastPathComponent(), ideProcPath: ideProcPath)
     }
 
     func findProject(for source: URL, derivedData: URL) -> (projectFile: URL, logsDir: URL)? {
