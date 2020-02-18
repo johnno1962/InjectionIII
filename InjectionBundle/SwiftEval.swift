@@ -433,6 +433,15 @@ public class SwiftEval: NSObject {
         // Objective-C paths can only contain space and '
         // project file itself can only contain spaces
         let isFile = classNameOrFile.hasPrefix("/")
+        if isFile && (try? String(contentsOfFile: classNameOrFile)) == nil {
+            throw evalError("""
+                File \(classNameOrFile) is not readable. This could be because
+                the file is in a secure area of the file system or because the
+                case of the letters in the file name does not match that in the
+                Xcode project. The file system injection uses is case sensitive.
+                """)
+        }
+
         let sourceRegex = isFile ? "\\Q\(classNameOrFile)\\E" : "/\(classNameOrFile)\\.(?:swift|mm?)"
         let swiftEscaped = (isFile ? "" : "[^\"]*?") + sourceRegex.escaping("'$", with: "\\E\\\\*$0\\Q")
         let objcEscaped = (isFile ? "" : "\\S*?") + sourceRegex.escaping("' ")
