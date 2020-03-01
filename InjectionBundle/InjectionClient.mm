@@ -181,6 +181,10 @@ static struct {
         case InjectionUntrace:
             [SwiftTrace removeAllPatches];
             break;
+        case InjectionIdeProcPath: {
+            [SwiftEval sharedInstance].lastIdeProcPath = [self readString];
+            break;
+        }
         default: {
             NSString *changed = [self readString];
             dispatch_async(dispatch_get_main_queue(), ^{

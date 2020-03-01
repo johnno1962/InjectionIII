@@ -13,6 +13,7 @@
 #import "InjectionClient.h"
 
 #import "DDHotKeyCenter.h"
+#import <libproc.h>
 
 #ifdef XPROBE_PORT
 #import "../XprobePlugin/Classes/XprobePluginMenuController.h"

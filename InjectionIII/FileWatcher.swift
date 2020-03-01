@@ -10,7 +10,7 @@ import Foundation
 
 let INJECTABLE_PATTERN = "[^~]\\.(mm?|swift|storyboard|xib)$"
 
-public typealias InjectionCallback = (_ filesChanged: NSArray) -> Void
+public typealias InjectionCallback = (_ filesChanged: NSArray, _ ideProcPath: String) -> Void
 
 public class FileWatcher: NSObject {
     var fileEvents: FSEventStreamRef! = nil
@@ -66,7 +66,11 @@ public class FileWatcher: NSObject {
         }
 
         if changed.count != 0 {
-            callback(Array(changed) as NSArray)
+            var path = ""
+            if let application = NSWorkspace.shared.frontmostApplication {
+                path = getProcPath(pid: application.processIdentifier)
+            }
+            callback(Array(changed) as NSArray, path)
         }
     }
 
@@ -74,5 +78,15 @@ public class FileWatcher: NSObject {
         FSEventStreamStop(fileEvents)
         FSEventStreamInvalidate(fileEvents)
         FSEventStreamRelease(fileEvents)
+    }
+
+    func getProcPath(pid: pid_t) -> String {
+        let pathBuffer = UnsafeMutablePointer<UInt8>.allocate(capacity: Int(MAXPATHLEN))
+        defer {
+            pathBuffer.deallocate()
+        }
+        proc_pidpath(pid, pathBuffer, UInt32(MAXPATHLEN))
+        let path = String(cString: pathBuffer)
+        return path
     }
 }

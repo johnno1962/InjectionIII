@@ -23,6 +23,7 @@ typedef NS_ENUM(int, InjectionCommand) {
     InjectionSigned,
     InjectionLoad,
     InjectionInject,
+    InjectionIdeProcPath,
     InjectionXprobe,
     InjectionEval,
     InjectionVaccineSettingChanged,
