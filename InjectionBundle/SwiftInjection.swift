@@ -173,6 +173,13 @@ public class SwiftInjection: NSObject {
                 }
                 if class_getInstanceMethod(cls, injectedSEL) != nil {
                     injectedClasses.append(cls)
+                    print("""
+                        💉 Class \(cls) has an @objc injected() method. \
+                        Injection will attempt a "sweep" of all live \
+                        instances to determine which objects to message. \
+                        If this crashes, subscribe to the global notification \
+                        "INJECTION_BUNDLE_NOTIFICATION" to detect injections instead.
+                        """)
                     let kvoName = "NSKVONotifying_" + NSStringFromClass(cls)
                     if let kvoCls = NSClassFromString(kvoName) {
                         injectedClasses.append(kvoCls)
