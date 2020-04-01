@@ -30,6 +30,13 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     var watchedDirectories = Set<String>()
     weak var lastConnection: InjectionServer?
     var selectedProject: String?
+    let openProject = NSLocalizedString("Select Project Directory",
+                                        tableName: "Project Directory",
+                                        comment: "Project Directory")
+
+    let defaults = UserDefaults.standard
+    let lastWatched = "lastWatched"
+    let bookmarkKey = "persistentBookmarks"
 
     @objc func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
@@ -54,44 +61,84 @@ class AppDelegate : NSObject, NSApplicationDelegate {
             .registerHotKey(withKeyCode: UInt16(kVK_ANSI_Equal),
                modifierFlags: NSEvent.ModifierFlags.control.rawValue,
                target:self, action:#selector(autoInject(_:)), object:nil)
+
+        if let lastWatched = defaults.string(forKey: lastWatched) {
+            _ = self.application(NSApp, openFile: lastWatched)
+        }
     }
 
     func application(_ theApplication: NSApplication, openFile filename: String) -> Bool {
-        let open = NSOpenPanel()
-        open.prompt = NSLocalizedString("Select Project Directory", tableName: "Project Directory", comment: "Project Directory")
-        if filename != "" {
-            open.directoryURL = URL(fileURLWithPath: filename)
-        }
-        open.canChooseDirectories = true
-        open.canChooseFiles = false
-        // open.showsHiddenFiles = TRUE;
-        if open.runModal() == .OK {
-            let fileList = try? FileManager.default
-                .contentsOfDirectory(atPath: open.url!.path)
-            if let fileList = fileList, let projectFile =
-               fileWithExtension("xcworkspace", inFiles: fileList) ??
-               fileWithExtension("xcodeproj", inFiles: fileList) ??
-                fileList.first(where: {$0 == "Package.swift"}),
-                let url = open.url {
-                self.selectedProject = url
-                    .appendingPathComponent(projectFile).path
-                self.watchedDirectories.removeAll()
-                self.watchedDirectories.insert(url.path)
-                self.lastConnection?.setProject(self.selectedProject!)
-                NSDocumentController.shared
-                    .noteNewRecentDocumentURL(url)
-                return true
+        let url: URL
+        if let resolved = resolve(path: filename) {
+            url = resolved
+        } else {
+            let open = NSOpenPanel()
+            open.prompt = openProject
+            if filename != "" {
+                open.directoryURL = URL(fileURLWithPath: filename)
+            }
+            open.canChooseDirectories = true
+            open.canChooseFiles = false
+            // open.showsHiddenFiles = TRUE;
+            if open.runModal() == .OK {
+                url = open.url!
+                persist(url: url)
+            } else {
+                return false
             }
         }
+
+        if let fileList = try? FileManager.default
+            .contentsOfDirectory(atPath: url.path),
+            let projectFile =
+                fileWithExtension("xcworkspace", inFiles: fileList) ??
+                fileWithExtension("xcodeproj", inFiles: fileList) ??
+                fileList.first(where: {$0 == "Package.swift"}) {
+            self.selectedProject = url
+                .appendingPathComponent(projectFile).path
+            self.watchedDirectories.removeAll()
+            self.watchedDirectories.insert(url.path)
+            self.lastConnection?.setProject(self.selectedProject!)
+            NSDocumentController.shared.noteNewRecentDocumentURL(url)
+            defaults.set(url.path, forKey: lastWatched)
+            return true
+        }
+
         return false
     }
 
     func fileWithExtension(_ ext: String, inFiles files: [String]) -> String? {
-        for file in files {
-            if (file as NSString).pathExtension == ext {
-                return file
-            }
+        return files.first { ($0 as NSString).pathExtension == ext }
+    }
+
+    func persist(url: URL) {
+        var bookmarks = defaults.value(forKey: bookmarkKey)
+            as? [String : Data] ?? [String: Data]()
+        do {
+            bookmarks[url.path] =
+                try url.bookmarkData(options: [.withSecurityScope,
+                                               .securityScopeAllowOnlyReadAccess],
+                                     includingResourceValuesForKeys: [],
+                                     relativeTo: nil)
+            defaults.set(bookmarks, forKey: bookmarkKey)
+        } catch {
+            _ = InjectionServer.error("Bookmarking failed for \(url), \(error)")
         }
+    }
+
+    func resolve(path: String) -> URL? {
+        var isStale: Bool = false
+        if let bookmarks =
+            defaults.value(forKey: bookmarkKey) as? [String : Data],
+            let bookmark = bookmarks[path],
+            let resolved = try? URL(resolvingBookmarkData: bookmark,
+                           options: .withSecurityScope,
+                           relativeTo: nil,
+                           bookmarkDataIsStale: &isStale), !isStale {
+            _ = resolved.startAccessingSecurityScopedResource()
+            return resolved
+        }
+
         return nil
     }
 
@@ -114,7 +161,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
 
     @IBAction func addDirectory(_ sender: Any) {
         let open = NSOpenPanel()
-        open.prompt = NSLocalizedString("Add Project Directory", tableName: "Project Directory", comment: "Project Directory")
+        open.prompt = openProject
         open.allowsMultipleSelection = true
         open.canChooseDirectories = true
         open.canChooseFiles = false
@@ -122,6 +169,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
             for url in open.urls {
                 appDelegate.watchedDirectories.insert(url.path)
                 self.lastConnection?.watchDirectory(url.path)
+                persist(url: url)
             }
         }
     }
