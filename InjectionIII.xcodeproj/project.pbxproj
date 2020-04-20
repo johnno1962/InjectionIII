@@ -9,6 +9,12 @@
 /* Begin PBXBuildFile section */
 		BB439B801FABA64300B4F50B /* SwiftEvalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B7F1FABA64300B4F50B /* SwiftEvalTests.swift */; };
 		BB56393C1FD5C25A002FFCEF /* SignerService.m in Sources */ = {isa = PBXBuildFile; fileRef = BB67DBB61FB0D0F2000EAC8A /* SignerService.m */; };
+		BB5D67AD244DA00C003AA7F4 /* SwiftSwizzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67A7244DA00B003AA7F4 /* SwiftSwizzle.swift */; };
+		BB5D67AE244DA00C003AA7F4 /* SwiftArgs.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67A8244DA00B003AA7F4 /* SwiftArgs.swift */; };
+		BB5D67AF244DA00C003AA7F4 /* SwiftAspects.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67A9244DA00B003AA7F4 /* SwiftAspects.swift */; };
+		BB5D67B0244DA00C003AA7F4 /* SwiftMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67AA244DA00B003AA7F4 /* SwiftMeta.swift */; };
+		BB5D67B1244DA00C003AA7F4 /* SwiftInvoke.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67AB244DA00C003AA7F4 /* SwiftInvoke.swift */; };
+		BB5D67B2244DA00C003AA7F4 /* SwiftStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67AC244DA00C003AA7F4 /* SwiftStack.swift */; };
 		BB6306FE1FCD1A410021D30C /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = BB6306FD1FCD1A410021D30C /* Credits.rtf */; };
 		BB76EA0822929E1100E454F0 /* SwiftTrace.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB76EA0522929E1100E454F0 /* SwiftTrace.mm */; };
 		BB76EA0922929E1100E454F0 /* SwiftTrace.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB76EA0622929E1100E454F0 /* SwiftTrace.swift */; };
@@ -101,6 +107,12 @@
 		BB439BB31FAC185200B4F50B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		BB56393F1FD5D535002FFCEF /* Xprobe+Service.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = "Xprobe+Service.mm"; path = "XprobePlugin/Classes/Xprobe+Service.mm"; sourceTree = "<group>"; };
 		BB5639401FD5D535002FFCEF /* Xtrace.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = Xtrace.mm; path = XprobePlugin/Classes/Xtrace.mm; sourceTree = "<group>"; };
+		BB5D67A7244DA00B003AA7F4 /* SwiftSwizzle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftSwizzle.swift; path = SwiftTrace/SwiftTrace/SwiftSwizzle.swift; sourceTree = SOURCE_ROOT; };
+		BB5D67A8244DA00B003AA7F4 /* SwiftArgs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftArgs.swift; path = SwiftTrace/SwiftTrace/SwiftArgs.swift; sourceTree = SOURCE_ROOT; };
+		BB5D67A9244DA00B003AA7F4 /* SwiftAspects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftAspects.swift; path = SwiftTrace/SwiftTrace/SwiftAspects.swift; sourceTree = SOURCE_ROOT; };
+		BB5D67AA244DA00B003AA7F4 /* SwiftMeta.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftMeta.swift; path = SwiftTrace/SwiftTrace/SwiftMeta.swift; sourceTree = SOURCE_ROOT; };
+		BB5D67AB244DA00C003AA7F4 /* SwiftInvoke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftInvoke.swift; path = SwiftTrace/SwiftTrace/SwiftInvoke.swift; sourceTree = SOURCE_ROOT; };
+		BB5D67AC244DA00C003AA7F4 /* SwiftStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftStack.swift; path = SwiftTrace/SwiftTrace/SwiftStack.swift; sourceTree = SOURCE_ROOT; };
 		BB6224411FC5B0E300AD7A3A /* HelperProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelperProxy.m; sourceTree = "<group>"; };
 		BB6224421FC5B0E500AD7A3A /* HelperProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperProxy.h; sourceTree = "<group>"; };
 		BB6224431FC5B0E500AD7A3A /* HelperInstaller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperInstaller.h; sourceTree = "<group>"; };
@@ -384,6 +396,12 @@
 				BB76EA0422929E0E00E454F0 /* SwiftTrace.h */,
 				BB76EA0522929E1100E454F0 /* SwiftTrace.mm */,
 				BB76EA0622929E1100E454F0 /* SwiftTrace.swift */,
+				BB5D67A7244DA00B003AA7F4 /* SwiftSwizzle.swift */,
+				BB5D67A9244DA00B003AA7F4 /* SwiftAspects.swift */,
+				BB5D67AB244DA00C003AA7F4 /* SwiftInvoke.swift */,
+				BB5D67A8244DA00B003AA7F4 /* SwiftArgs.swift */,
+				BB5D67AA244DA00B003AA7F4 /* SwiftMeta.swift */,
+				BB5D67AC244DA00C003AA7F4 /* SwiftStack.swift */,
 				BB76EA0722929E1100E454F0 /* xt_forwarding_trampoline_x64.s */,
 			);
 			path = InjectionBundle;
@@ -636,11 +654,17 @@
 				BB76EA0822929E1100E454F0 /* SwiftTrace.mm in Sources */,
 				BD35949E21A6C5DE0020EB94 /* Vaccine.swift in Sources */,
 				BBCA02511FB107AF00E45F0F /* SwiftInjection.swift in Sources */,
+				BB5D67B1244DA00C003AA7F4 /* SwiftInvoke.swift in Sources */,
+				BB5D67AF244DA00C003AA7F4 /* SwiftAspects.swift in Sources */,
+				BB5D67AE244DA00C003AA7F4 /* SwiftArgs.swift in Sources */,
 				BB76EA0A22929E1100E454F0 /* xt_forwarding_trampoline_x64.s in Sources */,
 				BBB64FE11FD575260020BE47 /* XprobeSwift.swift in Sources */,
+				BB5D67AD244DA00C003AA7F4 /* SwiftSwizzle.swift in Sources */,
 				BBB64FE61FD577EB0020BE47 /* SwiftSwizzler.swift in Sources */,
 				BBCA02621FB1312A00E45F0F /* SimpleSocket.mm in Sources */,
 				BB76EA0922929E1100E454F0 /* SwiftTrace.swift in Sources */,
+				BB5D67B0244DA00C003AA7F4 /* SwiftMeta.swift in Sources */,
+				BB5D67B2244DA00C003AA7F4 /* SwiftStack.swift in Sources */,
 				BBCA025D1FB114FF00E45F0F /* InjectionClient.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
