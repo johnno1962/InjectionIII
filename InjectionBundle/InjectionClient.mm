@@ -179,7 +179,7 @@ static struct {
             break;
         }
         case InjectionUntrace:
-            [SwiftTrace removeAllPatches];
+            [SwiftTrace removeAllSwizzles];
             break;
         case InjectionIdeProcPath: {
             [SwiftEval sharedInstance].lastIdeProcPath = [self readString];
