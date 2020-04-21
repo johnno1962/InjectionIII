@@ -4,3 +4,6 @@
 [submodule "SwiftTrace"]
 	path = SwiftTrace
 	url = https://github.com/johnno1962/SwiftTrace
+[submodule "Remote"]
+	path = Remote
+	url = https://github.com/johnno1962/Remote.git
