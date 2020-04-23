@@ -113,7 +113,7 @@ To use, add an Objective-C source file to your project and `#import` its header 
 #import "/Applications/InjectionIII.app/Contents/Resources/RemoteCapture.h"
 ```
 
-Finally, include the following in your application's initialisation (replace 192.168.1.14 with the IPV4 network address of your development machine):
+Finally, include the following in your application's initialisation (replace 192.168.1.14 with the IPV4 network address of your development machine or its hostname as shown in Preferences/Sharing):
 
 ```Swift
 #if DEBUG
