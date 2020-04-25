@@ -28,6 +28,7 @@
 		BB76EA0822929E1100E454F0 /* SwiftTrace.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB76EA0522929E1100E454F0 /* SwiftTrace.mm */; };
 		BB76EA0922929E1100E454F0 /* SwiftTrace.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB76EA0622929E1100E454F0 /* SwiftTrace.swift */; };
 		BB76EA0A22929E1100E454F0 /* xt_forwarding_trampoline_x64.s in Sources */ = {isa = PBXBuildFile; fileRef = BB76EA0722929E1100E454F0 /* xt_forwarding_trampoline_x64.s */; };
+		BB85A7412452CD7600E94762 /* SwiftTrace.h in Resources */ = {isa = PBXBuildFile; fileRef = BB76EA0422929E0E00E454F0 /* SwiftTrace.h */; };
 		BB877CE42186EB6E0070EEC7 /* DDHotKeyCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6306F51FCD16600021D30C /* DDHotKeyCenter.m */; };
 		BB877CE52186EB6E0070EEC7 /* DDHotKeyUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6306F61FCD16600021D30C /* DDHotKeyUtilities.m */; };
 		BBB040641FB17A6C007DDD0A /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBB040631FB1798A007DDD0A /* ScriptingBridge.framework */; };
@@ -585,6 +586,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB85A7412452CD7600E94762 /* SwiftTrace.h in Resources */,
 				BB53B648244FC32C00F006E3 /* RemoteHeaders.h in Resources */,
 				BB53B642244FC08F00F006E3 /* RemoteCapture.h in Resources */,
 				BBB64FDE1FD5744A0020BE47 /* XprobeConsole.xib in Resources */,
