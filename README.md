@@ -101,13 +101,19 @@ Injection now includes the higher level `Vaccine` functionality, for more inform
 
 ### App Tracing
 
-The InjectionIII menu contains an item "Trace (Beta)" which can be used to enable logging of all Objective-C and non-final class method calls. This feature is experimental. Selecting the menu item again will turn the feature back off.
+The InjectionIII menu contains an item "Trace" which can be used to enable logging of all Objective-C and non-final Swift class method calls. This feature is experimental. Selecting the menu item again will turn the feature back off.
+
+If you want finer grain control of what is being traced, include the following file in your project's bridging header and the internal api will be availble to swift (after an injection bundle has been loaded):
+
+```C++
+#import "/Applications/InjectionIII.app/Contents/Resources/SwiftTrace.h"
+```
 
 ### Remote Control
 
-Newer versions of InjectionIII contain a server that allows you to control your development device from your desktop. The UI allows you to record and replay macros of UI actions then verify the device screen against snapshots for end-to-end testing.
+Newer versions of InjectionIII contain a server that allows you to control your development device from your desktop once it has been started. The UI allows you to record and replay macros of UI actions then verify the device screen against snapshots for end-to-end testing.
 
-To use, add an Objective-C source file to your project and `#import` its header file in the Swift bridging header. Include the following in the class *header* file:
+To use, add an Objective-C class to your project and `#import` its header file in the Swift bridging header. Include the following in the class *header* file:
 
 ```C++
 #import "/Applications/InjectionIII.app/Contents/Resources/RemoteCapture.h"
