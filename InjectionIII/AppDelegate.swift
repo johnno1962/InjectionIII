@@ -187,6 +187,11 @@ class AppDelegate : NSObject, NSApplicationDelegate {
         self.lastConnection?.sendCommand(.vaccineSettingChanged, with:vaccineConfiguration())
     }
 
+    @IBAction func startRemote(_ sender: NSMenuItem) {
+        RMWindowController.startServer(sender)
+        sender.state = .on
+    }
+
     @IBAction func traceApp(_ sender: NSMenuItem) {
         toggleState(sender)
         self.lastConnection?.sendCommand(sender.state == NSControl.StateValue.on ?
