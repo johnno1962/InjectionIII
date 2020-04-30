@@ -730,6 +730,13 @@
                         <action selector="runXprobe:" target="Voe-Tx-rLC" id="OLt-ZD-lyd"/>
                     </connections>
                 </menuItem>
+                <menuItem title="Trace App" toolTip="Log app messaging" id="Kkx-ex-NCv">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <accessibility description="Trace App"/>
+                    <connections>
+                        <action selector="traceApp:" target="Voe-Tx-rLC" id="5zd-Ho-CaT"/>
+                    </connections>
+                </menuItem>
                 <menuItem title="Remote" toolTip="Control device from desktop" id="K4h-UZ-IzJ">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <accessibility description="Trace App"/>
@@ -737,14 +744,7 @@
                         <action selector="startRemote:" target="Voe-Tx-rLC" id="43L-Ge-CuP"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Trace" toolTip="Log app messaging" id="Kkx-ex-NCv">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <accessibility description="Trace App"/>
-                    <connections>
-                        <action selector="traceApp:" target="Voe-Tx-rLC" id="5zd-Ho-CaT"/>
-                    </connections>
-                </menuItem>
-                <menuItem title="Window" hidden="YES" id="aUF-d1-5bR">
+                <menuItem title="Window" id="aUF-d1-5bR">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Window" systemMenu="window" id="Td7-aD-5lo">
                         <items>
