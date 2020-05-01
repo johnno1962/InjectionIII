@@ -776,10 +776,10 @@
                         <action selector="orderFrontStandardAboutPanel:" target="-1" id="b6u-Vx-pO5"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Help/Donate" hidden="YES" id="kFj-jW-1uq">
+                <menuItem title="Help/README" id="kFj-jW-1uq">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="donate:" target="Voe-Tx-rLC" id="Scj-Z3-yFA"/>
+                        <action selector="help:" target="Voe-Tx-rLC" id="Scj-Z3-yFA"/>
                     </connections>
                 </menuItem>
                 <menuItem title="Quit Injection" toolTip="Quit InjectionIII" id="LUw-n8-2Gj">
