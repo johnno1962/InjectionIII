@@ -258,8 +258,8 @@ class AppDelegate : NSObject, NSApplicationDelegate {
         self.lastConnection?.sendCommand(.eval, with:swift)
     }
 
-    @IBAction func donate(_ sender: Any) {
-        _ = NSWorkspace.shared.open(URL(string: "http://johnholdsworth.com/cgi-bin/injection3.cgi")!)
+    @IBAction func help(_ sender: Any) {
+        _ = NSWorkspace.shared.open(URL(string: "https://github.com/johnno1962/InjectionIII")!)
     }
 
     @objc

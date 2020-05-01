@@ -189,8 +189,9 @@ be running a small server "'signer", included in this project to do this alas.
 ### Acknowledgements:
 
 This project includes code from [rentzsch/mach_inject](https://github.com/rentzsch/mach_inject),
-[erwanb/MachInjectSample](https://github.com/erwanb/MachInjectSample) and
-[davedelong/DDHotKey](https://github.com/davedelong/DDHotKey) under their
+[erwanb/MachInjectSample](https://github.com/erwanb/MachInjectSample),
+[davedelong/DDHotKey](https://github.com/davedelong/DDHotKey) and
+[acj/TimeLapseBuilder-Swift](https://github.com/acj/TimeLapseBuilder-Swift) under their
 respective licenses.
 
 The App Tracing functionality uses the [OliverLetterer/imp_implementationForwardingToSelector](https://github.com/OliverLetterer/imp_implementationForwardingToSelector) trampoline implementation via the [SwiftTrace](https://github.com/johnno1962/SwiftTrace) project under an MIT license.
