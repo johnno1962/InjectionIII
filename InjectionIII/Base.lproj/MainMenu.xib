@@ -19,6 +19,7 @@
                 <outlet property="enableWatcher" destination="0iA-WA-gxc" id="vVT-sI-q78"/>
                 <outlet property="enabledTDDItem" destination="Mdd-tb-kGc" id="ccs-nb-DKk"/>
                 <outlet property="frontItem" destination="wFq-Rv-gfa" id="MPU-fL-HYl"/>
+                <outlet property="remoteItem" destination="of9-Ja-9Yf" id="z57-Ut-oxK"/>
                 <outlet property="startItem" destination="vsd-ll-3nr" id="ODN-wa-BTp"/>
                 <outlet property="statusMenu" destination="V8Q-mq-A2f" id="Epo-HD-J21"/>
                 <outlet property="traceItem" destination="Kkx-ex-NCv" id="EXz-O7-K34"/>
@@ -737,34 +738,47 @@
                         <action selector="traceApp:" target="Voe-Tx-rLC" id="5zd-Ho-CaT"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Remote" toolTip="Control device from desktop" id="K4h-UZ-IzJ">
+                <menuItem title="Remote" id="of9-Ja-9Yf">
                     <modifierMask key="keyEquivalentModifierMask"/>
-                    <accessibility description="Trace App"/>
-                    <connections>
-                        <action selector="startRemote:" target="Voe-Tx-rLC" id="43L-Ge-CuP"/>
-                    </connections>
-                </menuItem>
-                <menuItem title="Window" id="aUF-d1-5bR">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <menu key="submenu" title="Window" systemMenu="window" id="Td7-aD-5lo">
+                    <menu key="submenu" title="Remote" id="eGx-OC-usD">
                         <items>
-                            <menuItem title="Minimize" keyEquivalent="m" id="OY7-WF-poV">
+                            <menuItem title="Start Server" toolTip="Control device from desktop" id="7Om-BV-MqZ">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <accessibility description="Trace App"/>
                                 <connections>
-                                    <action selector="performMiniaturize:" target="-1" id="VwT-WD-YPe"/>
+                                    <action selector="startRemote:" target="Voe-Tx-rLC" id="odg-2Q-T1g"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Zoom" id="R4o-n2-Eq4">
+                            <menuItem title="Stop Server" id="Fa8-hf-Yom">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
-                                    <action selector="performZoom:" target="-1" id="DIl-cC-cCs"/>
+                                    <action selector="stopRemote:" target="Voe-Tx-rLC" id="Fbl-rZ-MWg"/>
                                 </connections>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="eu3-7i-yIM"/>
-                            <menuItem title="Bring All to Front" id="LE2-aR-0XJ">
+                            <menuItem title="Window" id="aUF-d1-5bR">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="arrangeInFront:" target="-1" id="DRN-fu-gQh"/>
-                                </connections>
+                                <menu key="submenu" title="Window" systemMenu="window" id="Td7-aD-5lo">
+                                    <items>
+                                        <menuItem title="Minimize" keyEquivalent="m" id="OY7-WF-poV">
+                                            <connections>
+                                                <action selector="performMiniaturize:" target="-1" id="VwT-WD-YPe"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Zoom" id="R4o-n2-Eq4">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="performZoom:" target="-1" id="DIl-cC-cCs"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="eu3-7i-yIM"/>
+                                        <menuItem title="Bring All to Front" id="LE2-aR-0XJ">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="arrangeInFront:" target="-1" id="DRN-fu-gQh"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
                             </menuItem>
                         </items>
                     </menu>
