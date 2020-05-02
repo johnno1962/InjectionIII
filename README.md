@@ -134,9 +134,10 @@ When InjectionIII is running, select the "Remote/Start Server" menu item to star
 server and then run your app. It should connect to the server which will pop up a
 window showing the device display and accepting tap events. Events can be
 saved as `macros` and replayed. If you include a snapshot in a macro this will
-be compared against the device display (within an editable tolerance) when your
-replay the macro for automated testing. As it operates over the network, `Remote`
-isn't fast enough to capture animationed transitions.
+be compared against the device display (within a tolerance) when you replay
+the macro for automated testing. Remote can also be used to capture videos
+of your app in operation but as it operates over the network, it isn't fast enough
+to  capture animated transitions.
 
 ## SwiftEval - Yes, it's eval() for Swift
 
