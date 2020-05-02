@@ -130,12 +130,13 @@ onto if they are running InjectionIII.) You can also use a machine's hostname
 RemoteCapture.start("192.168.1.14")
 #endif
 ```
-When InjectionIII is running, select the "Remote" menu item to start the server
-and then run your app. It should connect to the server which will pop up a
+When InjectionIII is running, select the "Remote/Start Server" menu item to start the
+server and then run your app. It should connect to the server which will pop up a
 window showing the device display and accepting tap events. Events can be
 saved as `macros` and replayed. If you include a snapshot in a macro this will
-be compared against the device display (within a tolerance) when your replay
-the macro for automated testing.
+be compared against the device display (within an editable tolerance) when your
+replay the macro for automated testing. As it operates over the network, `Remote`
+isn't fast enough to capture animationed transitions.
 
 ## SwiftEval - Yes, it's eval() for Swift
 

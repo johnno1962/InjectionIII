@@ -24,6 +24,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     @IBOutlet weak var enabledTDDItem: NSMenuItem!
     @IBOutlet weak var enableVaccineItem: NSMenuItem!
     @IBOutlet weak var windowItem: NSMenuItem!
+    @IBOutlet weak var remoteItem: NSMenuItem!
     @IBOutlet weak var frontItem: NSMenuItem!
     @IBOutlet var statusItem: NSStatusItem!
 
@@ -189,7 +190,12 @@ class AppDelegate : NSObject, NSApplicationDelegate {
 
     @IBAction func startRemote(_ sender: NSMenuItem) {
         RMWindowController.startServer(sender)
-        sender.state = .on
+        remoteItem.state = .on
+    }
+
+    @IBAction func stopRemote(_ sender: NSMenuItem) {
+        RMWindowController.stopServer()
+        remoteItem.state = .off
     }
 
     @IBAction func traceApp(_ sender: NSMenuItem) {
