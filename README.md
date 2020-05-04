@@ -109,6 +109,8 @@ If you want finer grain control of what is being traced, include the following f
 #import "/Applications/InjectionIII.app/Contents/Resources/SwiftTrace.h"
 ```
 
+For more information consult the [source repo](https://github.com/johnno1962/SwiftTrace).
+
 ### Remote Control
 
 Newer versions of InjectionIII contain a server that allows you to control your development device from your desktop once it has been started. The UI allows you to record and replay macros of UI actions then verify the device screen against snapshots for end-to-end testing.
