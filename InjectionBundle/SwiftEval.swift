@@ -263,7 +263,7 @@ public class SwiftEval: NSObject {
         let tmpfile = "\(tmpDir)/eval\(injectionNumber)"
         let logfile = "\(tmpfile).log"
 
-        guard var (compileCommand, sourceFile) = try SwiftEval.compileByClass[classNameOrFile] ??
+        guard let (compileCommand, sourceFile) = try SwiftEval.compileByClass[classNameOrFile] ??
             findCompileCommand(logsDir: logsDir, classNameOrFile: classNameOrFile, tmpfile: tmpfile) ??
             SwiftEval.longTermCache[classNameOrFile].flatMap({ ($0 as! String, classNameOrFile) }) else {
             throw evalError("""

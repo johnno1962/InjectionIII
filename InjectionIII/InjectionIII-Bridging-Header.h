@@ -11,6 +11,7 @@
 #import "SimpleSocket.h"
 #import "SignerService.h"
 #import "InjectionClient.h"
+#import "RMWindowController.h"
 
 #import "DDHotKeyCenter.h"
 #import <libproc.h>

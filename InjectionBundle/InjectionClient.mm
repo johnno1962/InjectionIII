@@ -168,18 +168,11 @@ static struct {
         case InjectionSigned:
             [writer writeString:[self readString]];
             break;
-        case InjectionTrace: {
-            void *handle = dlopen(NULL, RTLD_NOW);
-            void *main = dlsym(handle ?: RTLD_DEFAULT, "main");
-            Dl_info info;
-            if (main && dladdr(main, &info) && info.dli_fname) {
-                [SwiftTrace traceWithBundlePath:(int8_t *)info.dli_fname];
-                printf("💉 Tracing class' methods in: %s\n", info.dli_fname);
-            }
+        case InjectionTrace:
+            [SwiftTrace traceMainBundleWithSubLevels:0];
             break;
-        }
         case InjectionUntrace:
-            [SwiftTrace removeAllPatches];
+            [SwiftTrace removeAllTraces];
             break;
         case InjectionIdeProcPath: {
             [SwiftEval sharedInstance].lastIdeProcPath = [self readString];

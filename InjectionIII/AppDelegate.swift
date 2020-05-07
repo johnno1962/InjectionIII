@@ -24,6 +24,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     @IBOutlet weak var enabledTDDItem: NSMenuItem!
     @IBOutlet weak var enableVaccineItem: NSMenuItem!
     @IBOutlet weak var windowItem: NSMenuItem!
+    @IBOutlet weak var remoteItem: NSMenuItem!
     @IBOutlet weak var frontItem: NSMenuItem!
     @IBOutlet var statusItem: NSStatusItem!
 
@@ -187,6 +188,16 @@ class AppDelegate : NSObject, NSApplicationDelegate {
         self.lastConnection?.sendCommand(.vaccineSettingChanged, with:vaccineConfiguration())
     }
 
+    @IBAction func startRemote(_ sender: NSMenuItem) {
+        RMWindowController.startServer(sender)
+        remoteItem.state = .on
+    }
+
+    @IBAction func stopRemote(_ sender: NSMenuItem) {
+        RMWindowController.stopServer()
+        remoteItem.state = .off
+    }
+
     @IBAction func traceApp(_ sender: NSMenuItem) {
         toggleState(sender)
         self.lastConnection?.sendCommand(sender.state == NSControl.StateValue.on ?
@@ -253,8 +264,8 @@ class AppDelegate : NSObject, NSApplicationDelegate {
         self.lastConnection?.sendCommand(.eval, with:swift)
     }
 
-    @IBAction func donate(_ sender: Any) {
-        _ = NSWorkspace.shared.open(URL(string: "http://johnholdsworth.com/cgi-bin/injection3.cgi")!)
+    @IBAction func help(_ sender: Any) {
+        _ = NSWorkspace.shared.open(URL(string: "https://github.com/johnno1962/InjectionIII")!)
     }
 
     @objc
