@@ -254,6 +254,31 @@ public class SwiftEval: NSObject {
         _ = evalError("Copied \(storyboard)")
     }
 
+    public func actualCase(path: String) -> String? {
+        let fm = FileManager.default
+        if fm.fileExists(atPath: path) {
+            return path
+        }
+        var out = ""
+        for component in path.split(separator: "/") {
+            var real: String?
+            if fm.fileExists(atPath: out+"/"+component) {
+                real = String(component)
+            } else {
+                guard let contents = try? fm.contentsOfDirectory(atPath: "/"+out) else {
+                    return nil
+                }
+                real = contents.first { $0.lowercased() == component.lowercased() }
+            }
+
+            guard let found = real else {
+                return nil
+            }
+            out += "/" + found
+        }
+        return out
+    }
+
     @objc public func rebuildClass(oldClass: AnyClass?, classNameOrFile: String, extra: String?) throws -> String {
         let (projectFile, logsDir) = try determineEnvironment(classNameOrFile: classNameOrFile)
 
@@ -263,7 +288,7 @@ public class SwiftEval: NSObject {
         let tmpfile = "\(tmpDir)/eval\(injectionNumber)"
         let logfile = "\(tmpfile).log"
 
-        guard let (compileCommand, sourceFile) = try SwiftEval.compileByClass[classNameOrFile] ??
+        guard var (compileCommand, sourceFile) = try SwiftEval.compileByClass[classNameOrFile] ??
             findCompileCommand(logsDir: logsDir, classNameOrFile: classNameOrFile, tmpfile: tmpfile) ??
             SwiftEval.longTermCache[classNameOrFile].flatMap({ ($0 as! String, classNameOrFile) }) else {
             throw evalError("""
@@ -272,6 +297,20 @@ public class SwiftEval: NSObject {
                 There are also restrictions on characters allowed in paths.
                 All paths are also case sensitive is another thing to check.)
                 """)
+        }
+
+        // normalise file paths in compile command with the actual casing on the file system
+
+        for file in try! NSRegularExpression(pattern: "(/(?:[^\\ ]*\\\\.)*[^\\ ]*) ")
+            .matches(in: compileCommand, options: [], range: NSMakeRange(0, compileCommand.utf16.count))
+            .map({ compileCommand[Range($0.range(at: 1), in: compileCommand)!] }) {
+            let unescaped = file.replacingOccurrences(of: "\\\\(.)", with: "$1", options: .regularExpression)
+            if let normalised = actualCase(path: unescaped), normalised != unescaped {
+                let escaped = normalised.replacingOccurrences(of: "([ ])", with: "\\\\$1", options: .regularExpression)
+                print("Wrongly capitalised file \(unescaped) mapped to actual capitalisation \(escaped)")
+                compileCommand = compileCommand
+                    .replacingOccurrences(of: file, with: escaped, options: .caseInsensitive)
+            }
         }
 
         // load and patch class source if there is an extension to add
@@ -435,15 +474,6 @@ public class SwiftEval: NSObject {
         // Objective-C paths can only contain space and '
         // project file itself can only contain spaces
         let isFile = classNameOrFile.hasPrefix("/")
-        if isFile && (try? String(contentsOfFile: classNameOrFile)) == nil {
-            throw evalError("""
-                File \(classNameOrFile) is not readable. This could be because
-                the file is in a secure area of the file system or because the
-                case of the letters in the file name does not match that in the
-                Xcode project. The file system injection uses is case sensitive.
-                """)
-        }
-
         let sourceRegex = isFile ? "\\Q\(classNameOrFile)\\E" : "/\(classNameOrFile)\\.(?:swift|mm?)"
         let swiftEscaped = (isFile ? "" : "[^\"]*?") + sourceRegex.escaping("'$", with: "\\E\\\\*$0\\Q")
         let objcEscaped = (isFile ? "" : "\\S*?") + sourceRegex.escaping("' ")
@@ -471,7 +501,7 @@ public class SwiftEval: NSObject {
                         if ($line =~ /^\\s*cd /) {
                             $realPath = $line;
                         }
-                        elsif ($line =~ m@\(regexp.escaping("\"$"))@o and $line =~ " \(arch)") {
+                        elsif ($line =~ m@\(regexp.escaping("\"$"))@oi and $line =~ " \(arch)") {
                             # found compile command
                             # may need to extract file list
                             if ($line =~ / -filelist /) {
