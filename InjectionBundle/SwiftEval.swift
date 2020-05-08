@@ -118,13 +118,18 @@ extension NSObject {
     }
 }
 
-fileprivate extension String {
+fileprivate extension StringProtocol {
     subscript(range: NSRange) -> String? {
-        return Range(range, in: self).flatMap { String(self[$0]) }
+        return Range(range, in: String(self)).flatMap { String(self[$0]) }
     }
     func escaping(_ chars: String, with template: String = "\\$0") -> String {
         return self.replacingOccurrences(of: "[\(chars)]",
-            with: template.replacingOccurrences(of: "\\", with: "\\\\"), options: [.regularExpression])
+            with: template.replacingOccurrences(of: "\\", with: "\\\\"),
+            options: [.regularExpression])
+    }
+    func unescape() -> String {
+        return replacingOccurrences(of: #"\\(.)"#, with: "$1",
+                                    options: .regularExpression)
     }
 }
 
@@ -208,7 +213,8 @@ public class SwiftEval: NSObject {
         // messy but fast
         guard shell(command: """
             # search through build logs, most recent first
-            for log in `ls -t "\(logsDir.path)/"*.xcactivitylog`; do
+            cd "\(logsDir.path.escaping("$"))"
+            for log in `ls -t *.xcactivitylog`; do
                 #echo "Scanning $log"
                 /usr/bin/env perl <(cat <<'PERL'
                     use English;
@@ -246,7 +252,11 @@ public class SwiftEval: NSObject {
                             .trimmingCharacters(in: .whitespaces)
 
         guard shell(command: """
-            (cd "\(resources)" && for i in 1 2 3 4 5; do if (find . -name '*.nib' -a -newer "\(storyboard)" | grep .nib >/dev/null); then break; fi; sleep 1; done; while (ps auxww | grep -v grep | grep "/ibtool " >/dev/null); do sleep 1; done; for i in `find . -name '*.nib'`; do cp -rf "$i" "\(Bundle.main.bundlePath)/$i"; done >\(logfile) 2>&1)
+            (cd "\(resources.unescape().escaping("$"))" && for i in 1 2 3 4 5; \
+            do if (find . -name '*.nib' -a -newer "\(storyboard)" | \
+            grep .nib >/dev/null); then break; fi; sleep 1; done; \
+            while (ps auxww | grep -v grep | grep "/ibtool " >/dev/null); do sleep 1; done; \
+            for i in `find . -name '*.nib'`; do cp -rf "$i" "\(Bundle.main.bundlePath)/$i"; done >\(logfile) 2>&1)
             """) else {
                 throw evalError("Re-compilation failed (\(tmpDir)/command.sh)\n\(try! String(contentsOfFile: logfile))")
         }
@@ -279,6 +289,8 @@ public class SwiftEval: NSObject {
         return out
     }
 
+    let detectFilepaths = try! NSRegularExpression(pattern: "(/(?:[^\\ ]*\\\\.)*[^\\ ]*) ")
+
     @objc public func rebuildClass(oldClass: AnyClass?, classNameOrFile: String, extra: String?) throws -> String {
         let (projectFile, logsDir) = try determineEnvironment(classNameOrFile: classNameOrFile)
 
@@ -299,17 +311,23 @@ public class SwiftEval: NSObject {
                 """)
         }
 
-        // normalise file paths in compile command with the actual casing on the file system
+        // normalise paths in compile command with the actual casing of files
 
-        for file in try! NSRegularExpression(pattern: "(/(?:[^\\ ]*\\\\.)*[^\\ ]*) ")
-            .matches(in: compileCommand, options: [], range: NSMakeRange(0, compileCommand.utf16.count))
-            .map({ compileCommand[Range($0.range(at: 1), in: compileCommand)!] }) {
-            let unescaped = file.replacingOccurrences(of: "\\\\(.)", with: "$1", options: .regularExpression)
-            if let normalised = actualCase(path: unescaped), normalised != unescaped {
-                let escaped = normalised.replacingOccurrences(of: "([ ])", with: "\\\\$1", options: .regularExpression)
-                print("Wrongly capitalised file \(unescaped) mapped to actual capitalisation \(escaped)")
-                compileCommand = compileCommand
-                    .replacingOccurrences(of: file, with: escaped, options: .caseInsensitive)
+        for filepath in detectFilepaths.matches(in: compileCommand, options: [],
+                                range: NSMakeRange(0, compileCommand.utf16.count))
+            .compactMap({ compileCommand[$0.range(at: 1)] }) {
+            let unescaped = filepath.unescape()
+            if let normalised = actualCase(path: unescaped) {
+                let escaped = normalised.escaping("' ${}()&*")
+                if filepath != escaped {
+                    print("""
+                            💉 Mapped: \(filepath)
+                            💉 ... to: \(escaped)
+                            """)
+                    compileCommand = compileCommand
+                        .replacingOccurrences(of: filepath, with: escaped,
+                                              options: .caseInsensitive)
+                }
             }
         }
 
@@ -474,15 +492,21 @@ public class SwiftEval: NSObject {
         // Objective-C paths can only contain space and '
         // project file itself can only contain spaces
         let isFile = classNameOrFile.hasPrefix("/")
-        let sourceRegex = isFile ? "\\Q\(classNameOrFile)\\E" : "/\(classNameOrFile)\\.(?:swift|mm?)"
-        let swiftEscaped = (isFile ? "" : "[^\"]*?") + sourceRegex.escaping("'$", with: "\\E\\\\*$0\\Q")
-        let objcEscaped = (isFile ? "" : "\\S*?") + sourceRegex.escaping("' ")
-        var regexp = " -(?:primary-file|c(?<! -frontend -c)) (?:\\\\?\"(\(swiftEscaped))\\\\?\"|(\(objcEscaped))) "
+        let sourceRegex = isFile ?
+            #"\Q\#(classNameOrFile)\E"# : #"/\#(classNameOrFile)\.\w+"#
+        let swiftEscaped = (isFile ? "" : #"[^"]*?"#) + sourceRegex.escaping("'$", with: #"\E\\*$0\Q"#)
+        let objcEscaped = (isFile ? "" :
+            #"(?:/(?:[^/\\]*\\.)*[^/\\ ]+)+"#) +
+            sourceRegex.escaping("' {}()&*")
+        var regexp = #" -(?:primary-file|c(?<! -frontend -c)) (?:\\?"(\#(swiftEscaped))\\?"|(\#(objcEscaped))) "#
+
+//        print(regexp)
 
         // messy but fast
         guard shell(command: """
             # search through build logs, most recent first
-            for log in `ls -t "\(logsDir.path)/"*.xcactivitylog`; do
+            cd "\(logsDir.path.escaping("$"))"
+            for log in `ls -t *.xcactivitylog`; do
                 #echo "Scanning $log"
                 /usr/bin/env perl <(cat <<'PERL'
                     use JSON::PP;
@@ -551,7 +575,7 @@ public class SwiftEval: NSObject {
 //            // escape ( & ) outside quotes
 //            .replacingOccurrences(of: "[()](?=(?:(?:[^\"]*\"){2})*[^\"]$)", with: "\\\\$0", options: [.regularExpression])
             // (logs of new build system escape ', $ and ")
-            .replacingOccurrences(of: "\\\\([\"'\\\\])", with: "$1", options: [.regularExpression])
+            .replacingOccurrences(of: #"\\([\"'\\])"#, with: "$1", options: [.regularExpression])
             // pch file may no longer exist
             .replacingOccurrences(of: " -pch-output-dir \\S+ ", with: " ", options: [.regularExpression])
 
@@ -571,14 +595,16 @@ public class SwiftEval: NSObject {
             throw evalError("Regexp parse error: \(error) -- \(regexp)")
         }
 
-        guard let matches = fileExtractor.firstMatch(in: compileCommand, options: [],
-                                                     range: NSMakeRange(0, compileCommand.utf16.count)),
-            let sourceFile = compileCommand[matches.range(at: 1)] ??
+        guard let matches = fileExtractor
+            .firstMatch(in: compileCommand, options: [],
+                        range: NSMakeRange(0, compileCommand.utf16.count)),
+            var sourceFile = compileCommand[matches.range(at: 1)] ??
                              compileCommand[matches.range(at: 2)] else {
             throw evalError("Could not locate source file \(compileCommand) -- \(regexp)")
         }
 
-        return (compileCommand, sourceFile.replacingOccurrences(of: "\\$", with: "$"))
+        sourceFile = actualCase(path: sourceFile.unescape()) ?? sourceFile
+        return (compileCommand, sourceFile)
     }
 
     func getAppCodeDerivedData(procPath: String) -> String {
