@@ -318,7 +318,7 @@ public class SwiftEval: NSObject {
             .compactMap({ compileCommand[$0.range(at: 1)] }) {
             let unescaped = filepath.unescape()
             if let normalised = actualCase(path: unescaped) {
-                let escaped = normalised.escaping("' ${}()&*")
+                let escaped = normalised.escaping("' ${}()&*~")
                 if filepath != escaped {
                     print("""
                             💉 Mapped: \(filepath)
