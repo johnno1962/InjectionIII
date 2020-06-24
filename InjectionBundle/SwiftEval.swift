@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#125 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#126 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -630,8 +630,9 @@ public class SwiftEval: NSObject {
 
         let components = pathSelector.replacingOccurrences(of: "AppCode", with: "").components(separatedBy: ".")
         guard components.count == 2 else { return defaultPath }
+        let component0 = components[0]
 
-        guard let realYear = Int(components[0]) else { return defaultPath }
+        guard let realYear = Int(component0) else { return defaultPath }
         return derivedDataPath(realYear, pathSelector)
     }
 

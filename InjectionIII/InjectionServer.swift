@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#6 $
+//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#7 $
 //
 
 let XcodeBundleID = "com.apple.dt.Xcode"
@@ -37,7 +37,7 @@ public class InjectionServer: SimpleSocket {
     }
 
     @objc override public func runInBackground() {
-        write(NSHomeDirectory())
+        write(NSTemporaryDirectory())
 
         var candiateProjectFile = appDelegate.selectedProject
 //        var MAS = false
