@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#125 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#128 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -406,7 +406,7 @@ public class SwiftEval: NSObject {
 
         if signer != nil {
             guard signer!("\(tmpfile).dylib") else {
-                throw evalError("Codesign failed")
+                throw evalError("Codesign failed. If you are using macOS 11 (Big Sur), Please download a new release from https://github.com/johnno1962/InjectionIII/releases")
             }
         }
         else {
