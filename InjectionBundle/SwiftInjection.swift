@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#57 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#59 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -97,6 +97,8 @@ public class SwiftInjection: NSObject {
         return injectionNumber
     }
 
+    static var interposed = [UnsafeMutableRawPointer: UnsafeMutableRawPointer]()
+
     @objc
     public class func inject(tmpfile: String) throws {
         let newClasses = try SwiftEval.instance.loadAndInject(tmpfile: tmpfile)
@@ -120,11 +122,12 @@ public class SwiftInjection: NSObject {
             let newSwiftCondition = classMetadata.pointee.Data & 0x3 != 0
             let isSwiftClass = newSwiftCondition || oldSwiftCondition
             if isSwiftClass {
-              // Swift equivalent of Swizzling
+                // Old mechanism for Swift equivalent of "Swizzling".
                 if classMetadata.pointee.ClassSize != existingClass.pointee.ClassSize {
                     print("💉 ⚠️ Adding or removing methods on Swift classes is not supported. Your application will likely crash. ⚠️")
                 }
 
+                if false { // replaced by "interpose" code below
                 func byteAddr<T>(_ location: UnsafeMutablePointer<T>) -> UnsafeMutablePointer<UInt8> {
                     return location.withMemoryRebound(to: UInt8.self, capacity: 1) { $0 }
                 }
@@ -133,16 +136,61 @@ public class SwiftInjection: NSObject {
                 let vtableLength = Int(existingClass.pointee.ClassSize -
                     existingClass.pointee.ClassAddressPoint) - vtableOffset
 
-                print("💉 Injected '\(oldClass)'")
                 memcpy(byteAddr(existingClass) + vtableOffset,
                        byteAddr(classMetadata) + vtableOffset, vtableLength)
+                }
             }
+
+            print("💉 Injected '\(oldClass)'")
 
             if newClass.isSubclass(of: XCTestCase.self) {
                 testClasses.append(newClass)
 //                if ( [newClass isSubclassOfClass:objc_getClass("QuickSpec")] )
 //                [[objc_getClass("_TtC5Quick5World") sharedWorld]
 //                setCurrentExampleMetadata:nil];
+            }
+        }
+
+        // new mechanism for injection of Swift functions,
+        // using "interpose" API from dynamic loader along
+        // with -Xlinker -interposable other linker flags.
+
+        let main = dlopen(nil, RTLD_NOW)
+        var interposes = Array<dyld_interpose_tuple>()
+
+        for suffix in ["fC", "yF", "lF", "tF"] {
+            findSwiftFunctions("\(tmpfile).dylib", suffix) {
+                (loadedFunc, symbol) in
+                guard let original = dlsym(main, symbol) else { return }
+                let current = interposed[original] ?? original
+                let tuple = dyld_interpose_tuple(
+                    replacement: loadedFunc, replacee: current)
+                interposes.append(tuple)
+                interposed[original] = loadedFunc
+                interposed[current] = loadedFunc
+                print("💉 Interposing \(demangle(symbol)) \(tuple)")
+            }
+        }
+
+        interposes.withUnsafeBufferPointer {
+            interps in
+            var mostRecent = true
+            findImages { header in
+                if mostRecent {
+                    var previous = Array<dyld_interpose_tuple>()
+                    for (replacee, replacement) in interposed {
+                        previous.append(dyld_interpose_tuple(
+                                replacement: replacement, replacee: replacee))
+                    }
+                    previous.withUnsafeBufferPointer {
+                        interps in
+                        dyld_dynamic_interpose(header,
+                                           interps.baseAddress!, interps.count)
+                    }
+                    mostRecent = false
+                }
+                dyld_dynamic_interpose(header,
+                                       interps.baseAddress!, interps.count)
             }
         }
 
@@ -219,6 +267,22 @@ public class SwiftInjection: NSObject {
             let notification = Notification.Name("INJECTION_BUNDLE_NOTIFICATION")
             NotificationCenter.default.post(name: notification, object: oldClasses)
         }
+    }
+
+    public class func demangle(_ mangledNameUTF8: UnsafePointer<Int8>) -> String {
+        let demangledNamePtr = _stdlib_demangleImpl(
+            mangledName: mangledNameUTF8,
+            mangledNameLength: UInt(strlen(mangledNameUTF8)),
+            outputBuffer: nil,
+            outputBufferSize: nil,
+            flags: 0)
+
+        if let demangledNamePtr = demangledNamePtr {
+            let demangledName = String(cString: demangledNamePtr)
+            free(demangledNamePtr)
+            return demangledName
+        }
+        return String(cString: mangledNameUTF8)
     }
 
     @objc(vaccine:)
@@ -454,23 +518,7 @@ func _stdlib_demangleImpl(
     ) -> UnsafeMutablePointer<CChar>?
 
 public func _stdlib_demangleName(_ mangledName: String) -> String {
-    return mangledName.utf8CString.withUnsafeBufferPointer {
-        (mangledNameUTF8) in
-
-        let demangledNamePtr = _stdlib_demangleImpl(
-            mangledName: mangledNameUTF8.baseAddress,
-            mangledNameLength: UInt(mangledNameUTF8.count - 1),
-            outputBuffer: nil,
-            outputBufferSize: nil,
-            flags: 0)
-
-        if let demangledNamePtr = demangledNamePtr {
-            let demangledName = String(cString: demangledNamePtr)
-            free(demangledNamePtr)
-            return demangledName
-        }
-        return mangledName
-    }
+    return mangledName.withCString { SwiftInjection.demangle($0) }
 }
 #endif
 #endif
