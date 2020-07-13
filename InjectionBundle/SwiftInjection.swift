@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#59 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#60 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -127,7 +127,7 @@ public class SwiftInjection: NSObject {
                     print("💉 ⚠️ Adding or removing methods on Swift classes is not supported. Your application will likely crash. ⚠️")
                 }
 
-                if false { // replaced by "interpose" code below
+                #if false // replaced by "interpose" code below
                 func byteAddr<T>(_ location: UnsafeMutablePointer<T>) -> UnsafeMutablePointer<UInt8> {
                     return location.withMemoryRebound(to: UInt8.self, capacity: 1) { $0 }
                 }
@@ -138,7 +138,7 @@ public class SwiftInjection: NSObject {
 
                 memcpy(byteAddr(existingClass) + vtableOffset,
                        byteAddr(classMetadata) + vtableOffset, vtableLength)
-                }
+                #endif
             }
 
             print("💉 Injected '\(oldClass)'")
@@ -158,7 +158,7 @@ public class SwiftInjection: NSObject {
         let main = dlopen(nil, RTLD_NOW)
         var interposes = Array<dyld_interpose_tuple>()
 
-        for suffix in ["fC", "yF", "lF", "tF"] {
+        for suffix in ["fC", "yF", "lF", "tF", "Qrvg"] {
             findSwiftFunctions("\(tmpfile).dylib", suffix) {
                 (loadedFunc, symbol) in
                 guard let original = dlsym(main, symbol) else { return }

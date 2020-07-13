@@ -5,6 +5,8 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#74 $
+//
 
 #import "InjectionClient.h"
 
@@ -155,6 +157,13 @@ static struct {
             [SwiftEval sharedInstance].projectFile = projectFile;
             [SwiftEval sharedInstance].derivedLogs = nil;
             printf("💉 Injection connected 👍\n");
+            NSString *pbxFile = [projectFile
+                 stringByAppendingPathComponent:@"project.pbxproj"];
+            NSString *pbxContents = [NSString
+                 stringWithContentsOfFile:pbxFile
+                 encoding:NSUTF8StringEncoding error:NULL];
+            if (![pbxContents containsString:@"-interposable"])
+                printf("💉 Have you remembered to add \"-Xlinker -interposable\" to your project's \"Other Linker Flags\"?\n");
             break;
         }
         case InjectionWatching: {
