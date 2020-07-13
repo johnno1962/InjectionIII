@@ -10,7 +10,7 @@
 - (void)bsweep;
 @end
 
-// declare these here for while we wait for a modulemap
+// declare these here until we get round to a modulemap
 
 struct dyld_interpose_tuple {
   const void * _Nonnull replacement;
@@ -24,10 +24,16 @@ void dyld_dynamic_interpose(
     size_t count) __attribute__((weak_import));
 
 /// Find Swift functions and initializers with given suffix.
+#ifdef __cplusplus
+extern "C"
+#endif
 void findSwiftFunctions(const char * _Nonnull bundlePath,
                         const char * _Nonnull suffix,
                         void (^ _Nonnull callback)(void * _Nonnull func,
                                          const char * _Nonnull sym));
 
 /// Iterate over images injected or in the application bundle.
+#ifdef __cplusplus
+extern "C"
+#endif
 void findImages(void (^ _Nonnull callback)(const struct mach_header * _Nonnull header));

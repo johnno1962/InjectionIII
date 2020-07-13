@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#60 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#61 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -168,7 +168,7 @@ public class SwiftInjection: NSObject {
                 interposes.append(tuple)
                 interposed[original] = loadedFunc
                 interposed[current] = loadedFunc
-                print("💉 Interposing \(demangle(symbol)) \(tuple)")
+                print("💉 Replacing \(demangle(symbol))")
             }
         }
 

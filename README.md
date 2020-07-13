@@ -53,7 +53,7 @@ If you want to build this project from source (which you may need to do to use i
 
 ### Limitations
 
-This new release of InjectionIII works differently than previous versions in that you can now update the implementations of class, struct and enum methods (final or not) provided they have not been inlined which shouldn't be the case for a debug build.
+This new release of InjectionIII works differently than previous versions in that you can now update the implementations of class, struct and enum methods (final or not) provided they have not been inlined which shouldn't be the case for a debug build. You cannot alter the layout of a class or struct in the course of an injection i.e. add or rearrange properties or your app will likely crash. Also, see the notes below for injecting `SwiftUI` views and how they type erasure.
 
 If you are using Code Coverage, you will need to disable it or you may receive a:
 >	`Symbol not found: ___llvm_profile_runtime` error.`
@@ -72,21 +72,29 @@ logs of individual compiles available then switching `WMO` back on if it suits y
 
 Sometimes when you are iterating over a UI it is useful to be able to inject storyboards. This works slightly differently from code injection. To inject changes to a storyboard scene, make you changes than build the project instead of saving the storyboard. The "nib" of the currently displayed view controlled should be reloaded and viewDidLoad etc. will be called.
 
-### SwiftUI injection
+### SwiftUI Injection
 
-Single file SwiftUI interfaces can be injected to give you an interactive preview experience even if you don't have `macOS Catalina` installed. First, you need to add one of the bundle loading commands above to your AppDelegate. Then, add the following to the `#if DEBUG`'d preview section of the SwiftUI file you are injecting:
+It is possible to inject `SwiftUI` applications but if you add elements to an
+interface or use modifiers that change the type type it changes the return type
+of the view's body `Content` which will crash. To avoid this you just need to erase this
+type. The easiest way to do this is add the following extension to your source
+and use the modifier `.eraseToAnyView()` at the end of the declaration of
+any view's body you want to iterate over:
 
-```Swift
-class Refresher {
-    @objc class func injected() {
-        UIApplication.shared.windows.first?.rootViewController =
-            UIHostingController(rootView: ContentView())
+```
+extension View {
+    #if DEBUG
+    func eraseToAnyView() -> AnyView {
+        return AnyView(self)
     }
+    #else
+    func eraseToAnyView() -> some View {
+        return self
+    }
+    #endif
 }
 ```
-`ContentView()` in this code needs to be replaced with the same initial view as is used in your `SceneDelegate.swift` to initialise the `UIHostingController`. Even though ContentView is a struct and is therefore statically liked, if it is defined in the file being injected containing the `Refresher` class, the new implementation will take precedence when the interface reloads.
-
-With the new release, as structs can now be injected, you can now inject directly into your live `SwiftUI` app with some limitations. The changes you are injecting must not change the type of the ViewBuilder `body`. This means elements and modifiers cannot be added to a view but the parameters to elements can be changed and the view reloaded to see the changes take effect.
+After this, putting the final touches to your interface interactively on a fully live app works fine.
 
 ### Vaccine
 

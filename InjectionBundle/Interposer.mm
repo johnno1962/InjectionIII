@@ -5,10 +5,13 @@
 //  Created by John Holdsworth on 11/07/2020.
 //  Copyright © 2020 John Holdsworth. All rights reserved.
 //
+//  $Id: //depot/ResidentEval/InjectionBundle/Interposer.mm#5 $
+//
 
 #import <Foundation/Foundation.h>
+#import "XprobeSwift-Bridging-Header.h"
 
-// https://stackoverflow.com/questions/20481058/find-pathname-from-dlopen-handle-on-osx
+// thanks to https://stackoverflow.com/questions/20481058/find-pathname-from-dlopen-handle-on-osx
 
 #import <dlfcn.h>
 #import <mach-o/dyld.h>
@@ -29,9 +32,6 @@ typedef struct nlist nlist_t;
 typedef uint32_t sectsize_t;
 #define getsectdatafromheader_f getsectdatafromheader
 #endif
-
-extern "C" void findSwiftFunctions(const char *bundlePath, const char *suffix,
-                           void (^callback)(void *func, const char *sym));
 
 void findSwiftFunctions(const char *bundlePath, const char *suffix,
                         void (^callback)(void *func, const char *sym)) {
@@ -64,13 +64,14 @@ void findSwiftFunctions(const char *bundlePath, const char *suffix,
                     intptr_t file_slide = ((intptr_t)seg_linkedit->vmaddr - (intptr_t)seg_text->vmaddr) - seg_linkedit->fileoff;
                     const char *strings = (const char *)header + (symtab->stroff + file_slide);
                     nlist_t *sym = (nlist_t *)((intptr_t)header + (symtab->symoff + file_slide));
+                    size_t suffix_len = strlen(suffix);
 
                     for (uint32_t i = 0; i < symtab->nsyms; i++, sym++) {
                         const char *sptr = strings + sym->n_un.n_strx;
                         void *aFunc;
                         if (sym->n_type == 0xf &&
                             strncmp(sptr, "_$s", 3) == 0 &&
-                            strcmp(sptr+strlen(sptr)-strlen(suffix), suffix) == 0 &&
+                            strcmp(sptr+strlen(sptr)-suffix_len, suffix) == 0 &&
                             (aFunc = (void *)(sym->n_value + (intptr_t)header - (intptr_t)seg_text->vmaddr))) {
                             callback(aFunc, sptr+1);
                         }
@@ -81,13 +82,12 @@ void findSwiftFunctions(const char *bundlePath, const char *suffix,
                 }
             }
         }
+        NSLog(@"Unable to locate last loaded dylib %s c.f. %s",
+              bundlePath, imageName);
     }
 }
 
-extern "C"
-void findImages(void (^callback)(const void *header));
-
-void findImages(void (^callback)(const void *header)) {
+void findImages(void (^callback)(const struct mach_header *)) {
     for (int32_t i = _dyld_image_count()-1; i >= 0 ; i--) {
         const char *imageName = _dyld_get_image_name(i);
 //        NSLog(@"findImages: %s", imageName);
