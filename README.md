@@ -1,15 +1,15 @@
-# InjectionIII - overdue Swift4 rewrite of InjectionForXcode
+# InjectionIII - overdue Swift rewrite of InjectionForXcode
 
 ![Icon](http://johnholdsworth.com/Syringe_128.png)
 
-Code injection allows you to update the implementation of methods of a class incrementally
-in the iOS simulator without having to rebuild or restart your application saving the developer a significant amount of time.
+Code injection allows you to update the implementation of functions and any method of a class, struct or enum incrementally
+in the iOS simulator without having to rebuild or restart your application. This saves the developer a significant amount of time tweaking code or iterating over a design.
 This start-over implementation of [Injection for Xcode](https://github.com/johnno1962/injectionforxcode)
 has been built into a standalone app: `InjectionIII.app` which runs in the status bar and is [available from the Mac App Store](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12).
 
-`InjectionIII.app` expects to find your current Xcode at path `/Applications/Xcode.app` , works for `Swift` and `Objective-C` and can be used with [AppCode](https://www.jetbrains.com/objc/features/swift.html) but you need to have built your project using Xcode first to provide the logs used to determine how to compile the project.
+`InjectionIII.app` expects to find an Xcode 1.2 or greater at the path `/Applications/Xcode.app` , works for `Swift` and `Objective-C` and can be used with [AppCode](https://www.jetbrains.com/help/objc/create-a-swiftui-application.html).
 
-To use injection, download and run the app, then, all you need to add one of the following to your application delegate's `applicationDidFinishLaunching:`
+To use injection, download and run the app and you must add "-Xlinker -interposable" to your project's "Other Linker Flags" for the debug target. Then, add one of the following to your application delegate's `applicationDidFinishLaunching:`
 
 Xcode 10.2 and later (Swift 5+):
 
@@ -18,26 +18,22 @@ Xcode 10.2 and later (Swift 5+):
 Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle")?.load()
 //for tvOS:
 Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/tvOSInjection.bundle")?.load()
-//Or for macOS:
-Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/macOSInjection.bundle")?.load()
 #endif
 ```
 
 Adding one of these lines loads a bundle included in the `InjectionIII.app`'s
-resources which connects over a localhost socket to the macOS app.
-Once injection is connected, you'll be prompted to select the project directory for the app you wish to inject. This starts a `file watcher` in the Mac app and whenever
-you save a Swift (or Objective-C) source in the project, the target app is messaged through the socket to compile, link, dynamically load and update the implementation of _classes_ in the file being injected. 
+resources which connects over a localhost socket to the InjectionII app which runs on the task bar.
+Once injection is connected, you'll be prompted to select the project directory for the app you wish to inject. This starts a `file watcher` in the Mac app so whenever
+you save a Swift (or Objective-C) source in the project, the target app is messaged through the socket to compile, link, dynamically load and update the implementation of methods in the file being injected. 
 The file watcher can be disabled & enabled while the app is running using the status bar menu and
-if the file watcher is disabled you can still force injections through manually using a hotkey `ctrl-=` (remember to save the file first!)
+when the file watcher is disabled you can still force injections through manually using a hotkey `ctrl-=` (remember to save the file first!)
 If you inject a subclass of `XCTest` it will try running that individual test inside your application provided it does not require test specific support code.
 When you run your application without rebuilding (^⌘R), recent injections will be re-applied.
-
-If you get an error from the compiler saying your source file is not found this is typically due to upper/lower case differences as with the injection build filenames are case sensitive. The easiest way to resolve this is to remove and re-add the file concerned to your project and rebuild. 
 
 To detect when a class has been injected in your code (to reload a view controller for example) add an `@objc func
 injected()` class or instance method.  The instance `@objc
 func injected()` method relies on a "sweep" of all objects in your application to find those of
-the class you have just injected which can be unreliable when using `unowned` instance variables in particular. If you encounter problems, subscribe to the `"INJECTION_BUNDLE_NOTIFICATION"` instead.
+the class you have just injected which can be unreliable when using `unowned` instance variables. If you encounter problems, subscribe to the `"INJECTION_BUNDLE_NOTIFICATION"` instead.
 
 If your project is organised across multiple directories, after you have selected the main project, you can add directories to be watched for file changes using the "Add Directory"
 menu item. This list resets when you select a new project.
@@ -45,8 +41,7 @@ menu item. This list resets when you select a new project.
 Included in this release is "Xprobe" which allows you to browse the objects in
 your application through a web-like interface and execute code against them.
 
-If you want to build this project
-from source you'll need to use:
+If you want to build this project from source (which you may need to do to use injection with macOS apps) you'll need to use:
 
     git clone https://github.com/johnno1962/InjectionIII --recurse-submodules
     
@@ -58,18 +53,14 @@ from source you'll need to use:
 
 ### Limitations
 
-To work, [method dispatch](https://www.raizlabs.com/dev/2016/12/swift-method-dispatch/)
-must be through the class' "vtable" and not be "direct" i.e. statically linked. This means
-injection will not work for final methods or methods in final classes or structs. Injecting a file containing protocol definitions will likely not work.
-
-The App Tracing functionality uses the trampoline implementation from [this project](https://github.com/OliverLetterer/imp_implementationForwardingToSelector)
+This new release of InjectionIII works differently than previous versions in that you can now update the implementations of class, struct and enum methods (final or not) provided they have not been inlined which shouldn't be the case for a debug build.
 
 If you are using Code Coverage, you will need to disable it or you may receive a:
 >	`Symbol not found: ___llvm_profile_runtime` error.`
 
 Go to `Edit Scheme -> Test -> Options -> Code Coverage` and (temporarily) disable.
 
-Be mindful of global state -- If the file you're injecting has non instance-level variables e.g. singletons, static or global vars
+Be mindful of global state -- If the file you're injecting has top level variables e.g. singletons, static or global vars
 they will be reset when you inject the code as the new method implementations will refer to the newly loaded
 version of the class.
 
@@ -83,7 +74,7 @@ Sometimes when you are iterating over a UI it is useful to be able to inject sto
 
 ### SwiftUI injection
 
-Single file SwiftUI interfaces can be injected to give you an interactive preview experience even if you don't have `macOS Catalina` installed. First, you need to add one of the bundle loading commands above to your AppDelegate. Then, add the following to the #if DEbUD'd preview section of the SwiftUI file you are injecting:
+Single file SwiftUI interfaces can be injected to give you an interactive preview experience even if you don't have `macOS Catalina` installed. First, you need to add one of the bundle loading commands above to your AppDelegate. Then, add the following to the `#if DEBUG`'d preview section of the SwiftUI file you are injecting:
 
 ```Swift
 class Refresher {
@@ -95,6 +86,8 @@ class Refresher {
 ```
 `ContentView()` in this code needs to be replaced with the same initial view as is used in your `SceneDelegate.swift` to initialise the `UIHostingController`. Even though ContentView is a struct and is therefore statically liked, if it is defined in the file being injected containing the `Refresher` class, the new implementation will take precedence when the interface reloads.
 
+With the new release, as structs can now be injected, you can now inject directly into your live `SwiftUI` app with some limitations. The changes you are injecting must not change the type of the ViewBuilder `body`. This means elements and modifiers cannot be added to a view but the parameters to elements can be changed and the view reloaded to see the changes take effect.
+
 ### Vaccine
 
 Injection now includes the higher level `Vaccine` functionality, for more information consult the [project README](https://github.com/zenangst/Vaccine) or one of the [following](https://medium.com/itch-design-no/code-injection-in-swift-c49be095414c) [references](https://medium.com/@robnorback/the-secret-to-1-second-compile-times-in-xcode-9de4ec8345a1).
@@ -103,7 +96,7 @@ Injection now includes the higher level `Vaccine` functionality, for more inform
 
 The InjectionIII menu contains an item "Trace" which can be used to enable logging of all Objective-C and non-final Swift class method calls. This feature is experimental. Selecting the menu item again will turn the feature back off.
 
-If you want finer grain control of what is being traced, include the following file in your project's bridging header and the internal api will be availble to swift (after an injection bundle has been loaded):
+If you want finer grain control of what is being traced, include the following file in your project's bridging header and the internal api will be available to Swift (after an injection bundle has been loaded):
 
 ```C++
 #import "/Applications/InjectionIII.app/Contents/Resources/SwiftTrace.h"
@@ -123,7 +116,7 @@ To use, add an Objective-C class to your project and `#import` its header file i
 
 Finally, include the following in your application's initialisation (replace
 `192.168.1.14` with the IPV4 network address of your development 
-machine or your collegue's machine you would like to project your device 
+machine or your colleague's machine you would like to project your device 
 onto if they are running InjectionIII.) You can also use a machine's hostname
 (shown in Preferences/Sharing):
 
@@ -184,11 +177,6 @@ The code works by adding an extension to your class source containing the expres
 It then compiles and loads this new version of the class "swizzling" this extension onto
 the original class. The expression can refer to instance members in the class containing
 the eval class and global variables & functions  in other class sources.
-
-The command to rebuild the class containing the eval is parsed out of the logs of the last
-build of your application and the resulting object file linked into a dynamic library for
-loading. In the simulator, it was just not possible to codesign a dylib so you have to
-be running a small server "'signer", included in this project to do this alas.
 
 ### Acknowledgements:
 
