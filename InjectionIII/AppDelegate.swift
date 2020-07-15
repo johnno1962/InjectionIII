@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#12 $
+//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#15 $
 //
 
 import Cocoa
@@ -113,6 +113,13 @@ class AppDelegate : NSObject, NSApplicationDelegate {
             defaults.set(url.path, forKey: lastWatched)
             return true
         }
+
+        let alert: NSAlert = NSAlert()
+        alert.messageText = "Injection"
+        alert.informativeText = "Please select a directory with either a .xcworkspace or .xcodeproj file, below which, are the files you wish to inject."
+        alert.alertStyle = NSAlert.Style.warning
+        alert.addButton(withTitle: "OK")
+        _ = alert.runModal()
 
         return false
     }

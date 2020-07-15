@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#61 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#62 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -158,25 +158,35 @@ public class SwiftInjection: NSObject {
         let main = dlopen(nil, RTLD_NOW)
         var interposes = Array<dyld_interpose_tuple>()
 
+        // Find all definitions of Swift functions and ...
+        // SwiftUI body properties defined in the new dylib.
         for suffix in ["fC", "yF", "lF", "tF", "Qrvg"] {
             findSwiftFunctions("\(tmpfile).dylib", suffix) {
                 (loadedFunc, symbol) in
-                guard let original = dlsym(main, symbol) else { return }
-                let current = interposed[original] ?? original
+                guard let existing = dlsym(main, symbol) else { return }
+                // has this symbol already been interposed?
+                let current = interposed[existing] ?? existing
                 let tuple = dyld_interpose_tuple(
                     replacement: loadedFunc, replacee: current)
                 interposes.append(tuple)
-                interposed[original] = loadedFunc
+                // record functions that have beeen interposed
+                interposed[existing] = loadedFunc
                 interposed[current] = loadedFunc
                 print("💉 Replacing \(demangle(symbol))")
             }
         }
 
+        // Using array of new interpose structs
         interposes.withUnsafeBufferPointer {
             interps in
-            var mostRecent = true
+
+            var mostRecentlyLoaded = true
+            // Apply interposes to all images in the app bundle
+            // as well as the most recently loaded "new" dylib.
             findImages { header in
-                if mostRecent {
+                if mostRecentlyLoaded {
+                    // Need to apply all previous interposes
+                    // to the newly loaded dylib as well.
                     var previous = Array<dyld_interpose_tuple>()
                     for (replacee, replacement) in interposed {
                         previous.append(dyld_interpose_tuple(
@@ -187,8 +197,9 @@ public class SwiftInjection: NSObject {
                         dyld_dynamic_interpose(header,
                                            interps.baseAddress!, interps.count)
                     }
-                    mostRecent = false
+                    mostRecentlyLoaded = false
                 }
+                // patch out symbols defined by new dylib.
                 dyld_dynamic_interpose(header,
                                        interps.baseAddress!, interps.count)
             }
