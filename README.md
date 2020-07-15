@@ -53,7 +53,7 @@ If you want to build this project from source (which you may need to do to use i
 
 ### Limitations
 
-This new release of InjectionIII works differently than previous versions in that you can now update the implementations of class, struct and enum methods (final or not) provided they have not been inlined which shouldn't be the case for a debug build. You cannot alter the layout of a class or struct in the course of an injection i.e. add or rearrange properties or your app will likely crash. Also, see the notes below for injecting `SwiftUI` views and how they type erasure.
+This new release of InjectionIII works differently than previous versions in that you can now update the implementations of class, struct and enum methods (final or not) provided they have not been inlined which shouldn't be the case for a debug build. You cannot alter the layout of a class or struct in the course of an injection i.e. add or rearrange properties or your app will likely crash. Also, see the notes below for injecting `SwiftUI` views and how they require type erasure.
 
 If you are using Code Coverage, you will need to disable it or you may receive a:
 >	`Symbol not found: ___llvm_profile_runtime` error.`
@@ -82,9 +82,14 @@ and use the modifier `.eraseToAnyView()` at the end of the declaration of
 any view's body you want to iterate over:
 
 ```
+private var loadInjection = {
+    Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle")!.load()
+}()
+
 extension View {
     #if DEBUG
     func eraseToAnyView() -> AnyView {
+        _ = loadInjection
         return AnyView(self)
     }
     #else
@@ -95,6 +100,20 @@ extension View {
 }
 ```
 After this, putting the final touches to your interface interactively on a fully live app works fine.
+
+### macOS Injection
+
+It is possible to use injection with a macOS/Catalyst project but it is getting progressively more difficult
+with each release of the OS. Since Catalina you may need to download the sources and build InjectionIII
+yourself for injection of a macOS app to work. With Big Sur, the dynamic library that injection creates
+to inject also needs to be signed using the same identity as the app you are injecting. To specify the
+codesigning identity to use for a particular project type something like the following from the command line:
+
+```
+$ defaults write com.johnholdsworth.InjectionIII '/full/path/to/project/file.xcodeproj' CEE8F2FCE31A71EE5207F70F87D184C826844DC0
+```
+... replacing `CEE8F2FCE31A71EE5207F70F87D184C826844DC0` with the identity used to sign the
+app which you can extract from the -sign argument in the `Sign` step in the Xcode build logs, 
 
 ### Vaccine
 

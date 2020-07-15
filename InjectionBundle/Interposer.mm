@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 11/07/2020.
 //  Copyright © 2020 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/Interposer.mm#5 $
+//  $Id: //depot/ResidentEval/InjectionBundle/Interposer.mm#7 $
 //
 
 #import <Foundation/Foundation.h>
@@ -87,11 +87,13 @@ void findSwiftFunctions(const char *bundlePath, const char *suffix,
     }
 }
 
-void findImages(void (^callback)(const struct mach_header *)) {
+void findImages(void (^callback)(const char *sym, const struct mach_header *)) {
     for (int32_t i = _dyld_image_count()-1; i >= 0 ; i--) {
         const char *imageName = _dyld_get_image_name(i);
 //        NSLog(@"findImages: %s", imageName);
-        if (strstr(imageName, "/Containers/") || strstr(imageName, "/T/eval"))
-            callback(_dyld_get_image_header(i));
+        if (strstr(imageName, "/Containers/") ||
+            strstr(imageName, ".app/Contents/MacOS/") ||
+            strstr(imageName, "/T/eval"))
+            callback(imageName, _dyld_get_image_header(i));
     }
 }

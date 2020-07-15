@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#130 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#131 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -705,78 +705,65 @@ public class SwiftEval: NSObject {
         let commandFile = "\(tmpDir)/command.sh"
         try! command.write(toFile: commandFile, atomically: false, encoding: .utf8)
         debug(command)
-
-        #if os(iOS) || os(tvOS)
         return runner.run(script: commandFile)
-        #else
-        let task = Process()
-        task.launchPath = "/bin/bash"
-        task.arguments = ["-c", command]
-        task.launch()
-        task.waitUntilExit()
-        return task.terminationStatus == EXIT_SUCCESS
-        #endif
     }
 
-    #if os(iOS) || os(tvOS)
     let runner = ScriptRunner()
-    #endif
-}
 
-#if os(iOS) || os(tvOS)
-class ScriptRunner {
-    let commandsOut: UnsafeMutablePointer<FILE>
-    let statusesIn: UnsafeMutablePointer<FILE>
+    class ScriptRunner {
+        let commandsOut: UnsafeMutablePointer<FILE>
+        let statusesIn: UnsafeMutablePointer<FILE>
 
-    init() {
-        let ForReading = 0, ForWriting = 1
-        var commandsPipe = [Int32](repeating: 0, count: 2)
-        var statusesPipe = [Int32](repeating: 0, count: 2)
-        pipe(&commandsPipe)
-        pipe(&statusesPipe)
+        init() {
+            let ForReading = 0, ForWriting = 1
+            var commandsPipe = [Int32](repeating: 0, count: 2)
+            var statusesPipe = [Int32](repeating: 0, count: 2)
+            pipe(&commandsPipe)
+            pipe(&statusesPipe)
 
-        if fork() == 0 {
-            let commandsIn = fdopen(commandsPipe[ForReading], "r")
-            let statusesOut = fdopen(statusesPipe[ForWriting], "w")
-            var buffer = [Int8](repeating: 0, count: 4096)
+            if fork() == 0 {
+                let commandsIn = fdopen(commandsPipe[ForReading], "r")
+                let statusesOut = fdopen(statusesPipe[ForWriting], "w")
+                var buffer = [Int8](repeating: 0, count: 4096)
 
-            close(commandsPipe[ForWriting])
-            close(statusesPipe[ForReading])
-            setbuf(statusesOut, nil)
+                close(commandsPipe[ForWriting])
+                close(statusesPipe[ForReading])
+                setbuf(statusesOut, nil)
 
-            while let script = fgets(&buffer, Int32(buffer.count), commandsIn) {
-                script[strlen(script)-1] = 0
+                while let script = fgets(&buffer, Int32(buffer.count), commandsIn) {
+                    script[strlen(script)-1] = 0
 
-                let pid = fork()
-                if pid == 0 {
-                    var argv = [UnsafeMutablePointer<Int8>?](repeating: nil, count: 3)
-                    argv[0] = strdup("/bin/bash")!
-                    argv[1] = strdup(script)!
-                    _ = execve(argv[0], &argv, nil)
-                    fatalError("execve() fails \(String(cString: strerror(errno)))")
+                    let pid = fork()
+                    if pid == 0 {
+                        var argv = [UnsafeMutablePointer<Int8>?](repeating: nil, count: 3)
+                        argv[0] = strdup("/bin/bash")!
+                        argv[1] = strdup(script)!
+                        _ = execve(argv[0], &argv, nil)
+                        fatalError("execve() fails \(String(cString: strerror(errno)))")
+                    }
+
+                    var status: Int32 = 0
+                    while waitpid(pid, &status, 0) == -1 {}
+                    fputs("\(status >> 8)\n", statusesOut)
                 }
 
-                var status: Int32 = 0
-                while waitpid(pid, &status, 0) == -1 {}
-                fputs("\(status >> 8)\n", statusesOut)
+                exit(0)
             }
 
-            exit(0)
+            commandsOut = fdopen(commandsPipe[ForWriting], "w")
+            statusesIn = fdopen(statusesPipe[ForReading], "r")
+
+            close(commandsPipe[ForReading])
+            close(statusesPipe[ForWriting])
+            setbuf(commandsOut, nil)
         }
 
-        commandsOut = fdopen(commandsPipe[ForWriting], "w")
-        statusesIn = fdopen(statusesPipe[ForReading], "r")
-
-        close(commandsPipe[ForReading])
-        close(statusesPipe[ForWriting])
-        setbuf(commandsOut, nil)
-    }
-
-    func run(script: String) -> Bool {
-        fputs("\(script)\n", commandsOut)
-        var buffer = [Int8](repeating: 0, count: 10)
-        fgets(&buffer, Int32(buffer.count), statusesIn)
-        return buffer[0] == "0".utf8.first!
+        func run(script: String) -> Bool {
+            fputs("\(script)\n", commandsOut)
+            var buffer = [Int8](repeating: 0, count: 10)
+            fgets(&buffer, Int32(buffer.count), statusesIn)
+            return buffer[0] == "0".utf8.first!
+        }
     }
 }
 
@@ -784,5 +771,4 @@ class ScriptRunner {
 func fork() -> Int32
 @_silgen_name("execve")
 func execve(_ __file: UnsafePointer<Int8>!, _ __argv: UnsafePointer<UnsafeMutablePointer<Int8>?>!, _ __envp: UnsafePointer<UnsafeMutablePointer<Int8>?>!) -> Int32
-#endif
 #endif

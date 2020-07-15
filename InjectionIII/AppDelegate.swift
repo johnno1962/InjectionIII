@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#15 $
+//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#17 $
 
 import Cocoa
 
@@ -40,6 +40,15 @@ class AppDelegate : NSObject, NSApplicationDelegate {
 
     @objc func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
+        if time(nil) > 1609369200 {
+            let alert: NSAlert = NSAlert()
+            alert.messageText = "Injection Error"
+            alert.informativeText = "This pre-release version has expired. Please download a new copy from https://github.com/johnno1962/InjectionIII/releases"
+            alert.alertStyle = NSAlert.Style.warning
+            alert.addButton(withTitle: "Quit")
+            _ = alert.runModal()
+            exit(1)
+        }
         appDelegate = self
         InjectionServer.startServer(INJECTION_ADDRESS)
 
@@ -271,7 +280,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     }
 
     @IBAction func help(_ sender: Any) {
-        _ = NSWorkspace.shared.open(URL(string: "https://github.com/johnno1962/InjectionIII")!)
+        _ = NSWorkspace.shared.open(URL(string: "https://github.com/johnno1962/InjectionIII/tree/big-changes-ahead")!)
     }
 
     @objc

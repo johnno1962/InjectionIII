@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#62 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#63 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -183,7 +183,7 @@ public class SwiftInjection: NSObject {
             var mostRecentlyLoaded = true
             // Apply interposes to all images in the app bundle
             // as well as the most recently loaded "new" dylib.
-            findImages { header in
+            findImages { image, header in
                 if mostRecentlyLoaded {
                     // Need to apply all previous interposes
                     // to the newly loaded dylib as well.
@@ -202,6 +202,7 @@ public class SwiftInjection: NSObject {
                 // patch out symbols defined by new dylib.
                 dyld_dynamic_interpose(header,
                                        interps.baseAddress!, interps.count)
+//                print("Patched \(String(cString: image))")
             }
         }
 

@@ -36,4 +36,4 @@ void findSwiftFunctions(const char * _Nonnull bundlePath,
 #ifdef __cplusplus
 extern "C"
 #endif
-void findImages(void (^ _Nonnull callback)(const struct mach_header * _Nonnull header));
+void findImages(void (^ _Nonnull callback)(const char * _Nonnull imageName, const struct mach_header * _Nonnull header));
