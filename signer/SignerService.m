@@ -11,11 +11,12 @@
 @implementation SignerService
 
 + (BOOL)codesignDylib:(NSString *)dylib identity:(NSString *)identity {
+    static NSString *adhocSign = @"-";
     NSString *command = [NSString stringWithFormat:@""
                          "(export CODESIGN_ALLOCATE=/Applications/Xcode.app"
                          "/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/codesign_allocate; "
                          "/usr/bin/codesign --force -s \"%@\" \"%@\")",
-                         identity ?: @"-", dylib];
+                         identity ?: adhocSign, dylib];
     return system(command.UTF8String) >> 8 == EXIT_SUCCESS;
 }
 

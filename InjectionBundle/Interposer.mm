@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 11/07/2020.
 //  Copyright © 2020 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/Interposer.mm#7 $
+//  $Id: //depot/ResidentEval/InjectionBundle/Interposer.mm#8 $
 //
 
 #import <Foundation/Foundation.h>
@@ -92,7 +92,7 @@ void findImages(void (^callback)(const char *sym, const struct mach_header *)) {
         const char *imageName = _dyld_get_image_name(i);
 //        NSLog(@"findImages: %s", imageName);
         if (strstr(imageName, "/Containers/") ||
-            strstr(imageName, ".app/Contents/MacOS/") ||
+            strstr(imageName, ".app/Contents/") ||
             strstr(imageName, "/T/eval"))
             callback(imageName, _dyld_get_image_header(i));
     }
