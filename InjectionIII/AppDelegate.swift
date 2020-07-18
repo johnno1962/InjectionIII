@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#17 $
+//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#19 $
 
 import Cocoa
 
@@ -280,7 +280,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     }
 
     @IBAction func help(_ sender: Any) {
-        _ = NSWorkspace.shared.open(URL(string: "https://github.com/johnno1962/InjectionIII/tree/big-changes-ahead")!)
+        _ = NSWorkspace.shared.open(URL(string: "https://github.com/johnno1962/InjectionIII")!)
     }
 
     @objc
