@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#6 $
+//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#11 $
 //
 
 let XcodeBundleID = "com.apple.dt.Xcode"
@@ -37,7 +37,7 @@ public class InjectionServer: SimpleSocket {
     }
 
     @objc override public func runInBackground() {
-        write(NSHomeDirectory())
+        write(NSTemporaryDirectory())
 
         var candiateProjectFile = appDelegate.selectedProject
 //        var MAS = false
@@ -223,7 +223,11 @@ public class InjectionServer: SimpleSocket {
                 pause = NSDate.timeIntervalSinceReferenceDate + Double(readString() ?? "0.0")!
                 break
             case .sign:
-                let signedOK = SignerService.codesignDylib(readString()!)
+                let identity = UserDefaults.standard.string(forKey: projectFile)
+                if identity != nil {
+                    NSLog("Signing with identity: \(identity!)")
+                }
+                let signedOK = SignerService.codesignDylib(readString()!, identity:identity)
                 sendCommand(.signed, with: signedOK ? "1": "0")
                 break
             case .error:
