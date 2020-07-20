@@ -13,7 +13,7 @@ has been built into a standalone app: `InjectionIII.app` which runs in the statu
 
 ### Getting Started
 
-To use injection, download and run the app and you must add `"-Xlinker -interposable"` to your project's `"Other Linker Flags"` for the Debug target. Then, add one of the following to your application delegate's `applicationDidFinishLaunching:`
+To use injection, download and run the app and you must add `"-Xlinker -interposable"` to your project's `"Other Linker Flags"` for the Debug target qualified by the simulator SDK (to avoid complications with bitcode). Then, add one of the following to your application delegate's `applicationDidFinishLaunching:`
 
 Xcode 10.2 and later (Swift 5+):
 
