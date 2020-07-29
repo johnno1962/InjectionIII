@@ -55,9 +55,10 @@ If you want to build this project from source (which you may need to do to use i
     
 ### Available downloads
 
-| Xcode 10.2+ | Big Sur (Beta) |
-| ------------- | ------------- |
+| Xcode 10.2+ | Big Sur (Beta) | AppCode |
+| ------------- | ------------- | ------------- |
 | [Mac app store](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12) | [Release Candidate](https://github.com/johnno1962/InjectionIII/releases) |
+[Install  Injection.jar](https://github.com/johnno1962/InjectionIII/tree/master/InjectionPluginAppCode) |
 
 ### Limitations
 

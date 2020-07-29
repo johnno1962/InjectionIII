@@ -1,0 +1,46 @@
+<idea-plugin version="2">
+  <id>com.injectionforxcode.injection.plugin.id</id>
+  <name>InjectionIII for AppCode</name>
+  <version>4.0</version>
+  <vendor email="support@injectionforxcode.com" url="https://github.com/johnno1962/InjectionIII">Injection for Xcode</vendor>
+
+  <description><![CDATA[
+      Dynamic Swift Code Injection for App Code.<br>
+      <small>Requires InjectionIII from Mac App Store to work.</small>
+      ]]></description>
+
+  <change-notes><![CDATA[
+      Initial Release.<br>
+      ]]>
+  </change-notes>
+
+  <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Build+Number+Ranges for description -->
+  <idea-version since-build="107.105"/>
+
+  <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
+       on how to target different products -->
+  <!-- uncomment to enable plugin in all products -->
+  <depends>com.intellij.modules.lang</depends>
+
+  <application-components>
+    <!-- Add your application components here -->
+  </application-components>
+
+  <project-components>
+    <!-- Add your project components here -->
+  </project-components>
+
+  <actions>
+    <!-- Add your actions here -->
+      <group id="MyPlugin.SampleMenu" text="_Sample Menu" description="Sample menu">
+          <add-to-group group-id="RunMenu" anchor="last"/>
+      <action id="Injection.Inject" class="com.injectionforxcode.InjectionAction" text="Inject Source" description="Inject Source">
+          <keyboard-shortcut keymap="$default" first-keystroke="meta EQUALS"/>
+      </action>
+      </group>
+  </actions>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Add your extensions here -->
+  </extensions>
+</idea-plugin>
