@@ -9,7 +9,7 @@ has been built into a standalone app: `InjectionIII.app` which runs in the statu
 
 ![Icon](http://johnholdsworth.com/InjectionUI.gif)
 
-`InjectionIII.app` needs an Xcode 10.2 or greater at the path `/Applications/Xcode.app` , works for `Swift` and `Objective-C` and can be used with [AppCode](https://www.jetbrains.com/help/objc/create-a-swiftui-application.html).
+`InjectionIII.app` needs an Xcode 10.2 or greater at the path `/Applications/Xcode.app` , works for `Swift` and `Objective-C` and can be used alongside [AppCode](https://www.jetbrains.com/help/objc/create-a-swiftui-application.html) or by using the [AppCode Plugin](https://github.com/johnno1962/InjectionIII/blob/master/AppCodePlugin/INSTALL.md).
 
 ### Getting Started
 
@@ -55,9 +55,9 @@ If you want to build this project from source (which you may need to do to use i
     
 ### Available downloads
 
-| Xcode 10.2+ | Big Sur (Beta) | AppCode |
+| Xcode 10.2+ | Big Sur (Beta) | AppCode Plugin |
 | ------------- | ------------- | ------------- |
-| [Mac app store](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12) | [Release Candidate](https://github.com/johnno1962/InjectionIII/releases) | [Install  Injection.jar](https://github.com/johnno1962/InjectionIII/tree/master/InjectionPluginAppCode) |
+| [Mac app store](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12) | [Release Candidate](https://github.com/johnno1962/InjectionIII/releases) | [Install  Injection.jar](https://github.com/johnno1962/InjectionIII/tree/master/AppCodePlugin) |
 
 ### Limitations
 
