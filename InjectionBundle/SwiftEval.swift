@@ -13,7 +13,7 @@
 //  Used as the basis of a new version of Injection.
 //
 
-#if arch(x86_64) || arch(i386) // simulator/macOS only
+#if arch(x86_64) || arch(i386) || arch(arm64) // simulator/macOS only
 import Foundation
 
 private func debug(_ str: String) {
@@ -398,7 +398,7 @@ public class SwiftEval: NSObject {
         }
 
         guard shell(command: """
-            \(xcodeDev)/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch "\(arch)" -bundle \(osSpecific) -dead_strip -Xlinker -objc_abi_version -Xlinker 2 -fobjc-arc \(tmpfile).o -L "\(frameworks)" -F "\(frameworks)" -rpath "\(frameworks)" -o \(tmpfile).dylib >>\(logfile) 2>&1
+            \(xcodeDev)/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch "\(arch)" -bundle \(osSpecific) -dead_strip -Xlinker -objc_abi_version -Xlinker 2 -fobjc-arc -Xlinker -interposable \(tmpfile).o -L "\(frameworks)" -F "\(frameworks)" -rpath "\(frameworks)" -o \(tmpfile).dylib >>\(logfile) 2>&1
             """) else {
             throw evalError("Link failed, check \(tmpDir)/command.sh\n\(try! String(contentsOfFile: logfile))")
         }

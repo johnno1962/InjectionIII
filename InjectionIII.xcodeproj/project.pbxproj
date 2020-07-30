@@ -25,6 +25,7 @@
 		BB5D67B1244DA00C003AA7F4 /* SwiftInvoke.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67AB244DA00C003AA7F4 /* SwiftInvoke.swift */; };
 		BB5D67B2244DA00C003AA7F4 /* SwiftStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67AC244DA00C003AA7F4 /* SwiftStack.swift */; };
 		BB620E6824BA3F4B002FACC5 /* Interposer.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB620E6724BA3F4B002FACC5 /* Interposer.mm */; };
+		BB628E8C24D36767003B18A1 /* xt_forwarding_trampoline_arm64.s in Sources */ = {isa = PBXBuildFile; fileRef = BB628E8B24D36766003B18A1 /* xt_forwarding_trampoline_arm64.s */; };
 		BB6306FE1FCD1A410021D30C /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = BB6306FD1FCD1A410021D30C /* Credits.rtf */; };
 		BB76EA0822929E1100E454F0 /* SwiftTrace.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB76EA0522929E1100E454F0 /* SwiftTrace.mm */; };
 		BB76EA0922929E1100E454F0 /* SwiftTrace.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB76EA0622929E1100E454F0 /* SwiftTrace.swift */; };
@@ -150,6 +151,7 @@
 		BB6224671FC5B3B700AD7A3A /* mach_inject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mach_inject.h; sourceTree = "<group>"; };
 		BB6224681FC5B3B700AD7A3A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BB6224691FC5B3B700AD7A3A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		BB628E8B24D36766003B18A1 /* xt_forwarding_trampoline_arm64.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; name = xt_forwarding_trampoline_arm64.s; path = SwiftTrace/SwiftTraceGuts/xt_forwarding_trampoline_arm64.s; sourceTree = SOURCE_ROOT; };
 		BB6306F31FCD165F0021D30C /* DDHotKeyCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHotKeyCenter.h; sourceTree = "<group>"; };
 		BB6306F41FCD165F0021D30C /* DDHotKeyUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHotKeyUtilities.h; sourceTree = "<group>"; };
 		BB6306F51FCD16600021D30C /* DDHotKeyCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDHotKeyCenter.m; sourceTree = "<group>"; };
@@ -439,6 +441,7 @@
 				BB5D67AA244DA00B003AA7F4 /* SwiftMeta.swift */,
 				BB5D67AC244DA00C003AA7F4 /* SwiftStack.swift */,
 				BB76EA0722929E1100E454F0 /* xt_forwarding_trampoline_x64.s */,
+				BB628E8B24D36766003B18A1 /* xt_forwarding_trampoline_arm64.s */,
 			);
 			path = InjectionBundle;
 			sourceTree = "<group>";
@@ -699,6 +702,7 @@
 			files = (
 				BBCA02501FB107AF00E45F0F /* SwiftEval.swift in Sources */,
 				BB76EA0822929E1100E454F0 /* SwiftTrace.mm in Sources */,
+				BB628E8C24D36767003B18A1 /* xt_forwarding_trampoline_arm64.s in Sources */,
 				BD35949E21A6C5DE0020EB94 /* Vaccine.swift in Sources */,
 				BBCA02511FB107AF00E45F0F /* SwiftInjection.swift in Sources */,
 				BB5D67B1244DA00C003AA7F4 /* SwiftInvoke.swift in Sources */,

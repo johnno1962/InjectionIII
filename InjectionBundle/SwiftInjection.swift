@@ -11,7 +11,7 @@
 //  from SwiftEval.swift to recompile and reload class.
 //
 
-#if arch(x86_64) || arch(i386) // simulator/macOS only
+#if arch(x86_64) || arch(i386) || arch(arm64) // simulator/macOS only
 import Foundation
 import XCTest
 
@@ -176,8 +176,18 @@ public class SwiftInjection: NSObject {
             }
         }
 
+        var statics = Array<dyld_interpose_tuple>()
+//        for suffix in ["vau"] {
+//            findSwiftFunctions("\(tmpfile).dylib", suffix) {
+//                (acessor, symbol) in
+//                guard let existing = dlsym(main, symbol) else { return }
+//                statics.append(dyld_interpose_tuple(replacement: existing, replacee: acessor))
+//                print("💉 Reversing \((demangle(symbol), dyld_interpose_tuple(replacement: existing, replacee: acessor)))")
+//            }
+//        }
+
         // Using array of new interpose structs
-        interposes.withUnsafeBufferPointer {
+        (statics+interposes).withUnsafeBufferPointer {
             interps in
 
             var mostRecentlyLoaded = true
