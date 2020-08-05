@@ -925,6 +925,7 @@
 		BBCA020D1FB0F10400E45F0F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = InjectionIII/InjectionIII.entitlements;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
@@ -949,6 +950,7 @@
 		BBCA020E1FB0F10400E45F0F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = InjectionIII/InjectionIII.entitlements;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
@@ -973,6 +975,7 @@
 		BBCA02491FB1065D00E45F0F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -999,6 +1002,7 @@
 		BBCA024A1FB1065D00E45F0F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
