@@ -78,32 +78,55 @@ logs of individual compiles available then switching `WMO` back on if it suits y
 
 ### SwiftUI Injection
 
-It is possible to inject `SwiftUI` applications but if you add elements to an
-interface or use modifiers that change their type, this changes the type
-of the body properties' `Content` which causes a crash. To avoid this you need to erase the
-type. The easiest way to do this is add the following extension to your source
-and use the modifier `.eraseToAnyView()` at the very end of any declaration of
-a view's body property you want to iterate over:
+It is possible to inject `SwiftUI` applications but it is a little bit more involved 
+as if you add elements to an interface or use modifiers that change their type,
+this changes the type of the body properties' `Content` return value which causes a crash.
+To avoid this must erase the return type to always be `AnyView`. The easiest way to do this is to
+add the code below to your source somewhere and add the modifier 
+`.onInjection() { }` at the very end of any declaration of a view's body 
+property that you want to iterate over:
 
 ```Swift
+#if DEBUG
 private var loadInjection = {
     Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle")!.load()
 }()
 
+let injectionObserver = InjectionObserver()
+
 extension View {
-    #if DEBUG
-    func eraseToAnyView() -> AnyView {
+    func onInjection(bumpState: @escaping () -> ()) -> some View {
         _ = loadInjection
         return AnyView(self)
+            .onReceive(injectionObserver.publisher,
+                       perform: bumpState)
     }
-    #else
-    func eraseToAnyView() -> some View {
+}
+
+import Combine
+
+class InjectionObserver {
+    let publisher = PassthroughSubject<Void, Never>()
+    var cancellable: AnyCancellable? = nil
+    init() {
+        cancellable = NotificationCenter.default.publisher(for: 
+        	Notification.Name("INJECTION_BUNDLE_NOTIFICATION"))
+        	.sink { [weak self] change in
+            self?.publisher.send()
+        }
+    }
+}
+#else
+extension View {
+    func onInjection(bumpState: @escaping () -> ()) -> some View {
         return self
     }
-    #endif
 }
+#endif
 ```
-After this, you can put the final touches to your interface interactively on a fully live app.
+After this, you can put the final touches to your interface interactively on a fully
+live app. The closure passed to `onInjection()` can/should be used to
+bump the state of your view so that it redraws when you have injected.
 
 ### macOS Injection
 
