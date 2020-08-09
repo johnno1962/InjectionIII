@@ -78,14 +78,13 @@ logs of individual compiles available then switching `WMO` back on if it suits y
 
 ### SwiftUI Injection
 
-It is possible to inject `SwiftUI` applications but it requires some minor
+It is possible to inject `SwiftUI` interfaces but it requires some minor
 code changes. This is because when you add elements to an interface or
 use modifiers that change their type, this changes the return type of the
-body properties' `Content` which causes a crash. To avoid this all you
-need to do is erase the return type to always be `AnyView`. The easiest
-way  to do this is to add the code below to your source somewhere and
-add  the modifier  `.onInjection()` at the very end of any declaration
-of a view's body property that you want to iterate over:
+body properties' `Content` which causes a crash. To avoid this you need
+to erase the return type. The easiest way to do this is to add the code below
+to your source somewhere then add the modifier  `.eraseToAnyView()`  at
+the very end of any declaration of a view's body property that you want to inject:
 
 ```Swift
 #if DEBUG
@@ -97,44 +96,52 @@ import Combine
 
 let injectionObserver = InjectionObserver()
 
-class InjectionObserver {
-    let publisher = PassthroughSubject<Void, Never>()
+class InjectionObserver: ObservableObject {
+    @Published var injectionNumber = 0
     var cancellable: AnyCancellable? = nil
+    let publisher = PassthroughSubject<Void, Never>()
     init() {
         cancellable = NotificationCenter.default.publisher(for:
             Notification.Name("INJECTION_BUNDLE_NOTIFICATION"))
             .sink { [weak self] change in
+            self?.injectionNumber += 1
             self?.publisher.send()
         }
     }
 }
 
 extension View {
-    func onInjection(bumpState: @escaping () -> () = {}) -> some View {
+    func eraseToAnyView() -> some View {
         _ = loadInjection
-        return AnyView(self
+        return AnyView(self)
+    }
+    func onInjection(bumpState: @escaping () -> ()) -> some View {
+        return self
             .onReceive(injectionObserver.publisher, perform: bumpState)
-        )
+            .eraseToAnyView()
     }
 }
 #else
 extension View {
-    func onInjection(bumpState: @escaping () -> () = {}) -> some View {
+    func eraseToAnyView() -> some View { return self }
+    func onInjection(bumpState: @escaping () -> ()) -> some View {
         return self
     }
 }
 #endif
 ```
-To have the view you are working on redisplay automatically when it is injected, add the following modifers to the end of the body property:
 
+To have the view you are working on redisplay automatically when it is injected it's sufficient
+to add an `@ObservedObject`, initialised to the `injectionObserver` instance as follows:
 ```Swift
-        .id(reloadCounter)
-        .onInjection() { self.reloadCounter += 1 }
+        .eraseToAnyView()
     }
 
-    @State var reloadCounter = 0
+    @ObservedObject var iO = injectionObserver
 ```
-After this, you can put the final touches to your interface on a fully live app.
+
+If you'd like to execute some code each time your interface is injected use the 
+`.onInjection { ... }` modifier instead of .`eraseToAnyView()`.
 
 ### macOS Injection
 
@@ -152,7 +159,7 @@ app which you can extract from the -sign argument in the `Sign` step in the Xcod
 
 ### Storyboard injection
 
-Sometimes when you are iterating over a UI it is useful to be able to inject storyboards. This works slightly differently from code injection. To inject changes to a storyboard scene, make you changes than build the project instead of saving the storyboard. The "nib" of the currently displayed view controlled should be reloaded and viewDidLoad etc. will be called.
+Sometimes when you are iterating over a UI it is useful to be able to inject storyboards. This works slightly differently from code injection. To inject changes to a storyboard scene, make you changes then _build_ the project instead of saving the storyboard. The "nib" of the currently displayed view controlled should be reloaded and viewDidLoad etc. will be called.
 
 ### Vaccine
 
