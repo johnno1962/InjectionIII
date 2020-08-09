@@ -89,7 +89,7 @@ the very end of any declaration of a view's body property that you want to injec
 ```Swift
 #if DEBUG
 private var loadInjection = {
-    Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle")!.load()
+    Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle")?.load()
 }()
 
 import Combine
@@ -137,7 +137,9 @@ to add an `@ObservedObject`, initialised to the `injectionObserver` instance as 
         .eraseToAnyView()
     }
 
+    #if DEBUG
     @ObservedObject var iO = injectionObserver
+    #endif
 ```
 
 If you'd like to execute some code each time your interface is injected use the 
@@ -269,3 +271,5 @@ store edge paths so they can be colored (line 66 and 303) in "canviz-0.1/canviz.
 
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
+
+$Date: 2020/08/09 $
