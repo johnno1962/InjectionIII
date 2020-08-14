@@ -13,7 +13,7 @@ has been built into a standalone app: `InjectionIII.app` which runs in the statu
 
 ### Getting Started
 
-To use injection, download and run the app and you must add `"-Xlinker -interposable"` to your project's `"Other Linker Flags"` for the Debug target qualified by the simulator SDK (to avoid complications with bitcode). Then, add one of the following to your application delegate's `applicationDidFinishLaunching:`
+To use injection, download and run the app and you must add `"-Xlinker -interposable"` to your project's `"Other Linker Flags"` for the Debug target (qualified by the simulator SDK to avoid complications with bitcode). Then, add one of the following to your application delegate's `applicationDidFinishLaunching:`
 
 Xcode 10.2 and later (Swift 5+):
 
@@ -61,7 +61,14 @@ If you want to build this project from source (which you may need to do to use i
 
 ### Limitations
 
-This new release of InjectionIII works differently than previous versions in that you can now update the implementations of class, struct and enum methods (final or not) provided they have not been inlined which shouldn't be the case for a debug build. You can't however alter the layout of a class or struct in the course of an injection i.e. add or rearrange properties with storage or add or move methods of a non-final class or your app will likely crash. Also, see the notes below for injecting `SwiftUI` views and how they require type erasure.
+This new release of InjectionIII uses a [different patching technique](http://johnholdsworth.com/dyld_dynamic_interpose.html) than previous versions in that you can now update the implementations of class, struct and enum methods (final or not) provided they have not been inlined which shouldn't be the case for a debug build. You can't however alter the layout of a class or struct in the course of an injection i.e. add or rearrange properties with storage or add or move methods of a non-final class or your app will likely crash. Also, see the notes below for injecting `SwiftUI` views and how they require type erasure.
+
+If you have a complex project including Objective-C dependancies you may get the following error on linking:
+
+```
+Can't find ordinal for imported symbol for architecture x86_64
+```
+If this is the case, remove the `-interposable` flag and you will only be able to non-final class methods.
 
 If you are using Code Coverage, you may need to disable it or you will receive a:
 >	`Symbol not found: ___llvm_profile_runtime` error.`
