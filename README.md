@@ -59,7 +59,7 @@ If you want to build this project from source (which you may need to do to use i
 | ------------- | ------------- | ------------- |
 | [Mac app store](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12) | [Release Candidate](https://github.com/johnno1962/InjectionIII/releases) | [Install  Injection.jar](https://github.com/johnno1962/InjectionIII/tree/master/AppCodePlugin) |
 
-### Limitations
+### Limitations/FAQ
 
 This new release of InjectionIII uses a [different patching technique](http://johnholdsworth.com/dyld_dynamic_interpose.html) than previous versions in that you can now update the implementations of class, struct and enum methods (final or not) provided they have not been inlined which shouldn't be the case for a debug build. You can't however alter the layout of a class or struct in the course of an injection i.e. add or rearrange properties with storage or add or move methods of a non-final class or your app will likely crash. Also, see the notes below for injecting `SwiftUI` views and how they require type erasure.
 
@@ -68,7 +68,27 @@ If you have a complex project including Objective-C dependancies you may get the
 ```
 Can't find ordinal for imported symbol for architecture x86_64
 ```
-If this is the case, remove the `-interposable` flag and you will only be able to non-final class methods.
+If this is the case, remove the `-interposable` flag and you will only be able to non-final class methods as the new injection technique will not be available.
+
+If you inject code which calls a function with default arguments you may
+get an error starting as follows reporting an undefined symbol:
+
+```
+*** dlopen() error: dlopen(...
+```
+If you encounter this problem, download and build [the unhide project](https://github.com/johnno1962/unhide) then add the following
+as a "Run Script", "Build Phase" to your project:
+
+```
+UNHIDE=~/bin/unhide.sh
+if [ -f $UNHIDE ]; then
+    $UNHIDE
+else
+    echo "File $UNHIDE used for code Injection does not exist. Download and build the https://github.com/johnno1962/unhide project."
+fi
+```
+This changes the visibility of symbols for default argument generators
+and this issue should disappear.
 
 If you are using Code Coverage, you may need to disable it or you will receive a:
 >	`Symbol not found: ___llvm_profile_runtime` error.`
