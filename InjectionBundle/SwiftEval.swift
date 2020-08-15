@@ -442,6 +442,14 @@ public class SwiftEval: NSObject {
             let error = String(cString: dlerror())
             if error.contains("___llvm_profile_runtime") {
                 print("💉 Loading .dylib has failed, try turning off collection of test coverage in your scheme")
+            } else if error.contains("Symbol not found:") {
+                print("""
+                    💉 Loading .dylib has failed, This may be because Swift \
+                    code being injected refers to a function with a default \
+                    argument. Consult the section in the README at \
+                    https://github.com/johnno1962/InjectionIII about \
+                    using \"unhide\".
+                    """)
             }
             throw evalError("dlopen() error: \(error)")
         }

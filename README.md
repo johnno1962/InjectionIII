@@ -13,7 +13,7 @@ has been built into a standalone app: `InjectionIII.app` which runs in the statu
 
 ### Getting Started
 
-To use injection, download and run the app and you must add `"-Xlinker -interposable"` to your project's `"Other Linker Flags"` for the Debug target (qualified by the simulator SDK to avoid complications with bitcode). Then, add one of the following to your application delegate's `applicationDidFinishLaunching:`
+To use injection, download the app from the App Store and run it. Then, and must add `"-Xlinker -interposable"` to your project's `"Other Linker Flags"` for the Debug target (qualified by the simulator SDK to avoid complications with bitcode). Finally, add one of the following to your application delegate's `applicationDidFinishLaunching:`
 
 Xcode 10.2 and later (Swift 5+):
 
@@ -73,7 +73,7 @@ If you have a complex project including Objective-C dependancies you may get the
 ```
 Can't find ordinal for imported symbol for architecture x86_64
 ```
-If this is the case, remove the `-interposable` flag and you will only be able to non-final class methods as the new injection technique will not be available.
+If this is the case, remove the `-interposable` flag and you will only be able to inject non-final class methods as the new injection technique will not be available.
 
 If you inject code which calls a function with default arguments you may
 get an error starting as follows reporting an undefined symbol:
