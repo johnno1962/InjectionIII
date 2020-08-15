@@ -27,6 +27,11 @@ Xcode 10.2 and later (Swift 5+):
 	#endif
 ```
 
+If you'd rather not modify your project source you can edit your Xcode run `scheme` and add an environment variable
+`DYLD_INSERT_LIBRARIES` under the `Arguments` tab with the following value instead of the bundle loads above:
+
+`/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle/iOSInjection`
+
 Adding one of these lines loads a bundle included in the `InjectionIII.app`'s
 resources which connects over a localhost socket to the InjectionII app which runs on the task bar.
 Once injection is connected, you'll be prompted to select the directory containing the project file for the app you wish to inject. This starts a `file watcher` for that directory inside the Mac app so whenever
@@ -74,7 +79,10 @@ If you inject code which calls a function with default arguments you may
 get an error starting as follows reporting an undefined symbol:
 
 ```
-*** dlopen() error: dlopen(...
+💉 *** dlopen() error: dlopen(/var/folders/nh/gqmp6jxn4tn2tyhwqdcwcpkc0000gn/T/com.johnholdsworth.InjectionIII/eval101.dylib, 2): Symbol not found: _$s13TestInjection15QTNavigationRowC4text10detailText4icon6object13customization6action21accessoryButtonActionACyxGSS_AA08QTDetailG0OAA6QTIconOSgypSgySo15UITableViewCellC_AA5QTRow_AA0T5StyleptcSgyAaT_pcSgAWtcfcfA1_
+ Referenced from: /var/folders/nh/gqmp6jxn4tn2tyhwqdcwcpkc0000gn/T/com.johnholdsworth.InjectionIII/eval101.dylib
+ Expected in: flat namespace
+in /var/folders/nh/gqmp6jxn4tn2tyhwqdcwcpkc0000gn/T/com.johnholdsworth.InjectionIII/eval101.dylib ***
 ```
 If you encounter this problem, download and build [the unhide project](https://github.com/johnno1962/unhide) then add the following
 as a "Run Script", "Build Phase" to your project:

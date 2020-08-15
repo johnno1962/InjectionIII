@@ -173,6 +173,7 @@ public class SwiftInjection: NSObject {
                 interposed[existing] = loadedFunc
                 interposed[current] = loadedFunc
                 print("💉 Replacing \(demangle(symbol))")
+//                print("💉 Replacing \(demangle(symbol))")
             }
         }
 
