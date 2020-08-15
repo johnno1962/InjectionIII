@@ -11,6 +11,7 @@
 		BB34C3FF244FAD3C00D520A9 /* log.html in Resources */ = {isa = PBXBuildFile; fileRef = BB34C3FE244FAD3C00D520A9 /* log.html */; };
 		BB34C401244FAE3000D520A9 /* iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BB34C400244FAE2F00D520A9 /* iphone.png */; };
 		BB439B801FABA64300B4F50B /* SwiftEvalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B7F1FABA64300B4F50B /* SwiftEvalTests.swift */; };
+		BB4ADF7724E8036400D502F3 /* xt_forwarding_trampoline_arm64.s in Sources */ = {isa = PBXBuildFile; fileRef = BB4ADF7624E8036400D502F3 /* xt_forwarding_trampoline_arm64.s */; };
 		BB4EC3FB244FA3C40079E244 /* RMMacroManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4EC3F7244FA3C30079E244 /* RMMacroManager.m */; };
 		BB4EC3FC244FA3C40079E244 /* RMDeviceController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4EC3F8244FA3C30079E244 /* RMDeviceController.m */; };
 		BB4EC3FD244FA3C40079E244 /* RMImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4EC3F9244FA3C40079E244 /* RMImageView.m */; };
@@ -120,6 +121,7 @@
 		BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftEval.swift; sourceTree = "<group>"; };
 		BB439BAC1FAC030E00B4F50B /* SwiftEval.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SwiftEval.entitlements; sourceTree = "<group>"; };
 		BB439BB31FAC185200B4F50B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		BB4ADF7624E8036400D502F3 /* xt_forwarding_trampoline_arm64.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; name = xt_forwarding_trampoline_arm64.s; path = SwiftTrace/SwiftTraceGuts/xt_forwarding_trampoline_arm64.s; sourceTree = SOURCE_ROOT; };
 		BB4EC3F7244FA3C30079E244 /* RMMacroManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMMacroManager.m; path = Remote/Classes/RMMacroManager.m; sourceTree = SOURCE_ROOT; };
 		BB4EC3F8244FA3C30079E244 /* RMDeviceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMDeviceController.m; path = Remote/Classes/RMDeviceController.m; sourceTree = SOURCE_ROOT; };
 		BB4EC3F9244FA3C40079E244 /* RMImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMImageView.m; path = Remote/Classes/RMImageView.m; sourceTree = SOURCE_ROOT; };
@@ -439,6 +441,7 @@
 				BB5D67AA244DA00B003AA7F4 /* SwiftMeta.swift */,
 				BB5D67AC244DA00C003AA7F4 /* SwiftStack.swift */,
 				BB76EA0722929E1100E454F0 /* xt_forwarding_trampoline_x64.s */,
+				BB4ADF7624E8036400D502F3 /* xt_forwarding_trampoline_arm64.s */,
 			);
 			path = InjectionBundle;
 			sourceTree = "<group>";
@@ -699,6 +702,7 @@
 			files = (
 				BBCA02501FB107AF00E45F0F /* SwiftEval.swift in Sources */,
 				BB76EA0822929E1100E454F0 /* SwiftTrace.mm in Sources */,
+				BB4ADF7724E8036400D502F3 /* xt_forwarding_trampoline_arm64.s in Sources */,
 				BD35949E21A6C5DE0020EB94 /* Vaccine.swift in Sources */,
 				BBCA02511FB107AF00E45F0F /* SwiftInjection.swift in Sources */,
 				BB5D67B1244DA00C003AA7F4 /* SwiftInvoke.swift in Sources */,

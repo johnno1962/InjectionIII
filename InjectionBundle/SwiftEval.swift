@@ -13,7 +13,7 @@
 //  Used as the basis of a new version of Injection.
 //
 
-#if arch(x86_64) || arch(i386) // simulator/macOS only
+#if arch(x86_64) || arch(i386) || arch(arm64) // simulator/macOS only
 import Foundation
 
 private func debug(_ str: String) {
