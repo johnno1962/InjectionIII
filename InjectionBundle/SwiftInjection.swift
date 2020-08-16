@@ -160,7 +160,7 @@ public class SwiftInjection: NSObject {
 
         // Find all definitions of Swift functions and ...
         // SwiftUI body properties defined in the new dylib.
-        for suffix in ["fC", "yF", "lF", "tF", "Qrvg"] {
+        for suffix in ["fC", "yF", "lF", "tF", "Qrvg"] {//, "CN", "Mf", "Mn", "Tq"] {
             findSwiftFunctions("\(tmpfile).dylib", suffix) {
                 (loadedFunc, symbol) in
                 guard let existing = dlsym(main, symbol) else { return }
@@ -172,7 +172,6 @@ public class SwiftInjection: NSObject {
                 // record functions that have beeen interposed
                 interposed[existing] = loadedFunc
                 interposed[current] = loadedFunc
-                print("💉 Replacing \(demangle(symbol))")
 //                print("💉 Replacing \(demangle(symbol))")
             }
         }
