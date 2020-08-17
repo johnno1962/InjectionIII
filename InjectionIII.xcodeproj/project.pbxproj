@@ -25,6 +25,7 @@
 		BB5D67B0244DA00C003AA7F4 /* SwiftMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67AA244DA00B003AA7F4 /* SwiftMeta.swift */; };
 		BB5D67B1244DA00C003AA7F4 /* SwiftInvoke.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67AB244DA00C003AA7F4 /* SwiftInvoke.swift */; };
 		BB5D67B2244DA00C003AA7F4 /* SwiftStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67AC244DA00C003AA7F4 /* SwiftStack.swift */; };
+		BB6125D324EA882000A7C230 /* Injection.jar in Resources */ = {isa = PBXBuildFile; fileRef = BB6125D224EA882000A7C230 /* Injection.jar */; };
 		BB620E6824BA3F4B002FACC5 /* Interposer.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB620E6724BA3F4B002FACC5 /* Interposer.mm */; };
 		BB6306FE1FCD1A410021D30C /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = BB6306FD1FCD1A410021D30C /* Credits.rtf */; };
 		BB76EA0822929E1100E454F0 /* SwiftTrace.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB76EA0522929E1100E454F0 /* SwiftTrace.mm */; };
@@ -137,6 +138,7 @@
 		BB5D67AA244DA00B003AA7F4 /* SwiftMeta.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftMeta.swift; path = SwiftTrace/SwiftTrace/SwiftMeta.swift; sourceTree = SOURCE_ROOT; };
 		BB5D67AB244DA00C003AA7F4 /* SwiftInvoke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftInvoke.swift; path = SwiftTrace/SwiftTrace/SwiftInvoke.swift; sourceTree = SOURCE_ROOT; };
 		BB5D67AC244DA00C003AA7F4 /* SwiftStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftStack.swift; path = SwiftTrace/SwiftTrace/SwiftStack.swift; sourceTree = SOURCE_ROOT; };
+		BB6125D224EA882000A7C230 /* Injection.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; name = Injection.jar; path = AppCodePlugin/Injection.jar; sourceTree = "<group>"; };
 		BB620E6724BA3F4B002FACC5 /* Interposer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Interposer.mm; sourceTree = "<group>"; };
 		BB6224411FC5B0E300AD7A3A /* HelperProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelperProxy.m; sourceTree = "<group>"; };
 		BB6224421FC5B0E500AD7A3A /* HelperProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperProxy.h; sourceTree = "<group>"; };
@@ -249,6 +251,7 @@
 			children = (
 				BB037DF41FAD80D0004B267C /* LICENSE */,
 				BB037DF31FAD808B004B267C /* README.md */,
+				BB6125D224EA882000A7C230 /* Injection.jar */,
 				BBCA01FF1FB0F10300E45F0F /* InjectionIII */,
 				BBCA02461FB1065D00E45F0F /* InjectionBundle */,
 				BB6224481FC5B13D00AD7A3A /* Bootstrap */,
@@ -595,6 +598,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB6125D324EA882000A7C230 /* Injection.jar in Resources */,
 				BB85A7412452CD7600E94762 /* SwiftTrace.h in Resources */,
 				BB53B648244FC32C00F006E3 /* RemoteHeaders.h in Resources */,
 				BB53B642244FC08F00F006E3 /* RemoteCapture.h in Resources */,
