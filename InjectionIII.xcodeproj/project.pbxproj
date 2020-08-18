@@ -11,6 +11,7 @@
 		BB34C3FF244FAD3C00D520A9 /* log.html in Resources */ = {isa = PBXBuildFile; fileRef = BB34C3FE244FAD3C00D520A9 /* log.html */; };
 		BB34C401244FAE3000D520A9 /* iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BB34C400244FAE2F00D520A9 /* iphone.png */; };
 		BB439B801FABA64300B4F50B /* SwiftEvalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B7F1FABA64300B4F50B /* SwiftEvalTests.swift */; };
+		BB4ADF7724E8036400D502F3 /* xt_forwarding_trampoline_arm64.s in Sources */ = {isa = PBXBuildFile; fileRef = BB4ADF7624E8036400D502F3 /* xt_forwarding_trampoline_arm64.s */; };
 		BB4EC3FB244FA3C40079E244 /* RMMacroManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4EC3F7244FA3C30079E244 /* RMMacroManager.m */; };
 		BB4EC3FC244FA3C40079E244 /* RMDeviceController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4EC3F8244FA3C30079E244 /* RMDeviceController.m */; };
 		BB4EC3FD244FA3C40079E244 /* RMImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4EC3F9244FA3C40079E244 /* RMImageView.m */; };
@@ -24,6 +25,7 @@
 		BB5D67B0244DA00C003AA7F4 /* SwiftMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67AA244DA00B003AA7F4 /* SwiftMeta.swift */; };
 		BB5D67B1244DA00C003AA7F4 /* SwiftInvoke.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67AB244DA00C003AA7F4 /* SwiftInvoke.swift */; };
 		BB5D67B2244DA00C003AA7F4 /* SwiftStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67AC244DA00C003AA7F4 /* SwiftStack.swift */; };
+		BB6125D324EA882000A7C230 /* Injection.jar in Resources */ = {isa = PBXBuildFile; fileRef = BB6125D224EA882000A7C230 /* Injection.jar */; };
 		BB620E6824BA3F4B002FACC5 /* Interposer.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB620E6724BA3F4B002FACC5 /* Interposer.mm */; };
 		BB6306FE1FCD1A410021D30C /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = BB6306FD1FCD1A410021D30C /* Credits.rtf */; };
 		BB76EA0822929E1100E454F0 /* SwiftTrace.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB76EA0522929E1100E454F0 /* SwiftTrace.mm */; };
@@ -120,6 +122,7 @@
 		BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftEval.swift; sourceTree = "<group>"; };
 		BB439BAC1FAC030E00B4F50B /* SwiftEval.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SwiftEval.entitlements; sourceTree = "<group>"; };
 		BB439BB31FAC185200B4F50B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		BB4ADF7624E8036400D502F3 /* xt_forwarding_trampoline_arm64.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; name = xt_forwarding_trampoline_arm64.s; path = SwiftTrace/SwiftTraceGuts/xt_forwarding_trampoline_arm64.s; sourceTree = SOURCE_ROOT; };
 		BB4EC3F7244FA3C30079E244 /* RMMacroManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMMacroManager.m; path = Remote/Classes/RMMacroManager.m; sourceTree = SOURCE_ROOT; };
 		BB4EC3F8244FA3C30079E244 /* RMDeviceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMDeviceController.m; path = Remote/Classes/RMDeviceController.m; sourceTree = SOURCE_ROOT; };
 		BB4EC3F9244FA3C40079E244 /* RMImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMImageView.m; path = Remote/Classes/RMImageView.m; sourceTree = SOURCE_ROOT; };
@@ -135,6 +138,7 @@
 		BB5D67AA244DA00B003AA7F4 /* SwiftMeta.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftMeta.swift; path = SwiftTrace/SwiftTrace/SwiftMeta.swift; sourceTree = SOURCE_ROOT; };
 		BB5D67AB244DA00C003AA7F4 /* SwiftInvoke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftInvoke.swift; path = SwiftTrace/SwiftTrace/SwiftInvoke.swift; sourceTree = SOURCE_ROOT; };
 		BB5D67AC244DA00C003AA7F4 /* SwiftStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftStack.swift; path = SwiftTrace/SwiftTrace/SwiftStack.swift; sourceTree = SOURCE_ROOT; };
+		BB6125D224EA882000A7C230 /* Injection.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; name = Injection.jar; path = AppCodePlugin/Injection.jar; sourceTree = "<group>"; };
 		BB620E6724BA3F4B002FACC5 /* Interposer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Interposer.mm; sourceTree = "<group>"; };
 		BB6224411FC5B0E300AD7A3A /* HelperProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelperProxy.m; sourceTree = "<group>"; };
 		BB6224421FC5B0E500AD7A3A /* HelperProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperProxy.h; sourceTree = "<group>"; };
@@ -247,6 +251,7 @@
 			children = (
 				BB037DF41FAD80D0004B267C /* LICENSE */,
 				BB037DF31FAD808B004B267C /* README.md */,
+				BB6125D224EA882000A7C230 /* Injection.jar */,
 				BBCA01FF1FB0F10300E45F0F /* InjectionIII */,
 				BBCA02461FB1065D00E45F0F /* InjectionBundle */,
 				BB6224481FC5B13D00AD7A3A /* Bootstrap */,
@@ -439,6 +444,7 @@
 				BB5D67AA244DA00B003AA7F4 /* SwiftMeta.swift */,
 				BB5D67AC244DA00C003AA7F4 /* SwiftStack.swift */,
 				BB76EA0722929E1100E454F0 /* xt_forwarding_trampoline_x64.s */,
+				BB4ADF7624E8036400D502F3 /* xt_forwarding_trampoline_arm64.s */,
 			);
 			path = InjectionBundle;
 			sourceTree = "<group>";
@@ -592,6 +598,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB6125D324EA882000A7C230 /* Injection.jar in Resources */,
 				BB85A7412452CD7600E94762 /* SwiftTrace.h in Resources */,
 				BB53B648244FC32C00F006E3 /* RemoteHeaders.h in Resources */,
 				BB53B642244FC08F00F006E3 /* RemoteCapture.h in Resources */,
@@ -699,6 +706,7 @@
 			files = (
 				BBCA02501FB107AF00E45F0F /* SwiftEval.swift in Sources */,
 				BB76EA0822929E1100E454F0 /* SwiftTrace.mm in Sources */,
+				BB4ADF7724E8036400D502F3 /* xt_forwarding_trampoline_arm64.s in Sources */,
 				BD35949E21A6C5DE0020EB94 /* Vaccine.swift in Sources */,
 				BBCA02511FB107AF00E45F0F /* SwiftInjection.swift in Sources */,
 				BB5D67B1244DA00C003AA7F4 /* SwiftInvoke.swift in Sources */,
@@ -935,7 +943,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 2.2.0;
+				MARKETING_VERSION = 2.2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -958,7 +966,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 2.2.0;
+				MARKETING_VERSION = 2.2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -979,6 +987,7 @@
 				INFOPLIST_FILE = InjectionBundle/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/$(SWIFT_PLATFORM_TARGET_PREFIX) /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks";
+				MACH_O_TYPE = mh_dylib;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionBundle;
@@ -1004,6 +1013,7 @@
 				INFOPLIST_FILE = InjectionBundle/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/$(SWIFT_PLATFORM_TARGET_PREFIX) /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks";
+				MACH_O_TYPE = mh_dylib;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionBundle;
 				PRODUCT_NAME = macOSInjection;

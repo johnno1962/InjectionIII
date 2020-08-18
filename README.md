@@ -13,7 +13,7 @@ has been built into a standalone app: `InjectionIII.app` which runs in the statu
 
 ### Getting Started
 
-To use injection, download and run the app and you must add `"-Xlinker -interposable"` to your project's `"Other Linker Flags"` for the Debug target qualified by the simulator SDK (to avoid complications with bitcode). Then, add one of the following to your application delegate's `applicationDidFinishLaunching:`
+To use injection, download the app from the App Store and run it. Then, and must add `"-Xlinker -interposable"` to your project's `"Other Linker Flags"` for the Debug target (qualified by the simulator SDK to avoid complications with bitcode). Finally, add one of the following to your application delegate's `applicationDidFinishLaunching:`
 
 Xcode 10.2 and later (Swift 5+):
 
@@ -26,6 +26,11 @@ Xcode 10.2 and later (Swift 5+):
 	Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/macOSInjection.bundle")?.load()
 	#endif
 ```
+
+If you'd rather not modify your project source you can edit your Xcode run `scheme` and add an environment variable
+`DYLD_INSERT_LIBRARIES` under the `Arguments` tab with the following value instead of the bundle loads above:
+
+`/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle/iOSInjection`
 
 Adding one of these lines loads a bundle included in the `InjectionIII.app`'s
 resources which connects over a localhost socket to the InjectionII app which runs on the task bar.
@@ -59,9 +64,39 @@ If you want to build this project from source (which you may need to do to use i
 | ------------- | ------------- | ------------- |
 | [Mac app store](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12) | [Release Candidate](https://github.com/johnno1962/InjectionIII/releases) | [Install  Injection.jar](https://github.com/johnno1962/InjectionIII/tree/master/AppCodePlugin) |
 
-### Limitations
+### Limitations/FAQ
 
-This new release of InjectionIII works differently than previous versions in that you can now update the implementations of class, struct and enum methods (final or not) provided they have not been inlined which shouldn't be the case for a debug build. You can't however alter the layout of a class or struct in the course of an injection i.e. add or rearrange properties with storage or add or move methods of a non-final class or your app will likely crash. Also, see the notes below for injecting `SwiftUI` views and how they require type erasure.
+This new release of InjectionIII uses a [different patching technique](http://johnholdsworth.com/dyld_dynamic_interpose.html) than previous versions in that you can now update the implementations of class, struct and enum methods (final or not) provided they have not been inlined which shouldn't be the case for a debug build. You can't however alter the layout of a class or struct in the course of an injection i.e. add or rearrange properties with storage or add or move methods of a non-final class or your app will likely crash. Also, see the notes below for injecting `SwiftUI` views and how they require type erasure.
+
+If you have a complex project including Objective-C dependancies you may get the following error on linking:
+
+```
+Can't find ordinal for imported symbol for architecture x86_64
+```
+If this is the case, remove the `-interposable` flag and you will only be able to inject non-final class methods as the new injection technique will not be available.
+
+If you inject code which calls a function with default arguments you may
+get an error starting as follows reporting an undefined symbol:
+
+```
+💉 *** dlopen() error: dlopen(/var/folders/nh/gqmp6jxn4tn2tyhwqdcwcpkc0000gn/T/com.johnholdsworth.InjectionIII/eval101.dylib, 2): Symbol not found: _$s13TestInjection15QTNavigationRowC4text10detailText4icon6object13customization6action21accessoryButtonActionACyxGSS_AA08QTDetailG0OAA6QTIconOSgypSgySo15UITableViewCellC_AA5QTRow_AA0T5StyleptcSgyAaT_pcSgAWtcfcfA1_
+ Referenced from: /var/folders/nh/gqmp6jxn4tn2tyhwqdcwcpkc0000gn/T/com.johnholdsworth.InjectionIII/eval101.dylib
+ Expected in: flat namespace
+in /var/folders/nh/gqmp6jxn4tn2tyhwqdcwcpkc0000gn/T/com.johnholdsworth.InjectionIII/eval101.dylib ***
+```
+If you encounter this problem, download and build [the unhide project](https://github.com/johnno1962/unhide) then add the following
+as a "Run Script", "Build Phase" to your project:
+
+```
+UNHIDE=~/bin/unhide.sh
+if [ -f $UNHIDE ]; then
+    $UNHIDE
+else
+    echo "File $UNHIDE used for code Injection does not exist. Download and build the https://github.com/johnno1962/unhide project."
+fi
+```
+This changes the visibility of symbols for default argument generators
+and this issue should disappear.
 
 If you are using Code Coverage, you may need to disable it or you will receive a:
 >	`Symbol not found: ___llvm_profile_runtime` error.`

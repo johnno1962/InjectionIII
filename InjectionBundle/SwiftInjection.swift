@@ -11,7 +11,7 @@
 //  from SwiftEval.swift to recompile and reload class.
 //
 
-#if arch(x86_64) || arch(i386) // simulator/macOS only
+#if arch(x86_64) || arch(i386) || arch(arm64) // simulator/macOS only
 import Foundation
 import XCTest
 
@@ -127,7 +127,7 @@ public class SwiftInjection: NSObject {
                     print("💉 ⚠️ Adding or removing methods on Swift classes is not supported. Your application will likely crash. ⚠️")
                 }
 
-                #if false // replaced by "interpose" code below
+                #if true // to be replaced by "interpose" code below
                 func byteAddr<T>(_ location: UnsafeMutablePointer<T>) -> UnsafeMutablePointer<UInt8> {
                     return location.withMemoryRebound(to: UInt8.self, capacity: 1) { $0 }
                 }
@@ -160,7 +160,7 @@ public class SwiftInjection: NSObject {
 
         // Find all definitions of Swift functions and ...
         // SwiftUI body properties defined in the new dylib.
-        for suffix in ["fC", "yF", "lF", "tF", "Qrvg"] {
+        for suffix in ["fC", "yF", "lF", "tF", "Qrvg"] {//, "CN", "Mf", "Mn", "Tq"] {
             findSwiftFunctions("\(tmpfile).dylib", suffix) {
                 (loadedFunc, symbol) in
                 guard let existing = dlsym(main, symbol) else { return }
@@ -172,7 +172,7 @@ public class SwiftInjection: NSObject {
                 // record functions that have beeen interposed
                 interposed[existing] = loadedFunc
                 interposed[current] = loadedFunc
-                print("💉 Replacing \(demangle(symbol))")
+//                print("💉 Replacing \(demangle(symbol))")
             }
         }
 
