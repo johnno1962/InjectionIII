@@ -75,6 +75,9 @@ Can't find ordinal for imported symbol for architecture x86_64
 ```
 If this is the case, add the following additional "Other lInker Flags" and it should go away.
 
+```
+-Xlinker -undefined -Xlinker dynamic_lookup
+```
 If you inject code which calls a function with default arguments you may
 get an error starting as follows reporting an undefined symbol:
 
