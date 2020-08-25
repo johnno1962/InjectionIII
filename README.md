@@ -186,16 +186,8 @@ If you'd like to execute some code each time your interface is injected use the
 ### macOS Injection
 
 It is possible to use injection with a macOS/Catalyst project but it is getting progressively more difficult
-with each release of the OS. Since Catalina you may need to download the sources and build InjectionIII
-yourself and copy it into /Applications for injection of a macOS app to work. With Big Sur, the dynamic library that injection creates
-to inject also needs to be signed using the same identity as the app you are injecting. To specify the
-codesigning identity to use for a particular project use something like the following from the command line:
-
-```
-$ defaults write com.johnholdsworth.InjectionIII '/full/path/to/project/file.xcodeproj' CEE8F2FCE31A71EE5207F70F87D184C826844DC0
-```
-... replacing `CEE8F2FCE31A71EE5207F70F87D184C826844DC0` with the identity used to sign the
-app which you can extract from the -sign argument in the `Sign` step in the Xcode build logs.
+with each release of the OS. You need to make sure to turn off the "App Sandbox" and also "Disable 
+Library Validation" under the "Hardened Runtime" options for your project while you inject.
 
 ### Storyboard injection
 
@@ -310,4 +302,4 @@ store edge paths so they can be colored (line 66 and 303) in "canviz-0.1/canviz.
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2020/08/24 $
+$Date: 2020/08/25 $
