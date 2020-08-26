@@ -27,11 +27,6 @@ Xcode 10.2 and later (Swift 5+):
 	#endif
 ```
 
-If you'd rather not modify your project source you can edit your Xcode run `scheme` and add an environment variable
-`DYLD_INSERT_LIBRARIES` under the `Arguments` tab with the following value instead of the bundle loads above:
-
-`/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle/iOSInjection`
-
 Adding one of these lines loads a bundle included in the `InjectionIII.app`'s
 resources which connects over a localhost socket to the InjectionII app which runs on the task bar.
 Once injection is connected, you'll be prompted to select the directory containing the project file for the app you wish to inject. This starts a `file watcher` for that directory inside the Mac app so whenever
@@ -302,4 +297,4 @@ store edge paths so they can be colored (line 66 and 303) in "canviz-0.1/canviz.
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2020/08/25 $
+$Date: 2020/08/26 $
