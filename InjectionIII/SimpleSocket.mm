@@ -154,13 +154,15 @@
     return [NSString stringWithUTF8String:utf8];
 }
 
+- (BOOL)writeInt:(int)length {
+    return write(clientSocket, &length, sizeof length) == sizeof length;
+}
+
 - (BOOL)writeString:(NSString *)string {
     const char *utf8 = string.UTF8String;
     uint32_t length = (uint32_t)strlen(utf8);
-    if (write(clientSocket, &length, sizeof length) != sizeof length ||
-        write(clientSocket, utf8, length) != length)
-        return FALSE;
-    return TRUE;
+    return [self writeInt:length] &&
+        write(clientSocket, utf8, length) == length;
 }
 
 - (BOOL)writeCommand:(int)command withString:(NSString *)string {

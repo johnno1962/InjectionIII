@@ -7,6 +7,7 @@
 //
 
 #import "SimpleSocket.h"
+#import "/tmp/InjectionSalt.h"
 
 #define INJECTION_ADDRESS @":8898"
 #define INJECTION_KEY @"bvijkijyhbtrbrebzjbbzcfbbvvq"

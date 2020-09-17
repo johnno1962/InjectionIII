@@ -37,7 +37,8 @@ public class InjectionServer: SimpleSocket {
     }
 
     @objc override public func runInBackground() {
-        write(NSTemporaryDirectory())
+        let tmpDir = NSTemporaryDirectory()
+        write(tmpDir)
 
         var candiateProjectFile = appDelegate.selectedProject
 //        var MAS = false
@@ -63,8 +64,7 @@ public class InjectionServer: SimpleSocket {
         NSLog("Connection with project file: \(projectFile)")
 
         // tell client app the inferred project being watched
-        let key = readString()
-        if key != INJECTION_KEY {
+        if readInt() != INJECTION_SALT || readString() != INJECTION_KEY {
             return
         }
 
@@ -227,7 +227,8 @@ public class InjectionServer: SimpleSocket {
                 if identity != nil {
                     NSLog("Signing with identity: \(identity!)")
                 }
-                let signedOK = SignerService.codesignDylib(readString()!, identity:identity)
+                let signedOK = SignerService
+                    .codesignDylib(tmpDir+"/eval"+readString()!, identity:identity)
                 sendCommand(.signed, with: signedOK ? "1": "0")
                 break
             case .error:

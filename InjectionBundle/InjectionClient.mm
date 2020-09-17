@@ -116,6 +116,7 @@ static struct {
     [SwiftEval sharedInstance].tmpDir = [self readString];
     [SwiftEval sharedInstance].injectionNumber = 100;
 
+    [self writeInt:INJECTION_SALT];
     [self writeString:INJECTION_KEY];
     [self writeString:[NSBundle mainBundle].privateFrameworksPath];
 #ifdef __LP64__

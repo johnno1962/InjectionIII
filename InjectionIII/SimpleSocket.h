@@ -29,6 +29,7 @@
 
 - (int)readInt;
 - (NSString *_Nullable)readString;
+- (BOOL)writeInt:(int)length;
 - (BOOL)writeString:(NSString *_Nonnull)string;
 - (BOOL)writeCommand:(int)command withString:(NSString *_Nullable)string;
 

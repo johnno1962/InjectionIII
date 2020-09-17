@@ -406,7 +406,7 @@ public class SwiftEval: NSObject {
         // codesign dylib
 
         if signer != nil {
-            guard signer!("\(tmpfile).dylib") else {
+            guard signer!("\(injectionNumber).dylib") else {
                 throw evalError("Codesign failed. If you are using macOS 11 (Big Sur), Please download a new release from https://github.com/johnno1962/InjectionIII/releases")
             }
         }
