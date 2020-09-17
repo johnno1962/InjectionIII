@@ -24,6 +24,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     @IBOutlet weak var enableVaccineItem: NSMenuItem!
     @IBOutlet weak var windowItem: NSMenuItem!
     @IBOutlet weak var remoteItem: NSMenuItem!
+    @IBOutlet weak var updateItem: NSMenuItem!
     @IBOutlet weak var frontItem: NSMenuItem!
     @IBOutlet var statusItem: NSStatusItem!
 
@@ -35,8 +36,6 @@ class AppDelegate : NSObject, NSApplicationDelegate {
                                         comment: "Project Directory")
 
     let defaults = UserDefaults.standard
-    let lastWatched = "lastWatched"
-    let bookmarkKey = "persistentBookmarks"
 
     @objc func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
@@ -62,8 +61,16 @@ class AppDelegate : NSObject, NSApplicationDelegate {
                modifierFlags: NSEvent.ModifierFlags.control.rawValue,
                target:self, action:#selector(autoInject(_:)), object:nil)
 
-        if let lastWatched = defaults.string(forKey: lastWatched) {
+        if let lastWatched = defaults.string(forKey: lastWatchedKey) {
             _ = self.application(NSApp, openFile: lastWatched)
+        }
+
+        let nextUpdateCheck = defaults.double(forKey: updateCheckKey)
+        if  nextUpdateCheck != 0.0 {
+            updateItem.state = .on
+            if Date.timeIntervalSinceReferenceDate > nextUpdateCheck {
+                self.updateCheck(nil)
+            }
         }
     }
 
@@ -100,7 +107,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
             self.watchedDirectories.insert(url.path)
             self.lastConnection?.setProject(self.selectedProject!)
             NSDocumentController.shared.noteNewRecentDocumentURL(url)
-            defaults.set(url.path, forKey: lastWatched)
+            defaults.set(url.path, forKey: lastWatchedKey)
             return true
         }
 

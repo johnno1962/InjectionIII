@@ -13,7 +13,7 @@ has been built into a standalone app: `InjectionIII.app` which runs in the statu
 
 ### Getting Started
 
-To use injection, download the app from the App Store and run it. Then, and must add `"-Xlinker -interposable"` to your project's `"Other Linker Flags"` for the Debug target (qualified by the simulator SDK to avoid complications with bitcode). Finally, add one of the following to your application delegate's `applicationDidFinishLaunching:`
+To use injection, download the app from the App Store and run it. Then, you must add `"-Xlinker -interposable"` to your project's `"Other Linker Flags"` for the Debug target (qualified by the simulator SDK to avoid complications with bitcode). Finally, add one of the following to your application delegate's `applicationDidFinishLaunching:`
 
 Xcode 10.2 and later (Swift 5+):
 
@@ -26,11 +26,6 @@ Xcode 10.2 and later (Swift 5+):
 	Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/macOSInjection.bundle")?.load()
 	#endif
 ```
-
-If you'd rather not modify your project source you can edit your Xcode run `scheme` and add an environment variable
-`DYLD_INSERT_LIBRARIES` under the `Arguments` tab with the following value instead of the bundle loads above:
-
-`/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle/iOSInjection`
 
 Adding one of these lines loads a bundle included in the `InjectionIII.app`'s
 resources which connects over a localhost socket to the InjectionII app which runs on the task bar.
@@ -68,13 +63,16 @@ If you want to build this project from source (which you may need to do to use i
 
 This new release of InjectionIII uses a [different patching technique](http://johnholdsworth.com/dyld_dynamic_interpose.html) than previous versions in that you can now update the implementations of class, struct and enum methods (final or not) provided they have not been inlined which shouldn't be the case for a debug build. You can't however alter the layout of a class or struct in the course of an injection i.e. add or rearrange properties with storage or add or move methods of a non-final class or your app will likely crash. Also, see the notes below for injecting `SwiftUI` views and how they require type erasure.
 
-If you have a complex project including Objective-C dependancies you may get the following error on linking:
+If you have a complex project including Objective-C or C dependancies, using the `-interposable` flag may provoke the following error on linking:
 
 ```
 Can't find ordinal for imported symbol for architecture x86_64
 ```
-If this is the case, remove the `-interposable` flag and you will only be able to inject non-final class methods as the new injection technique will not be available.
+If this is the case, add the following additional "Other linker Flags" and it should go away.
 
+```
+-Xlinker -undefined -Xlinker dynamic_lookup
+```
 If you inject code which calls a function with default arguments you may
 get an error starting as follows reporting an undefined symbol:
 
@@ -183,16 +181,8 @@ If you'd like to execute some code each time your interface is injected use the
 ### macOS Injection
 
 It is possible to use injection with a macOS/Catalyst project but it is getting progressively more difficult
-with each release of the OS. Since Catalina you may need to download the sources and build InjectionIII
-yourself and copy it into /Applications for injection of a macOS app to work. With Big Sur, the dynamic library that injection creates
-to inject also needs to be signed using the same identity as the app you are injecting. To specify the
-codesigning identity to use for a particular project use something like the following from the command line:
-
-```
-$ defaults write com.johnholdsworth.InjectionIII '/full/path/to/project/file.xcodeproj' CEE8F2FCE31A71EE5207F70F87D184C826844DC0
-```
-... replacing `CEE8F2FCE31A71EE5207F70F87D184C826844DC0` with the identity used to sign the
-app which you can extract from the -sign argument in the `Sign` step in the Xcode build logs.
+with each release of the OS. You need to make sure to turn off the "App Sandbox" and also "Disable 
+Library Validation" under the "Hardened Runtime" options for your project while you inject.
 
 ### Storyboard injection
 
@@ -307,4 +297,4 @@ store edge paths so they can be colored (line 66 and 303) in "canviz-0.1/canviz.
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2020/08/09 $
+$Date: 2020/08/26 $

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -23,6 +23,7 @@
                 <outlet property="startItem" destination="vsd-ll-3nr" id="ODN-wa-BTp"/>
                 <outlet property="statusMenu" destination="V8Q-mq-A2f" id="Epo-HD-J21"/>
                 <outlet property="traceItem" destination="Kkx-ex-NCv" id="EXz-O7-K34"/>
+                <outlet property="updateItem" destination="kFj-jW-1uq" id="zyq-6a-Hes"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
                 <outlet property="windowItem" destination="aUF-d1-5bR" id="MxW-hd-aZ7"/>
                 <outlet property="xprobeItem" destination="R6p-Yl-7qz" id="Ebf-Kl-PWB"/>
@@ -790,10 +791,16 @@
                         <action selector="orderFrontStandardAboutPanel:" target="-1" id="b6u-Vx-pO5"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Help/README" id="kFj-jW-1uq">
+                <menuItem title="Update Check" id="kFj-jW-1uq">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="help:" target="Voe-Tx-rLC" id="Scj-Z3-yFA"/>
+                        <action selector="updateCheck:" target="Voe-Tx-rLC" id="TpD-l0-JEf"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Help/README" id="DcW-s5-diF">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="help:" target="Voe-Tx-rLC" id="Jmr-Oc-zAH"/>
                     </connections>
                 </menuItem>
                 <menuItem title="Quit Injection" toolTip="Quit InjectionIII" id="LUw-n8-2Gj">

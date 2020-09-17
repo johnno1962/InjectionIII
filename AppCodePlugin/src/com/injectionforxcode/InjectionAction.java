@@ -15,7 +15,7 @@ import java.io.*;
 /**
  * Copyright (c) 2013 John Holdsworth. All rights reserved.
  *
- * $Id: //depot/ResidentEval/InjectionPluginAppCode/src/com/injectionforxcode/InjectionAction.java#1 $
+ * $Id: //depot/ResidentEval/AppCodePlugin/src/com/injectionforxcode/InjectionAction.java#3 $
  *
  * Created with IntelliJ IDEA.
  * Date: 24/02/2013
@@ -110,7 +110,8 @@ public class InjectionAction extends AnAction {
         sentProjectPath = false;
 
         // Temporary dorectory to use
-        writeString(clientOutput, "/tmp");
+        final String tmpDir = "/tmp", prefix = tmpDir+"/eval";
+        writeString(clientOutput, tmpDir);
 
         // Sanity check
         if (!"bvijkijyhbtrbrebzjbbzcfbbvvq".equals(readString(clientInput)))
@@ -131,6 +132,10 @@ public class InjectionAction extends AnAction {
                             switch (InjectionResponse.values()[resp]) {
                                 case Sign:
                                     String dylib = readString(clientInput);
+                                    if (!new File(dylib).exists())
+                                        dylib = prefix+dylib;
+                                    else if (!dylib.startsWith(prefix))
+                                        error("Signing exception", new IOException("Invalid path"));
                                     try {
                                         Process process = Runtime.getRuntime().exec(new String[] {"/bin/bash", "-c",
                                                 "(export CODESIGN_ALLOCATE=/Applications/Xcode.app" +
@@ -213,6 +218,8 @@ public class InjectionAction extends AnAction {
 
     static String readString(InputStream s) throws IOException {
         int pathLength = readInt(s);
+        if (pathLength > 1000000)
+            pathLength = readInt(s);
         byte buffer[] = new byte[pathLength];
         if (s.read(buffer) != pathLength)
             alert("Bad path read, pathLength :"+pathLength);
