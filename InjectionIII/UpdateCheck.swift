@@ -23,16 +23,14 @@ extension AppDelegate {
                     let releases = try decoder.decode([Release].self, from: data)
 
                     DispatchQueue.main.async {
-                        guard let latest = releases.first(where: {
-                            !$0.prerelease && $0.body.contains("BUILD: ") }),
-                            let available = Int(latest.body
-                                .replacingOccurrences(of: ".*?BUILD: (\\d+).*",
-                                      with: "$1", options: .regularExpression)),
-                            let version = Bundle.main.object(
-                                forInfoDictionaryKey: "CFBundleVersion")
+                        guard let latest = releases
+                            .first(where: { !$0.prerelease }),
+                            let available = latest.tagName,
+                            let current = Bundle.main.object(
+                                forInfoDictionaryKey: "CFBundleShortVersionString")
                                 as? String,
-                            let current = Int(version),
-                            available > current else {
+                            available.compare(current, options: .numeric)
+                                == .orderedDescending else {
                             if sender != nil {
                                 let alert = NSAlert()
                                 alert.addButton(withTitle: "OK")
@@ -95,7 +93,7 @@ struct Release: Codable {
     let htmlUrl: URL
     let id: Int
     let nodeId: String
-    let tagName: String
+    let tagName: String?
     let targetCommitish: String
     let name: String
     let draft: Bool
