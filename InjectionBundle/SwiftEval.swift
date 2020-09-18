@@ -148,7 +148,13 @@ public class SwiftEval: NSObject {
     // client specific info
     @objc public var frameworks = Bundle.main.privateFrameworksPath
                                     ?? Bundle.main.bundlePath + "/Frameworks"
+    #if arch(arm64)
+    @objc public var arch = "arm64"
+    #elseif arch(x86_64)
     @objc public var arch = "x86_64"
+    #else
+    @objc public var arch = "i386"
+    #endif
 
     // Xcode related info
     @objc public var xcodeDev = "/Applications/Xcode.app/Contents/Developer"

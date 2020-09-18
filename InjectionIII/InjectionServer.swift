@@ -65,6 +65,7 @@ public class InjectionServer: SimpleSocket {
 
         // tell client app the inferred project being watched
         if readInt() != INJECTION_SALT || readString() != INJECTION_KEY {
+            NSLog("Are you running InjectionIII.app from /Applications ?")
             return
         }
 

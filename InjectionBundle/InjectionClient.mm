@@ -113,17 +113,17 @@ static struct {
 }
 
 - (void)runInBackground {
-    [SwiftEval sharedInstance].tmpDir = [self readString];
+    NSString *tmpDir = [self readString];
+    [SwiftEval sharedInstance].tmpDir = tmpDir;
     [SwiftEval sharedInstance].injectionNumber = 100;
 
-    [self writeInt:INJECTION_SALT];
+    if (![@"/tmp" isEqualToString:tmpDir])
+        [self writeInt:INJECTION_SALT];
     [self writeString:INJECTION_KEY];
-    [self writeString:[NSBundle mainBundle].privateFrameworksPath];
-#ifdef __LP64__
-    [self writeString:@"x86_64"];
-#else
-    [self writeString:@"i386"];
-#endif
+    [self writeString:[NSBundle
+                       mainBundle].privateFrameworksPath];
+
+    [self writeString:[SwiftEval sharedInstance].arch];
     [self writeString:[NSBundle mainBundle].executablePath];
 
     int codesignStatusPipe[2];
