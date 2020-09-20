@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#132 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#135 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -719,9 +719,20 @@ public class SwiftEval: NSObject {
         let commandFile = "\(tmpDir)/command.sh"
         try! command.write(toFile: commandFile, atomically: false, encoding: .utf8)
         debug(command)
+
+        #if os(macOS)
+        let task = Process()
+        task.launchPath = "/bin/bash"
+        task.arguments = ["-c", command]
+        task.launch()
+        task.waitUntilExit()
+        return task.terminationStatus == EXIT_SUCCESS
+        #else
         return runner.run(script: commandFile)
+        #endif
     }
 
+    #if !os(macOS)
     let runner = ScriptRunner()
 
     class ScriptRunner {
@@ -776,9 +787,16 @@ public class SwiftEval: NSObject {
             fputs("\(script)\n", commandsOut)
             var buffer = [Int8](repeating: 0, count: 10)
             fgets(&buffer, Int32(buffer.count), statusesIn)
-            return buffer[0] == "0".utf8.first!
+            return atoi(buffer) == EXIT_SUCCESS
         }
     }
+    #endif
+
+    #if DEBUG
+    deinit {
+        NSLog("\(self).deinit()")
+    }
+    #endif
 }
 
 @_silgen_name("fork")

@@ -5,20 +5,22 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#12 $
+//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#28 $
 //
 
 let XcodeBundleID = "com.apple.dt.Xcode"
-let injectionQueue = DispatchQueue(label: "InjectionQueue")
+let commandQueue = DispatchQueue(label: "InjectionCommand")
 
-var projectInjected = ["": ["": Date.timeIntervalSinceReferenceDate]]
+var projectInjected = [String: [String: TimeInterval]]()
 let MIN_INJECTION_INTERVAL = 1.0
 
 public class InjectionServer: SimpleSocket {
-    var injector: ((_ changed: NSArray, _ ideProcPath:String) -> Void)? = nil
+    var fileChangeHandler: ((_ changed: NSArray, _ ideProcPath:String) -> Void)!
     var fileWatchers = [FileWatcher]()
     var pending = [String]()
+    var builder: SwiftEval!
     var lastIdeProcPath = ""
+
     override public class func error(_ message: String) -> Int32 {
         let saveno = errno
         DispatchQueue.main.sync {
@@ -33,7 +35,9 @@ public class InjectionServer: SimpleSocket {
     }
 
     func sendCommand(_ command: InjectionCommand, with string: String?) {
-        writeCommand(command.rawValue, with: string)
+        commandQueue.sync {
+            _ = writeCommand(command.rawValue, with: string)
+        }
     }
 
     @objc override public func runInBackground() {
@@ -41,21 +45,12 @@ public class InjectionServer: SimpleSocket {
         write(tmpDir)
 
         var candiateProjectFile = appDelegate.selectedProject
-//        var MAS = false
-
-    //    if (!projectFile) {
-    //        XcodeApplication *xcode = (XcodeApplication *)[SBApplication
-    //                           applicationWithBundleIdentifier:XcodeBundleID];
-    //        XcodeWorkspaceDocument *workspace = [xcode activeWorkspaceDocument];
-    //        projectFile = workspace.file.path;
-    //    }
 
         if candiateProjectFile == nil {
             DispatchQueue.main.sync {
                 appDelegate.openProject(self)
             }
             candiateProjectFile = appDelegate.selectedProject
-//            MAS = true
         }
         guard let projectFile = candiateProjectFile else {
             return
@@ -69,7 +64,8 @@ public class InjectionServer: SimpleSocket {
             return
         }
 
-        let builder = SwiftEval()
+        builder = SwiftEval()
+        builder.tmpDir = tmpDir
 
         // client spcific data for building
         if let frameworks = readString() {
@@ -80,59 +76,38 @@ public class InjectionServer: SimpleSocket {
             builder.arch = arch
         } else { return }
 
+        // log errors to client
+        builder.evalError = {
+            (message: String) in
+            self.sendCommand(.log, with:message)
+            return NSError(domain:"SwiftEval", code:-1,
+                           userInfo:[NSLocalizedDescriptionKey: message])
+        }
+
         // Xcode specific config
-        if let xcode = NSRunningApplication
-            .runningApplications(withBundleIdentifier: XcodeBundleID).first {
-            builder.xcodeDev = xcode.bundleURL!.path + "/Contents/Developer"
+        if let xcodeURL = NSRunningApplication.runningApplications(
+            withBundleIdentifier: XcodeBundleID).first?.bundleURL {
+            builder.xcodeDev = xcodeURL
+                .appendingPathComponent("Contents/Developer").path
         }
 
         builder.projectFile = projectFile
 
         let projectName = URL(fileURLWithPath: projectFile)
             .deletingPathExtension().lastPathComponent
-        let derivedLogs = String(format: "%@/Library/Developer/Xcode/DerivedData/%@-%@/Logs/Build",
+        let derivedLogs = String(format:
+            "%@/Library/Developer/Xcode/DerivedData/%@-%@/Logs/Build",
                                  NSHomeDirectory(), projectName
                                     .replacingOccurrences(of: "[\\s]+", with:"_",
-                                   options:.regularExpression),
-//            NSRegularExpressionSearch range:NSMakeRange(0, projectName.length)],
+                                                   options: .regularExpression),
             XcodeHash.hashString(forPath: projectFile))
-        if FileManager.default.fileExists(atPath:derivedLogs) {
+        if FileManager.default.fileExists(atPath: derivedLogs) {
             builder.derivedLogs = derivedLogs
-        }
-
-        // callback on errors
-        builder.evalError = {
-            (message: String) in
-            self.sendCommand(.log, with:message)
-            return NSError(domain:"SwiftEval", code:-1,
-                                          userInfo:[NSLocalizedDescriptionKey: message])
         }
 
         appDelegate.setMenuIcon("InjectionOK")
         appDelegate.lastConnection = self
         pending = []
-
-        let inject = {
-            (swiftSource: String) in
-            let watcherState = appDelegate.enableWatcher.state
-            injectionQueue.async {
-                if watcherState == NSControl.StateValue.on {
-                    appDelegate.setMenuIcon("InjectionBusy")
-    //                if (!MAS) {
-    //                    if (NSString *tmpfile = [builder rebuildClassWithOldClass:nil
-    //                                                              classNameOrFile:swiftSource extra:nil error:nil])
-    //                        [self writeString:[@"LOAD " stringByAppendingString:tmpfile]];
-    //                    else
-    //                        [appDelegate setMenuIcon:@"InjectionError"];
-    //                }
-    //                else
-                    self.sendCommand(.inject, with:swiftSource)
-                }
-                else {
-                    self.sendCommand(.log, with:"The file watcher is turned off")
-                }
-            }
-        }
 
         var lastInjected = projectInjected[projectFile]
         if lastInjected == nil {
@@ -140,7 +115,8 @@ public class InjectionServer: SimpleSocket {
             projectInjected[projectFile] = lastInjected!
         }
 
-        if let executable = readString() {
+        if let executable = readString(),
+            appDelegate.enableWatcher.state == .on {
             let mtime = {
                 (path: String) -> time_t in
                 var info = stat()
@@ -150,19 +126,16 @@ public class InjectionServer: SimpleSocket {
             for (source, _) in lastInjected! {
                 if !source.hasSuffix("storyboard") && !source.hasSuffix("xib") &&
                     mtime(source) > executableBuild {
-                    inject(source)
+                    recompileAndInject(source: source)
                 }
             }
         }
         else { return }
 
         var pause: TimeInterval = 0.0
-
-        // start up a file watcher to write generated tmpfile path to client app
-
         var testCache = [String: [String]]()
 
-        injector = {
+        fileChangeHandler = {
             (changed: NSArray, ideProcPath: String) in
             var changed = changed as! [String]
 
@@ -182,7 +155,7 @@ public class InjectionServer: SimpleSocket {
             }
 
             let now = NSDate.timeIntervalSinceReferenceDate
-            let automatic = appDelegate.enableWatcher.state == NSControl.StateValue.on
+            let automatic = appDelegate.enableWatcher.state == .on
             for swiftSource in changed {
                 if !self.pending.contains(swiftSource) {
                     if (now > (lastInjected?[swiftSource] ?? 0.0) + MIN_INJECTION_INTERVAL && now > pause) {
@@ -190,8 +163,9 @@ public class InjectionServer: SimpleSocket {
                         projectInjected[projectFile] = lastInjected!
                         self.pending.append(swiftSource)
                         if !automatic {
+                            let file = (swiftSource as NSString).lastPathComponent
                             self.sendCommand(.log,
-                                        with:"'\((swiftSource as NSString).lastPathComponent), type ctrl-= to inject")
+                                with:"'\(file)' changed, type ctrl-= to inject")
                         }
                     }
                 }
@@ -200,8 +174,9 @@ public class InjectionServer: SimpleSocket {
             if (automatic) {
                 self.injectPending()
             }
-        };
+        }
 
+        // start up a file watcher to write generated tmpfile path to client app
         setProject(projectFile)
 
         // read status requests from client app
@@ -215,16 +190,18 @@ public class InjectionServer: SimpleSocket {
             switch command {
             case .complete:
                 appDelegate.setMenuIcon("InjectionOK")
-                if appDelegate.frontItem.state == NSControl.StateValue.on {
-                    NSWorkspace.shared.open(URL(fileURLWithPath:
-                        builder.xcodeDev + "/Applications/Simulator.app"))
+                if appDelegate.frontItem.state == .on {
+                    NSWorkspace.shared
+                        .open(URL(fileURLWithPath: builder.xcodeDev)
+                        .appendingPathComponent("Applications/Simulator.app"))
                 }
                 break
             case .pause:
                 pause = NSDate.timeIntervalSinceReferenceDate + Double(readString() ?? "0.0")!
                 break
             case .sign:
-                let identity = UserDefaults.standard.string(forKey: projectFile)
+                if !appDelegate.isSandboxed { break }
+                let identity = appDelegate.defaults.string(forKey: projectFile)
                 if identity != nil {
                     NSLog("Signing with identity: \(identity!)")
                 }
@@ -235,12 +212,6 @@ public class InjectionServer: SimpleSocket {
             case .error:
                 appDelegate.setMenuIcon("InjectionError")
                 NSLog("Injection error: \(readString() ?? "Uknown")")
-    //            dispatch_async(dispatch_get_main_queue(), ^{
-    //                [[NSAlert alertWithMessageText:@"Injection Error"
-    //                                 defaultButton:@"OK" alternateButton:nil otherButton:nil
-    //                     informativeTextWithFormat:@"%@",
-    //                  [dylib substringFromIndex:@"ERROR ".length]] runModal];
-    //            });
                 break;
             case .exit:
                 break commandLoop
@@ -250,30 +221,45 @@ public class InjectionServer: SimpleSocket {
         }
 
         // client app disconnected
-        injector = nil
+        builder = nil
+        fileChangeHandler = nil
         fileWatchers.removeAll()
+        appDelegate.traceItem.state = .off
         appDelegate.setMenuIcon("InjectionIdle")
-        appDelegate.traceItem.state = NSControl.StateValue.off
+    }
+
+    func recompileAndInject(source: String) {
+        appDelegate.setMenuIcon("InjectionBusy")
+        if appDelegate.isSandboxed {
+            sendCommand(.inject, with: source)
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now()+0.01) {
+                if let dylib = try? self.builder.rebuildClass(oldClass: nil,
+                                       classNameOrFile: source, extra: nil) {
+                    self.sendCommand(.load, with: dylib)
+                } else {
+                    appDelegate.setMenuIcon("InjectionError")
+                }
+            }
+        }
     }
 
     public func watchDirectory(_ directory: String) {
-        fileWatchers.append(FileWatcher(root:directory,
-                                        callback:injector!))
-        sendCommand(.watching, with:directory)
+        fileWatchers.append(FileWatcher(root: directory,
+                                        callback: fileChangeHandler))
+        sendCommand(.watching, with: directory)
     }
 
     @objc public func injectPending() {
+        sendCommand(.ideProcPath, with: lastIdeProcPath)
         for swiftSource in pending {
-            injectionQueue.async {
-                self.sendCommand(.ideProcPath, with: self.lastIdeProcPath)
-                self.sendCommand(.inject, with:swiftSource)
-            }
+            recompileAndInject(source: swiftSource)
         }
         pending.removeAll()
     }
 
     @objc public func setProject(_ project: String) {
-        guard injector != nil else { return }
+        guard fileChangeHandler != nil else { return }
         sendCommand(.vaccineSettingChanged,
                     with:appDelegate.vaccineConfiguration())
         fileWatchers.removeAll()

@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#20 $
+//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#26 $
 
 import Cocoa
 
@@ -36,6 +36,9 @@ class AppDelegate : NSObject, NSApplicationDelegate {
                                         comment: "Project Directory")
 
     let defaults = UserDefaults.standard
+    var defaultsMap: [NSMenuItem: String]!
+    lazy var isSandboxed =
+        ProcessInfo.processInfo.environment["APP_SANDBOX_CONTAINER_ID"] != nil
 
     @objc func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
@@ -50,10 +53,16 @@ class AppDelegate : NSObject, NSApplicationDelegate {
         statusItem.isEnabled = true
         statusItem.title = ""
 
-        enabledTDDItem.state = UserDefaults.standard.bool(forKey:UserDefaultsTDDEnabled)
-            ? .on : .off
-        enableVaccineItem.state = UserDefaults.standard.bool(forKey:UserDefaultsVaccineEnabled)
-            ? .on : .off
+        defaultsMap = [
+            frontItem: orderFrontKey,
+            enabledTDDItem: UserDefaultsTDDEnabled,
+            enableVaccineItem: UserDefaultsVaccineEnabled
+        ]
+
+        for (menuItem, defaultsKey) in defaultsMap {
+            menuItem.state = defaults
+                .bool(forKey: defaultsKey) ? .on : .off
+        }
 
         setMenuIcon("InjectionIdle")
         DDHotKeyCenter.shared()?
@@ -158,19 +167,20 @@ class AppDelegate : NSObject, NSApplicationDelegate {
 
     func setMenuIcon(_ tiffName: String) {
         DispatchQueue.main.async {
-            if let path = Bundle.main.path(forResource: tiffName, ofType:"tif"),
+            if let path = Bundle.main.path(forResource: tiffName, ofType: "tif"),
                 let image = NSImage(contentsOfFile: path) {
     //            image.template = TRUE;
                 self.statusItem.image = image
                 self.statusItem.alternateImage = self.statusItem.image
                 self.startItem.isEnabled = tiffName == "InjectionIdle"
                 self.xprobeItem.isEnabled = !self.startItem.isEnabled
+                self.traceItem.isEnabled = !self.startItem.isEnabled
             }
         }
     }
 
     @IBAction func openProject(_ sender: Any) {
-        _ = application(NSApp, openFile:"")
+        _ = application(NSApp, openFile: "")
     }
 
     @IBAction func addDirectory(_ sender: Any) {
@@ -190,14 +200,10 @@ class AppDelegate : NSObject, NSApplicationDelegate {
 
     @IBAction func toggleTDD(_ sender: NSMenuItem) {
         toggleState(sender)
-        let newSetting = sender.state == .on
-        UserDefaults.standard.set(newSetting, forKey:UserDefaultsTDDEnabled)
     }
 
     @IBAction func toggleVaccine(_ sender: NSMenuItem) {
         toggleState(sender)
-        let newSetting = sender.state == .on
-        UserDefaults.standard.set(newSetting, forKey:UserDefaultsVaccineEnabled)
         self.lastConnection?.sendCommand(.vaccineSettingChanged, with:vaccineConfiguration())
     }
 
@@ -213,7 +219,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
 
     @IBAction func traceApp(_ sender: NSMenuItem) {
         toggleState(sender)
-        self.lastConnection?.sendCommand(sender.state == NSControl.StateValue.on ?
+        self.lastConnection?.sendCommand(sender.state == .on ?
             .trace : .untrace, with: nil)
     }
 
@@ -228,6 +234,9 @@ class AppDelegate : NSObject, NSApplicationDelegate {
 
     @IBAction func toggleState(_ sender: NSMenuItem) {
         sender.state = sender.state == .on ? .off : .on
+        if let defaultsKey = defaultsMap[sender] {
+            defaults.set(sender.state, forKey: defaultsKey)
+        }
     }
 
     @IBAction func autoInject(_ sender: NSMenuItem) {
@@ -266,10 +275,11 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     @IBAction func runXprobe(_ sender: NSMenuItem) {
         if xprobePlugin == nil {
             xprobePlugin = XprobePluginMenuController()
-            xprobePlugin.applicationDidFinishLaunching(Notification(name: Notification.Name(rawValue: "")))
+            xprobePlugin.applicationDidFinishLaunching(
+                Notification(name: Notification.Name(rawValue: "")))
             xprobePlugin.injectionPlugin = unsafeBitCast(self, to: AnyClass.self)
         }
-        lastConnection?.sendCommand(.xprobe, with:"")
+        lastConnection?.sendCommand(.xprobe, with: "")
         windowItem.isHidden = false
     }
 
@@ -278,7 +288,8 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     }
 
     @IBAction func help(_ sender: Any) {
-        _ = NSWorkspace.shared.open(URL(string: "https://github.com/johnno1962/InjectionIII")!)
+        _ = NSWorkspace.shared.open(URL(string:
+            "https://github.com/johnno1962/InjectionIII")!)
     }
 
     @objc

@@ -11,3 +11,4 @@ static NSString *const UserDefaultsVaccineEnabled = @"Enabled Vaccine";
 static NSString *const lastWatchedKey = @"lastWatched";
 static NSString *const bookmarkKey = @"persistentBookmarks";
 static NSString *const updateCheckKey = @"nextUpdateCheck";
+static NSString *const orderFrontKey = @"orderFront";
