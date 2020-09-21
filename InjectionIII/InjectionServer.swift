@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#28 $
+//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#34 $
 //
 
 let XcodeBundleID = "com.apple.dt.Xcode"
@@ -66,6 +66,7 @@ public class InjectionServer: SimpleSocket {
 
         builder = SwiftEval()
         builder.tmpDir = tmpDir
+        defer { builder = nil }
 
         // client spcific data for building
         if let frameworks = readString() {
@@ -92,18 +93,6 @@ public class InjectionServer: SimpleSocket {
         }
 
         builder.projectFile = projectFile
-
-        let projectName = URL(fileURLWithPath: projectFile)
-            .deletingPathExtension().lastPathComponent
-        let derivedLogs = String(format:
-            "%@/Library/Developer/Xcode/DerivedData/%@-%@/Logs/Build",
-                                 NSHomeDirectory(), projectName
-                                    .replacingOccurrences(of: "[\\s]+", with:"_",
-                                                   options: .regularExpression),
-            XcodeHash.hashString(forPath: projectFile))
-        if FileManager.default.fileExists(atPath: derivedLogs) {
-            builder.derivedLogs = derivedLogs
-        }
 
         appDelegate.setMenuIcon("InjectionOK")
         appDelegate.lastConnection = self
@@ -175,8 +164,9 @@ public class InjectionServer: SimpleSocket {
                 self.injectPending()
             }
         }
+        defer { fileChangeHandler = nil }
 
-        // start up a file watcher to write generated tmpfile path to client app
+        // start up file watchers to write generated tmpfile path to client app
         setProject(projectFile)
 
         // read status requests from client app
@@ -221,8 +211,6 @@ public class InjectionServer: SimpleSocket {
         }
 
         // client app disconnected
-        builder = nil
-        fileChangeHandler = nil
         fileWatchers.removeAll()
         appDelegate.traceItem.state = .off
         appDelegate.setMenuIcon("InjectionIdle")
@@ -258,12 +246,26 @@ public class InjectionServer: SimpleSocket {
         pending.removeAll()
     }
 
-    @objc public func setProject(_ project: String) {
+    @objc public func setProject(_ projectFile: String) {
         guard fileChangeHandler != nil else { return }
+
+        builder?.projectFile = projectFile
+        let projectName = URL(fileURLWithPath: projectFile)
+            .deletingPathExtension().lastPathComponent
+        let derivedLogs = String(format:
+            "%@/Library/Developer/Xcode/DerivedData/%@-%@/Logs/Build",
+                                 NSHomeDirectory(), projectName
+                                    .replacingOccurrences(of: #"[\s]+"#, with:"_",
+                                                   options: .regularExpression),
+            XcodeHash.hashString(forPath: projectFile))
+        if FileManager.default.fileExists(atPath: derivedLogs) {
+            builder?.derivedLogs = derivedLogs
+        }
+
         sendCommand(.vaccineSettingChanged,
                     with:appDelegate.vaccineConfiguration())
         fileWatchers.removeAll()
-        sendCommand(.connected, with:project)
+        sendCommand(.connected, with: projectFile)
         for directory in appDelegate.watchedDirectories {
             watchDirectory(directory)
         }

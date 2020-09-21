@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#135 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#137 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -174,10 +174,10 @@ public class SwiftEval: NSObject {
         return NSError(domain: "SwiftEval", code: -1, userInfo: [NSLocalizedDescriptionKey: message])
     }
 
-    @objc public var injectionNumber = 0
+    @objc public var injectionNumber = 100
     @objc public var lastIdeProcPath = ""
 
-    static var compileByClass = [String: (String, String)]()
+    var compileByClass = [String: (String, String)]()
 
     static var buildCacheFile = "/tmp/eval_builds.plist"
     static var longTermCache = NSMutableDictionary(contentsOfFile: buildCacheFile) ?? NSMutableDictionary()
@@ -307,7 +307,7 @@ public class SwiftEval: NSObject {
             .appendingPathComponent("eval\(injectionNumber)").path
         let logfile = "\(tmpfile).log"
 
-        guard var (compileCommand, sourceFile) = try SwiftEval.compileByClass[classNameOrFile] ??
+        guard var (compileCommand, sourceFile) = try compileByClass[classNameOrFile] ??
             findCompileCommand(logsDir: logsDir, classNameOrFile: classNameOrFile, tmpfile: tmpfile) ??
             SwiftEval.longTermCache[classNameOrFile].flatMap({ ($0 as! String, classNameOrFile) }) else {
             throw evalError("""
@@ -378,14 +378,15 @@ public class SwiftEval: NSObject {
         guard shell(command: """
                 (cd "\(projectDir.escaping("$"))" && \(compileCommand) -o \(tmpfile).o >\(logfile) 2>&1)
                 """) else {
-            SwiftEval.compileByClass.removeValue(forKey: classNameOrFile)
+            compileByClass.removeValue(forKey: classNameOrFile)
             throw evalError("Re-compilation failed (\(tmpDir)/command.sh)\n\(try! String(contentsOfFile: logfile))")
         }
 
-        SwiftEval.compileByClass[classNameOrFile] = (compileCommand, sourceFile)
+        compileByClass[classNameOrFile] = (compileCommand, sourceFile)
         if SwiftEval.longTermCache[classNameOrFile] as? String != compileCommand && classNameOrFile.hasPrefix("/") {
             SwiftEval.longTermCache[classNameOrFile] = compileCommand
-            SwiftEval.longTermCache.write(toFile: SwiftEval.buildCacheFile, atomically: false)
+            SwiftEval.longTermCache.write(toFile: SwiftEval.buildCacheFile,
+                                     atomically: false)
         }
 
         // link resulting object file to create dynamic library

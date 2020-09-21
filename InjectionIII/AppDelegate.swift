@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#26 $
+//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#29 $
 
 import Cocoa
 
@@ -108,8 +108,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
             .contentsOfDirectory(atPath: url.path),
             let projectFile =
                 fileWithExtension("xcworkspace", inFiles: fileList) ??
-                fileWithExtension("xcodeproj", inFiles: fileList) ??
-                fileList.first(where: {$0 == "Package.swift"}) {
+                fileWithExtension("xcodeproj", inFiles: fileList) {
             self.selectedProject = url
                 .appendingPathComponent(projectFile).path
             self.watchedDirectories.removeAll()
