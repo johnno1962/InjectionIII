@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#76 $
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#77 $
 //
 
 #import "InjectionClient.h"
@@ -21,6 +21,7 @@
 #import "iOSInjection-Swift.h"
 #endif
 #import <UIKit/UIKit.h>
+#import <objc/runtime.h>
 
 @implementation NSObject (Remapper)
 
@@ -56,6 +57,21 @@ static struct {
 
 @interface UIViewController (StoryboardInjection)
 - (void)_loadViewFromNibNamed:(NSString *)a0 bundle:(NSBundle *)a1;
+@end
+@implementation UIViewController (iOS14StoryboardInjection)
+- (void)iOS14LoadViewFromNibNamed:(NSString *)nibName bundle:(NSBundle *)bundle {
+    if ([self respondsToSelector:@selector(_loadViewFromNibNamed:bundle:)])
+        [self _loadViewFromNibNamed:nibName bundle:bundle];
+    else {
+        size_t vcSize = class_getInstanceSize([UIViewController class]);
+        size_t mySize = class_getInstanceSize([self class]);
+        char *extra = (char *)(__bridge void *)self + vcSize;
+        NSData *save = [NSData dataWithBytes:extra length:mySize-vcSize];
+        (void)[self initWithNibName:nibName bundle:bundle];
+        memcpy(extra, save.bytes, save.length);
+        [self loadView];
+    }
+}
 @end
 #else
 #if __has_include("macOSInjection10-Swift.h")
@@ -283,8 +299,8 @@ static struct {
             remapper.output = [NSMutableArray new];
             allOrder[nibName] = remapper.order = [NSMutableArray new];
 
-            [visibleVC _loadViewFromNibNamed:visibleVC.nibName
-                                      bundle:visibleVC.nibBundle];
+            [visibleVC iOS14LoadViewFromNibNamed:visibleVC.nibName
+                                          bundle:visibleVC.nibBundle];
 
             remapper.inputIndexes = nil;
             remapper.output = nil;
@@ -302,8 +318,8 @@ static struct {
         
         resetRemapper();
 
-        [visibleVC _loadViewFromNibNamed:visibleVC.nibName
-                                  bundle:visibleVC.nibBundle];
+        [visibleVC iOS14LoadViewFromNibNamed:visibleVC.nibName
+                                      bundle:visibleVC.nibBundle];
 
         if ([SwiftEval sharedInstance].vaccineEnabled == YES) {
             resetRemapper();

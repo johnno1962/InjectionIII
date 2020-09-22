@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#34 $
+//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#43 $
 //
 
 let XcodeBundleID = "com.apple.dt.Xcode"
@@ -190,13 +190,16 @@ public class InjectionServer: SimpleSocket {
                 pause = NSDate.timeIntervalSinceReferenceDate + Double(readString() ?? "0.0")!
                 break
             case .sign:
-                if !appDelegate.isSandboxed { break }
-                let identity = appDelegate.defaults.string(forKey: projectFile)
-                if identity != nil {
-                    NSLog("Signing with identity: \(identity!)")
+                if !appDelegate.isSandboxed && xprobePlugin == nil {
+                    sendCommand(.signed, with: "0")
+                    break
                 }
+//                let identity = appDelegate.defaults.string(forKey: projectFile)
+//                if identity != nil {
+//                    NSLog("Signing with identity: \(identity!)")
+//                }
                 let signedOK = SignerService
-                    .codesignDylib(tmpDir+"/eval"+readString()!, identity:identity)
+                    .codesignDylib(tmpDir+"/eval"+readString()!, identity: nil)
                 sendCommand(.signed, with: signedOK ? "1": "0")
                 break
             case .error:
@@ -218,7 +221,8 @@ public class InjectionServer: SimpleSocket {
 
     func recompileAndInject(source: String) {
         appDelegate.setMenuIcon("InjectionBusy")
-        if appDelegate.isSandboxed {
+        if appDelegate.isSandboxed ||
+            source.hasSuffix(".storyboard") || source.hasSuffix(".xib") {
             sendCommand(.inject, with: source)
         } else {
             DispatchQueue.main.asyncAfter(deadline: .now()+0.01) {
