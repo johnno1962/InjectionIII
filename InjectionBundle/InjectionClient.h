@@ -31,6 +31,7 @@ typedef NS_ENUM(int, InjectionCommand) {
 
     InjectionTrace,
     InjectionUntrace,
+    InjectionTraceUI,
 
     InjectionEOF = ~0
 };

@@ -23,6 +23,7 @@
                 <outlet property="startItem" destination="vsd-ll-3nr" id="ODN-wa-BTp"/>
                 <outlet property="statusMenu" destination="V8Q-mq-A2f" id="Epo-HD-J21"/>
                 <outlet property="traceItem" destination="Kkx-ex-NCv" id="EXz-O7-K34"/>
+                <outlet property="traceUIItem" destination="IOb-d2-Vef" id="b1A-SK-h6T"/>
                 <outlet property="updateItem" destination="kFj-jW-1uq" id="zyq-6a-Hes"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
                 <outlet property="windowItem" destination="aUF-d1-5bR" id="MxW-hd-aZ7"/>
@@ -737,6 +738,13 @@
                     <accessibility description="Trace App"/>
                     <connections>
                         <action selector="traceApp:" target="Voe-Tx-rLC" id="5zd-Ho-CaT"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Trace UI" toolTip="Log app methods" id="IOb-d2-Vef">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <accessibility description="Trace App"/>
+                    <connections>
+                        <action selector="traceUIApp:" target="Voe-Tx-rLC" id="GrF-Nr-PB0"/>
                     </connections>
                 </menuItem>
                 <menuItem title="Remote" id="of9-Ja-9Yf">

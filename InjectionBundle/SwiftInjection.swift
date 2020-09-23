@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#64 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#66 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -97,8 +97,6 @@ public class SwiftInjection: NSObject {
         return injectionNumber
     }
 
-    static var interposed = [UnsafeMutableRawPointer: UnsafeMutableRawPointer]()
-
     @objc
     public class func inject(tmpfile: String) throws {
         let newClasses = try SwiftEval.instance.loadAndInject(tmpfile: tmpfile)
@@ -160,18 +158,18 @@ public class SwiftInjection: NSObject {
 
         // Find all definitions of Swift functions and ...
         // SwiftUI body properties defined in the new dylib.
-        for suffix in ["fC", "yF", "lF", "tF", "Qrvg"] {//, "CN", "Mf", "Mn", "Tq"] {
-            findSwiftFunctions("\(tmpfile).dylib", suffix) {
-                (loadedFunc, symbol) in
+        for suffix in SwiftTrace.swiftFunctionSuffixes {
+            findSwiftSymbols("\(tmpfile).dylib", suffix) {
+                (loadedFunc, symbol, _, _) in
                 guard let existing = dlsym(main, symbol) else { return }
                 // has this symbol already been interposed?
-                let current = interposed[existing] ?? existing
+                let current = SwiftTrace.interposed[existing] ?? existing
                 let tuple = dyld_interpose_tuple(
                     replacement: loadedFunc, replacee: current)
                 interposes.append(tuple)
                 // record functions that have beeen interposed
-                interposed[existing] = loadedFunc
-                interposed[current] = loadedFunc
+                SwiftTrace.interposed[existing] = loadedFunc
+                SwiftTrace.interposed[current] = loadedFunc
 //                print("💉 Replacing \(demangle(symbol))")
             }
         }
@@ -183,12 +181,12 @@ public class SwiftInjection: NSObject {
             var mostRecentlyLoaded = true
             // Apply interposes to all images in the app bundle
             // as well as the most recently loaded "new" dylib.
-            findImages { image, header in
+            appBundleImages { image, header in
                 if mostRecentlyLoaded {
                     // Need to apply all previous interposes
                     // to the newly loaded dylib as well.
                     var previous = Array<dyld_interpose_tuple>()
-                    for (replacee, replacement) in interposed {
+                    for (replacee, replacement) in SwiftTrace.interposed {
                         previous.append(dyld_interpose_tuple(
                                 replacement: replacement, replacee: replacee))
                     }

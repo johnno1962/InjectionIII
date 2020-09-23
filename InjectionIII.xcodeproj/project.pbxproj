@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		BB070C262512851B002FC45A /* AppCodePlugin in Resources */ = {isa = PBXBuildFile; fileRef = BB070C252512851B002FC45A /* AppCodePlugin */; };
+		BB1B8186251B7BA500F76DC7 /* SwiftStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1B8184251B7BA400F76DC7 /* SwiftStats.swift */; };
+		BB1B8187251B7BA500F76DC7 /* SwiftInterpose.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1B8185251B7BA400F76DC7 /* SwiftInterpose.swift */; };
 		BB34C3FD244FAAB400D520A9 /* RMWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB34C3FC244FAAB400D520A9 /* RMWindowController.xib */; };
 		BB34C3FF244FAD3C00D520A9 /* log.html in Resources */ = {isa = PBXBuildFile; fileRef = BB34C3FE244FAD3C00D520A9 /* log.html */; };
 		BB34C401244FAE3000D520A9 /* iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BB34C400244FAE2F00D520A9 /* iphone.png */; };
@@ -27,7 +29,6 @@
 		BB5D67B1244DA00C003AA7F4 /* SwiftInvoke.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67AB244DA00C003AA7F4 /* SwiftInvoke.swift */; };
 		BB5D67B2244DA00C003AA7F4 /* SwiftStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67AC244DA00C003AA7F4 /* SwiftStack.swift */; };
 		BB6125D324EA882000A7C230 /* Injection.jar in Resources */ = {isa = PBXBuildFile; fileRef = BB6125D224EA882000A7C230 /* Injection.jar */; };
-		BB620E6824BA3F4B002FACC5 /* Interposer.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB620E6724BA3F4B002FACC5 /* Interposer.mm */; };
 		BB6306FE1FCD1A410021D30C /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = BB6306FD1FCD1A410021D30C /* Credits.rtf */; };
 		BB76EA0822929E1100E454F0 /* SwiftTrace.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB76EA0522929E1100E454F0 /* SwiftTrace.mm */; };
 		BB76EA0922929E1100E454F0 /* SwiftTrace.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB76EA0622929E1100E454F0 /* SwiftTrace.swift */; };
@@ -104,6 +105,8 @@
 		BB037DF41FAD80D0004B267C /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		BB070C252512851B002FC45A /* AppCodePlugin */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AppCodePlugin; sourceTree = "<group>"; };
 		BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftInjection.swift; sourceTree = "<group>"; };
+		BB1B8184251B7BA400F76DC7 /* SwiftStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftStats.swift; path = SwiftTrace/SwiftTrace/SwiftStats.swift; sourceTree = SOURCE_ROOT; };
+		BB1B8185251B7BA400F76DC7 /* SwiftInterpose.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftInterpose.swift; path = SwiftTrace/SwiftTrace/SwiftInterpose.swift; sourceTree = SOURCE_ROOT; };
 		BB1DEA9A1FD6A74800AF509F /* Xtrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Xtrace.h; path = XprobePlugin/Classes/Xtrace.h; sourceTree = "<group>"; };
 		BB1DEA9B1FD6A74900AF509F /* IvarAccess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IvarAccess.h; path = XprobePlugin/Classes/IvarAccess.h; sourceTree = "<group>"; };
 		BB1DEA9C1FD6A74900AF509F /* Xprobe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Xprobe.h; path = XprobePlugin/Classes/Xprobe.h; sourceTree = "<group>"; };
@@ -142,7 +145,6 @@
 		BB5D67AB244DA00C003AA7F4 /* SwiftInvoke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftInvoke.swift; path = SwiftTrace/SwiftTrace/SwiftInvoke.swift; sourceTree = SOURCE_ROOT; };
 		BB5D67AC244DA00C003AA7F4 /* SwiftStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftStack.swift; path = SwiftTrace/SwiftTrace/SwiftStack.swift; sourceTree = SOURCE_ROOT; };
 		BB6125D224EA882000A7C230 /* Injection.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; name = Injection.jar; path = AppCodePlugin/Injection.jar; sourceTree = "<group>"; };
-		BB620E6724BA3F4B002FACC5 /* Interposer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Interposer.mm; sourceTree = "<group>"; };
 		BB6224411FC5B0E300AD7A3A /* HelperProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelperProxy.m; sourceTree = "<group>"; };
 		BB6224421FC5B0E500AD7A3A /* HelperProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperProxy.h; sourceTree = "<group>"; };
 		BB6224431FC5B0E500AD7A3A /* HelperInstaller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperInstaller.h; sourceTree = "<group>"; };
@@ -435,7 +437,6 @@
 				BBCA02471FB1065D00E45F0F /* Info.plist */,
 				BBCA025B1FB114FF00E45F0F /* InjectionClient.h */,
 				BBCA025C1FB114FF00E45F0F /* InjectionClient.mm */,
-				BB620E6724BA3F4B002FACC5 /* Interposer.mm */,
 				BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */,
 				BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */,
 				BBB64FE41FD576AA0020BE47 /* XprobeSwift-Bridging-Header.h */,
@@ -449,6 +450,8 @@
 				BB5D67A8244DA00B003AA7F4 /* SwiftArgs.swift */,
 				BB5D67AA244DA00B003AA7F4 /* SwiftMeta.swift */,
 				BB5D67AC244DA00C003AA7F4 /* SwiftStack.swift */,
+				BB1B8184251B7BA400F76DC7 /* SwiftStats.swift */,
+				BB1B8185251B7BA400F76DC7 /* SwiftInterpose.swift */,
 				BB76EA0722929E1100E454F0 /* xt_forwarding_trampoline_x64.s */,
 				BB4ADF7624E8036400D502F3 /* xt_forwarding_trampoline_arm64.s */,
 			);
@@ -734,6 +737,7 @@
 				BBCA02501FB107AF00E45F0F /* SwiftEval.swift in Sources */,
 				BB76EA0822929E1100E454F0 /* SwiftTrace.mm in Sources */,
 				BB4ADF7724E8036400D502F3 /* xt_forwarding_trampoline_arm64.s in Sources */,
+				BB1B8187251B7BA500F76DC7 /* SwiftInterpose.swift in Sources */,
 				BD35949E21A6C5DE0020EB94 /* Vaccine.swift in Sources */,
 				BBCA02511FB107AF00E45F0F /* SwiftInjection.swift in Sources */,
 				BB5D67B1244DA00C003AA7F4 /* SwiftInvoke.swift in Sources */,
@@ -741,10 +745,10 @@
 				BB5D67AE244DA00C003AA7F4 /* SwiftArgs.swift in Sources */,
 				BB76EA0A22929E1100E454F0 /* xt_forwarding_trampoline_x64.s in Sources */,
 				BBB64FE11FD575260020BE47 /* XprobeSwift.swift in Sources */,
-				BB620E6824BA3F4B002FACC5 /* Interposer.mm in Sources */,
 				BB5D67AD244DA00C003AA7F4 /* SwiftSwizzle.swift in Sources */,
 				BBB64FE61FD577EB0020BE47 /* SwiftSwizzler.swift in Sources */,
 				BBCA02621FB1312A00E45F0F /* SimpleSocket.mm in Sources */,
+				BB1B8186251B7BA500F76DC7 /* SwiftStats.swift in Sources */,
 				BB76EA0922929E1100E454F0 /* SwiftTrace.swift in Sources */,
 				BB5D67B0244DA00C003AA7F4 /* SwiftMeta.swift in Sources */,
 				BB5D67B2244DA00C003AA7F4 /* SwiftStack.swift in Sources */,
@@ -970,7 +974,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -993,7 +997,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 2.2.4;
+				MARKETING_VERSION = 2.2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1023,6 +1027,7 @@
 				REEXPORTED_FRAMEWORK_NAMES = "";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "InjectionBundle/XprobeSwift-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = bundle;
@@ -1048,6 +1053,7 @@
 				REEXPORTED_FRAMEWORK_NAMES = "";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "InjectionBundle/XprobeSwift-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = bundle;

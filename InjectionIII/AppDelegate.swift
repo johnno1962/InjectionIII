@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#30 $
+//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#32 $
 
 import Cocoa
 
@@ -17,6 +17,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     @IBOutlet var window: NSWindow!
     @IBOutlet weak var enableWatcher: NSMenuItem!
     @IBOutlet weak var traceItem: NSMenuItem!
+    @IBOutlet weak var traceUIItem: NSMenuItem!
     @IBOutlet weak var statusMenu: NSMenu!
     @IBOutlet weak var startItem: NSMenuItem!
     @IBOutlet weak var xprobeItem: NSMenuItem!
@@ -170,9 +171,14 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     //            image.template = TRUE;
                 self.statusItem.image = image
                 self.statusItem.alternateImage = self.statusItem.image
-                self.startItem.isEnabled = tiffName == "InjectionIdle"
-                self.xprobeItem.isEnabled = !self.startItem.isEnabled
-                self.traceItem.isEnabled = !self.startItem.isEnabled
+                let appRunning = tiffName != "InjectionIdle"
+                self.startItem.isEnabled = appRunning
+                self.xprobeItem.isEnabled = appRunning
+                self.traceItem.isEnabled = appRunning
+                self.traceUIItem.isEnabled = appRunning
+                if !appRunning {
+                    self.traceUIItem.state = .off
+                }
             }
         }
     }
@@ -219,6 +225,11 @@ class AppDelegate : NSObject, NSApplicationDelegate {
         toggleState(sender)
         self.lastConnection?.sendCommand(sender.state == .on ?
             .trace : .untrace, with: nil)
+    }
+
+    @IBAction func traceUIApp(_ sender: NSMenuItem) {
+        toggleState(sender)
+        self.lastConnection?.sendCommand(.traceUI, with: nil)
     }
 
     func vaccineConfiguration() -> String {

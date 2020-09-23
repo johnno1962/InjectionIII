@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#77 $
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#79 $
 //
 
 #import "InjectionClient.h"
@@ -198,6 +198,10 @@ static struct {
             break;
         case InjectionUntrace:
             [SwiftTrace removeAllTraces];
+            break;
+        case InjectionTraceUI:
+            [SwiftTrace traceMainBundleMethods];
+            printf("💉 Traced methods in main bundle\n");
             break;
         case InjectionIdeProcPath: {
             [SwiftEval sharedInstance].lastIdeProcPath = [self readString];
