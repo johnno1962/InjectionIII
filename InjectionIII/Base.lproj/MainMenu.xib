@@ -706,7 +706,7 @@
                         <action selector="toggleState:" target="Voe-Tx-rLC" id="old-T7-DMa"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Order Front" toolTip="Order Front SImulator" id="wFq-Rv-gfa">
+                <menuItem title="Order Front" toolTip="Order Front SImulator on injection" id="wFq-Rv-gfa">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="toggleState:" target="Voe-Tx-rLC" id="LCw-9g-CaP"/>
@@ -733,14 +733,14 @@
                         <action selector="runXprobe:" target="Voe-Tx-rLC" id="OLt-ZD-lyd"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Trace App" toolTip="Log app messaging" id="Kkx-ex-NCv">
+                <menuItem title="Trace App" toolTip="Log app class messaging. Includes calls via Objective-C" id="Kkx-ex-NCv">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <accessibility description="Trace App"/>
                     <connections>
                         <action selector="traceApp:" target="Voe-Tx-rLC" id="5zd-Ho-CaT"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Trace UI" toolTip="Log app methods" id="IOb-d2-Vef">
+                <menuItem title="Trace UI" toolTip="Log app methods. More suited for tracing SwiftUI." id="IOb-d2-Vef">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <accessibility description="Trace App"/>
                     <connections>
@@ -799,13 +799,13 @@
                         <action selector="orderFrontStandardAboutPanel:" target="-1" id="b6u-Vx-pO5"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Update Check" id="kFj-jW-1uq">
+                <menuItem title="Update Check" toolTip="Check for App updates" id="kFj-jW-1uq">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="updateCheck:" target="Voe-Tx-rLC" id="TpD-l0-JEf"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Help/README" id="DcW-s5-diF">
+                <menuItem title="Help/README" toolTip="Open project README" id="DcW-s5-diF">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="help:" target="Voe-Tx-rLC" id="Jmr-Oc-zAH"/>

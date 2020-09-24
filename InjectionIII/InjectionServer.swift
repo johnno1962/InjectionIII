@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#43 $
+//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#44 $
 //
 
 let XcodeBundleID = "com.apple.dt.Xcode"
@@ -60,7 +60,7 @@ public class InjectionServer: SimpleSocket {
 
         // tell client app the inferred project being watched
         if readInt() != INJECTION_SALT || readString() != INJECTION_KEY {
-            NSLog("Are you running InjectionIII.app from /Applications ?")
+            sendCommand(.invalid, with: nil)
             return
         }
 

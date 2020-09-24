@@ -5,10 +5,11 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#79 $
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#83 $
 //
 
 #import "InjectionClient.h"
+#import "SwiftTrace.h"
 
 #ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
 #if __has_include("tvOSInjection10-Swift.h")
@@ -200,8 +201,11 @@ static struct {
             [SwiftTrace removeAllTraces];
             break;
         case InjectionTraceUI:
-            [SwiftTrace traceMainBundleMethods];
+            [SwiftTrace swiftTraceMainBundleMethods];
             printf("💉 Traced methods in main bundle\n");
+            break;
+        case InjectionInvalid:
+            printf("💉 ⚠️ Connection rejected. Are you running the correct version of InjectionIII.app from /Applications? ⚠️\n");
             break;
         case InjectionIdeProcPath: {
             [SwiftEval sharedInstance].lastIdeProcPath = [self readString];
