@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#137 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#138 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -311,10 +311,12 @@ public class SwiftEval: NSObject {
             findCompileCommand(logsDir: logsDir, classNameOrFile: classNameOrFile, tmpfile: tmpfile) ??
             SwiftEval.longTermCache[classNameOrFile].flatMap({ ($0 as! String, classNameOrFile) }) else {
             throw evalError("""
-                Could not locate compile command for \(classNameOrFile)
-                (Injection does not work with Whole Module Optimization.
-                There are also restrictions on characters allowed in paths.
-                All paths are also case sensitive is another thing to check.)
+                Could not locate compile command for \(classNameOrFile).
+                This could be due to one of the following:
+                1. Injection does not work with Whole Module Optimization.
+                2. There are restrictions on characters allowed in paths.
+                3. File paths in the simulator paths are case sensitive.
+                Try a build clean then rebuild to make logs available.
                 """)
         }
 

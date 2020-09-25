@@ -194,11 +194,19 @@ Injection now includes the higher level `Vaccine` functionality, for more inform
 
 ### App Tracing (SwiftTrace)
 
-The InjectionIII menu contains two items "Trace App" which can be used to enable logging of all Objective-C and non-final Swift class method calls and "Trace UI" which can log all calls to Swift methods in the application's main bundle. These feature are experimental.
-Selecting the menu item again will turn the "Trace App" feature off.
+The InjectionIII menu contains two experimentalitems for tracing a program. "Trace App"
+which can be used to enable logging of all Objective-C and non-final Swift class method
+calls and Objective-C messaging. Selecting the menu item again will turn the  "Trace App" feature off. "Trace UI" can log all calls to all Swift methods in the application's main
+bundle and is more useful for optimmising SwiftUI apps.
 
-These features are implemented by a package [SwiftTrace](https://github.com/johnno1962/SwiftTrace) which is included in the InjectionBundle.
-If you want finer grain control of what is being traced, include the following file in your project's bridging header and the internal api will be available to Swift (after an injection bundle has been loaded):
+If "Trace UI" is logging too much information, you can set filters to
+include or exclude method names using regular expressions using
+the "Edit Filters" menu option.
+
+These features are implemented by a package [SwiftTrace](https://github.com/johnno1962/SwiftTrace) which is built into the InjectionBundle.
+If you want finer grain control of what is being traced, include the following header file in
+your project's bridging header and the internal api will be available to Swift (after an
+injection bundle has been loaded):
 
 ```C++
 #import "/Applications/InjectionIII.app/Contents/Resources/SwiftTrace.h"
@@ -208,14 +216,15 @@ The "Trace UI" menu item can be mimicked by using the following call:
 ```Swift
  NSObject.swiftTraceMainBundleMethods()
 ```
-If you want instead to trace all Swift calls your application makes to a system framework
-such as SwiftUI you can use the following:
+If you want instead to also trace all Swift calls your application makes to a system
+framework such as SwiftUI you can use the following:
 
 ```Swift
- NSObject.swiftTraceMethods(inFrameworkContaining:UIHostingController<ContentView>.self, pattern: nil, excluding: nil)
+ NSObject.swiftTraceMethods(inFrameworkContaining:UIHostingController<ContentView>.self)
 ```
-Include/exclude methods to be logged using the regular expression arguments. For more
-information consult the [SwiftTrace source repo](https://github.com/johnno1962/SwiftTrace).
+To include or exclude the methods to be traced use the `methodInclusionPattern`
+and `methodExclusionPattern` class properties of SwiftTrace. For more information
+consult the [SwiftTrace source repo](https://github.com/johnno1962/SwiftTrace).
 
 ### Remote Control
 
@@ -310,4 +319,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2020/09/24 $
+$Date: 2020/09/26 $

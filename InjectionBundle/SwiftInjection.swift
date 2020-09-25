@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#67 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#71 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -134,8 +134,26 @@ public class SwiftInjection: NSObject {
                 let vtableLength = Int(existingClass.pointee.ClassSize -
                     existingClass.pointee.ClassAddressPoint) - vtableOffset
 
+                #if true
+                // original injection implementaion for Swift.
                 memcpy(byteAddr(existingClass) + vtableOffset,
                        byteAddr(classMetadata) + vtableOffset, vtableLength)
+                #else
+                // untried version only copying function pointers.
+                let newTable = (byteAddr(classMetadata) + vtableOffset)
+                    .withMemoryRebound(to: SIMP.self, capacity: 1) { $0 }
+                let oldTable = (byteAddr(existingClass) + vtableOffset)
+                    .withMemoryRebound(to: SIMP.self, capacity: 1) { $0 }
+
+                var info = Dl_info()
+                for slot in 0 ..< vtableLength / MemoryLayout<SIMP>.size {
+                    if dladdr(autoBitCast(oldTable[slot]), &info) != 0,
+                        let symname = info.dli_sname,
+                        symname[strlen(symname)-1] == UInt8(ascii: "F") {
+                        oldTable[slot] = newTable[slot]
+                    }
+                }
+                #endif
                 #endif
             }
 

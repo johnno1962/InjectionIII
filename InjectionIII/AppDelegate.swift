@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#32 $
+//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#38 $
 
 import Cocoa
 
@@ -18,6 +18,9 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     @IBOutlet weak var enableWatcher: NSMenuItem!
     @IBOutlet weak var traceItem: NSMenuItem!
     @IBOutlet weak var traceUIItem: NSMenuItem!
+    @IBOutlet weak var traceInclude: NSTextField!
+    @IBOutlet weak var traceExclude: NSTextField!
+    @IBOutlet weak var traceFilters: NSWindow!
     @IBOutlet weak var statusMenu: NSMenu!
     @IBOutlet weak var startItem: NSMenuItem!
     @IBOutlet weak var xprobeItem: NSMenuItem!
@@ -109,11 +112,11 @@ class AppDelegate : NSObject, NSApplicationDelegate {
             let projectFile =
                 fileWithExtension("xcworkspace", inFiles: fileList) ??
                 fileWithExtension("xcodeproj", inFiles: fileList) {
-            self.selectedProject = url
+            selectedProject = url
                 .appendingPathComponent(projectFile).path
-            self.watchedDirectories.removeAll()
-            self.watchedDirectories.insert(url.path)
-            self.lastConnection?.setProject(self.selectedProject!)
+            watchedDirectories.removeAll()
+            watchedDirectories.insert(url.path)
+            lastConnection?.setProject(self.selectedProject!)
             NSDocumentController.shared.noteNewRecentDocumentURL(url)
             defaults.set(url.path, forKey: lastWatchedKey)
             return true
@@ -223,13 +226,42 @@ class AppDelegate : NSObject, NSApplicationDelegate {
 
     @IBAction func traceApp(_ sender: NSMenuItem) {
         toggleState(sender)
-        self.lastConnection?.sendCommand(sender.state == .on ?
+        lastConnection?.sendCommand(sender.state == .on ?
             .trace : .untrace, with: nil)
     }
 
     @IBAction func traceUIApp(_ sender: NSMenuItem) {
         toggleState(sender)
-        self.lastConnection?.sendCommand(.traceUI, with: nil)
+        lastConnection?.sendCommand(.traceUI, with: nil)
+    }
+
+    @IBAction func showTraceFilters(_ sender: NSMenuItem?) {
+        NSApplication.shared.activate(ignoringOtherApps: true)
+        traceFilters.makeKeyAndOrderFront(sender)
+    }
+
+    @IBAction func traceInclude(_ sender: NSButton?) {
+        update(filter: .include, textField: traceInclude)
+    }
+
+    @IBAction func traceExclude(_ sender: NSButton?) {
+        update(filter: .exclude, textField: traceExclude)
+    }
+
+    func update(filter: InjectionCommand, textField: NSTextField) {
+        let regex = textField.stringValue
+        do {
+            if regex != "" {
+                _ = try NSRegularExpression(pattern: regex, options: [])
+            }
+            lastConnection?.sendCommand(filter, with: regex)
+        } catch {
+            let alert = NSAlert(error: error)
+            alert.informativeText = "Invalid regular expression syntax for filter. Characters [](){}|?*+\\ and . have special meanings. Type: man re_syntax, in the terminal."
+            alert.runModal()
+            textField.becomeFirstResponder()
+            showTraceFilters(nil)
+        }
     }
 
     func vaccineConfiguration() -> String {
@@ -249,7 +281,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     }
 
     @IBAction func autoInject(_ sender: NSMenuItem) {
-        self.lastConnection?.injectPending()
+        lastConnection?.injectPending()
 //    #if false
 //        NSError *error = nil;
 //        // Install helper tool
@@ -293,12 +325,17 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     }
 
     @objc func evalCode(_ swift: String) {
-        self.lastConnection?.sendCommand(.eval, with:swift)
+        lastConnection?.sendCommand(.eval, with:swift)
     }
 
     @IBAction func help(_ sender: Any) {
         _ = NSWorkspace.shared.open(URL(string:
             "https://github.com/johnno1962/InjectionIII")!)
+    }
+
+    @IBAction func sponsor(_ sender: Any) {
+        _ = NSWorkspace.shared.open(URL(string:
+            "https://github.com/sponsors/johnno1962")!)
     }
 
     @objc

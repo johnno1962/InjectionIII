@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#44 $
+//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#45 $
 //
 
 let XcodeBundleID = "com.apple.dt.Xcode"
@@ -168,6 +168,11 @@ public class InjectionServer: SimpleSocket {
 
         // start up file watchers to write generated tmpfile path to client app
         setProject(projectFile)
+
+        DispatchQueue.main.sync {
+            appDelegate.traceInclude(nil)
+            appDelegate.traceExclude(nil)
+        }
 
         // read status requests from client app
         commandLoop:

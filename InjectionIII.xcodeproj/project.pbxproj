@@ -10,6 +10,15 @@
 		BB070C262512851B002FC45A /* AppCodePlugin in Resources */ = {isa = PBXBuildFile; fileRef = BB070C252512851B002FC45A /* AppCodePlugin */; };
 		BB1B8186251B7BA500F76DC7 /* SwiftStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1B8184251B7BA400F76DC7 /* SwiftStats.swift */; };
 		BB1B8187251B7BA500F76DC7 /* SwiftInterpose.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1B8185251B7BA400F76DC7 /* SwiftInterpose.swift */; };
+		BB1BA90B251DC54100044608 /* SwiftUISupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1BA90A251DC54100044608 /* SwiftUISupport.swift */; };
+		BB1BA90C251DCDFD00044608 /* SwiftTrace.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB76EA0522929E1100E454F0 /* SwiftTrace.mm */; };
+		BB1BA90D251DCDFD00044608 /* SwiftTrace.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB76EA0622929E1100E454F0 /* SwiftTrace.swift */; };
+		BB1BA90E251DCDFD00044608 /* SwiftSwizzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67A7244DA00B003AA7F4 /* SwiftSwizzle.swift */; };
+		BB1BA90F251DCDFD00044608 /* SwiftArgs.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67A8244DA00B003AA7F4 /* SwiftArgs.swift */; };
+		BB1BA910251DCDFD00044608 /* SwiftMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67AA244DA00B003AA7F4 /* SwiftMeta.swift */; };
+		BB1BA911251DCDFD00044608 /* SwiftStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67AC244DA00C003AA7F4 /* SwiftStack.swift */; };
+		BB1BA912251DCDFD00044608 /* xt_forwarding_trampoline_x64.s in Sources */ = {isa = PBXBuildFile; fileRef = BB76EA0722929E1100E454F0 /* xt_forwarding_trampoline_x64.s */; };
+		BB1BA913251DCDFD00044608 /* xt_forwarding_trampoline_arm64.s in Sources */ = {isa = PBXBuildFile; fileRef = BB4ADF7624E8036400D502F3 /* xt_forwarding_trampoline_arm64.s */; };
 		BB34C3FD244FAAB400D520A9 /* RMWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB34C3FC244FAAB400D520A9 /* RMWindowController.xib */; };
 		BB34C3FF244FAD3C00D520A9 /* log.html in Resources */ = {isa = PBXBuildFile; fileRef = BB34C3FE244FAD3C00D520A9 /* log.html */; };
 		BB34C401244FAE3000D520A9 /* iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BB34C400244FAE2F00D520A9 /* iphone.png */; };
@@ -107,6 +116,10 @@
 		BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftInjection.swift; sourceTree = "<group>"; };
 		BB1B8184251B7BA400F76DC7 /* SwiftStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftStats.swift; path = SwiftTrace/SwiftTrace/SwiftStats.swift; sourceTree = SOURCE_ROOT; };
 		BB1B8185251B7BA400F76DC7 /* SwiftInterpose.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftInterpose.swift; path = SwiftTrace/SwiftTrace/SwiftInterpose.swift; sourceTree = SOURCE_ROOT; };
+		BB1BA904251DC51900044608 /* SwiftUISupport.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftUISupport.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB1BA906251DC51900044608 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BB1BA90A251DC54100044608 /* SwiftUISupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUISupport.swift; sourceTree = "<group>"; };
+		BB1BA918251DD0CA00044608 /* SwiftUISupport-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftUISupport-Bridging-Header.h"; sourceTree = "<group>"; };
 		BB1DEA9A1FD6A74800AF509F /* Xtrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Xtrace.h; path = XprobePlugin/Classes/Xtrace.h; sourceTree = "<group>"; };
 		BB1DEA9B1FD6A74900AF509F /* IvarAccess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IvarAccess.h; path = XprobePlugin/Classes/IvarAccess.h; sourceTree = "<group>"; };
 		BB1DEA9C1FD6A74900AF509F /* Xprobe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Xprobe.h; path = XprobePlugin/Classes/Xprobe.h; sourceTree = "<group>"; };
@@ -168,7 +181,7 @@
 		BB67DBB31FB0CDA8000EAC8A /* SimpleSocket.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SimpleSocket.mm; sourceTree = "<group>"; };
 		BB67DBB51FB0D0F2000EAC8A /* SignerService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SignerService.h; sourceTree = "<group>"; };
 		BB67DBB61FB0D0F2000EAC8A /* SignerService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SignerService.m; sourceTree = "<group>"; };
-		BB76EA0422929E0E00E454F0 /* SwiftTrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwiftTrace.h; path = SwiftTrace/SwiftTrace/SwiftTrace.h; sourceTree = SOURCE_ROOT; };
+		BB76EA0422929E0E00E454F0 /* SwiftTrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwiftTrace.h; path = SwiftTrace/SwiftTraceGuts/include/SwiftTrace.h; sourceTree = SOURCE_ROOT; };
 		BB76EA0522929E1100E454F0 /* SwiftTrace.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = SwiftTrace.mm; path = SwiftTrace/SwiftTraceGuts/SwiftTrace.mm; sourceTree = SOURCE_ROOT; };
 		BB76EA0622929E1100E454F0 /* SwiftTrace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftTrace.swift; path = SwiftTrace/SwiftTrace/SwiftTrace.swift; sourceTree = SOURCE_ROOT; };
 		BB76EA0722929E1100E454F0 /* xt_forwarding_trampoline_x64.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; name = xt_forwarding_trampoline_x64.s; path = SwiftTrace/SwiftTraceGuts/xt_forwarding_trampoline_x64.s; sourceTree = SOURCE_ROOT; };
@@ -224,6 +237,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		BB1BA901251DC51900044608 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BB439B781FABA64300B4F50B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -252,6 +272,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BB1BA905251DC51900044608 /* SwiftUISupport */ = {
+			isa = PBXGroup;
+			children = (
+				BB1BA906251DC51900044608 /* Info.plist */,
+				BB1BA90A251DC54100044608 /* SwiftUISupport.swift */,
+				BB1BA918251DD0CA00044608 /* SwiftUISupport-Bridging-Header.h */,
+			);
+			path = SwiftUISupport;
+			sourceTree = "<group>";
+		};
 		BB439B5C1FABA64300B4F50B = {
 			isa = PBXGroup;
 			children = (
@@ -269,6 +299,7 @@
 				BB439B7E1FABA64300B4F50B /* SwiftEvalTests */,
 				BB439BB21FAC185200B4F50B /* signer */,
 				BBB148D81FAD53BE00CB6B33 /* EvalApp */,
+				BB1BA905251DC51900044608 /* SwiftUISupport */,
 				BB439B661FABA64300B4F50B /* Products */,
 				BBB040621FB1798A007DDD0A /* Frameworks */,
 			);
@@ -282,6 +313,7 @@
 				BB439B7B1FABA64300B4F50B /* SwiftEvalTests.xctest */,
 				BBCA01FE1FB0F10300E45F0F /* InjectionIII.app */,
 				BBCA02451FB1065D00E45F0F /* macOSInjection.bundle */,
+				BB1BA904251DC51900044608 /* SwiftUISupport.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -488,6 +520,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		BB1BA903251DC51900044608 /* SwiftUISupport */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BB1BA909251DC51D00044608 /* Build configuration list for PBXNativeTarget "SwiftUISupport" */;
+			buildPhases = (
+				BB1BA900251DC51900044608 /* Sources */,
+				BB1BA901251DC51900044608 /* Frameworks */,
+				BB1BA902251DC51900044608 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SwiftUISupport;
+			productName = SwiftUISupport;
+			productReference = BB1BA904251DC51900044608 /* SwiftUISupport.bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
 		BB439B7A1FABA64300B4F50B /* SwiftEvalTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BB439B871FABA64300B4F50B /* Build configuration list for PBXNativeTarget "SwiftEvalTests" */;
@@ -554,6 +603,11 @@
 				LastUpgradeCheck = 0910;
 				ORGANIZATIONNAME = "John Holdsworth";
 				TargetAttributes = {
+					BB1BA903251DC51900044608 = {
+						CreatedOnToolsVersion = 11.5;
+						LastSwiftMigration = 1150;
+						ProvisioningStyle = Manual;
+					};
 					BB439B7A1FABA64300B4F50B = {
 						CreatedOnToolsVersion = 9.1;
 						ProvisioningStyle = Automatic;
@@ -591,12 +645,20 @@
 			targets = (
 				BBCA01FD1FB0F10300E45F0F /* InjectionIII */,
 				BBCA02441FB1065D00E45F0F /* InjectionBundle */,
+				BB1BA903251DC51900044608 /* SwiftUISupport */,
 				BB439B7A1FABA64300B4F50B /* SwiftEvalTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		BB1BA902251DC51900044608 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BB439B791FABA64300B4F50B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -697,6 +759,22 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		BB1BA900251DC51900044608 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB1BA90C251DCDFD00044608 /* SwiftTrace.mm in Sources */,
+				BB1BA90D251DCDFD00044608 /* SwiftTrace.swift in Sources */,
+				BB1BA90E251DCDFD00044608 /* SwiftSwizzle.swift in Sources */,
+				BB1BA90F251DCDFD00044608 /* SwiftArgs.swift in Sources */,
+				BB1BA910251DCDFD00044608 /* SwiftMeta.swift in Sources */,
+				BB1BA911251DCDFD00044608 /* SwiftStack.swift in Sources */,
+				BB1BA912251DCDFD00044608 /* xt_forwarding_trampoline_x64.s in Sources */,
+				BB1BA913251DCDFD00044608 /* xt_forwarding_trampoline_arm64.s in Sources */,
+				BB1BA90B251DC54100044608 /* SwiftUISupport.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BB439B771FABA64300B4F50B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -802,6 +880,69 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		BB1BA907251DC51A00044608 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = E23HUP39A3;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					SWIFTUISUPPORT,
+				);
+				INFOPLIST_FILE = SwiftUISupport/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.SwiftUISupport;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "SwiftUISupport/SwiftUISupport-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		BB1BA908251DC51A00044608 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = E23HUP39A3;
+				INFOPLIST_FILE = SwiftUISupport/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.SwiftUISupport;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "SwiftUISupport/SwiftUISupport-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
 		BB439B821FABA64300B4F50B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1063,6 +1204,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		BB1BA909251DC51D00044608 /* Build configuration list for PBXNativeTarget "SwiftUISupport" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BB1BA907251DC51A00044608 /* Debug */,
+				BB1BA908251DC51A00044608 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		BB439B601FABA64300B4F50B /* Build configuration list for PBXProject "InjectionIII" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

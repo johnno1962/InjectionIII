@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#83 $
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#92 $
 //
 
 #import "InjectionClient.h"
@@ -115,6 +115,10 @@ static struct {
 @end
 #endif
 
+@interface SwiftUISupport
++ (void)setupWithPointer:(void *)ptr;
+@end
+
 @implementation InjectionClient
 
 + (void)load {
@@ -154,6 +158,7 @@ static struct {
     };
 
     // As tmp file names come in, inject them
+    BOOL tracing = FALSE;
     InjectionCommand command;
     while ((command = (InjectionCommand)[self readInt]) != InjectionEOF) {
         switch (command) {
@@ -195,15 +200,52 @@ static struct {
             [writer writeString:[self readString]];
             break;
         case InjectionTrace:
-            [SwiftTrace traceMainBundleWithSubLevels:0];
+            tracing = TRUE;
+            [SwiftTrace swiftTraceMainBundle];
+            printf("💉 Added trace to non-final class methods in main bundle\n");
             break;
         case InjectionUntrace:
-            [SwiftTrace removeAllTraces];
+            tracing = FALSE;
+            [SwiftTrace swiftTraceRemoveAllTraces];
             break;
         case InjectionTraceUI:
+            tracing = TRUE;
+            static char classInSwiftUIMangled[] = "$s7SwiftUI14AnyTextStorageCN";
+            if (Class AnyText = (__bridge Class)
+                dlsym(RTLD_DEFAULT, classInSwiftUIMangled)) {
+                NSString *swiftUIBundlePath = [[[NSBundle
+                    bundleForClass:[self class]] bundlePath]
+                    stringByReplacingOccurrencesOfString:@"Injection.bundle"
+                                         withString:@"SwiftUISupport.bundle"];
+                if (Class swiftUISupport = [[NSBundle
+                                             bundleWithPath:swiftUIBundlePath]
+                                            classNamed:@"SwiftUISupport"])
+                    [swiftUISupport
+                     setupWithPointer:SwiftTrace.swiftTypeHandlers];
+                else
+                    printf("💉 Could not find SwiftUISupport at path: %s\n",
+                           swiftUIBundlePath.UTF8String);
+                [SwiftTrace swiftTraceMethodsInFrameworkContaining:AnyText];
+            }
             [SwiftTrace swiftTraceMainBundleMethods];
-            printf("💉 Traced methods in main bundle\n");
+            printf("💉 Added trace to methods in main bundle\n");
             break;
+        case InjectionInclude: {
+            NSString *include = [self readString];
+            if (tracing)
+                printf("💉 Filtering trace to include methods matching: '%s'\n",
+                       include.UTF8String);
+            [SwiftTrace setSwiftTraceFilterInclude:include];
+            break;
+        }
+        case InjectionExclude: {
+            NSString *exclude = [self readString];
+            if (tracing)
+                printf("💉 Filtering trace to exclude methods matching: '%s'\n",
+                       exclude.UTF8String);
+            [SwiftTrace setSwiftTraceFilterExclude:exclude];
+            break;
+        }
         case InjectionInvalid:
             printf("💉 ⚠️ Connection rejected. Are you running the correct version of InjectionIII.app from /Applications? ⚠️\n");
             break;
