@@ -160,6 +160,7 @@ public class InjectionServer: SimpleSocket {
                 }
             }
             self.lastIdeProcPath = ideProcPath
+            self.builder.lastIdeProcPath = ideProcPath
             if (automatic) {
                 self.injectPending()
             }
