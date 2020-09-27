@@ -76,7 +76,7 @@
 		BBCA02511FB107AF00E45F0F /* SwiftInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */; };
 		BBCA02561FB1099500E45F0F /* InjectionServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCA02551FB1099500E45F0F /* InjectionServer.swift */; };
 		BBCA02591FB112F500E45F0F /* App.icns in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02581FB112F500E45F0F /* App.icns */; };
-		BBCA025D1FB114FF00E45F0F /* InjectionClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = BBCA025C1FB114FF00E45F0F /* InjectionClient.mm */; };
+		BBCA025D1FB114FF00E45F0F /* InjectionClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = BBCA025C1FB114FF00E45F0F /* InjectionClient.mm */; settings = {COMPILER_FLAGS = "-Wno-ignored-attributes"; }; };
 		BBCA02601FB122C300E45F0F /* InjectionIdle.tif in Resources */ = {isa = PBXBuildFile; fileRef = BBCA025E1FB122C300E45F0F /* InjectionIdle.tif */; };
 		BBCA02611FB122C300E45F0F /* InjectionOK.tif in Resources */ = {isa = PBXBuildFile; fileRef = BBCA025F1FB122C300E45F0F /* InjectionOK.tif */; };
 		BBCA02621FB1312A00E45F0F /* SimpleSocket.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB67DBB31FB0CDA8000EAC8A /* SimpleSocket.mm */; };

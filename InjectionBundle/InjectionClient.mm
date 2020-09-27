@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#92 $
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#100 $
 //
 
 #import "InjectionClient.h"
@@ -119,10 +119,15 @@ static struct {
 + (void)setupWithPointer:(void *)ptr;
 @end
 
+@interface InjectionClient () {
+    BOOL tracing;
+}
+@end
+
 @implementation InjectionClient
 
 + (void)load {
-    // connect to InjetionIII.app using sicket
+    // connect to InjectionIII.app using socket
     if (InjectionClient *client = [self connectTo:INJECTION_ADDRESS])
         [client run];
     else {
@@ -158,7 +163,6 @@ static struct {
     };
 
     // As tmp file names come in, inject them
-    BOOL tracing = FALSE;
     InjectionCommand command;
     while ((command = (InjectionCommand)[self readInt]) != InjectionEOF) {
         switch (command) {
@@ -202,7 +206,8 @@ static struct {
         case InjectionTrace:
             tracing = TRUE;
             [SwiftTrace swiftTraceMainBundle];
-            printf("💉 Added trace to non-final class methods in main bundle\n");
+            printf("💉 Added trace to non-final methods of classes in app bundle\n");
+            [self filteringChanged];
             break;
         case InjectionUntrace:
             tracing = FALSE;
@@ -229,23 +234,16 @@ static struct {
             }
             [SwiftTrace swiftTraceMainBundleMethods];
             printf("💉 Added trace to methods in main bundle\n");
+            [self filteringChanged];
             break;
-        case InjectionInclude: {
-            NSString *include = [self readString];
-            if (tracing)
-                printf("💉 Filtering trace to include methods matching: '%s'\n",
-                       include.UTF8String);
-            [SwiftTrace setSwiftTraceFilterInclude:include];
+        case InjectionInclude:
+            [SwiftTrace setSwiftTraceFilterInclude:[self readString]];
+            [self filteringChanged];
             break;
-        }
-        case InjectionExclude: {
-            NSString *exclude = [self readString];
-            if (tracing)
-                printf("💉 Filtering trace to exclude methods matching: '%s'\n",
-                       exclude.UTF8String);
-            [SwiftTrace setSwiftTraceFilterExclude:exclude];
+        case InjectionExclude:
+            [SwiftTrace setSwiftTraceFilterExclude:[self readString]];
+            [self filteringChanged];
             break;
-        }
         case InjectionInvalid:
             printf("💉 ⚠️ Connection rejected. Are you running the correct version of InjectionIII.app from /Applications? ⚠️\n");
             break;
@@ -301,6 +299,19 @@ static struct {
         }
         }
     }
+}
+
+-(void)filteringChanged {
+    if (!tracing) return;
+    NSString *exclude = SwiftTrace.swiftTraceFilterExclude;
+    if (NSString *include = SwiftTrace.swiftTraceFilterInclude)
+        printf(exclude ?
+           "💉 Filtering trace to include methods matching '%s' but not '%s'.\n" :
+           "💉 Filtering trace to include methods matching '%s'.\n",
+            include.UTF8String, exclude.UTF8String);
+    else if (exclude)
+        printf(
+           "💉 Filtering trace to exclude methods matching '%s'.\n", exclude.UTF8String);
 }
 
 #ifdef __IPHONE_OS_VERSION_MIN_REQUIRED

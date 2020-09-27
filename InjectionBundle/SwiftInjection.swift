@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#71 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#76 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -131,27 +131,22 @@ public class SwiftInjection: NSObject {
                 }
 
                 let vtableOffset = byteAddr(&existingClass.pointee.IVarDestroyer) - byteAddr(existingClass)
+
+                #if false
+                // original injection implementaion for Swift.
                 let vtableLength = Int(existingClass.pointee.ClassSize -
                     existingClass.pointee.ClassAddressPoint) - vtableOffset
 
-                #if true
-                // original injection implementaion for Swift.
                 memcpy(byteAddr(existingClass) + vtableOffset,
                        byteAddr(classMetadata) + vtableOffset, vtableLength)
                 #else
                 // untried version only copying function pointers.
                 let newTable = (byteAddr(classMetadata) + vtableOffset)
-                    .withMemoryRebound(to: SIMP.self, capacity: 1) { $0 }
-                let oldTable = (byteAddr(existingClass) + vtableOffset)
-                    .withMemoryRebound(to: SIMP.self, capacity: 1) { $0 }
+                    .withMemoryRebound(to: SwiftTrace.SIMP.self, capacity: 1) { $0 }
 
-                var info = Dl_info()
-                for slot in 0 ..< vtableLength / MemoryLayout<SIMP>.size {
-                    if dladdr(autoBitCast(oldTable[slot]), &info) != 0,
-                        let symname = info.dli_sname,
-                        symname[strlen(symname)-1] == UInt8(ascii: "F") {
-                        oldTable[slot] = newTable[slot]
-                    }
+                SwiftTrace.iterateMethods(ofClass: oldClass) {
+                    (name, slotIndex, vtableSlot, stop) in
+                    vtableSlot.pointee = newTable[slotIndex]
                 }
                 #endif
                 #endif
@@ -167,6 +162,7 @@ public class SwiftInjection: NSObject {
             }
         }
 
+        #if true
         // new mechanism for injection of Swift functions,
         // using "interpose" API from dynamic loader along
         // with -Xlinker -interposable other linker flags.
@@ -221,6 +217,7 @@ public class SwiftInjection: NSObject {
 //                print("Patched \(String(cString: image))")
             }
         }
+        #endif
 
         // Thanks https://github.com/johnno1962/injectionforxcode/pull/234
         if !testClasses.isEmpty {
@@ -250,11 +247,11 @@ public class SwiftInjection: NSObject {
                 if class_getInstanceMethod(cls, injectedSEL) != nil {
                     injectedClasses.append(cls)
                     print("""
-                        💉 Class \(cls) has an @objc injected() method. \
-                        Injection will attempt a "sweep" of all live \
+                        💉 As class \(cls) has an @objc injected() method, \
+                        InjectionIII will perform a "sweep" of all live \
                         instances to determine which objects to message. \
-                        If this crashes, subscribe to the global notification \
-                        "INJECTION_BUNDLE_NOTIFICATION" to detect injections instead.
+                        If this fails, subscribe to the notification \
+                        "INJECTION_BUNDLE_NOTIFICATION" instead.
                         """)
                     let kvoName = "NSKVONotifying_" + NSStringFromClass(cls)
                     if let kvoCls = NSClassFromString(kvoName) {

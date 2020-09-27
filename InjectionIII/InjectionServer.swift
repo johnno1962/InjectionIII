@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#45 $
+//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#47 $
 //
 
 let XcodeBundleID = "com.apple.dt.Xcode"
@@ -226,6 +226,7 @@ public class InjectionServer: SimpleSocket {
     }
 
     func recompileAndInject(source: String) {
+        sendCommand(.ideProcPath, with: lastIdeProcPath)
         appDelegate.setMenuIcon("InjectionBusy")
         if appDelegate.isSandboxed ||
             source.hasSuffix(".storyboard") || source.hasSuffix(".xib") {
@@ -249,7 +250,6 @@ public class InjectionServer: SimpleSocket {
     }
 
     @objc public func injectPending() {
-        sendCommand(.ideProcPath, with: lastIdeProcPath)
         for swiftSource in pending {
             recompileAndInject(source: swiftSource)
         }

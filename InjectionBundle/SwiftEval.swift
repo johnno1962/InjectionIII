@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#138 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#139 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -193,6 +193,8 @@ public class SwiftEval: NSObject {
                 throw evalError("Could not locate derived data. Is the project under your home directory?")
         }
         guard let (projectFile, logsDir) =
+//            self.derivedLogs
+//                .flatMap({ (URL(fileURLWithPath: self.projectFile!), URL(fileURLWithPath: $0)) }) ??
                 self.projectFile
                     .flatMap({ logsDir(project: URL(fileURLWithPath: $0), derivedData: derivedData) })
                     .flatMap({ (URL(fileURLWithPath: self.projectFile!), $0) }) ??
