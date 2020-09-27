@@ -193,8 +193,6 @@ public class SwiftEval: NSObject {
                 throw evalError("Could not locate derived data. Is the project under your home directory?")
         }
         guard let (projectFile, logsDir) =
-            self.derivedLogs
-                .flatMap({ (URL(fileURLWithPath: self.projectFile!), URL(fileURLWithPath: $0)) }) ??
                 self.projectFile
                     .flatMap({ logsDir(project: URL(fileURLWithPath: $0), derivedData: derivedData) })
                     .flatMap({ (URL(fileURLWithPath: self.projectFile!), $0) }) ??
