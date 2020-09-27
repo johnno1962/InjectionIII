@@ -8,22 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		BB070C262512851B002FC45A /* AppCodePlugin in Resources */ = {isa = PBXBuildFile; fileRef = BB070C252512851B002FC45A /* AppCodePlugin */; };
-		BB1B8186251B7BA500F76DC7 /* SwiftStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1B8184251B7BA400F76DC7 /* SwiftStats.swift */; };
-		BB1B8187251B7BA500F76DC7 /* SwiftInterpose.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1B8185251B7BA400F76DC7 /* SwiftInterpose.swift */; };
 		BB1BA90B251DC54100044608 /* SwiftUISupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1BA90A251DC54100044608 /* SwiftUISupport.swift */; };
-		BB1BA90C251DCDFD00044608 /* SwiftTrace.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB76EA0522929E1100E454F0 /* SwiftTrace.mm */; };
-		BB1BA90D251DCDFD00044608 /* SwiftTrace.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB76EA0622929E1100E454F0 /* SwiftTrace.swift */; };
-		BB1BA90E251DCDFD00044608 /* SwiftSwizzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67A7244DA00B003AA7F4 /* SwiftSwizzle.swift */; };
-		BB1BA90F251DCDFD00044608 /* SwiftArgs.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67A8244DA00B003AA7F4 /* SwiftArgs.swift */; };
-		BB1BA910251DCDFD00044608 /* SwiftMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67AA244DA00B003AA7F4 /* SwiftMeta.swift */; };
-		BB1BA911251DCDFD00044608 /* SwiftStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67AC244DA00C003AA7F4 /* SwiftStack.swift */; };
-		BB1BA912251DCDFD00044608 /* xt_forwarding_trampoline_x64.s in Sources */ = {isa = PBXBuildFile; fileRef = BB76EA0722929E1100E454F0 /* xt_forwarding_trampoline_x64.s */; };
-		BB1BA913251DCDFD00044608 /* xt_forwarding_trampoline_arm64.s in Sources */ = {isa = PBXBuildFile; fileRef = BB4ADF7624E8036400D502F3 /* xt_forwarding_trampoline_arm64.s */; };
 		BB34C3FD244FAAB400D520A9 /* RMWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB34C3FC244FAAB400D520A9 /* RMWindowController.xib */; };
 		BB34C3FF244FAD3C00D520A9 /* log.html in Resources */ = {isa = PBXBuildFile; fileRef = BB34C3FE244FAD3C00D520A9 /* log.html */; };
 		BB34C401244FAE3000D520A9 /* iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BB34C400244FAE2F00D520A9 /* iphone.png */; };
 		BB439B801FABA64300B4F50B /* SwiftEvalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B7F1FABA64300B4F50B /* SwiftEvalTests.swift */; };
-		BB4ADF7724E8036400D502F3 /* xt_forwarding_trampoline_arm64.s in Sources */ = {isa = PBXBuildFile; fileRef = BB4ADF7624E8036400D502F3 /* xt_forwarding_trampoline_arm64.s */; };
 		BB4EC3FB244FA3C40079E244 /* RMMacroManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4EC3F7244FA3C30079E244 /* RMMacroManager.m */; };
 		BB4EC3FC244FA3C40079E244 /* RMDeviceController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4EC3F8244FA3C30079E244 /* RMDeviceController.m */; };
 		BB4EC3FD244FA3C40079E244 /* RMImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4EC3F9244FA3C40079E244 /* RMImageView.m */; };
@@ -31,20 +20,28 @@
 		BB53B642244FC08F00F006E3 /* RemoteCapture.h in Resources */ = {isa = PBXBuildFile; fileRef = BB4EC3FF244FA42A0079E244 /* RemoteCapture.h */; };
 		BB53B648244FC32C00F006E3 /* RemoteHeaders.h in Resources */ = {isa = PBXBuildFile; fileRef = BB53B647244FC2F800F006E3 /* RemoteHeaders.h */; };
 		BB56393C1FD5C25A002FFCEF /* SignerService.m in Sources */ = {isa = PBXBuildFile; fileRef = BB67DBB61FB0D0F2000EAC8A /* SignerService.m */; };
-		BB5D67AD244DA00C003AA7F4 /* SwiftSwizzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67A7244DA00B003AA7F4 /* SwiftSwizzle.swift */; };
-		BB5D67AE244DA00C003AA7F4 /* SwiftArgs.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67A8244DA00B003AA7F4 /* SwiftArgs.swift */; };
-		BB5D67AF244DA00C003AA7F4 /* SwiftAspects.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67A9244DA00B003AA7F4 /* SwiftAspects.swift */; };
-		BB5D67B0244DA00C003AA7F4 /* SwiftMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67AA244DA00B003AA7F4 /* SwiftMeta.swift */; };
-		BB5D67B1244DA00C003AA7F4 /* SwiftInvoke.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67AB244DA00C003AA7F4 /* SwiftInvoke.swift */; };
-		BB5D67B2244DA00C003AA7F4 /* SwiftStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5D67AC244DA00C003AA7F4 /* SwiftStack.swift */; };
 		BB6125D324EA882000A7C230 /* Injection.jar in Resources */ = {isa = PBXBuildFile; fileRef = BB6125D224EA882000A7C230 /* Injection.jar */; };
 		BB6306FE1FCD1A410021D30C /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = BB6306FD1FCD1A410021D30C /* Credits.rtf */; };
-		BB76EA0822929E1100E454F0 /* SwiftTrace.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB76EA0522929E1100E454F0 /* SwiftTrace.mm */; };
-		BB76EA0922929E1100E454F0 /* SwiftTrace.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB76EA0622929E1100E454F0 /* SwiftTrace.swift */; };
-		BB76EA0A22929E1100E454F0 /* xt_forwarding_trampoline_x64.s in Sources */ = {isa = PBXBuildFile; fileRef = BB76EA0722929E1100E454F0 /* xt_forwarding_trampoline_x64.s */; };
+		BB6C87D62520D0D2005AFCFC /* SwiftTrace.h in Headers */ = {isa = PBXBuildFile; fileRef = BB6C87C62520D0D2005AFCFC /* SwiftTrace.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BB6C87D92520D0D2005AFCFC /* SwiftTrace.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB6C87C42520D0D1005AFCFC /* SwiftTrace.framework */; };
+		BB6C87DA2520D0D2005AFCFC /* SwiftTrace.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BB6C87C42520D0D1005AFCFC /* SwiftTrace.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BB6C87EB2520D152005AFCFC /* SwiftMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6C87E22520D150005AFCFC /* SwiftMeta.swift */; };
+		BB6C87EC2520D152005AFCFC /* SwiftInvoke.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6C87E32520D151005AFCFC /* SwiftInvoke.swift */; };
+		BB6C87ED2520D152005AFCFC /* SwiftSwizzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6C87E42520D151005AFCFC /* SwiftSwizzle.swift */; };
+		BB6C87EE2520D152005AFCFC /* SwiftArgs.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6C87E52520D151005AFCFC /* SwiftArgs.swift */; };
+		BB6C87EF2520D152005AFCFC /* SwiftStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6C87E62520D151005AFCFC /* SwiftStats.swift */; };
+		BB6C87F02520D152005AFCFC /* SwiftAspects.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6C87E72520D151005AFCFC /* SwiftAspects.swift */; };
+		BB6C87F12520D152005AFCFC /* SwiftInterpose.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6C87E82520D151005AFCFC /* SwiftInterpose.swift */; };
+		BB6C87F22520D152005AFCFC /* SwiftStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6C87E92520D151005AFCFC /* SwiftStack.swift */; };
+		BB6C87F32520D152005AFCFC /* SwiftTrace.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6C87EA2520D152005AFCFC /* SwiftTrace.swift */; };
+		BB6C87F92520D2C3005AFCFC /* SwiftTrace.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB6C87F62520D2C3005AFCFC /* SwiftTrace.mm */; };
+		BB6C87FA2520D2C3005AFCFC /* xt_forwarding_trampoline_arm64.s in Sources */ = {isa = PBXBuildFile; fileRef = BB6C87F72520D2C3005AFCFC /* xt_forwarding_trampoline_arm64.s */; };
+		BB6C87FB2520D2C3005AFCFC /* xt_forwarding_trampoline_x64.s in Sources */ = {isa = PBXBuildFile; fileRef = BB6C87F82520D2C3005AFCFC /* xt_forwarding_trampoline_x64.s */; };
+		BB6C881E2520D798005AFCFC /* SwiftTrace.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB6C87C42520D0D1005AFCFC /* SwiftTrace.framework */; };
+		BB6C881F2520D799005AFCFC /* SwiftTrace.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BB6C87C42520D0D1005AFCFC /* SwiftTrace.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BB6C88A92520F4F3005AFCFC /* SwiftTrace.h in Resources */ = {isa = PBXBuildFile; fileRef = BB6C88A82520F4F3005AFCFC /* SwiftTrace.h */; };
 		BB79FC79245CC02200A4B4CB /* TimeLapseBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB79FC78245CC02200A4B4CB /* TimeLapseBuilder.swift */; };
 		BB7D7CAC2512F8F00069FE2C /* UpdateCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D7CAB2512F8F00069FE2C /* UpdateCheck.swift */; };
-		BB85A7412452CD7600E94762 /* SwiftTrace.h in Resources */ = {isa = PBXBuildFile; fileRef = BB76EA0422929E0E00E454F0 /* SwiftTrace.h */; };
 		BB877CE42186EB6E0070EEC7 /* DDHotKeyCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6306F51FCD16600021D30C /* DDHotKeyCenter.m */; };
 		BB877CE52186EB6E0070EEC7 /* DDHotKeyUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6306F61FCD16600021D30C /* DDHotKeyUtilities.m */; };
 		BBB040641FB17A6C007DDD0A /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBB040631FB1798A007DDD0A /* ScriptingBridge.framework */; };
@@ -88,6 +85,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		BB6C87D72520D0D2005AFCFC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BB439B5D1FABA64300B4F50B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BB6C87C32520D0D1005AFCFC;
+			remoteInfo = SwiftTrace;
+		};
 		BBCA024E1FB106C000E45F0F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BB439B5D1FABA64300B4F50B /* Project object */;
@@ -107,6 +111,28 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BB6C87DB2520D0D3005AFCFC /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				BB6C87DA2520D0D2005AFCFC /* SwiftTrace.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB6C88222520D799005AFCFC /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				BB6C881F2520D799005AFCFC /* SwiftTrace.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -114,8 +140,6 @@
 		BB037DF41FAD80D0004B267C /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		BB070C252512851B002FC45A /* AppCodePlugin */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AppCodePlugin; sourceTree = "<group>"; };
 		BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftInjection.swift; sourceTree = "<group>"; };
-		BB1B8184251B7BA400F76DC7 /* SwiftStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftStats.swift; path = SwiftTrace/SwiftTrace/SwiftStats.swift; sourceTree = SOURCE_ROOT; };
-		BB1B8185251B7BA400F76DC7 /* SwiftInterpose.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftInterpose.swift; path = SwiftTrace/SwiftTrace/SwiftInterpose.swift; sourceTree = SOURCE_ROOT; };
 		BB1BA904251DC51900044608 /* SwiftUISupport.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftUISupport.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB1BA906251DC51900044608 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BB1BA90A251DC54100044608 /* SwiftUISupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUISupport.swift; sourceTree = "<group>"; };
@@ -141,7 +165,6 @@
 		BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftEval.swift; sourceTree = "<group>"; };
 		BB439BAC1FAC030E00B4F50B /* SwiftEval.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SwiftEval.entitlements; sourceTree = "<group>"; };
 		BB439BB31FAC185200B4F50B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		BB4ADF7624E8036400D502F3 /* xt_forwarding_trampoline_arm64.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; name = xt_forwarding_trampoline_arm64.s; path = SwiftTrace/SwiftTraceGuts/xt_forwarding_trampoline_arm64.s; sourceTree = SOURCE_ROOT; };
 		BB4EC3F7244FA3C30079E244 /* RMMacroManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMMacroManager.m; path = Remote/Classes/RMMacroManager.m; sourceTree = SOURCE_ROOT; };
 		BB4EC3F8244FA3C30079E244 /* RMDeviceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMDeviceController.m; path = Remote/Classes/RMDeviceController.m; sourceTree = SOURCE_ROOT; };
 		BB4EC3F9244FA3C40079E244 /* RMImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMImageView.m; path = Remote/Classes/RMImageView.m; sourceTree = SOURCE_ROOT; };
@@ -151,12 +174,6 @@
 		BB53B647244FC2F800F006E3 /* RemoteHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteHeaders.h; path = Remote/Classes/RemoteHeaders.h; sourceTree = SOURCE_ROOT; };
 		BB56393F1FD5D535002FFCEF /* Xprobe+Service.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = "Xprobe+Service.mm"; path = "XprobePlugin/Classes/Xprobe+Service.mm"; sourceTree = "<group>"; };
 		BB5639401FD5D535002FFCEF /* Xtrace.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = Xtrace.mm; path = XprobePlugin/Classes/Xtrace.mm; sourceTree = "<group>"; };
-		BB5D67A7244DA00B003AA7F4 /* SwiftSwizzle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftSwizzle.swift; path = SwiftTrace/SwiftTrace/SwiftSwizzle.swift; sourceTree = SOURCE_ROOT; };
-		BB5D67A8244DA00B003AA7F4 /* SwiftArgs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftArgs.swift; path = SwiftTrace/SwiftTrace/SwiftArgs.swift; sourceTree = SOURCE_ROOT; };
-		BB5D67A9244DA00B003AA7F4 /* SwiftAspects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftAspects.swift; path = SwiftTrace/SwiftTrace/SwiftAspects.swift; sourceTree = SOURCE_ROOT; };
-		BB5D67AA244DA00B003AA7F4 /* SwiftMeta.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftMeta.swift; path = SwiftTrace/SwiftTrace/SwiftMeta.swift; sourceTree = SOURCE_ROOT; };
-		BB5D67AB244DA00C003AA7F4 /* SwiftInvoke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftInvoke.swift; path = SwiftTrace/SwiftTrace/SwiftInvoke.swift; sourceTree = SOURCE_ROOT; };
-		BB5D67AC244DA00C003AA7F4 /* SwiftStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftStack.swift; path = SwiftTrace/SwiftTrace/SwiftStack.swift; sourceTree = SOURCE_ROOT; };
 		BB6125D224EA882000A7C230 /* Injection.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; name = Injection.jar; path = AppCodePlugin/Injection.jar; sourceTree = "<group>"; };
 		BB6224411FC5B0E300AD7A3A /* HelperProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelperProxy.m; sourceTree = "<group>"; };
 		BB6224421FC5B0E500AD7A3A /* HelperProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperProxy.h; sourceTree = "<group>"; };
@@ -181,10 +198,22 @@
 		BB67DBB31FB0CDA8000EAC8A /* SimpleSocket.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SimpleSocket.mm; sourceTree = "<group>"; };
 		BB67DBB51FB0D0F2000EAC8A /* SignerService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SignerService.h; sourceTree = "<group>"; };
 		BB67DBB61FB0D0F2000EAC8A /* SignerService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SignerService.m; sourceTree = "<group>"; };
-		BB76EA0422929E0E00E454F0 /* SwiftTrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwiftTrace.h; path = SwiftTrace/SwiftTraceGuts/include/SwiftTrace.h; sourceTree = SOURCE_ROOT; };
-		BB76EA0522929E1100E454F0 /* SwiftTrace.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = SwiftTrace.mm; path = SwiftTrace/SwiftTraceGuts/SwiftTrace.mm; sourceTree = SOURCE_ROOT; };
-		BB76EA0622929E1100E454F0 /* SwiftTrace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftTrace.swift; path = SwiftTrace/SwiftTrace/SwiftTrace.swift; sourceTree = SOURCE_ROOT; };
-		BB76EA0722929E1100E454F0 /* xt_forwarding_trampoline_x64.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; name = xt_forwarding_trampoline_x64.s; path = SwiftTrace/SwiftTraceGuts/xt_forwarding_trampoline_x64.s; sourceTree = SOURCE_ROOT; };
+		BB6C87C42520D0D1005AFCFC /* SwiftTrace.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftTrace.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB6C87C62520D0D2005AFCFC /* SwiftTrace.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SwiftTrace.h; path = SwiftTraceGuts/include/SwiftTrace.h; sourceTree = "<group>"; };
+		BB6C87C72520D0D2005AFCFC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = SwiftTrace/Info.plist; sourceTree = "<group>"; };
+		BB6C87E22520D150005AFCFC /* SwiftMeta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SwiftMeta.swift; path = SwiftTrace/SwiftMeta.swift; sourceTree = "<group>"; };
+		BB6C87E32520D151005AFCFC /* SwiftInvoke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SwiftInvoke.swift; path = SwiftTrace/SwiftInvoke.swift; sourceTree = "<group>"; };
+		BB6C87E42520D151005AFCFC /* SwiftSwizzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SwiftSwizzle.swift; path = SwiftTrace/SwiftSwizzle.swift; sourceTree = "<group>"; };
+		BB6C87E52520D151005AFCFC /* SwiftArgs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SwiftArgs.swift; path = SwiftTrace/SwiftArgs.swift; sourceTree = "<group>"; };
+		BB6C87E62520D151005AFCFC /* SwiftStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SwiftStats.swift; path = SwiftTrace/SwiftStats.swift; sourceTree = "<group>"; };
+		BB6C87E72520D151005AFCFC /* SwiftAspects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SwiftAspects.swift; path = SwiftTrace/SwiftAspects.swift; sourceTree = "<group>"; };
+		BB6C87E82520D151005AFCFC /* SwiftInterpose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SwiftInterpose.swift; path = SwiftTrace/SwiftInterpose.swift; sourceTree = "<group>"; };
+		BB6C87E92520D151005AFCFC /* SwiftStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SwiftStack.swift; path = SwiftTrace/SwiftStack.swift; sourceTree = "<group>"; };
+		BB6C87EA2520D152005AFCFC /* SwiftTrace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SwiftTrace.swift; path = SwiftTrace/SwiftTrace.swift; sourceTree = "<group>"; };
+		BB6C87F62520D2C3005AFCFC /* SwiftTrace.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = SwiftTrace.mm; path = SwiftTraceGuts/SwiftTrace.mm; sourceTree = "<group>"; };
+		BB6C87F72520D2C3005AFCFC /* xt_forwarding_trampoline_arm64.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; name = xt_forwarding_trampoline_arm64.s; path = SwiftTraceGuts/xt_forwarding_trampoline_arm64.s; sourceTree = "<group>"; };
+		BB6C87F82520D2C3005AFCFC /* xt_forwarding_trampoline_x64.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; name = xt_forwarding_trampoline_x64.s; path = SwiftTraceGuts/xt_forwarding_trampoline_x64.s; sourceTree = "<group>"; };
+		BB6C88A82520F4F3005AFCFC /* SwiftTrace.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SwiftTrace.h; path = SwiftTrace/SwiftTraceGuts/include/SwiftTrace.h; sourceTree = "<group>"; };
 		BB79FC78245CC02200A4B4CB /* TimeLapseBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeLapseBuilder.swift; path = Remote/Classes/TimeLapseBuilder.swift; sourceTree = SOURCE_ROOT; };
 		BB7D7CAB2512F8F00069FE2C /* UpdateCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateCheck.swift; sourceTree = "<group>"; };
 		BBA7BE0223473D660067124D /* build_bundles.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = build_bundles.sh; sourceTree = "<group>"; };
@@ -251,10 +280,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BB6C87C12520D0D1005AFCFC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BBCA01FB1FB0F10300E45F0F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB6C87D92520D0D2005AFCFC /* SwiftTrace.framework in Frameworks */,
 				BBB64FEC1FD585D50020BE47 /* WebKit.framework in Frameworks */,
 				BBB040641FB17A6C007DDD0A /* ScriptingBridge.framework in Frameworks */,
 				BBB64DE51FD571310020BE47 /* libz.tbd in Frameworks */,
@@ -265,6 +302,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB6C881E2520D798005AFCFC /* SwiftTrace.framework in Frameworks */,
 				BBB64DE61FD5717C0020BE47 /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -285,11 +323,14 @@
 		BB439B5C1FABA64300B4F50B = {
 			isa = PBXGroup;
 			children = (
+				BB6C88A82520F4F3005AFCFC /* SwiftTrace.h */,
 				BB037DF41FAD80D0004B267C /* LICENSE */,
 				BB037DF31FAD808B004B267C /* README.md */,
 				BB6125D224EA882000A7C230 /* Injection.jar */,
 				BBCA01FF1FB0F10300E45F0F /* InjectionIII */,
 				BBCA02461FB1065D00E45F0F /* InjectionBundle */,
+				BB6C87C52520D0D2005AFCFC /* SwiftTrace */,
+				BB1BA905251DC51900044608 /* SwiftUISupport */,
 				BB070C252512851B002FC45A /* AppCodePlugin */,
 				BB6224481FC5B13D00AD7A3A /* Bootstrap */,
 				BB62245D1FC5B37400AD7A3A /* Helper */,
@@ -299,7 +340,6 @@
 				BB439B7E1FABA64300B4F50B /* SwiftEvalTests */,
 				BB439BB21FAC185200B4F50B /* signer */,
 				BBB148D81FAD53BE00CB6B33 /* EvalApp */,
-				BB1BA905251DC51900044608 /* SwiftUISupport */,
 				BB439B661FABA64300B4F50B /* Products */,
 				BBB040621FB1798A007DDD0A /* Frameworks */,
 			);
@@ -314,6 +354,7 @@
 				BBCA01FE1FB0F10300E45F0F /* InjectionIII.app */,
 				BBCA02451FB1065D00E45F0F /* macOSInjection.bundle */,
 				BB1BA904251DC51900044608 /* SwiftUISupport.bundle */,
+				BB6C87C42520D0D1005AFCFC /* SwiftTrace.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -385,6 +426,27 @@
 				BB6306F61FCD16600021D30C /* DDHotKeyUtilities.m */,
 			);
 			path = DDHotKey;
+			sourceTree = "<group>";
+		};
+		BB6C87C52520D0D2005AFCFC /* SwiftTrace */ = {
+			isa = PBXGroup;
+			children = (
+				BB6C87F62520D2C3005AFCFC /* SwiftTrace.mm */,
+				BB6C87F72520D2C3005AFCFC /* xt_forwarding_trampoline_arm64.s */,
+				BB6C87F82520D2C3005AFCFC /* xt_forwarding_trampoline_x64.s */,
+				BB6C87C62520D0D2005AFCFC /* SwiftTrace.h */,
+				BB6C87E52520D151005AFCFC /* SwiftArgs.swift */,
+				BB6C87E72520D151005AFCFC /* SwiftAspects.swift */,
+				BB6C87E82520D151005AFCFC /* SwiftInterpose.swift */,
+				BB6C87E32520D151005AFCFC /* SwiftInvoke.swift */,
+				BB6C87E22520D150005AFCFC /* SwiftMeta.swift */,
+				BB6C87E92520D151005AFCFC /* SwiftStack.swift */,
+				BB6C87E62520D151005AFCFC /* SwiftStats.swift */,
+				BB6C87E42520D151005AFCFC /* SwiftSwizzle.swift */,
+				BB6C87EA2520D152005AFCFC /* SwiftTrace.swift */,
+				BB6C87C72520D0D2005AFCFC /* Info.plist */,
+			);
+			path = SwiftTrace;
 			sourceTree = "<group>";
 		};
 		BBB040621FB1798A007DDD0A /* Frameworks */ = {
@@ -464,19 +526,6 @@
 				BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */,
 				BBB64FE41FD576AA0020BE47 /* XprobeSwift-Bridging-Header.h */,
 				BD35949D21A6C5DE0020EB94 /* Vaccine.swift */,
-				BB76EA0422929E0E00E454F0 /* SwiftTrace.h */,
-				BB76EA0522929E1100E454F0 /* SwiftTrace.mm */,
-				BB76EA0622929E1100E454F0 /* SwiftTrace.swift */,
-				BB5D67A7244DA00B003AA7F4 /* SwiftSwizzle.swift */,
-				BB5D67A9244DA00B003AA7F4 /* SwiftAspects.swift */,
-				BB5D67AB244DA00C003AA7F4 /* SwiftInvoke.swift */,
-				BB5D67A8244DA00B003AA7F4 /* SwiftArgs.swift */,
-				BB5D67AA244DA00B003AA7F4 /* SwiftMeta.swift */,
-				BB5D67AC244DA00C003AA7F4 /* SwiftStack.swift */,
-				BB1B8184251B7BA400F76DC7 /* SwiftStats.swift */,
-				BB1B8185251B7BA400F76DC7 /* SwiftInterpose.swift */,
-				BB76EA0722929E1100E454F0 /* xt_forwarding_trampoline_x64.s */,
-				BB4ADF7624E8036400D502F3 /* xt_forwarding_trampoline_arm64.s */,
 			);
 			path = InjectionBundle;
 			sourceTree = "<group>";
@@ -509,6 +558,17 @@
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		BB6C87BF2520D0D1005AFCFC /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB6C87D62520D0D2005AFCFC /* SwiftTrace.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		BB1BA903251DC51900044608 /* SwiftUISupport */ = {
@@ -545,6 +605,24 @@
 			productReference = BB439B7B1FABA64300B4F50B /* SwiftEvalTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		BB6C87C32520D0D1005AFCFC /* SwiftTrace */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BB6C87E02520D0D8005AFCFC /* Build configuration list for PBXNativeTarget "SwiftTrace" */;
+			buildPhases = (
+				BB6C87BF2520D0D1005AFCFC /* Headers */,
+				BB6C87C02520D0D1005AFCFC /* Sources */,
+				BB6C87C12520D0D1005AFCFC /* Frameworks */,
+				BB6C87C22520D0D1005AFCFC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SwiftTrace;
+			productName = SwiftTrace;
+			productReference = BB6C87C42520D0D1005AFCFC /* SwiftTrace.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		BBCA01FD1FB0F10300E45F0F /* InjectionIII */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BBCA020C1FB0F10400E45F0F /* Build configuration list for PBXNativeTarget "InjectionIII" */;
@@ -555,11 +633,13 @@
 				BBCA01FC1FB0F10300E45F0F /* Resources */,
 				BB6224721FC5BA6F00AD7A3A /* CopyFiles */,
 				BBCA02321FB0F86E00E45F0F /* ShellScript */,
+				BB6C87DB2520D0D3005AFCFC /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				BBCA024F1FB106C000E45F0F /* PBXTargetDependency */,
+				BB6C87D82520D0D2005AFCFC /* PBXTargetDependency */,
 			);
 			name = InjectionIII;
 			productName = InjectionIII;
@@ -574,6 +654,7 @@
 				BBCA02411FB1065D00E45F0F /* Sources */,
 				BBCA02421FB1065D00E45F0F /* Frameworks */,
 				BBCA02431FB1065D00E45F0F /* Resources */,
+				BB6C88222520D799005AFCFC /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -603,6 +684,10 @@
 						CreatedOnToolsVersion = 9.1;
 						ProvisioningStyle = Automatic;
 						TestTargetID = BB439B641FABA64300B4F50B;
+					};
+					BB6C87C32520D0D1005AFCFC = {
+						CreatedOnToolsVersion = 11.5;
+						ProvisioningStyle = Manual;
 					};
 					BBCA01FD1FB0F10300E45F0F = {
 						CreatedOnToolsVersion = 9.0.1;
@@ -635,6 +720,7 @@
 			projectRoot = "";
 			targets = (
 				BBCA01FD1FB0F10300E45F0F /* InjectionIII */,
+				BB6C87C32520D0D1005AFCFC /* SwiftTrace */,
 				BBCA02441FB1065D00E45F0F /* InjectionBundle */,
 				BB1BA903251DC51900044608 /* SwiftUISupport */,
 				BB439B7A1FABA64300B4F50B /* SwiftEvalTests */,
@@ -657,12 +743,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BB6C87C22520D0D1005AFCFC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BBCA01FC1FB0F10300E45F0F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB6C88A92520F4F3005AFCFC /* SwiftTrace.h in Resources */,
 				BB6125D324EA882000A7C230 /* Injection.jar in Resources */,
-				BB85A7412452CD7600E94762 /* SwiftTrace.h in Resources */,
 				BB53B648244FC32C00F006E3 /* RemoteHeaders.h in Resources */,
 				BB53B642244FC08F00F006E3 /* RemoteCapture.h in Resources */,
 				BBB64FDE1FD5744A0020BE47 /* XprobeConsole.xib in Resources */,
@@ -754,14 +847,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BB1BA90C251DCDFD00044608 /* SwiftTrace.mm in Sources */,
-				BB1BA90D251DCDFD00044608 /* SwiftTrace.swift in Sources */,
-				BB1BA90E251DCDFD00044608 /* SwiftSwizzle.swift in Sources */,
-				BB1BA90F251DCDFD00044608 /* SwiftArgs.swift in Sources */,
-				BB1BA910251DCDFD00044608 /* SwiftMeta.swift in Sources */,
-				BB1BA911251DCDFD00044608 /* SwiftStack.swift in Sources */,
-				BB1BA912251DCDFD00044608 /* xt_forwarding_trampoline_x64.s in Sources */,
-				BB1BA913251DCDFD00044608 /* xt_forwarding_trampoline_arm64.s in Sources */,
 				BB1BA90B251DC54100044608 /* SwiftUISupport.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -771,6 +856,25 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB439B801FABA64300B4F50B /* SwiftEvalTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB6C87C02520D0D1005AFCFC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB6C87F92520D2C3005AFCFC /* SwiftTrace.mm in Sources */,
+				BB6C87FA2520D2C3005AFCFC /* xt_forwarding_trampoline_arm64.s in Sources */,
+				BB6C87FB2520D2C3005AFCFC /* xt_forwarding_trampoline_x64.s in Sources */,
+				BB6C87EB2520D152005AFCFC /* SwiftMeta.swift in Sources */,
+				BB6C87EC2520D152005AFCFC /* SwiftInvoke.swift in Sources */,
+				BB6C87ED2520D152005AFCFC /* SwiftSwizzle.swift in Sources */,
+				BB6C87EE2520D152005AFCFC /* SwiftArgs.swift in Sources */,
+				BB6C87EF2520D152005AFCFC /* SwiftStats.swift in Sources */,
+				BB6C87F02520D152005AFCFC /* SwiftAspects.swift in Sources */,
+				BB6C87F12520D152005AFCFC /* SwiftInterpose.swift in Sources */,
+				BB6C87F22520D152005AFCFC /* SwiftStack.swift in Sources */,
+				BB6C87F32520D152005AFCFC /* SwiftTrace.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -804,23 +908,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				BBCA02501FB107AF00E45F0F /* SwiftEval.swift in Sources */,
-				BB76EA0822929E1100E454F0 /* SwiftTrace.mm in Sources */,
-				BB4ADF7724E8036400D502F3 /* xt_forwarding_trampoline_arm64.s in Sources */,
-				BB1B8187251B7BA500F76DC7 /* SwiftInterpose.swift in Sources */,
 				BD35949E21A6C5DE0020EB94 /* Vaccine.swift in Sources */,
 				BBCA02511FB107AF00E45F0F /* SwiftInjection.swift in Sources */,
-				BB5D67B1244DA00C003AA7F4 /* SwiftInvoke.swift in Sources */,
-				BB5D67AF244DA00C003AA7F4 /* SwiftAspects.swift in Sources */,
-				BB5D67AE244DA00C003AA7F4 /* SwiftArgs.swift in Sources */,
-				BB76EA0A22929E1100E454F0 /* xt_forwarding_trampoline_x64.s in Sources */,
 				BBB64FE11FD575260020BE47 /* XprobeSwift.swift in Sources */,
-				BB5D67AD244DA00C003AA7F4 /* SwiftSwizzle.swift in Sources */,
 				BBB64FE61FD577EB0020BE47 /* SwiftSwizzler.swift in Sources */,
 				BBCA02621FB1312A00E45F0F /* SimpleSocket.mm in Sources */,
-				BB1B8186251B7BA500F76DC7 /* SwiftStats.swift in Sources */,
-				BB76EA0922929E1100E454F0 /* SwiftTrace.swift in Sources */,
-				BB5D67B0244DA00C003AA7F4 /* SwiftMeta.swift in Sources */,
-				BB5D67B2244DA00C003AA7F4 /* SwiftStack.swift in Sources */,
 				BBCA025D1FB114FF00E45F0F /* InjectionClient.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -828,6 +920,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		BB6C87D82520D0D2005AFCFC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BB6C87C32520D0D1005AFCFC /* SwiftTrace */;
+			targetProxy = BB6C87D72520D0D2005AFCFC /* PBXContainerItemProxy */;
+		};
 		BBCA024F1FB106C000E45F0F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = BBCA02441FB1065D00E45F0F /* InjectionBundle */;
@@ -882,6 +979,10 @@
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = E23HUP39A3;
+				FRAMEWORK_SEARCH_PATHS = (
+					$PLATFORM_DIR/Developer/Library/Frameworks,
+					$SYMROOT/macOSInjection.bundle/MacOS/Frameworks,
+				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					SWIFTUISUPPORT,
@@ -889,7 +990,7 @@
 				INFOPLIST_FILE = SwiftUISupport/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../../macOSInjection.bundle/Contents/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -916,6 +1017,10 @@
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = E23HUP39A3;
+				FRAMEWORK_SEARCH_PATHS = (
+					$PLATFORM_DIR/Developer/Library/Frameworks,
+					$SYMROOT/macOSInjection.bundle/MacOS/Frameworks,
+				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					SWIFTUISUPPORT,
@@ -923,7 +1028,7 @@
 				INFOPLIST_FILE = SwiftUISupport/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../../macOSInjection.bundle/Contents/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = NO;
@@ -1096,9 +1201,75 @@
 			};
 			name = Release;
 		};
+		BB6C87DC2520D0D3005AFCFC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = E23HUP39A3;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = SwiftTrace/SwiftTrace/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.SwiftTrace;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		BB6C87DD2520D0D3005AFCFC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = E23HUP39A3;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = SwiftTrace/SwiftTrace/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.SwiftTrace;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		BBCA020D1FB0F10400E45F0F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = InjectionIII/InjectionIII.entitlements;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
@@ -1122,6 +1293,7 @@
 		BBCA020E1FB0F10400E45F0F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = InjectionIII/InjectionIII.entitlements;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
@@ -1152,7 +1324,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = InjectionBundle/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/$(SWIFT_PLATFORM_TARGET_PREFIX) /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/$(SWIFT_PLATFORM_TARGET_PREFIX) /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks @loader_path/../Frameworks";
 				MACH_O_TYPE = mh_dylib;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				ONLY_ACTIVE_ARCH = NO;
@@ -1179,7 +1351,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = InjectionBundle/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/$(SWIFT_PLATFORM_TARGET_PREFIX) /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/$(SWIFT_PLATFORM_TARGET_PREFIX) /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks @loader_path/../Frameworks";
 				MACH_O_TYPE = mh_dylib;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionBundle;
@@ -1221,6 +1393,15 @@
 			buildConfigurations = (
 				BB439B881FABA64300B4F50B /* Debug */,
 				BB439B891FABA64300B4F50B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BB6C87E02520D0D8005AFCFC /* Build configuration list for PBXNativeTarget "SwiftTrace" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BB6C87DC2520D0D3005AFCFC /* Debug */,
+				BB6C87DD2520D0D3005AFCFC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

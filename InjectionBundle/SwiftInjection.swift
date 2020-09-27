@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#76 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#77 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -13,6 +13,7 @@
 
 #if arch(x86_64) || arch(i386) || arch(arm64) // simulator/macOS only
 import Foundation
+import SwiftTrace
 import XCTest
 
 private let debugSweep = getenv("DEBUG_SWEEP") != nil

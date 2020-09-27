@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#101 $
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#102 $
 //
 
 #import "InjectionClient.h"
@@ -119,6 +119,9 @@ static struct {
 + (void)setupWithPointer:(void *)ptr;
 @end
 
+@interface SwiftTrace : NSObject
+@end
+
 @interface InjectionClient () {
     BOOL tracing;
 }
@@ -225,8 +228,7 @@ static struct {
                 if (Class swiftUISupport = [[NSBundle
                                              bundleWithPath:swiftUIBundlePath]
                                             classNamed:@"SwiftUISupport"])
-                    [swiftUISupport
-                     setupWithPointer:SwiftTrace.swiftTypeHandlers];
+                    [swiftUISupport setupWithPointer:NULL];
                 else
                     printf("💉 Could not find SwiftUISupport at path: %s\n",
                            swiftUIBundlePath.UTF8String);

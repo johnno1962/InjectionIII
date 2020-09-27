@@ -5,10 +5,11 @@
 //  Created by John Holdsworth on 25/09/2020.
 //  Copyright © 2020 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/SwiftUISupport/SwiftUISupport.swift#4 $
+//  $Id: //depot/ResidentEval/SwiftUISupport/SwiftUISupport.swift#5 $
 //
 
 import SwiftUI
+import SwiftTrace
 
 extension SwiftUI.EdgeInsets: SwiftTraceFloatArg {}
 
@@ -16,23 +17,21 @@ extension SwiftUI.EdgeInsets: SwiftTraceFloatArg {}
 class SwiftUISupport: NSObject {
 
     @objc class func setup(pointer: UnsafeMutableRawPointer) {
-        let swiftTypeHandlers = pointer.assumingMemoryBound(to:
-            [String: (SwiftTrace.Swizzle.Invocation, Bool) -> String?].self)
-        
+
         print("💉 Installed SwiftUI type handlers")
-        swiftTypeHandlers.pointee["SwiftUI.Text"] =
+        SwiftTrace.Decorated.swiftTypeHandlers["SwiftUI.Text"] =
             { SwiftTrace.Decorated.handleArg(invocation: $0, isReturn: $1, type: SwiftUI.Text.self) }
-        swiftTypeHandlers.pointee["SwiftUI.Color"] =
+        SwiftTrace.Decorated.swiftTypeHandlers["SwiftUI.Color"] =
             { SwiftTrace.Decorated.handleArg(invocation: $0, isReturn: $1, type: SwiftUI.Color.self) }
-        swiftTypeHandlers.pointee["SwiftUI.Edge.Set"] =
+        SwiftTrace.Decorated.swiftTypeHandlers["SwiftUI.Edge.Set"] =
             { SwiftTrace.Decorated.handleArg(invocation: $0, isReturn: $1, type: SwiftUI.Edge.Set.self) }
-        swiftTypeHandlers.pointee["SwiftUI.EdgeInsets"] =
+        SwiftTrace.Decorated.swiftTypeHandlers["SwiftUI.EdgeInsets"] =
             { SwiftTrace.Decorated.handleArg(invocation: $0, isReturn: $1, type: SwiftUI.EdgeInsets.self) }
-        swiftTypeHandlers.pointee["SwiftUI.Alignment"] =
+        SwiftTrace.Decorated.swiftTypeHandlers["SwiftUI.Alignment"] =
             { SwiftTrace.Decorated.handleArg(invocation: $0, isReturn: $1, type: SwiftUI.Alignment.self) }
-        swiftTypeHandlers.pointee["SwiftUI.Image"] =
+        SwiftTrace.Decorated.swiftTypeHandlers["SwiftUI.Image"] =
             { SwiftTrace.Decorated.handleArg(invocation: $0, isReturn: $1, type: SwiftUI.Image.self) }
-        swiftTypeHandlers.pointee["SwiftUI.LocalizedStringKey"] =
+        SwiftTrace.Decorated.swiftTypeHandlers["SwiftUI.LocalizedStringKey"] =
             { SwiftTrace.Decorated.handleArg(invocation: $0, isReturn: $1, type: SwiftUI.LocalizedStringKey.self) }
     }
 }
