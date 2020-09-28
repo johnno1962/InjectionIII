@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 25/09/2020.
 //  Copyright © 2020 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/SwiftUISupport/SwiftUISupport.swift#5 $
+//  $Id: //depot/ResidentEval/SwiftUISupport/SwiftUISupport.swift#6 $
 //
 
 import SwiftUI
@@ -16,7 +16,7 @@ extension SwiftUI.EdgeInsets: SwiftTraceFloatArg {}
 @objc (SwiftUISupport)
 class SwiftUISupport: NSObject {
 
-    @objc class func setup(pointer: UnsafeMutableRawPointer) {
+    @objc class func setup(pointer: UnsafeMutableRawPointer?) {
 
         print("💉 Installed SwiftUI type handlers")
         SwiftTrace.Decorated.swiftTypeHandlers["SwiftUI.Text"] =

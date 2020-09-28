@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BB070C262512851B002FC45A /* AppCodePlugin in Resources */ = {isa = PBXBuildFile; fileRef = BB070C252512851B002FC45A /* AppCodePlugin */; };
+		BB1A84072522703C003873C3 /* macOSInjection.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02451FB1065D00E45F0F /* macOSInjection.bundle */; };
+		BB1A840A25227535003873C3 /* SwiftTrace.h in Resources */ = {isa = PBXBuildFile; fileRef = BB6C87C62520D0D2005AFCFC /* SwiftTrace.h */; };
 		BB1BA90B251DC54100044608 /* SwiftUISupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1BA90A251DC54100044608 /* SwiftUISupport.swift */; };
 		BB34C3FD244FAAB400D520A9 /* RMWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB34C3FC244FAAB400D520A9 /* RMWindowController.xib */; };
 		BB34C3FF244FAD3C00D520A9 /* log.html in Resources */ = {isa = PBXBuildFile; fileRef = BB34C3FE244FAD3C00D520A9 /* log.html */; };
@@ -20,11 +21,8 @@
 		BB53B642244FC08F00F006E3 /* RemoteCapture.h in Resources */ = {isa = PBXBuildFile; fileRef = BB4EC3FF244FA42A0079E244 /* RemoteCapture.h */; };
 		BB53B648244FC32C00F006E3 /* RemoteHeaders.h in Resources */ = {isa = PBXBuildFile; fileRef = BB53B647244FC2F800F006E3 /* RemoteHeaders.h */; };
 		BB56393C1FD5C25A002FFCEF /* SignerService.m in Sources */ = {isa = PBXBuildFile; fileRef = BB67DBB61FB0D0F2000EAC8A /* SignerService.m */; };
-		BB6125D324EA882000A7C230 /* Injection.jar in Resources */ = {isa = PBXBuildFile; fileRef = BB6125D224EA882000A7C230 /* Injection.jar */; };
 		BB6306FE1FCD1A410021D30C /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = BB6306FD1FCD1A410021D30C /* Credits.rtf */; };
 		BB6C87D62520D0D2005AFCFC /* SwiftTrace.h in Headers */ = {isa = PBXBuildFile; fileRef = BB6C87C62520D0D2005AFCFC /* SwiftTrace.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BB6C87D92520D0D2005AFCFC /* SwiftTrace.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB6C87C42520D0D1005AFCFC /* SwiftTrace.framework */; };
-		BB6C87DA2520D0D2005AFCFC /* SwiftTrace.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BB6C87C42520D0D1005AFCFC /* SwiftTrace.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BB6C87EB2520D152005AFCFC /* SwiftMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6C87E22520D150005AFCFC /* SwiftMeta.swift */; };
 		BB6C87EC2520D152005AFCFC /* SwiftInvoke.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6C87E32520D151005AFCFC /* SwiftInvoke.swift */; };
 		BB6C87ED2520D152005AFCFC /* SwiftSwizzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6C87E42520D151005AFCFC /* SwiftSwizzle.swift */; };
@@ -37,9 +35,7 @@
 		BB6C87F92520D2C3005AFCFC /* SwiftTrace.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB6C87F62520D2C3005AFCFC /* SwiftTrace.mm */; };
 		BB6C87FA2520D2C3005AFCFC /* xt_forwarding_trampoline_arm64.s in Sources */ = {isa = PBXBuildFile; fileRef = BB6C87F72520D2C3005AFCFC /* xt_forwarding_trampoline_arm64.s */; };
 		BB6C87FB2520D2C3005AFCFC /* xt_forwarding_trampoline_x64.s in Sources */ = {isa = PBXBuildFile; fileRef = BB6C87F82520D2C3005AFCFC /* xt_forwarding_trampoline_x64.s */; };
-		BB6C881E2520D798005AFCFC /* SwiftTrace.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB6C87C42520D0D1005AFCFC /* SwiftTrace.framework */; };
 		BB6C881F2520D799005AFCFC /* SwiftTrace.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BB6C87C42520D0D1005AFCFC /* SwiftTrace.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		BB6C88A92520F4F3005AFCFC /* SwiftTrace.h in Resources */ = {isa = PBXBuildFile; fileRef = BB6C88A82520F4F3005AFCFC /* SwiftTrace.h */; };
 		BB79FC79245CC02200A4B4CB /* TimeLapseBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB79FC78245CC02200A4B4CB /* TimeLapseBuilder.swift */; };
 		BB7D7CAC2512F8F00069FE2C /* UpdateCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D7CAB2512F8F00069FE2C /* UpdateCheck.swift */; };
 		BB877CE42186EB6E0070EEC7 /* DDHotKeyCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6306F51FCD16600021D30C /* DDHotKeyCenter.m */; };
@@ -68,7 +64,6 @@
 		BBCA02041FB0F10300E45F0F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02031FB0F10300E45F0F /* Assets.xcassets */; };
 		BBCA02071FB0F10300E45F0F /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02051FB0F10300E45F0F /* MainMenu.xib */; };
 		BBCA022A1FB0F64800E45F0F /* SimpleSocket.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB67DBB31FB0CDA8000EAC8A /* SimpleSocket.mm */; };
-		BBCA024D1FB1069A00E45F0F /* macOSInjection.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02451FB1065D00E45F0F /* macOSInjection.bundle */; };
 		BBCA02501FB107AF00E45F0F /* SwiftEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */; };
 		BBCA02511FB107AF00E45F0F /* SwiftInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */; };
 		BBCA02561FB1099500E45F0F /* InjectionServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCA02551FB1099500E45F0F /* InjectionServer.swift */; };
@@ -85,14 +80,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		BB6C87D72520D0D2005AFCFC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BB439B5D1FABA64300B4F50B /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = BB6C87C32520D0D1005AFCFC;
-			remoteInfo = SwiftTrace;
-		};
-		BBCA024E1FB106C000E45F0F /* PBXContainerItemProxy */ = {
+		BB1A8405252266D4003873C3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BB439B5D1FABA64300B4F50B /* Project object */;
 			proxyType = 1;
@@ -117,7 +105,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				BB6C87DA2520D0D2005AFCFC /* SwiftTrace.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -213,7 +200,6 @@
 		BB6C87F62520D2C3005AFCFC /* SwiftTrace.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = SwiftTrace.mm; path = SwiftTraceGuts/SwiftTrace.mm; sourceTree = "<group>"; };
 		BB6C87F72520D2C3005AFCFC /* xt_forwarding_trampoline_arm64.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; name = xt_forwarding_trampoline_arm64.s; path = SwiftTraceGuts/xt_forwarding_trampoline_arm64.s; sourceTree = "<group>"; };
 		BB6C87F82520D2C3005AFCFC /* xt_forwarding_trampoline_x64.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; name = xt_forwarding_trampoline_x64.s; path = SwiftTraceGuts/xt_forwarding_trampoline_x64.s; sourceTree = "<group>"; };
-		BB6C88A82520F4F3005AFCFC /* SwiftTrace.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SwiftTrace.h; path = SwiftTrace/SwiftTraceGuts/include/SwiftTrace.h; sourceTree = "<group>"; };
 		BB79FC78245CC02200A4B4CB /* TimeLapseBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeLapseBuilder.swift; path = Remote/Classes/TimeLapseBuilder.swift; sourceTree = SOURCE_ROOT; };
 		BB7D7CAB2512F8F00069FE2C /* UpdateCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateCheck.swift; sourceTree = "<group>"; };
 		BBA7BE0223473D660067124D /* build_bundles.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = build_bundles.sh; sourceTree = "<group>"; };
@@ -291,7 +277,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BB6C87D92520D0D2005AFCFC /* SwiftTrace.framework in Frameworks */,
 				BBB64FEC1FD585D50020BE47 /* WebKit.framework in Frameworks */,
 				BBB040641FB17A6C007DDD0A /* ScriptingBridge.framework in Frameworks */,
 				BBB64DE51FD571310020BE47 /* libz.tbd in Frameworks */,
@@ -302,7 +287,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BB6C881E2520D798005AFCFC /* SwiftTrace.framework in Frameworks */,
 				BBB64DE61FD5717C0020BE47 /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -323,7 +307,6 @@
 		BB439B5C1FABA64300B4F50B = {
 			isa = PBXGroup;
 			children = (
-				BB6C88A82520F4F3005AFCFC /* SwiftTrace.h */,
 				BB037DF41FAD80D0004B267C /* LICENSE */,
 				BB037DF31FAD808B004B267C /* README.md */,
 				BB6125D224EA882000A7C230 /* Injection.jar */,
@@ -638,8 +621,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				BBCA024F1FB106C000E45F0F /* PBXTargetDependency */,
-				BB6C87D82520D0D2005AFCFC /* PBXTargetDependency */,
+				BB1A8406252266D4003873C3 /* PBXTargetDependency */,
 			);
 			name = InjectionIII;
 			productName = InjectionIII;
@@ -650,7 +632,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = BBCA02481FB1065D00E45F0F /* Build configuration list for PBXNativeTarget "InjectionBundle" */;
 			buildPhases = (
-				BB200F66250BCDA600DA627B /* ShellScript */,
+				BB1A840425226642003873C3 /* ShellScript */,
 				BBCA02411FB1065D00E45F0F /* Sources */,
 				BBCA02421FB1065D00E45F0F /* Frameworks */,
 				BBCA02431FB1065D00E45F0F /* Resources */,
@@ -754,8 +736,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BB6C88A92520F4F3005AFCFC /* SwiftTrace.h in Resources */,
-				BB6125D324EA882000A7C230 /* Injection.jar in Resources */,
+				BB1A840A25227535003873C3 /* SwiftTrace.h in Resources */,
+				BB1A84072522703C003873C3 /* macOSInjection.bundle in Resources */,
 				BB53B648244FC32C00F006E3 /* RemoteHeaders.h in Resources */,
 				BB53B642244FC08F00F006E3 /* RemoteCapture.h in Resources */,
 				BBB64FDE1FD5744A0020BE47 /* XprobeConsole.xib in Resources */,
@@ -770,7 +752,6 @@
 				BBB64DC51FD450AF0020BE47 /* README.md in Resources */,
 				BBE490DC1FB2C643003D41BB /* InjectionError.tif in Resources */,
 				BBCA02591FB112F500E45F0F /* App.icns in Resources */,
-				BBCA024D1FB1069A00E45F0F /* macOSInjection.bundle in Resources */,
 				BBCA02601FB122C300E45F0F /* InjectionIdle.tif in Resources */,
 				BB6306FE1FCD1A410021D30C /* Credits.rtf in Resources */,
 				BBCA02611FB122C300E45F0F /* InjectionOK.tif in Resources */,
@@ -780,7 +761,6 @@
 				BB34C3FD244FAAB400D520A9 /* RMWindowController.xib in Resources */,
 				BB34C401244FAE3000D520A9 /* iphone.png in Resources */,
 				BBE490DB1FB2C643003D41BB /* InjectionBusy.tif in Resources */,
-				BB070C262512851B002FC45A /* AppCodePlugin in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -794,7 +774,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		BB200F66250BCDA600DA627B /* ShellScript */ = {
+		BB1A840425226642003873C3 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -808,7 +788,7 @@
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = "/bin/sh -x";
+			shellPath = /bin/sh;
 			shellScript = "if [ \"$PRODUCT_NAME\" = \"macOSInjection\" ]; then\n    perl -e 'print \"#define INJECTION_SALT @{[1_000_000 + int(rand() * ((1 << 31)) - 1_000_000)]}\\n\"' >/tmp/InjectionSalt.h\nfi\n";
 			showEnvVarsInLog = 0;
 		};
@@ -920,15 +900,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		BB6C87D82520D0D2005AFCFC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = BB6C87C32520D0D1005AFCFC /* SwiftTrace */;
-			targetProxy = BB6C87D72520D0D2005AFCFC /* PBXContainerItemProxy */;
-		};
-		BBCA024F1FB106C000E45F0F /* PBXTargetDependency */ = {
+		BB1A8406252266D4003873C3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = BBCA02441FB1065D00E45F0F /* InjectionBundle */;
-			targetProxy = BBCA024E1FB106C000E45F0F /* PBXContainerItemProxy */;
+			targetProxy = BB1A8405252266D4003873C3 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -992,17 +967,16 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../../macOSInjection.bundle/Contents/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-                TVOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.SwiftUISupport;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "$(PLATFORM_FAMILY_NAME)SwiftUISupport";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "SwiftUISupport/SwiftUISupport-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TVOS_DEPLOYMENT_TARGET = 13.0;
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Debug;
@@ -1031,15 +1005,14 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../../macOSInjection.bundle/Contents/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-                TVOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.SwiftUISupport;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "$(PLATFORM_FAMILY_NAME)SwiftUISupport";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "SwiftUISupport/SwiftUISupport-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				TVOS_DEPLOYMENT_TARGET = 13.0;
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Release;
@@ -1101,6 +1074,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "-Xfrontend -warn-long-expression-type-checking=150";
+				PRODUCT_NAME = macOSInjection;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1162,6 +1136,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/$(SWIFT_PLATFORM_TARGET_PREFIX) $PLATFORM_DIR/Developer/Library/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_SWIFT_FLAGS = "-Xfrontend -warn-long-expression-type-checking=150";
+				PRODUCT_NAME = macOSInjection;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 4.0;
@@ -1226,7 +1201,6 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-                TVOS_DEPLOYMENT_TARGET = 12.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.SwiftTrace;
@@ -1234,6 +1208,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				TVOS_DEPLOYMENT_TARGET = 12.4;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1258,13 +1233,13 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-                TVOS_DEPLOYMENT_TARGET = 12.4;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.SwiftTrace;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				TVOS_DEPLOYMENT_TARGET = 12.4;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1284,7 +1259,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 2.3.0;
+				MARKETING_VERSION = 2.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1308,7 +1283,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 2.3.0;
+				MARKETING_VERSION = 2.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1328,10 +1303,9 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = InjectionBundle/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/$(SWIFT_PLATFORM_TARGET_PREFIX) /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks @loader_path/../Frameworks";
 				MACH_O_TYPE = mh_dylib;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionBundle;
 				PRODUCT_NAME = macOSInjection;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1355,7 +1329,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = InjectionBundle/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/$(SWIFT_PLATFORM_TARGET_PREFIX) /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks @loader_path/../Frameworks";
 				MACH_O_TYPE = mh_dylib;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionBundle;

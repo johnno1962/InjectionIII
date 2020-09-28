@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#102 $
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#104 $
 //
 
 #import "InjectionClient.h"
@@ -310,10 +310,12 @@ static struct {
         printf(exclude ?
            "💉 Filtering trace to include methods matching '%s' but not '%s'.\n" :
            "💉 Filtering trace to include methods matching '%s'.\n",
-            include.UTF8String, exclude.UTF8String);
-    else if (exclude)
-        printf(
-           "💉 Filtering trace to exclude methods matching '%s'.\n", exclude.UTF8String);
+           include.UTF8String, exclude.UTF8String);
+    else
+        printf(exclude ?
+           "💉 Filtering trace to exclude methods matching '%s'.\n" :
+           "💉 Not filtering trace (Menu Item: 'Set Trace Filter')\n",
+           exclude.UTF8String);
 }
 
 #ifdef __IPHONE_OS_VERSION_MIN_REQUIRED

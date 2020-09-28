@@ -1,25 +1,32 @@
 #!/bin/bash -x
-
+#
 #  build_bundles.sh
 #  InjectionIII
 #
 #  Created by John Holdsworth on 04/10/2019.
 #  Copyright © 2019 John Holdsworth. All rights reserved.
+#
+#  $Id: //depot/ResidentEval/InjectionIII/build_bundles.sh#27 $
+#
 
-#SYMROOT=/tmp/Injection
-export XCODE_PLATFORM_DIR=/Applications/Xcode.app/Contents/Developer &&
-"$DEVELOPER_BIN_DIR"/xcodebuild SYMROOT=$SYMROOT PRODUCT_NAME=macOSSwiftUISupport LD_RUNPATH_SEARCH_PATHS="$XCODE_PLATFORM_DIR/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator $XCODE_PLATFORM_DIR/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks @loader_path/Frameworks" -arch x86_64 -arch arm64 -sdk macosx -config $CONFIGURATION -target SwiftUISupport &&
-rsync -au $SYMROOT/$CONFIGURATION/macOSSwiftUISupport.bundle   "$CODESIGNING_FOLDER_PATH/Contents/Resources" &&
-SYMROOT=/tmp/iOSInjection &&
-"$DEVELOPER_BIN_DIR"/xcodebuild SYMROOT=$SYMROOT PRODUCT_NAME=SwiftTrace LD_RUNPATH_SEARCH_PATHS="$XCODE_PLATFORM_DIR/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator $XCODE_PLATFORM_DIR/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks @loader_path/Frameworks" -arch x86_64 -arch arm64 -sdk iphonesimulator -config $CONFIGURATION -target SwiftTrace &&
-"$DEVELOPER_BIN_DIR"/xcodebuild SYMROOT=$SYMROOT PRODUCT_NAME=iOSInjection LD_RUNPATH_SEARCH_PATHS="$XCODE_PLATFORM_DIR/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator $XCODE_PLATFORM_DIR/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks @loader_path/Frameworks @loader_path/../iOSInjection.bundle/Frameworks" -arch x86_64 -arch arm64 -sdk iphonesimulator -config $CONFIGURATION -target InjectionBundle &&
-"$DEVELOPER_BIN_DIR"/xcodebuild SYMROOT=$SYMROOT PRODUCT_NAME=iOSSwiftUISupport LD_RUNPATH_SEARCH_PATHS="$XCODE_PLATFORM_DIR/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator $XCODE_PLATFORM_DIR/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks @loader_path/Frameworks @loader_path/../iOSInjection.bundle/Frameworks" FRAMEWORK_SEARCH_PATHS="$SYMROOT $SYMROOT/iOSInjection.bundle/Frameworks" -arch x86_64 -arch arm64 -sdk iphonesimulator -config $CONFIGURATION -target SwiftUISupport &&
-rsync -au $SYMROOT/$CONFIGURATION-iphonesimulator/iOSSwiftUISupport.bundle "$CODESIGNING_FOLDER_PATH/Contents/Resources" &&
-rsync -au $SYMROOT/$CONFIGURATION-iphonesimulator/iOSInjection.bundle  "$CODESIGNING_FOLDER_PATH/Contents/Resources" &&
-SYMROOT=/tmp/tvOSInjection &&
-"$DEVELOPER_BIN_DIR"/xcodebuild SYMROOT=$SYMROOT PRODUCT_NAME=SwiftTrace LD_RUNPATH_SEARCH_PATHS="$XCODE_PLATFORM_DIR/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/appletvsimulator $XCODE_PLATFORM_DIR/Platforms/AppleTVSimulator.platform/Developer/Library/Frameworks @loader_path/Frameworks" -arch x86_64 -arch arm64 -sdk appletvsimulator -config $CONFIGURATION -target SwiftTrace &&
-"$DEVELOPER_BIN_DIR"/xcodebuild SYMROOT=$SYMROOT PRODUCT_NAME=tvOSInjection LD_RUNPATH_SEARCH_PATHS="$XCODE_PLATFORM_DIR/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/appletvsimulator $XCODE_PLATFORM_DIR/Platforms/AppleTVSimulator.platform/Developer/Library/Frameworks @loader_path/Frameworks" -arch x86_64 -arch arm64 -sdk appletvsimulator -config $CONFIGURATION -target InjectionBundle &&
-"$DEVELOPER_BIN_DIR"/xcodebuild SYMROOT=$SYMROOT PRODUCT_NAME=tvOSSwiftUISupport LD_RUNPATH_SEARCH_PATHS="$XCODE_PLATFORM_DIR/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/appletvsimulator $XCODE_PLATFORM_DIR/Platforms/iPhoneSimulator.platform/Developer/Library/Frameworks @loader_path/Frameworks @loader_path/../tvOSInjection.bundle/Frameworks" FRAMEWORK_SEARCH_PATHS="$SYMROOT/tvOSInjection.bundle/Frameworks" -arch x86_64 -arch arm64 -sdk appletvsimulator -config $CONFIGURATION -target SwiftUISupport &&
-rsync -au $SYMROOT/$CONFIGURATION-appletvsimulator/tvOSSwiftUISupport.bundle "$CODESIGNING_FOLDER_PATH/Contents/Resources" &&
-rsync -au $SYMROOT/$CONFIGURATION-appletvsimulator/tvOSInjection.bundle  "$CODESIGNING_FOLDER_PATH/Contents/Resources" &&
-find $CODESIGNING_FOLDER_PATH/Contents/Resources/*.bundle -name '*.h' -delete
+# Injection has to assume a fixed path for Xcode.app as it uses
+# Swift and the user's project may contain only Objective-C.
+# The second "rpath" is to be able to find XCTest.framework.
+FIXED_XCODE_DEVELOPER_PATH=/Applications/Xcode.app/Contents/Developer
+
+function build_bundle () {
+    FAMILY=$1
+    PLATFORM=$2
+    SDK=$3
+    "$DEVELOPER_BIN_DIR"/xcodebuild SYMROOT=$SYMROOT ARCHS="$ARCHS" PRODUCT_NAME=SwiftTrace -sdk $SDK -config $CONFIGURATION -target SwiftTrace &&
+    "$DEVELOPER_BIN_DIR"/xcodebuild SYMROOT=$SYMROOT ARCHS="$ARCHS" PRODUCT_NAME="${FAMILY}Injection" LD_RUNPATH_SEARCH_PATHS="$FIXED_XCODE_DEVELOPER_PATH/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$SDK $FIXED_XCODE_DEVELOPER_PATH/Platforms/$PLATFORM.platform/Developer/Library/Frameworks @loader_path/Frameworks" -sdk $SDK -config $CONFIGURATION -target InjectionBundle &&
+    "$DEVELOPER_BIN_DIR"/xcodebuild SYMROOT=$SYMROOT ARCHS="$ARCHS" PRODUCT_NAME="${FAMILY}SwiftUISupport" -sdk $SDK -config $CONFIGURATION -target SwiftUISupport
+}
+
+#build_bundle macOS MacOSX macosx &&
+build_bundle iOS iPhoneSimulator iphonesimulator &&
+build_bundle tvOS AppleTVSimulator appletvsimulator &&
+
+# SwiftUISupport needs to be but separately from the main 
+"$DEVELOPER_BIN_DIR"/xcodebuild SYMROOT=$SYMROOT ARCHS="$ARCHS" PRODUCT_NAME=macOSSwiftUISupport -sdk macosx -config $CONFIGURATION -target SwiftUISupport &&
+rsync -au $SYMROOT/$CONFIGURATION/macOSSwiftUISupport.bundle $SYMROOT/$CONFIGURATION-*/*.bundle "$CODESIGNING_FOLDER_PATH/Contents/Resources"
