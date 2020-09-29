@@ -224,7 +224,21 @@ framework such as SwiftUI you can use the following:
 ```
 To include or exclude the methods to be traced use the `methodInclusionPattern`
 and `methodExclusionPattern` class properties of SwiftTrace. For more information
-consult the [SwiftTrace source repo](https://github.com/johnno1962/SwiftTrace).
+consult the [SwiftTrace source repo](https://github.com/johnno1962/SwiftTrace). It's
+possible to use the Swift API of SwiftTrace directly in your app, for example, to add 
+a new handler to format a particular type by importing SwiftTrace and adding the
+following to your app's `"Framework Search Paths"` and `"Runpath Search Paths"`
+(for the Debug configuration):
+```
+/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle/Frameworks
+```
+Then, use something like the following to register the type:
+```
+SwiftTrace.addFormattedType(MovieSwift.MovieRow.Props.self, prefix: "MovieSwift.MovieRow")
+```
+In this case however the `MovieSwift.MovieRow.Props` type from the excellent 
+`MovieSwift` SwiftUI  [example project](https://github.com/Dimillian/MovieSwiftUI)
+is too large to format and needs to be changed to be a class.
 
 ### Remote Control
 
@@ -319,4 +333,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2020/09/26 $
+$Date: 2020/09/29 $

@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#104 $
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#106 $
 //
 
 #import "InjectionClient.h"
@@ -23,6 +23,11 @@
 #endif
 #import <UIKit/UIKit.h>
 #import <objc/runtime.h>
+
+@interface NSObject (Remapped)
++ (void)addMappingFromIdentifier:(NSString *)identifier toObject:(id)object forCoder:(id)coder;
++ (id)mappedObjectForCoder:(id)decoder withIdentifier:(NSString *)identifier;
+@end
 
 @implementation NSObject (Remapper)
 
@@ -67,9 +72,9 @@ static struct {
         size_t vcSize = class_getInstanceSize([UIViewController class]);
         size_t mySize = class_getInstanceSize([self class]);
         char *extra = (char *)(__bridge void *)self + vcSize;
-        NSData *save = [NSData dataWithBytes:extra length:mySize-vcSize];
+        NSData *ivars = [NSData dataWithBytes:extra length:mySize-vcSize];
         (void)[self initWithNibName:nibName bundle:bundle];
-        memcpy(extra, save.bytes, save.length);
+        memcpy(extra, ivars.bytes, ivars.length);
         [self loadView];
     }
 }
