@@ -72,6 +72,11 @@
 		BBCA02601FB122C300E45F0F /* InjectionIdle.tif in Resources */ = {isa = PBXBuildFile; fileRef = BBCA025E1FB122C300E45F0F /* InjectionIdle.tif */; };
 		BBCA02611FB122C300E45F0F /* InjectionOK.tif in Resources */ = {isa = PBXBuildFile; fileRef = BBCA025F1FB122C300E45F0F /* InjectionOK.tif */; };
 		BBCA02621FB1312A00E45F0F /* SimpleSocket.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB67DBB31FB0CDA8000EAC8A /* SimpleSocket.mm */; };
+		BBE3B2E72524915A00300BF8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE3B2E62524915A00300BF8 /* AppDelegate.swift */; };
+		BBE3B2E92524916000300BF8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBE3B2E82524916000300BF8 /* Assets.xcassets */; };
+		BBE3B2EC2524916000300BF8 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBE3B2EA2524916000300BF8 /* MainMenu.xib */; };
+		BBE3B2F2252491BC00300BF8 /* SwiftEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */; };
+		BBE3B2F32524965400300BF8 /* App.icns in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02581FB112F500E45F0F /* App.icns */; };
 		BBE490D01FB2368A003D41BB /* FileWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE490CE1FB2368A003D41BB /* FileWatcher.swift */; };
 		BBE490DB1FB2C643003D41BB /* InjectionBusy.tif in Resources */ = {isa = PBXBuildFile; fileRef = BBE490D91FB2C643003D41BB /* InjectionBusy.tif */; };
 		BBE490DC1FB2C643003D41BB /* InjectionError.tif in Resources */ = {isa = PBXBuildFile; fileRef = BBE490DA1FB2C643003D41BB /* InjectionError.tif */; };
@@ -242,6 +247,12 @@
 		BBCA025E1FB122C300E45F0F /* InjectionIdle.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = InjectionIdle.tif; sourceTree = "<group>"; };
 		BBCA025F1FB122C300E45F0F /* InjectionOK.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = InjectionOK.tif; sourceTree = "<group>"; };
 		BBDF943C2349277A00334E08 /* InjectionIII-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "InjectionIII-Bridging-Header.h"; sourceTree = "<group>"; };
+		BBE3B2E42524915A00300BF8 /* EvalApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EvalApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BBE3B2E62524915A00300BF8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		BBE3B2E82524916000300BF8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BBE3B2EB2524916000300BF8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		BBE3B2ED2524916000300BF8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BBE3B2EE2524916000300BF8 /* EvalApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EvalApp.entitlements; sourceTree = "<group>"; };
 		BBE490CE1FB2368A003D41BB /* FileWatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileWatcher.swift; sourceTree = "<group>"; };
 		BBE490D91FB2C643003D41BB /* InjectionBusy.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = InjectionBusy.tif; sourceTree = "<group>"; };
 		BBE490DA1FB2C643003D41BB /* InjectionError.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = InjectionError.tif; sourceTree = "<group>"; };
@@ -291,6 +302,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BBE3B2E12524915A00300BF8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -323,6 +341,7 @@
 				BB439B7E1FABA64300B4F50B /* SwiftEvalTests */,
 				BB439BB21FAC185200B4F50B /* signer */,
 				BBB148D81FAD53BE00CB6B33 /* EvalApp */,
+				BBE3B2E52524915A00300BF8 /* EvalApp */,
 				BB439B661FABA64300B4F50B /* Products */,
 				BBB040621FB1798A007DDD0A /* Frameworks */,
 			);
@@ -338,6 +357,7 @@
 				BBCA02451FB1065D00E45F0F /* macOSInjection.bundle */,
 				BB1BA904251DC51900044608 /* SwiftUISupport.bundle */,
 				BB6C87C42520D0D1005AFCFC /* SwiftTrace.framework */,
+				BBE3B2E42524915A00300BF8 /* EvalApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -513,6 +533,18 @@
 			path = InjectionBundle;
 			sourceTree = "<group>";
 		};
+		BBE3B2E52524915A00300BF8 /* EvalApp */ = {
+			isa = PBXGroup;
+			children = (
+				BBE3B2E62524915A00300BF8 /* AppDelegate.swift */,
+				BBE3B2E82524916000300BF8 /* Assets.xcassets */,
+				BBE3B2EA2524916000300BF8 /* MainMenu.xib */,
+				BBE3B2ED2524916000300BF8 /* Info.plist */,
+				BBE3B2EE2524916000300BF8 /* EvalApp.entitlements */,
+			);
+			path = EvalApp;
+			sourceTree = "<group>";
+		};
 		CEFB9ADB1FD58DB00034B410 /* Xprobe */ = {
 			isa = PBXGroup;
 			children = (
@@ -647,13 +679,30 @@
 			productReference = BBCA02451FB1065D00E45F0F /* macOSInjection.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
+		BBE3B2E32524915A00300BF8 /* EvalApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BBE3B2F12524916400300BF8 /* Build configuration list for PBXNativeTarget "EvalApp" */;
+			buildPhases = (
+				BBE3B2E02524915A00300BF8 /* Sources */,
+				BBE3B2E12524915A00300BF8 /* Frameworks */,
+				BBE3B2E22524915A00300BF8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = EvalApp;
+			productName = EvalApp;
+			productReference = BBE3B2E42524915A00300BF8 /* EvalApp.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		BB439B5D1FABA64300B4F50B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0910;
+				LastSwiftUpdateCheck = 1150;
 				LastUpgradeCheck = 0910;
 				ORGANIZATIONNAME = "John Holdsworth";
 				TargetAttributes = {
@@ -686,6 +735,10 @@
 						LastSwiftMigration = 1110;
 						ProvisioningStyle = Manual;
 					};
+					BBE3B2E32524915A00300BF8 = {
+						CreatedOnToolsVersion = 11.5;
+						ProvisioningStyle = Manual;
+					};
 				};
 			};
 			buildConfigurationList = BB439B601FABA64300B4F50B /* Build configuration list for PBXProject "InjectionIII" */;
@@ -706,6 +759,7 @@
 				BBCA02441FB1065D00E45F0F /* InjectionBundle */,
 				BB1BA903251DC51900044608 /* SwiftUISupport */,
 				BB439B7A1FABA64300B4F50B /* SwiftEvalTests */,
+				BBE3B2E32524915A00300BF8 /* EvalApp */,
 			);
 		};
 /* End PBXProject section */
@@ -768,6 +822,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BBE3B2E22524915A00300BF8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BBE3B2F32524965400300BF8 /* App.icns in Resources */,
+				BBE3B2E92524916000300BF8 /* Assets.xcassets in Resources */,
+				BBE3B2EC2524916000300BF8 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -897,6 +961,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BBE3B2E02524915A00300BF8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BBE3B2F2252491BC00300BF8 /* SwiftEval.swift in Sources */,
+				BBE3B2E72524915A00300BF8 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -940,6 +1013,14 @@
 			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
+		BBE3B2EA2524916000300BF8 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BBE3B2EB2524916000300BF8 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -953,7 +1034,7 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = E23HUP39A3;
+				DEVELOPMENT_TEAM = 9V5A8WE85E;
 				FRAMEWORK_SEARCH_PATHS = (
 					$PLATFORM_DIR/Developer/Library/Frameworks,
 					$SYMROOT/macOSInjection.bundle/MacOS/Frameworks,
@@ -991,7 +1072,7 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = E23HUP39A3;
+				DEVELOPMENT_TEAM = 9V5A8WE85E;
 				FRAMEWORK_SEARCH_PATHS = (
 					$PLATFORM_DIR/Developer/Library/Frameworks,
 					$SYMROOT/macOSInjection.bundle/MacOS/Frameworks,
@@ -1150,7 +1231,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = E23HUP39A3;
+				DEVELOPMENT_TEAM = 9V5A8WE85E;
 				INFOPLIST_FILE = SwiftEvalTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.SwiftEvalTests;
@@ -1167,7 +1248,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = E23HUP39A3;
+				DEVELOPMENT_TEAM = 9V5A8WE85E;
 				INFOPLIST_FILE = SwiftEvalTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.SwiftEvalTests;
@@ -1189,7 +1270,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = E23HUP39A3;
+				DEVELOPMENT_TEAM = 9V5A8WE85E;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -1225,7 +1306,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = E23HUP39A3;
+				DEVELOPMENT_TEAM = 9V5A8WE85E;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -1254,7 +1335,7 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = E23HUP39A3;
+				DEVELOPMENT_TEAM = 9V5A8WE85E;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
@@ -1278,7 +1359,7 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = E23HUP39A3;
+				DEVELOPMENT_TEAM = 9V5A8WE85E;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
@@ -1299,7 +1380,7 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = E23HUP39A3;
+				DEVELOPMENT_TEAM = 9V5A8WE85E;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = InjectionBundle/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
@@ -1325,7 +1406,7 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = E23HUP39A3;
+				DEVELOPMENT_TEAM = 9V5A8WE85E;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = InjectionBundle/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
@@ -1342,6 +1423,61 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "InjectionBundle/XprobeSwift-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
+		BBE3B2EF2524916100300BF8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CODE_SIGN_ENTITLEMENTS = EvalApp/EvalApp.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = EvalApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.EvalApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		BBE3B2F02524916100300BF8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CODE_SIGN_ENTITLEMENTS = EvalApp/EvalApp.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = EvalApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.EvalApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -1398,6 +1534,15 @@
 			buildConfigurations = (
 				BBCA02491FB1065D00E45F0F /* Debug */,
 				BBCA024A1FB1065D00E45F0F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BBE3B2F12524916400300BF8 /* Build configuration list for PBXNativeTarget "EvalApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BBE3B2EF2524916100300BF8 /* Debug */,
+				BBE3B2F02524916100300BF8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

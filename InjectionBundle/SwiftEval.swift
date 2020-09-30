@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#139 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#144 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -375,13 +375,13 @@ public class SwiftEval: NSObject {
 
         let projectDir = projectFile.deletingLastPathComponent().path
 
-        _ = evalError("Compiling \(sourceFile)")
+        _ = evalError("💉 Compiling \(sourceFile)")
 
         guard shell(command: """
                 (cd "\(projectDir.escaping("$"))" && \(compileCommand) -o \(tmpfile).o >\(logfile) 2>&1)
                 """) else {
             compileByClass.removeValue(forKey: classNameOrFile)
-            throw evalError("Re-compilation failed (\(tmpDir)/command.sh)\n\(try! String(contentsOfFile: logfile))")
+            throw evalError("Re-compilation failed (see: \(tmpDir)/command.sh)\n\(try! String(contentsOfFile: logfile))")
         }
 
         compileByClass[classNameOrFile] = (compileCommand, sourceFile)

@@ -34,7 +34,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Insert code here to initialize your application
         SwiftEval.instance.evalError = {
             let err = $0
-            if !err.hasPrefix("Compiling ") {
+            if !err.hasPrefix("💉 Compiling ") {
                 DispatchQueue.main.async {
                     self.textView.string = err
                 }
