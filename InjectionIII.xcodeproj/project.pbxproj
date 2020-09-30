@@ -80,6 +80,7 @@
 		BBE490D01FB2368A003D41BB /* FileWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE490CE1FB2368A003D41BB /* FileWatcher.swift */; };
 		BBE490DB1FB2C643003D41BB /* InjectionBusy.tif in Resources */ = {isa = PBXBuildFile; fileRef = BBE490D91FB2C643003D41BB /* InjectionBusy.tif */; };
 		BBE490DC1FB2C643003D41BB /* InjectionError.tif in Resources */ = {isa = PBXBuildFile; fileRef = BBE490DA1FB2C643003D41BB /* InjectionError.tif */; };
+		BBE64E5D2524D1B50049B6D4 /* SwiftEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */; };
 		BBEB704C1FD28C6F00127711 /* XcodeHash.m in Sources */ = {isa = PBXBuildFile; fileRef = BBEB704B1FD28C6F00127711 /* XcodeHash.m */; };
 		BD35949E21A6C5DE0020EB94 /* Vaccine.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD35949D21A6C5DE0020EB94 /* Vaccine.swift */; };
 /* End PBXBuildFile section */
@@ -713,8 +714,7 @@
 					};
 					BB439B7A1FABA64300B4F50B = {
 						CreatedOnToolsVersion = 9.1;
-						ProvisioningStyle = Automatic;
-						TestTargetID = BB439B641FABA64300B4F50B;
+						ProvisioningStyle = Manual;
 					};
 					BB6C87C32520D0D1005AFCFC = {
 						CreatedOnToolsVersion = 11.5;
@@ -899,6 +899,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBE64E5D2524D1B50049B6D4 /* SwiftEval.swift in Sources */,
 				BB439B801FABA64300B4F50B /* SwiftEvalTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1056,7 +1057,6 @@
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "SwiftUISupport/SwiftUISupport-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
 				TVOS_DEPLOYMENT_TARGET = 13.0;
 				WRAPPER_EXTENSION = bundle;
 			};
@@ -1092,7 +1092,6 @@
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "SwiftUISupport/SwiftUISupport-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
 				TVOS_DEPLOYMENT_TARGET = 13.0;
 				WRAPPER_EXTENSION = bundle;
 			};
@@ -1159,7 +1158,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -1220,7 +1219,7 @@
 				PRODUCT_NAME = macOSInjection;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -1229,16 +1228,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 9V5A8WE85E;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = SwiftEvalTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.SwiftEvalTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = macosx;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SwiftEval.app/SwiftEval";
 			};
 			name = Debug;
 		};
@@ -1246,22 +1246,24 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 9V5A8WE85E;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = SwiftEvalTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.SwiftEvalTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = macosx;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SwiftEval.app/SwiftEval";
 			};
 			name = Release;
 		};
 		BB6C87DC2520D0D3005AFCFC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
@@ -1298,6 +1300,7 @@
 		BB6C87DD2520D0D3005AFCFC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
@@ -1346,7 +1349,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = "InjectionIII/InjectionIII-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -1370,7 +1372,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = "InjectionIII/InjectionIII-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -1395,7 +1396,6 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "InjectionBundle/XprobeSwift-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Debug;
@@ -1421,7 +1421,6 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "InjectionBundle/XprobeSwift-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Release;
@@ -1452,7 +1451,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
-				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -1477,7 +1475,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
-				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

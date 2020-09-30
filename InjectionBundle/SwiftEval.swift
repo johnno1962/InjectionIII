@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#144 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#146 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -28,17 +28,23 @@ extension NSObject {
 
     private static var lastEvalByClass = [String: String]()
 
-    @objc public func evalSwift(_ expression: String) {
-        eval("{\n\(expression)\n}", (() -> ())?.self)?()
+    @objc public func swiftEval(code: String) -> Bool {
+        if let closure = swiftEval("{\n\(code)\n}", type: (() -> ())?.self) {
+            closure()
+            return true
+        }
+        return false
     }
 
     /// eval() for String value
-    public func eval(_ expression: String) -> String {
-        return eval("\"\(expression)\"", String.self)
+    @objc public func swiftEvalString(contents: String) -> String {
+        return swiftEval("""
+            "\(contents)"
+            """, type: String.self)
     }
 
     /// eval() for value of any type
-    public func eval<T>(_ expression: String, _ type: T.Type) -> T {
+    public func swiftEval<T>(_ expression: String, type: T.Type) -> T {
         let oldClass: AnyClass = object_getClass(self)!
         let className = "\(oldClass)"
         let extra = """

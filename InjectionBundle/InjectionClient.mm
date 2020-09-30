@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#106 $
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#108 $
 //
 
 #import "InjectionClient.h"
@@ -286,10 +286,10 @@ static struct {
                     NSArray<NSString *> *parts = [changed componentsSeparatedByString:@"^"];
                     int pathID = parts[0].intValue;
                     [self writeCommand:InjectionPause withString:@"5"];
-                    if ([xprobePaths[pathID].object respondsToSelector:@selector(evalSwift:)])
-                        [xprobePaths[pathID].object evalSwift:parts[3].stringByRemovingPercentEncoding];
+                    if ([xprobePaths[pathID].object respondsToSelector:@selector(swiftEvalWithCode:)])
+                        (void)[xprobePaths[pathID].object swiftEvalWithCode:parts[3].stringByRemovingPercentEncoding];
                     else
-                        printf("Eval only works on NSObject subclasses\n");
+                        printf("💉 Xprobe: Eval only works on NSObject subclasses\n");
                     [Xprobe writeString:[NSString stringWithFormat:@"$('BUSY%d').hidden = true; ", pathID]];
                     break;
                 }

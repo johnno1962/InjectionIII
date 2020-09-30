@@ -7,7 +7,6 @@
 //
 
 import XCTest
-@testable import SwiftEval
 
 class SwiftEvalTests: XCTestCase {
     
@@ -24,14 +23,15 @@ class SwiftEvalTests: XCTestCase {
     func testExample() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
-        XCTAssertEqual("123", eval("123"), "Basic eval test")
+        XCTAssertEqual("123", swiftEvalString(contents: "123"), "Basic eval test")
+        XCTAssertEqual(123, swiftEval("123", type: Int.self), "Basic eval test")
     }
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measure {
             // Put the code you want to measure the time of here.
-            XCTAssertEqual("1234", eval("1234"), "eval performance test")
+            XCTAssertEqual("1234", swiftEvalString(contents: "1234"), "eval performance test")
         }
     }
     

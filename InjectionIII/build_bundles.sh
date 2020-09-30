@@ -6,7 +6,7 @@
 #  Created by John Holdsworth on 04/10/2019.
 #  Copyright © 2019 John Holdsworth. All rights reserved.
 #
-#  $Id: //depot/ResidentEval/InjectionIII/build_bundles.sh#32 $
+#  $Id: //depot/ResidentEval/InjectionIII/build_bundles.sh#33 $
 #
 
 # Injection has to assume a fixed path for Xcode.app as it uses
@@ -37,4 +37,8 @@ build_bundle tvOS AppleTVSimulator appletvsimulator &&
 "$DEVELOPER_BIN_DIR"/xcodebuild SYMROOT=$SYMROOT ARCHS="$ARCHS" PRODUCT_NAME=macOSSwiftUISupport -sdk macosx -config $CONFIGURATION -target SwiftUISupport &&
 rsync -au $SYMROOT/$CONFIGURATION/macOSSwiftUISupport.bundle $SYMROOT/$CONFIGURATION-*/*.bundle "$CODESIGNING_FOLDER_PATH/Contents/Resources" &&
 rsync -au $SYMROOT/$CONFIGURATION-iphonesimulator/SwiftTrace.framework/{Headers,Modules} "$CODESIGNING_FOLDER_PATH/Contents/Resources/iOSInjection.bundle/Frameworks/SwiftTrace.framework" &&
-rsync -au $SYMROOT/$CONFIGURATION-appletvsimulator/SwiftTrace.framework/{Headers,Modules} "$CODESIGNING_FOLDER_PATH/Contents/Resources/tvOSInjection.bundle/Frameworks/SwiftTrace.framework"
+rsync -au $SYMROOT/$CONFIGURATION-appletvsimulator/SwiftTrace.framework/{Headers,Modules} "$CODESIGNING_FOLDER_PATH/Contents/Resources/tvOSInjection.bundle/Frameworks/SwiftTrace.framework" &&
+# This seems to be a bug producing .swiftinterface files.
+for interface in $CODESIGNING_FOLDER_PATH/Contents/Resources/*OSInjection.bundle/Frameworks/SwiftTrace.framework/{Headers,Modules}/*/*.swiftinterface; do
+sed -e s/SwiftTrace.SwiftTrace/SwiftTrace/g <$interface >/tmp/$$.swiftinterface
+mv /tmp/$$.swiftinterface $interface; done
