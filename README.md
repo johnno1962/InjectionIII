@@ -83,7 +83,7 @@ get an error starting as follows reporting an undefined symbol:
 in /var/folders/nh/gqmp6jxn4tn2tyhwqdcwcpkc0000gn/T/com.johnholdsworth.InjectionIII/eval101.dylib ***
 ```
 If you encounter this problem, download and build [the unhide project](https://github.com/johnno1962/unhide) then add the following
-as a "Run Script", "Build Phase" to your project:
+as a "Run Script", "Build Phase" to your project after the linking phase:
 
 ```
 UNHIDE=~/bin/unhide.sh
@@ -240,6 +240,12 @@ In this case however the `MovieSwift.MovieRow.Props` type from the excellent
 `MovieSwift` SwiftUI  [example project](https://github.com/Dimillian/MovieSwiftUI)
 is too large to format and needs to be changed to be a class.
 
+Finally, if you'd like to go directly to the file that defines a logged method, select the
+fully qualified method and use the service `Injection Goto` to open the file declaring
+that function. (To have the `Injection Goto` item appear on your services context menu
+you need to select it in System Preferences/Keyboard, tab Shortcuts/Services, under the
+"Text" section.)
+
 ### Remote Control
 
 Newer versions of InjectionIII contain a server that allows you to control your development device from your desktop once the service has been started. The UI allows you to record and replay macros of UI actions then verify the device screen against snapshots for end-to-end testing.
@@ -333,4 +339,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2020/09/29 $
+$Date: 2020/10/04 $

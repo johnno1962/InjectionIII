@@ -5,10 +5,9 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#48 $
+//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#51 $
 //
 
-let XcodeBundleID = "com.apple.dt.Xcode"
 let commandQueue = DispatchQueue(label: "InjectionCommand")
 
 var projectInjected = [String: [String: TimeInterval]]()
@@ -86,10 +85,8 @@ public class InjectionServer: SimpleSocket {
         }
 
         // Xcode specific config
-        if let xcodeURL = NSRunningApplication.runningApplications(
-            withBundleIdentifier: XcodeBundleID).first?.bundleURL {
-            builder.xcodeDev = xcodeURL
-                .appendingPathComponent("Contents/Developer").path
+        if let xcodeDevURL = appDelegate.runningXcodeDevURL {
+            builder.xcodeDev = xcodeDevURL.path
         }
 
         builder.projectFile = projectFile
@@ -171,8 +168,8 @@ public class InjectionServer: SimpleSocket {
         setProject(projectFile)
 
         DispatchQueue.main.sync {
-            appDelegate.traceInclude(nil)
-            appDelegate.traceExclude(nil)
+            appDelegate.updateTraceInclude(nil)
+            appDelegate.updateTraceExclude(nil)
         }
 
         // read status requests from client app

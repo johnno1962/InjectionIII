@@ -875,7 +875,7 @@
                                         <font key="font" metaFont="system"/>
                                     </buttonCell>
                                     <connections>
-                                        <action selector="traceInclude:" target="Voe-Tx-rLC" id="C1g-5X-hSG"/>
+                                        <action selector="updateTraceInclude:" target="Voe-Tx-rLC" id="CYM-8s-NyK"/>
                                     </connections>
                                 </button>
                             </subviews>
@@ -908,7 +908,7 @@
                                         <font key="font" metaFont="system"/>
                                     </buttonCell>
                                     <connections>
-                                        <action selector="traceExclude:" target="Voe-Tx-rLC" id="j5r-GJ-WCr"/>
+                                        <action selector="updateTraceExclude:" target="Voe-Tx-rLC" id="WkU-xw-8KY"/>
                                     </connections>
                                 </button>
                             </subviews>

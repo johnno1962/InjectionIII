@@ -5,10 +5,12 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#41 $
+//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#66 $
+//
 
 import Cocoa
 
+let XcodeBundleID = "com.apple.dt.Xcode"
 var appDelegate: AppDelegate!
 
 @NSApplicationMain
@@ -43,6 +45,10 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     var defaultsMap: [NSMenuItem: String]!
     lazy var isSandboxed =
         ProcessInfo.processInfo.environment["APP_SANDBOX_CONTAINER_ID"] != nil
+    var runningXcodeDevURL: URL? =
+        NSRunningApplication.runningApplications(
+            withBundleIdentifier: XcodeBundleID).first?
+            .bundleURL?.appendingPathComponent("Contents/Developer")
 
     @objc func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
@@ -99,6 +105,9 @@ class AppDelegate : NSObject, NSApplicationDelegate {
                 self.updateCheck(nil)
             }
         }
+
+        NSApp.servicesProvider = self
+        NSUpdateDynamicServices();
     }
 
     func application(_ theApplication: NSApplication, openFile filename: String) -> Bool {
@@ -133,6 +142,10 @@ class AppDelegate : NSObject, NSApplicationDelegate {
             watchedDirectories.insert(url.path)
             lastConnection?.setProject(self.selectedProject!)
             NSDocumentController.shared.noteNewRecentDocumentURL(url)
+//            let projectName = URL(fileURLWithPath: projectFile)
+//                .deletingPathExtension().lastPathComponent
+//            traceInclude.stringValue = projectName
+//            updateTraceInclude(nil)
             defaults.set(url.path, forKey: lastWatchedKey)
             return true
         }
@@ -255,11 +268,11 @@ class AppDelegate : NSObject, NSApplicationDelegate {
         traceFilters.makeKeyAndOrderFront(sender)
     }
 
-    @IBAction func traceInclude(_ sender: NSButton?) {
+    @IBAction func updateTraceInclude(_ sender: NSButton?) {
         update(filter: .include, textField: traceInclude)
     }
 
-    @IBAction func traceExclude(_ sender: NSButton?) {
+    @IBAction func updateTraceExclude(_ sender: NSButton?) {
         update(filter: .exclude, textField: traceExclude)
     }
 
@@ -337,6 +350,82 @@ class AppDelegate : NSObject, NSApplicationDelegate {
         }
         lastConnection?.sendCommand(.xprobe, with: "")
         windowItem.isHidden = false
+    }
+
+    @objc func injectionGoto(_ pboard: NSPasteboard, userData: NSString,
+                        error: UnsafeMutablePointer<NSString>) {
+        guard pboard.canReadObject(forClasses: [NSString.self], options:nil),
+            let target = pboard.string(forType: .string) else { return }
+
+        let parts = target.components(separatedBy: ".")
+                        .filter { !$0.hasSuffix("init") }
+        let builder = SwiftEval()
+        builder.projectFile = selectedProject
+
+        guard parts.count > 0, let (_, logsDir) =
+            try? builder.determineEnvironment(classNameOrFile: "") else { return }
+
+        var className: String!, sourceFile: String?
+
+        for part in parts {
+            className = part
+            if let (_, foundSourceFile) =
+                try? builder.findCompileCommand(logsDir: logsDir,
+                        classNameOrFile: className, tmpfile: "/tmp/eval101") {
+                sourceFile = foundSourceFile
+                className = parts.last
+                break
+            }
+        }
+
+        guard sourceFile != nil,
+            let sourceText = try? NSString(contentsOfFile: sourceFile!,
+                                           encoding: String.Encoding.utf8.rawValue),
+            let finder = try? NSRegularExpression(pattern:
+                #"\b(?:var|func|struct|class|enum)\s+(\#(className!))\b"#,
+                options: [.anchorsMatchLines]) else { return }
+
+        let match = finder.firstMatch(in: sourceText as String, options: [],
+                                      range: NSMakeRange(0, sourceText.length))
+
+        DispatchQueue.main.async {
+            if let xCode = SBApplication(bundleIdentifier: XcodeBundleID),
+//                xCode.activeWorkspaceDocument.path != nil,
+                let doc = xCode.open(sourceFile!) as? SBObject,
+                doc.selectedCharacterRange != nil,
+                let range = match?.range(at: 1) {
+                doc.selectedCharacterRange =
+                    [NSNumber(value: range.location+1),
+                     NSNumber(value: range.location+range.length)]
+            } else {
+                var numberOfLine = 0, index = 0
+
+                if let range = match?.range(at: 1) {
+                    while index < range.location {
+                        index = NSMaxRange(sourceText
+                                    .lineRange(for: NSMakeRange(index, 0)))
+                        numberOfLine += 1
+                    }
+                }
+
+                var xed = "/usr/bin/xed"
+                if let xcodeURL = self.runningXcodeDevURL {
+                    xed = xcodeURL
+                        .appendingPathComponent("usr/bin/xed").path
+                }
+
+                let script = "/tmp/injection_goto.sh"
+                try! "\"\(xed)\" --line \(numberOfLine) \"\(sourceFile!)\""
+                    .write(toFile: script, atomically: false, encoding: .utf8)
+                chmod(script, 0o700)
+
+                let task = Process()
+                task.launchPath = "/usr/bin/open"
+                task.arguments = ["-b", "com.apple.Terminal", script]
+                task.launch()
+                task.waitUntilExit()
+            }
+        }
     }
 
     @objc func evalCode(_ swift: String) {
