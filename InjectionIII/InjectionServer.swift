@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#47 $
+//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#48 $
 //
 
 let XcodeBundleID = "com.apple.dt.Xcode"
@@ -104,8 +104,8 @@ public class InjectionServer: SimpleSocket {
             projectInjected[projectFile] = lastInjected!
         }
 
-        if let executable = readString(),
-            appDelegate.enableWatcher.state == .on {
+        guard let executable = readString() else { return }
+        if appDelegate.enableWatcher.state == .on {
             let mtime = {
                 (path: String) -> time_t in
                 var info = stat()
@@ -187,9 +187,18 @@ public class InjectionServer: SimpleSocket {
             case .complete:
                 appDelegate.setMenuIcon("InjectionOK")
                 if appDelegate.frontItem.state == .on {
-                    NSWorkspace.shared
-                        .open(URL(fileURLWithPath: builder.xcodeDev)
-                        .appendingPathComponent("Applications/Simulator.app"))
+                    print(executable)
+                    let appToOrderFront: URL
+                    if executable.contains("/MacOS/") {
+                        appToOrderFront = URL(fileURLWithPath: executable)
+                            .deletingLastPathComponent()
+                            .deletingLastPathComponent()
+                            .deletingLastPathComponent()
+                    } else {
+                        appToOrderFront = URL(fileURLWithPath: builder.xcodeDev)
+                            .appendingPathComponent("Applications/Simulator.app")
+                    }
+                    NSWorkspace.shared.open(appToOrderFront)
                 }
                 break
             case .pause:
