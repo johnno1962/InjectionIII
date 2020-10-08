@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#66 $
+//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#67 $
 //
 
 import Cocoa
@@ -94,8 +94,11 @@ class AppDelegate : NSObject, NSApplicationDelegate {
                modifierFlags: NSEvent.ModifierFlags.control.rawValue,
                target:self, action:#selector(autoInject(_:)), object:nil)
 
+        NSApp.servicesProvider = self
         if let lastWatched = defaults.string(forKey: lastWatchedKey) {
             _ = self.application(NSApp, openFile: lastWatched)
+        } else {
+            NSUpdateDynamicServices()
         }
 
         let nextUpdateCheck = defaults.double(forKey: updateCheckKey)
@@ -105,9 +108,6 @@ class AppDelegate : NSObject, NSApplicationDelegate {
                 self.updateCheck(nil)
             }
         }
-
-        NSApp.servicesProvider = self
-        NSUpdateDynamicServices();
     }
 
     func application(_ theApplication: NSApplication, openFile filename: String) -> Bool {
@@ -415,15 +415,19 @@ class AppDelegate : NSObject, NSApplicationDelegate {
                 }
 
                 let script = "/tmp/injection_goto.sh"
-                try! "\"\(xed)\" --line \(numberOfLine) \"\(sourceFile!)\""
-                    .write(toFile: script, atomically: false, encoding: .utf8)
-                chmod(script, 0o700)
+                do {
+                    try "\"\(xed)\" --line \(numberOfLine) \"\(sourceFile!)\""
+                        .write(toFile: script, atomically: false, encoding: .utf8)
+                    chmod(script, 0o700)
 
-                let task = Process()
-                task.launchPath = "/usr/bin/open"
-                task.arguments = ["-b", "com.apple.Terminal", script]
-                task.launch()
-                task.waitUntilExit()
+                    let task = Process()
+                    task.launchPath = "/usr/bin/open"
+                    task.arguments = ["-b", "com.apple.Terminal", script]
+                    task.launch()
+                    task.waitUntilExit()
+                } catch {
+                    NSLog("Failed to write \(script)")
+                }
             }
         }
     }

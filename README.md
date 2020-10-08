@@ -229,12 +229,14 @@ possible to use the Swift API of SwiftTrace directly in your app, for example, t
 a new handler to format a particular type by importing SwiftTrace and adding the
 following to your app's `"Framework Search Paths"` and `"Runpath Search Paths"`
 (for the Debug configuration):
+
 ```
 /Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle/Frameworks
 ```
 Then, use something like the following to register the type:
+
 ```
-SwiftTrace.addFormattedType(MovieSwift.MovieRow.Props.self, prefix: "MovieSwift.MovieRow")
+SwiftTrace.addFormattedType(MovieSwift.MovieRow.Props.self)
 ```
 In this case however the `MovieSwift.MovieRow.Props` type from the excellent 
 `MovieSwift` SwiftUI  [example project](https://github.com/Dimillian/MovieSwiftUI)
@@ -339,4 +341,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2020/10/04 $
+$Date: 2020/10/08 $
