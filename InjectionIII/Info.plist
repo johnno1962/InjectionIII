@@ -27,7 +27,7 @@
 	<key>LSUIElement</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2017-8 John Holdsworth. All rights reserved.</string>
+	<string>Copyright © 2017-20 John Holdsworth. All rights reserved.</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
@@ -44,10 +44,6 @@
 			<string>injectionGoto</string>
 			<key>NSPortName</key>
 			<string>InjectionIII</string>
-			<key>NSReturnTypes</key>
-			<array>
-				<string>NSStringPboardType</string>
-			</array>
 			<key>NSSendTypes</key>
 			<array>
 				<string>NSStringPboardType</string>
