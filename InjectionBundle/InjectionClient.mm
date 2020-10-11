@@ -120,6 +120,20 @@ static struct {
 @end
 #endif
 
+#import <XCTest/XCTest.h>
+
+@implementation NSObject(RunXCTestCase)
++ (void)runXCTestCase:(Class)aTestCase {
+    Class _XCTestSuite = objc_getClass("XCTestSuite");
+    XCTestSuite *suite0 = [_XCTestSuite testSuiteWithName: @"InjectedTest"];
+    XCTestSuite *suite = [_XCTestSuite testSuiteForTestCaseClass: aTestCase];
+    Class _XCTestSuiteRun = objc_getClass("XCTestSuiteRun");
+    XCTestSuiteRun *tr = [_XCTestSuiteRun testRunWithTest: suite];
+    [suite0 addTest:suite];
+    [suite0 performTest:tr];
+}
+@end
+
 @interface SwiftUISupport
 + (void)setupWithPointer:(void *)ptr;
 @end

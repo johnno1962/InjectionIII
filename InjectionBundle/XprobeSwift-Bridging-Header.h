@@ -8,3 +8,7 @@
 @interface NSObject(InjectionSweep)
 - (void)bsweep;
 @end
+
+@interface NSObject(RunXCTestCase)
++ (void)runXCTestCase:(Class)aTestCase;
+@end

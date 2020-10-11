@@ -14,7 +14,6 @@
 #if arch(x86_64) || arch(i386) || arch(arm64) // simulator/macOS only
 import Foundation
 import SwiftTrace
-import XCTest
 
 private let debugSweep = getenv("DEBUG_SWEEP") != nil
 
@@ -155,7 +154,8 @@ public class SwiftInjection: NSObject {
 
             print("💉 Injected '\(oldClass)'")
 
-            if newClass.isSubclass(of: XCTestCase.self) {
+            if let XCTestCase = objc_getClass("XCTestCase") as? AnyClass,
+                newClass.isSubclass(of: XCTestCase) {
                 testClasses.append(newClass)
 //                if ( [newClass isSubclassOfClass:objc_getClass("QuickSpec")] )
 //                [[objc_getClass("_TtC5Quick5World") sharedWorld]
@@ -226,11 +226,7 @@ public class SwiftInjection: NSObject {
                 testQueue.suspend()
                 let timer = Timer(timeInterval: 0, repeats:false, block: { _ in
                     for newClass in testClasses {
-                        let suite0 = XCTestSuite(name: "Injected")
-                        let suite = XCTestSuite(forTestCaseClass: newClass)
-                        let tr = XCTestSuiteRun(test: suite)
-                        suite0.addTest(suite)
-                        suite0.perform(tr)
+                        NSObject.runXCTestCase(newClass)
                     }
                     testQueue.resume()
                 })
