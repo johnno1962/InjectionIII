@@ -435,19 +435,19 @@
 		BB6C87C52520D0D2005AFCFC /* SwiftTrace */ = {
 			isa = PBXGroup;
 			children = (
-				BB6C87F62520D2C3005AFCFC /* SwiftTrace.mm */,
 				BB6C87F72520D2C3005AFCFC /* xt_forwarding_trampoline_arm64.s */,
 				BB6C87F82520D2C3005AFCFC /* xt_forwarding_trampoline_x64.s */,
 				BB6C87C62520D0D2005AFCFC /* SwiftTrace.h */,
-				BB6C87E52520D151005AFCFC /* SwiftArgs.swift */,
+				BB6C87F62520D2C3005AFCFC /* SwiftTrace.mm */,
+				BB6C87EA2520D152005AFCFC /* SwiftTrace.swift */,
+				BB6C87E42520D151005AFCFC /* SwiftSwizzle.swift */,
 				BB6C87E72520D151005AFCFC /* SwiftAspects.swift */,
 				BB6C87E82520D151005AFCFC /* SwiftInterpose.swift */,
 				BB6C87E32520D151005AFCFC /* SwiftInvoke.swift */,
-				BB6C87E22520D150005AFCFC /* SwiftMeta.swift */,
 				BB6C87E92520D151005AFCFC /* SwiftStack.swift */,
 				BB6C87E62520D151005AFCFC /* SwiftStats.swift */,
-				BB6C87E42520D151005AFCFC /* SwiftSwizzle.swift */,
-				BB6C87EA2520D152005AFCFC /* SwiftTrace.swift */,
+				BB6C87E22520D150005AFCFC /* SwiftMeta.swift */,
+				BB6C87E52520D151005AFCFC /* SwiftArgs.swift */,
 				BB6C87C72520D0D2005AFCFC /* Info.plist */,
 			);
 			path = SwiftTrace;

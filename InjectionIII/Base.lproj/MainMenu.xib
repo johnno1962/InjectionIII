@@ -24,9 +24,12 @@
                 <outlet property="statusMenu" destination="V8Q-mq-A2f" id="Epo-HD-J21"/>
                 <outlet property="traceExclude" destination="K7d-6S-sPe" id="Nde-Aw-W6F"/>
                 <outlet property="traceFilters" destination="p7X-fx-AEQ" id="GzX-pA-y1C"/>
+                <outlet property="traceFrameworkItem" destination="eos-mc-vLO" id="vHl-gB-YSG"/>
                 <outlet property="traceInclude" destination="Yzf-xB-GlM" id="7CV-7J-MQY"/>
-                <outlet property="traceItem" destination="Kkx-ex-NCv" id="EXz-O7-K34"/>
-                <outlet property="traceUIItem" destination="IOb-d2-Vef" id="b1A-SK-h6T"/>
+                <outlet property="traceItem" destination="GZB-KU-eto" id="sKh-RZ-dd0"/>
+                <outlet property="traceSwiftUIItem" destination="kbO-dx-98y" id="xhh-8e-9fF"/>
+                <outlet property="traceUIItem" destination="3ZO-RG-jcD" id="d1w-IY-Pms"/>
+                <outlet property="traceUIKitItem" destination="uSA-e7-Idr" id="LSw-am-ehg"/>
                 <outlet property="updateItem" destination="kFj-jW-1uq" id="zyq-6a-Hes"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
                 <outlet property="windowItem" destination="aUF-d1-5bR" id="MxW-hd-aZ7"/>
@@ -737,26 +740,55 @@
                         <action selector="runXprobe:" target="Voe-Tx-rLC" id="OLt-ZD-lyd"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Trace App" toolTip="Log app class messaging. Includes calls via Objective-C" id="Kkx-ex-NCv">
+                <menuItem title="Method Tracing" id="GZB-KU-eto">
                     <modifierMask key="keyEquivalentModifierMask"/>
-                    <accessibility description="Trace App"/>
-                    <connections>
-                        <action selector="traceApp:" target="Voe-Tx-rLC" id="5zd-Ho-CaT"/>
-                    </connections>
-                </menuItem>
-                <menuItem title="Trace UI" toolTip="Log app methods. More suited for tracing SwiftUI." id="IOb-d2-Vef">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <accessibility description="Trace App"/>
-                    <connections>
-                        <action selector="traceUIApp:" target="Voe-Tx-rLC" id="GrF-Nr-PB0"/>
-                    </connections>
-                </menuItem>
-                <menuItem title="Set Trace Filter" toolTip="Set filters to control trace output." id="ZKb-S6-Zej">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <accessibility description="Trace App"/>
-                    <connections>
-                        <action selector="showTraceFilters:" target="Voe-Tx-rLC" id="V8j-am-khn"/>
-                    </connections>
+                    <menu key="submenu" title="Method Tracing" autoenablesItems="NO" id="LL4-BA-XJf">
+                        <items>
+                            <menuItem title="Trace Main Bundle" allowsKeyEquivalentWhenHidden="YES" toolTip="Log methods defined in main bundle." id="3ZO-RG-jcD">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <accessibility description="Trace App"/>
+                                <connections>
+                                    <action selector="traceUIApp:" target="Voe-Tx-rLC" id="oc5-Cw-bGO"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Trace Frameworks" allowsKeyEquivalentWhenHidden="YES" toolTip="Log methods defined in frameworks in app bundle." id="eos-mc-vLO">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <accessibility description="Trace App"/>
+                                <connections>
+                                    <action selector="traceFrameworks:" target="Voe-Tx-rLC" id="HkN-HA-P9L"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Trace App/UIKit" allowsKeyEquivalentWhenHidden="YES" toolTip="Trace the entirety of UIKit or AppKit." id="uSA-e7-Idr">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <accessibility description="Trace App"/>
+                                <connections>
+                                    <action selector="traceUIKit:" target="Voe-Tx-rLC" id="P5g-dI-Yai"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Trace SwiftUI" allowsKeyEquivalentWhenHidden="YES" toolTip="Log calls made to SwiftUI." id="kbO-dx-98y">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <accessibility description="Trace App"/>
+                                <connections>
+                                    <action selector="traceSwiftUI:" target="Voe-Tx-rLC" id="0xk-LY-4Pv"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Set Filters" toolTip="Set filters to manage trace output." id="Y20-on-vxe">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <accessibility description="Trace App"/>
+                                <connections>
+                                    <action selector="showTraceFilters:" target="Voe-Tx-rLC" id="kaX-pV-f0v"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Legacy Trace" hidden="YES" toolTip="Log app class messaging. Includes calls via Objective-C" id="u9J-81-lZJ">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <accessibility description="Trace App"/>
+                                <connections>
+                                    <action selector="traceApp:" target="Voe-Tx-rLC" id="Zxl-pa-7Xl"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                        <accessibility description="Add method traces to App"/>
+                    </menu>
                 </menuItem>
                 <menuItem title="Remote Control" id="of9-Ja-9Yf">
                     <modifierMask key="keyEquivalentModifierMask"/>
@@ -836,7 +868,7 @@
                     </connections>
                 </menuItem>
             </items>
-            <point key="canvasLocation" x="112" y="602.5"/>
+            <point key="canvasLocation" x="3" y="613"/>
         </menu>
         <userDefaultsController representsSharedInstance="YES" id="mc2-qN-cFK"/>
         <window title="Method Trace Filters" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="p7X-fx-AEQ" customClass="NSPanel">

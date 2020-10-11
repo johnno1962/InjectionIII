@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#77 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#78 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -14,6 +14,17 @@
 #if arch(x86_64) || arch(i386) || arch(arm64) // simulator/macOS only
 import Foundation
 import SwiftTrace
+
+/** pointer to a function implementing a Swift method */
+public typealias SIMP = SwiftTrace.SIMP
+public typealias ClassMetadataSwift = SwiftTrace.TargetClassMetadata
+
+#if swift(>=3.0)
+public func _stdlib_demangleName(_ mangledName: String) -> String {
+    return mangledName.withCString {
+        SwiftTrace.demangle(symbol: $0) ?? mangledName }
+}
+#endif
 
 private let debugSweep = getenv("DEBUG_SWEEP") != nil
 
@@ -111,8 +122,10 @@ public class SwiftInjection: NSObject {
             injection(swizzle: newClass, onto: oldClass)
 
             // overwrite Swift vtable of existing class with implementations from new class
-            let existingClass = unsafeBitCast(oldClass, to: UnsafeMutablePointer<ClassMetadataSwift>.self)
-            let classMetadata = unsafeBitCast(newClass, to: UnsafeMutablePointer<ClassMetadataSwift>.self)
+            let existingClass = unsafeBitCast(oldClass, to:
+                UnsafeMutablePointer<SwiftTrace.TargetClassMetadata>.self)
+            let classMetadata = unsafeBitCast(newClass, to:
+                UnsafeMutablePointer<SwiftTrace.TargetClassMetadata>.self)
 
             // Is this a Swift class?
             // Reference: https://github.com/apple/swift/blob/master/include/swift/ABI/Metadata.h#L1195
@@ -291,22 +304,6 @@ public class SwiftInjection: NSObject {
         }
     }
 
-    public class func demangle(_ mangledNameUTF8: UnsafePointer<Int8>) -> String {
-        let demangledNamePtr = _stdlib_demangleImpl(
-            mangledName: mangledNameUTF8,
-            mangledNameLength: UInt(strlen(mangledNameUTF8)),
-            outputBuffer: nil,
-            outputBufferSize: nil,
-            flags: 0)
-
-        if let demangledNamePtr = demangledNamePtr {
-            let demangledName = String(cString: demangledNamePtr)
-            free(demangledNamePtr)
-            return demangledName
-        }
-        return String(cString: mangledNameUTF8)
-    }
-
     @objc(vaccine:)
     public class func performVaccineInjection(_ object: AnyObject) {
         let vaccine = Vaccine()
@@ -470,77 +467,4 @@ extension NSDictionary {
         self.allValues.forEach { SwiftSweeper.current?.sweepInstance($0 as AnyObject) }
     }
 }
-
-/**
- Layout of a class instance. Needs to be kept in sync with ~swift/include/swift/Runtime/Metadata.h
- */
-public struct ClassMetadataSwift {
-
-    public let MetaClass: uintptr_t = 0, SuperClass: uintptr_t = 0
-    public let CacheData1: uintptr_t = 0, CacheData2: uintptr_t = 0
-
-    public let Data: uintptr_t = 0
-
-    /// Swift-specific class flags.
-    public let Flags: UInt32 = 0
-
-    /// The address point of instances of this type.
-    public let InstanceAddressPoint: UInt32 = 0
-
-    /// The required size of instances of this type.
-    /// 'InstanceAddressPoint' bytes go before the address point;
-    /// 'InstanceSize - InstanceAddressPoint' bytes go after it.
-    public let InstanceSize: UInt32 = 0
-
-    /// The alignment mask of the address point of instances of this type.
-    public let InstanceAlignMask: UInt16 = 0
-
-    /// Reserved for runtime use.
-    public let Reserved: UInt16 = 0
-
-    /// The total size of the class object, including prefix and suffix
-    /// extents.
-    public let ClassSize: UInt32 = 0
-
-    /// The offset of the address point within the class object.
-    public let ClassAddressPoint: UInt32 = 0
-
-    /// An out-of-line Swift-specific description of the type, or null
-    /// if this is an artificial subclass.  We currently provide no
-    /// supported mechanism for making a non-artificial subclass
-    /// dynamically.
-    public let Description: uintptr_t = 0
-
-    /// A function for destroying instance variables, used to clean up
-    /// after an early return from a constructor.
-    public var IVarDestroyer: SIMP? = nil
-
-    // After this come the class members, laid out as follows:
-    //   - class members for the superclass (recursively)
-    //   - metadata reference for the parent, if applicable
-    //   - generic parameters for this class
-    //   - class variables (if we choose to support these)
-    //   - "tabulated" virtual methods
-
-}
-
-/** pointer to a function implementing a Swift method */
-public typealias SIMP = @convention(c) (_: AnyObject) -> Void
-
-#if swift(>=3.0)
-// not public in Swift3
-@_silgen_name("swift_demangle")
-private
-func _stdlib_demangleImpl(
-    mangledName: UnsafePointer<CChar>?,
-    mangledNameLength: UInt,
-    outputBuffer: UnsafeMutablePointer<UInt8>?,
-    outputBufferSize: UnsafeMutablePointer<UInt>?,
-    flags: UInt32
-    ) -> UnsafeMutablePointer<CChar>?
-
-public func _stdlib_demangleName(_ mangledName: String) -> String {
-    return mangledName.withCString { SwiftInjection.demangle($0) }
-}
-#endif
 #endif

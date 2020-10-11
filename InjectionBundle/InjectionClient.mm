@@ -5,13 +5,14 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#108 $
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#112 $
 //
 
 #import "InjectionClient.h"
 #import "SwiftTrace.h"
 
 #ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
+#import <UIKit/UIKit.h>
 #if __has_include("tvOSInjection10-Swift.h")
 #import "tvOSInjection10-Swift.h"
 #elif __has_include("tvOSInjection-Swift.h")
@@ -21,7 +22,6 @@
 #else
 #import "iOSInjection-Swift.h"
 #endif
-#import <UIKit/UIKit.h>
 #import <objc/runtime.h>
 
 @interface NSObject (Remapped)
@@ -226,36 +226,43 @@ static struct {
             [writer writeString:[self readString]];
             break;
         case InjectionTrace:
-            tracing = TRUE;
             [SwiftTrace swiftTraceMainBundle];
             printf("💉 Added trace to non-final methods of classes in app bundle\n");
-            [self filteringChanged];
+            [self startedTracing];
             break;
         case InjectionUntrace:
             tracing = FALSE;
             [SwiftTrace swiftTraceRemoveAllTraces];
             break;
         case InjectionTraceUI:
-            tracing = TRUE;
-            static char classInSwiftUIMangled[] = "$s7SwiftUI14AnyTextStorageCN";
-            if (Class AnyText = (__bridge Class)
-                dlsym(RTLD_DEFAULT, classInSwiftUIMangled)) {
-                NSString *swiftUIBundlePath = [[[NSBundle
-                    bundleForClass:[self class]] bundlePath]
-                    stringByReplacingOccurrencesOfString:@"Injection.bundle"
-                                         withString:@"SwiftUISupport.bundle"];
-                if (Class swiftUISupport = [[NSBundle
-                                             bundleWithPath:swiftUIBundlePath]
-                                            classNamed:@"SwiftUISupport"])
-                    [swiftUISupport setupWithPointer:NULL];
-                else
-                    printf("💉 Could not find SwiftUISupport at path: %s\n",
-                           swiftUIBundlePath.UTF8String);
-                [SwiftTrace swiftTraceMethodsInFrameworkContaining:AnyText];
-            }
+            [self loadSwuftUISupprt];
             [SwiftTrace swiftTraceMainBundleMethods];
+            [SwiftTrace swiftTraceMainBundle];
             printf("💉 Added trace to methods in main bundle\n");
-            [self filteringChanged];
+            [self startedTracing];
+            break;
+        case InjectionTraceUIKit:
+            if (Class OSView = objc_getClass("UIView") ?:
+                               objc_getClass("NSView")) {
+                tracing = TRUE;
+                printf("💉 Adding trace to the framework containg %s, this will take a while...\n", class_getName(OSView));
+                [OSView swiftTraceBundle];
+                printf("💉 Completed adding trace.\n");
+                [self startedTracing];
+            }
+            break;
+        case InjectionTraceSwiftUI:
+            if (Class AnyText = [self loadSwuftUISupprt]) {
+                tracing = TRUE;
+                printf("💉 Adding trace to SwiftUI calls.\n");
+                [SwiftTrace swiftTraceMethodsInFrameworkContaining:AnyText];
+                [self startedTracing];
+            }
+            break;
+        case InjectionTraceFrameworks:
+            printf("💉 Tracing frameworks in app bundle.\n");
+            [SwiftTrace swiftTraceFrameworkMethods];
+            [self startedTracing];
             break;
         case InjectionInclude:
             [SwiftTrace setSwiftTraceFilterInclude:[self readString]];
@@ -322,19 +329,45 @@ static struct {
     }
 }
 
--(void)filteringChanged {
-    if (!tracing) return;
-    NSString *exclude = SwiftTrace.swiftTraceFilterExclude;
-    if (NSString *include = SwiftTrace.swiftTraceFilterInclude)
-        printf(exclude ?
-           "💉 Filtering trace to include methods matching '%s' but not '%s'.\n" :
-           "💉 Filtering trace to include methods matching '%s'.\n",
-           include.UTF8String, exclude.UTF8String);
-    else
-        printf(exclude ?
-           "💉 Filtering trace to exclude methods matching '%s'.\n" :
-           "💉 Not filtering trace (Menu Item: 'Set Trace Filter')\n",
-           exclude.UTF8String);
+- (Class)loadSwuftUISupprt {
+    static char classInSwiftUIMangled[] = "$s7SwiftUI14AnyTextStorageCN";
+    if (Class AnyText = (__bridge Class)
+        dlsym(RTLD_DEFAULT, classInSwiftUIMangled)) {
+        NSString *swiftUIBundlePath = [[[NSBundle
+            bundleForClass:[self class]] bundlePath]
+            stringByReplacingOccurrencesOfString:@"Injection.bundle"
+                                 withString:@"SwiftUISupport.bundle"];
+        if (Class swiftUISupport = [[NSBundle
+                                     bundleWithPath:swiftUIBundlePath]
+                                    classNamed:@"SwiftUISupport"])
+            [swiftUISupport setupWithPointer:NULL];
+        else
+            printf("💉 Could not find SwiftUISupport at path: %s\n",
+                   swiftUIBundlePath.UTF8String);
+        return AnyText;
+    }
+    return nil;
+}
+
+- (void)startedTracing {
+    tracing = TRUE;
+    [self filteringChanged];
+}
+
+- (void)filteringChanged {
+    if (tracing) {
+        NSString *exclude = SwiftTrace.swiftTraceFilterExclude;
+        if (NSString *include = SwiftTrace.swiftTraceFilterInclude)
+            printf(exclude ?
+               "💉 Filtering trace to include methods matching '%s' but not '%s'.\n" :
+               "💉 Filtering trace to include methods matching '%s'.\n",
+               include.UTF8String, exclude.UTF8String);
+        else
+            printf(exclude ?
+               "💉 Filtering trace to exclude methods matching '%s'.\n" :
+               "💉 Not filtering trace (Menu Item: 'Set Filters')\n",
+               exclude.UTF8String);
+    }
 }
 
 #ifdef __IPHONE_OS_VERSION_MIN_REQUIRED

@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#67 $
+//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#68 $
 //
 
 import Cocoa
@@ -19,7 +19,6 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     @IBOutlet var window: NSWindow!
     @IBOutlet weak var enableWatcher: NSMenuItem!
     @IBOutlet weak var traceItem: NSMenuItem!
-    @IBOutlet weak var traceUIItem: NSMenuItem!
     @IBOutlet weak var traceInclude: NSTextField!
     @IBOutlet weak var traceExclude: NSTextField!
     @IBOutlet weak var traceFilters: NSWindow!
@@ -206,9 +205,10 @@ class AppDelegate : NSObject, NSApplicationDelegate {
                 self.startItem.isEnabled = appRunning
                 self.xprobeItem.isEnabled = appRunning
                 self.traceItem.isEnabled = appRunning
-                self.traceUIItem.isEnabled = appRunning
                 if !appRunning {
-                    self.traceUIItem.state = .off
+                    for item in self.traceItem.submenu?.items ?? [] {
+                        item.state = .off
+                    }
                 }
             }
         }
@@ -261,6 +261,21 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     @IBAction func traceUIApp(_ sender: NSMenuItem) {
         toggleState(sender)
         lastConnection?.sendCommand(.traceUI, with: nil)
+    }
+
+    @IBAction func traceUIKit(_ sender: NSMenuItem) {
+        toggleState(sender)
+        lastConnection?.sendCommand(.traceUIKit, with: nil)
+    }
+
+    @IBAction func traceSwiftUI(_ sender: NSMenuItem) {
+        toggleState(sender)
+        lastConnection?.sendCommand(.traceSwiftUI, with: nil)
+    }
+
+    @IBAction func traceFrameworks(_ sender: NSMenuItem) {
+        toggleState(sender)
+        lastConnection?.sendCommand(.traceFrameworks, with: nil)
     }
 
     @IBAction func showTraceFilters(_ sender: NSMenuItem?) {
