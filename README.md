@@ -194,18 +194,15 @@ Injection now includes the higher level `Vaccine` functionality, for more inform
 
 ### App Tracing (SwiftTrace)
 
-The InjectionIII menu contains two experimentalitems for tracing a program. "Trace App"
-which can be used to enable logging of all Objective-C and non-final Swift class method
-calls and Objective-C messaging. Selecting the menu item again will turn the  "Trace App" feature off. "Trace UI" can log all calls to all Swift methods in the application's main
-bundle and is more useful for optimmising SwiftUI apps.
+It's possible to inject tracing aspects into your program that don't
+affect it's operation but log every method call and where possible
+their arguments. You can add logging to all methods in your app's
+main bundle or the frameworks it uses or trace calls to system
+frameworks such as UIKit or SwiftUI.
 
-If "Trace UI" is logging too much information, you can set filters to
-include or exclude method names using regular expressions using
-the "Edit Filters" menu option.
-
-These features are implemented by a package [SwiftTrace](https://github.com/johnno1962/SwiftTrace) which is built into the InjectionBundle.
+These features are implemented by the package [SwiftTrace](https://github.com/johnno1962/SwiftTrace) which is built into the InjectionBundle.
 If you want finer grain control of what is being traced, include the following header file in
-your project's bridging header and the internal api will be available to Swift (after an
+your project's bridging header and a subset of the internal api will be available to Swift (after an
 injection bundle has been loaded):
 
 ```C++
@@ -233,7 +230,7 @@ following to your app's `"Framework Search Paths"` and `"Runpath Search Paths"`
 ```
 /Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle/Frameworks
 ```
-Then, use something like the following to register the type:
+Then, you can use something like the following to register the type:
 
 ```
 SwiftTrace.addFormattedType(MovieSwift.MovieRow.Props.self)
@@ -341,4 +338,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2020/10/08 $
+$Date: 2020/10/11 $

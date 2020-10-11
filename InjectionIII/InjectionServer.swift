@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#51 $
+//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#52 $
 //
 
 let commandQueue = DispatchQueue(label: "InjectionCommand")
@@ -70,6 +70,7 @@ public class InjectionServer: SimpleSocket {
         // client spcific data for building
         if let frameworks = readString() {
             builder.frameworks = frameworks
+            appDelegate.setFrameworks(frameworks)
         } else { return }
 
         if let arch = readString() {

@@ -34,7 +34,7 @@ typedef NS_ENUM(int, InjectionCommand) {
     InjectionTraceUI,
     InjectionTraceUIKit,
     InjectionTraceSwiftUI,
-    InjectionTraceFrameworks,
+    InjectionTraceFramework,
     InjectionInclude,
     InjectionExclude,
 

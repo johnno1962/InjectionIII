@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#112 $
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#113 $
 //
 
 #import "InjectionClient.h"
@@ -161,8 +161,9 @@ static struct {
 }
 
 - (void)runInBackground {
+    SwiftEval *builder = [SwiftEval sharedInstance];
     NSString *tmpDir = [self readString];
-    [SwiftEval sharedInstance].tmpDir = tmpDir;
+    builder.tmpDir = tmpDir;
 
     if (![@"/tmp" isEqualToString:tmpDir])
         [self writeInt:INJECTION_SALT];
@@ -170,7 +171,7 @@ static struct {
     [self writeString:[NSBundle
                        mainBundle].privateFrameworksPath];
 
-    [self writeString:[SwiftEval sharedInstance].arch];
+    [self writeString:builder.arch];
     [self writeString:[NSBundle mainBundle].executablePath];
 
     int codesignStatusPipe[2];
@@ -179,7 +180,7 @@ static struct {
     SimpleSocket *writer = [[SimpleSocket alloc] initSocket:codesignStatusPipe[1]];
 
     // make available implementation of signing delegated to macOS app
-    [SwiftEval sharedInstance].signer = ^BOOL(NSString *_Nonnull dylib) {
+    builder.signer = ^BOOL(NSString *_Nonnull dylib) {
         [self writeCommand:InjectionSign withString:dylib];
         return [reader readString].boolValue;
     };
@@ -196,14 +197,14 @@ static struct {
             NSDictionary *dictionary = (NSDictionary *)json;
             if (dictionary != nil) {
                 NSNumber *vaccineEnabled = [dictionary valueForKey:@"Enabled Vaccine"];
-                [SwiftEval sharedInstance].vaccineEnabled = [vaccineEnabled boolValue];
+                builder.vaccineEnabled = [vaccineEnabled boolValue];
             }
             break;
         }
         case InjectionConnected: {
             NSString *projectFile = [self readString];
-            [SwiftEval sharedInstance].projectFile = projectFile;
-            [SwiftEval sharedInstance].derivedLogs = nil;
+            builder.projectFile = projectFile;
+            builder.derivedLogs = nil;
             printf("💉 Injection connected 👍\n");
             NSString *pbxFile = [projectFile
                  stringByAppendingPathComponent:@"project.pbxproj"];
@@ -242,27 +243,37 @@ static struct {
             [self startedTracing];
             break;
         case InjectionTraceUIKit:
-            if (Class OSView = objc_getClass("UIView") ?:
-                               objc_getClass("NSView")) {
-                tracing = TRUE;
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                Class OSView = objc_getClass("UIView") ?: objc_getClass("NSView");
                 printf("💉 Adding trace to the framework containg %s, this will take a while...\n", class_getName(OSView));
                 [OSView swiftTraceBundle];
                 printf("💉 Completed adding trace.\n");
-                [self startedTracing];
-            }
+            });
+            [self startedTracing];
             break;
         case InjectionTraceSwiftUI:
             if (Class AnyText = [self loadSwuftUISupprt]) {
-                tracing = TRUE;
                 printf("💉 Adding trace to SwiftUI calls.\n");
                 [SwiftTrace swiftTraceMethodsInFrameworkContaining:AnyText];
                 [self startedTracing];
             }
             break;
-        case InjectionTraceFrameworks:
-            printf("💉 Tracing frameworks in app bundle.\n");
-            [SwiftTrace swiftTraceFrameworkMethods];
-            [self startedTracing];
+        case InjectionTraceFramework:
+            if (NSString *frameworkName = [self readString]) {
+                printf("💉 Tracing framework %s in app bundle.\n",
+                       frameworkName.UTF8String);
+                const int8_t *frameworkPath = (const int8_t *)[NSString stringWithFormat:
+#ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
+                    @"%@/%@.framework/%@",
+#else
+                    @"%@/%@.framework/Versions/A/%@",
+#endif
+                    builder.frameworks,
+                    frameworkName, frameworkName].UTF8String;
+                [SwiftTrace swiftTraceMethodsInBundle:frameworkPath];
+                [SwiftTrace swiftTraceBundlePath:frameworkPath];
+                [self startedTracing];
+            }
             break;
         case InjectionInclude:
             [SwiftTrace setSwiftTraceFilterInclude:[self readString]];
@@ -276,7 +287,7 @@ static struct {
             printf("💉 ⚠️ Connection rejected. Are you running the correct version of InjectionIII.app from /Applications? ⚠️\n");
             break;
         case InjectionIdeProcPath: {
-            [SwiftEval sharedInstance].lastIdeProcPath = [self readString];
+            builder.lastIdeProcPath = [self readString];
             break;
         }
         default: {

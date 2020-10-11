@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#68 $
+//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#70 $
 //
 
 import Cocoa
@@ -204,10 +204,12 @@ class AppDelegate : NSObject, NSApplicationDelegate {
                 let appRunning = tiffName != "InjectionIdle"
                 self.startItem.isEnabled = appRunning
                 self.xprobeItem.isEnabled = appRunning
-                self.traceItem.isEnabled = appRunning
-                if !appRunning {
-                    for item in self.traceItem.submenu?.items ?? [] {
-                        item.state = .off
+                for item in self.traceItem.submenu!.items {
+                    if item.title != "Set Filters" {
+                        item.isEnabled = appRunning
+                        if !appRunning {
+                            item.state = .off
+                        }
                     }
                 }
             }
@@ -233,13 +235,38 @@ class AppDelegate : NSObject, NSApplicationDelegate {
         }
     }
 
+    func setFrameworks(_ frameworkPath: String) {
+        DispatchQueue.main.async {
+            guard let frameworksMenu = self.traceItem.submenu?
+                    .item(withTitle: "Trace Framework")?.submenu else { return }
+            frameworksMenu.removeAllItems()
+            do {
+                for framework in try FileManager.default
+                    .contentsOfDirectory(atPath: frameworkPath).sorted()
+                        where framework.hasSuffix(".framework") {
+                    let parts = framework.components(separatedBy: ".")
+                    frameworksMenu.addItem(withTitle: parts[0], action:
+                        #selector(self.traceFramework(_:)), keyEquivalent: "")
+                        .target = self
+                }
+            } catch {
+                NSLog("Could not list framework driectory \(frameworkPath): \(error)")
+            }
+        }
+    }
+
+    @objc func traceFramework(_ sender: NSMenuItem) {
+        toggleState(sender)
+        lastConnection?.sendCommand(.traceFramework, with: sender.title)
+    }
+
     @IBAction func toggleTDD(_ sender: NSMenuItem) {
         toggleState(sender)
     }
 
     @IBAction func toggleVaccine(_ sender: NSMenuItem) {
         toggleState(sender)
-        self.lastConnection?.sendCommand(.vaccineSettingChanged, with:vaccineConfiguration())
+        lastConnection?.sendCommand(.vaccineSettingChanged, with:vaccineConfiguration())
     }
 
     @IBAction func startRemote(_ sender: NSMenuItem) {
@@ -271,11 +298,6 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     @IBAction func traceSwiftUI(_ sender: NSMenuItem) {
         toggleState(sender)
         lastConnection?.sendCommand(.traceSwiftUI, with: nil)
-    }
-
-    @IBAction func traceFrameworks(_ sender: NSMenuItem) {
-        toggleState(sender)
-        lastConnection?.sendCommand(.traceFrameworks, with: nil)
     }
 
     @IBAction func showTraceFilters(_ sender: NSMenuItem?) {
