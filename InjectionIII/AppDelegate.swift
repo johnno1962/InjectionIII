@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#71 $
+//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#80 $
 //
 
 import Cocoa
@@ -235,22 +235,17 @@ class AppDelegate : NSObject, NSApplicationDelegate {
         }
     }
 
-    func setFrameworks(_ frameworkPath: String) {
+    func setFrameworks(_ frameworks: String) {
         DispatchQueue.main.async {
             guard let frameworksMenu = self.traceItem.submenu?
                     .item(withTitle: "Trace Framework")?.submenu else { return }
             frameworksMenu.removeAllItems()
-            do {
-                for framework in try FileManager.default
-                    .contentsOfDirectory(atPath: frameworkPath).sorted()
-                        where framework.hasSuffix(".framework") {
-                    let parts = framework.components(separatedBy: ".")
-                    frameworksMenu.addItem(withTitle: parts[0], action:
-                        #selector(self.traceFramework(_:)), keyEquivalent: "")
-                        .target = self
-                }
-            } catch {
-                NSLog("Could not list framework driectory \(frameworkPath): \(error)")
+            for framework in frameworks
+                .components(separatedBy: FRAMEWORK_DELIMITER).sorted() {
+                let parts = framework.components(separatedBy: ".")
+                frameworksMenu.addItem(withTitle: parts[0], action:
+                    #selector(self.traceFramework(_:)), keyEquivalent: "")
+                    .target = self
             }
         }
     }
@@ -405,27 +400,41 @@ class AppDelegate : NSObject, NSApplicationDelegate {
         builder.projectFile = selectedProject
 
         guard parts.count > 0, let (_, logsDir) =
-            try? builder.determineEnvironment(classNameOrFile: "") else { return }
+            try? builder.determineEnvironment(classNameOrFile: "") else {
+            lastConnection?.sendCommand(.log, with:
+                "💉 Injection Goto service not availble.\n")
+            return
+        }
 
         var className: String!, sourceFile: String?
+        let tmpDir = NSTemporaryDirectory()
 
         for part in parts {
-            className = part
+            let subParts = part.components(separatedBy: " ")
+            className = subParts[0]
             if let (_, foundSourceFile) =
                 try? builder.findCompileCommand(logsDir: logsDir,
-                        classNameOrFile: className, tmpfile: "/tmp/eval101") {
+                        classNameOrFile: className, tmpfile: tmpDir+"/eval101") {
                 sourceFile = foundSourceFile
-                className = parts.last
+                className = subParts.count > 1 ? subParts.last : parts.last
                 break
             }
         }
+
+        className = className.replacingOccurrences(of: #"\((\S+).*"#,
+                                                   with: "$1",
+                                                   options: .regularExpression)
 
         guard sourceFile != nil,
             let sourceText = try? NSString(contentsOfFile: sourceFile!,
                                            encoding: String.Encoding.utf8.rawValue),
             let finder = try? NSRegularExpression(pattern:
-                #"\b(?:var|func|struct|class|enum)\s+(\#(className!))\b"#,
-                options: [.anchorsMatchLines]) else { return }
+                #"(?:\b(?:var|func|struct|class|enum)\s+|^[+-]\s*(?:\([^)]*\)\s*)?)(\#(className!))\b"#,
+                options: [.anchorsMatchLines]) else {
+            lastConnection?.sendCommand(.log, with:
+                "💉 Unable to find source file for type '\(className!)'.\n")
+            return
+        }
 
         let match = finder.firstMatch(in: sourceText as String, options: [],
                                       range: NSMakeRange(0, sourceText.length))
@@ -450,13 +459,15 @@ class AppDelegate : NSObject, NSApplicationDelegate {
                     }
                 }
 
+                guard numberOfLine != 0 else { return }
+
                 var xed = "/usr/bin/xed"
                 if let xcodeURL = self.runningXcodeDevURL {
                     xed = xcodeURL
                         .appendingPathComponent("usr/bin/xed").path
                 }
 
-                let script = "/tmp/injection_goto.sh"
+                let script = tmpDir+"/injection_goto.sh"
                 do {
                     try "\"\(xed)\" --line \(numberOfLine) \"\(sourceFile!)\""
                         .write(toFile: script, atomically: false, encoding: .utf8)

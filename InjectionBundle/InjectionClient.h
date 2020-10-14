@@ -11,6 +11,7 @@
 
 #define INJECTION_ADDRESS @":8898"
 #define INJECTION_KEY @"bvijkijyhbtrbrebzjbbzcfbbvvq"
+#define FRAMEWORK_DELIMITER @","
 
 @interface InjectionClient : SimpleSocket
 
@@ -50,6 +51,7 @@ typedef NS_ENUM(int, InjectionResponse) {
     InjectionPause,
     InjectionSign,
     InjectionError,
+    InjectionFrameworks,
 
     InjectionExit = ~0
 };

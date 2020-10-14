@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#115 $
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#118 $
 //
 
 #import "InjectionClient.h"
@@ -163,13 +163,15 @@ static struct {
 - (void)runInBackground {
     SwiftEval *builder = [SwiftEval sharedInstance];
     NSString *tmpDir = [self readString];
+    BOOL notPlugin = ![@"/tmp" isEqualToString:tmpDir];
     builder.tmpDir = tmpDir;
 
-    if (![@"/tmp" isEqualToString:tmpDir])
+    if (notPlugin)
         [self writeInt:INJECTION_SALT];
     [self writeString:INJECTION_KEY];
-    [self writeString:[NSBundle
-                       mainBundle].privateFrameworksPath];
+
+    NSString *frameworksPath = [NSBundle mainBundle].privateFrameworksPath;
+    [self writeString:frameworksPath];
 
     [self writeString:builder.arch];
     [self writeString:[NSBundle mainBundle].executablePath];
@@ -184,6 +186,20 @@ static struct {
         [self writeCommand:InjectionSign withString:dylib];
         return [reader readString].boolValue;
     };
+
+    if (notPlugin) {
+        NSMutableArray *frameworks = [NSMutableArray new];
+        for (NSString *file in [[NSFileManager defaultManager]
+            contentsOfDirectoryAtPath:frameworksPath error:NULL]) {
+            NSString *frameworkName = [file
+               stringByReplacingOccurrencesOfString:@".framework" withString:@""];
+            if (![frameworkName isEqualToString:file])
+                [frameworks addObject:frameworkName];
+        }
+
+        [self writeCommand:InjectionFrameworks withString:
+            [frameworks componentsJoinedByString:FRAMEWORK_DELIMITER]];
+    }
 
     // As tmp file names come in, inject them
     InjectionCommand command;
