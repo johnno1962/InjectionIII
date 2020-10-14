@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#113 $
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#115 $
 //
 
 #import "InjectionClient.h"
@@ -282,6 +282,12 @@ static struct {
         case InjectionExclude:
             [SwiftTrace setSwiftTraceFilterExclude:[self readString]];
             [self filteringChanged];
+            break;
+        case InjectionStats:
+            if (!tracing)
+                printf("💉 ⚠️ You need to have traced something to gather stats.\n");
+            else
+                [SwiftInjection dumpStats];
             break;
         case InjectionInvalid:
             printf("💉 ⚠️ Connection rejected. Are you running the correct version of InjectionIII.app from /Applications? ⚠️\n");

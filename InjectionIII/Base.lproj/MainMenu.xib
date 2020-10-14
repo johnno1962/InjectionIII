@@ -771,6 +771,14 @@
                                     <action selector="traceSwiftUI:" target="Voe-Tx-rLC" id="0xk-LY-4Pv"/>
                                 </connections>
                             </menuItem>
+                            <menuItem isSeparatorItem="YES" id="1Zk-TV-Nfy"/>
+                            <menuItem title="Dump Stats" toolTip="Dump elpased time stats per method." id="wMb-mC-poo">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <accessibility description="Trace App"/>
+                                <connections>
+                                    <action selector="traceStats:" target="Voe-Tx-rLC" id="2DR-dQ-dhn"/>
+                                </connections>
+                            </menuItem>
                             <menuItem title="Set Filters" toolTip="Set filters to manage trace output." id="Y20-on-vxe">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <accessibility description="Trace App"/>

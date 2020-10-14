@@ -37,6 +37,7 @@ typedef NS_ENUM(int, InjectionCommand) {
     InjectionTraceFramework,
     InjectionInclude,
     InjectionExclude,
+    InjectionStats,
 
     InjectionInvalid = 1000,
 
