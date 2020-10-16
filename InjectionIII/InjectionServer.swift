@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#53 $
+//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#55 $
 //
 
 let commandQueue = DispatchQueue(label: "InjectionCommand")
@@ -181,8 +181,11 @@ public class InjectionServer: SimpleSocket {
                 break
             }
             switch command {
-            case .frameworks:
-                appDelegate.setFrameworks(readString() ?? "")
+            case .frameworkList:
+                appDelegate.setFrameworks(readString() ?? "",
+                                          menuTitle: "Trace Framework")
+                appDelegate.setFrameworks(readString() ?? "",
+                                          menuTitle: "Trace SysInternal")
             case .complete:
                 appDelegate.setMenuIcon("InjectionOK")
                 if appDelegate.frontItem.state == .on {

@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#80 $
+//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#81 $
 //
 
 import Cocoa
@@ -235,15 +235,15 @@ class AppDelegate : NSObject, NSApplicationDelegate {
         }
     }
 
-    func setFrameworks(_ frameworks: String) {
+    func setFrameworks(_ frameworks: String, menuTitle: String) {
         DispatchQueue.main.async {
             guard let frameworksMenu = self.traceItem.submenu?
-                    .item(withTitle: "Trace Framework")?.submenu else { return }
+                    .item(withTitle: menuTitle)?.submenu else { return }
             frameworksMenu.removeAllItems()
             for framework in frameworks
-                .components(separatedBy: FRAMEWORK_DELIMITER).sorted() {
-                let parts = framework.components(separatedBy: ".")
-                frameworksMenu.addItem(withTitle: parts[0], action:
+                .components(separatedBy: FRAMEWORK_DELIMITER).sorted()
+                where framework != "" {
+                frameworksMenu.addItem(withTitle: framework, action:
                     #selector(self.traceFramework(_:)), keyEquivalent: "")
                     .target = self
             }

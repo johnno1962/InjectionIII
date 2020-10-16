@@ -5,11 +5,12 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#118 $
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#120 $
 //
 
 #import "InjectionClient.h"
 #import "SwiftTrace.h"
+#import <mach-o/dyld.h>
 
 #ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
 #import <UIKit/UIKit.h>
@@ -187,18 +188,27 @@ static struct {
         return [reader readString].boolValue;
     };
 
+    NSDictionary<NSString *,NSString *> *frameworkPaths;
     if (notPlugin) {
         NSMutableArray *frameworks = [NSMutableArray new];
-        for (NSString *file in [[NSFileManager defaultManager]
-            contentsOfDirectoryAtPath:frameworksPath error:NULL]) {
-            NSString *frameworkName = [file
-               stringByReplacingOccurrencesOfString:@".framework" withString:@""];
-            if (![frameworkName isEqualToString:file])
-                [frameworks addObject:frameworkName];
+        NSMutableArray *sysFrameworks = [NSMutableArray new];
+        NSMutableDictionary *imageMap = [NSMutableDictionary new];
+
+        for (int32_t i = _dyld_image_count()-1; i >= 0 ; i--) {
+            const char *imageName = _dyld_get_image_name(i);
+            if (!strstr(imageName, ".framework/")) continue;
+            NSString *imagePath = [NSString stringWithUTF8String:imageName];
+            NSString *frameworkName = imagePath.lastPathComponent;
+            [imageMap setValue:imagePath forKey:frameworkName];
+            [strstr(imageName, "ontainers/") ? frameworks : sysFrameworks
+                                                 addObject:frameworkName];
         }
 
-        [self writeCommand:InjectionFrameworks withString:
-            [frameworks componentsJoinedByString:FRAMEWORK_DELIMITER]];
+        [self writeCommand:InjectionFrameworkList withString:
+         [frameworks componentsJoinedByString:FRAMEWORK_DELIMITER]];
+        [self writeString:
+         [sysFrameworks componentsJoinedByString:FRAMEWORK_DELIMITER]];
+        frameworkPaths = imageMap;
     }
 
     // As tmp file names come in, inject them
@@ -276,16 +286,9 @@ static struct {
             break;
         case InjectionTraceFramework:
             if (NSString *frameworkName = [self readString]) {
-                printf("💉 Tracing framework %s in app bundle.\n",
-                       frameworkName.UTF8String);
-                const int8_t *frameworkPath = (const int8_t *)[NSString stringWithFormat:
-#ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
-                    @"%@/%@.framework/%@",
-#else
-                    @"%@/%@.framework/Versions/A/%@",
-#endif
-                    builder.frameworks,
-                    frameworkName, frameworkName].UTF8String;
+                const int8_t *frameworkPath =
+                    (const int8_t *)frameworkPaths[frameworkName].UTF8String;
+                printf("💉 Tracing %s\n", frameworkPath);
                 [SwiftTrace swiftTraceMethodsInBundle:frameworkPath];
                 [SwiftTrace swiftTraceBundlePath:frameworkPath];
                 [self startedTracing];

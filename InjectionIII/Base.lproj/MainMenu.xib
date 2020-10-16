@@ -757,6 +757,16 @@
                                     </items>
                                 </menu>
                             </menuItem>
+                            <menuItem title="Trace SysInternal" id="zzn-qk-eXx">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Trace SysInternal" autoenablesItems="NO" id="CGp-LR-3N2">
+                                    <items>
+                                        <menuItem title="Item" id="YDY-jD-b7s">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
                             <menuItem title="Trace App/UIKit" allowsKeyEquivalentWhenHidden="YES" toolTip="Trace the entirety of UIKit or AppKit." id="uSA-e7-Idr">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <accessibility description="Trace App"/>
