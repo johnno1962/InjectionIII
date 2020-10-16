@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#86 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#87 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -176,18 +176,41 @@ public class SwiftInjection: NSObject {
             }
         }
 
-        #if true
         // new mechanism for injection of Swift functions,
         // using "interpose" API from dynamic loader along
         // with -Xlinker -interposable other linker flags.
+        #if true
+        interpose(functionsIn: "\(tmpfile).dylib")
+        #endif
 
+        // Thanks https://github.com/johnno1962/injectionforxcode/pull/234
+        if !testClasses.isEmpty {
+            testQueue.async {
+                testQueue.suspend()
+                let timer = Timer(timeInterval: 0, repeats:false, block: { _ in
+                    for newClass in testClasses {
+                        NSObject.runXCTestCase(newClass)
+                    }
+                    testQueue.resume()
+                })
+                RunLoop.main.add(timer, forMode: RunLoop.Mode.common)
+            }
+        } else {
+            performSweep(oldClasses: oldClasses)
+
+            let notification = Notification.Name("INJECTION_BUNDLE_NOTIFICATION")
+            NotificationCenter.default.post(name: notification, object: oldClasses)
+        }
+    }
+
+    public class func interpose(functionsIn dylib: String) {
         let main = dlopen(nil, RTLD_NOW)
         var interposes = Array<dyld_interpose_tuple>()
 
         // Find all definitions of Swift functions and ...
         // SwiftUI body properties defined in the new dylib.
         for suffix in SwiftTrace.swiftFunctionSuffixes {
-            findSwiftSymbols("\(tmpfile).dylib", suffix) {
+            findSwiftSymbols(dylib, suffix) {
                 (loadedFunc, symbol, _, _) in
                 guard let existing = dlsym(main, symbol) else { return }
                 // has this symbol already been interposed?
@@ -231,76 +254,60 @@ public class SwiftInjection: NSObject {
 //                print("Patched \(String(cString: image))")
             }
         }
-        #endif
+    }
 
-        // Thanks https://github.com/johnno1962/injectionforxcode/pull/234
-        if !testClasses.isEmpty {
-            testQueue.async {
-                testQueue.suspend()
-                let timer = Timer(timeInterval: 0, repeats:false, block: { _ in
-                    for newClass in testClasses {
-                        NSObject.runXCTestCase(newClass)
-                    }
-                    testQueue.resume()
-                })
-                RunLoop.main.add(timer, forMode: RunLoop.Mode.common)
+    public class func performSweep(oldClasses: [AnyClass]) {
+        var injectedClasses = [AnyClass]()
+        let injectedSEL = #selector(SwiftInjected.injected)
+        typealias ClassIMP = @convention(c) (AnyClass, Selector) -> ()
+        for cls in oldClasses {
+            if let classMethod = class_getClassMethod(cls, injectedSEL) {
+                let classIMP = method_getImplementation(classMethod)
+                unsafeBitCast(classIMP, to: ClassIMP.self)(cls, injectedSEL)
             }
-        } else {
-            var injectedClasses = [AnyClass]()
-            let injectedSEL = #selector(SwiftInjected.injected)
-            typealias ClassIMP = @convention(c) (AnyClass, Selector) -> ()
-            for cls in oldClasses {
-                if let classMethod = class_getClassMethod(cls, injectedSEL) {
-                    let classIMP = method_getImplementation(classMethod)
-                    unsafeBitCast(classIMP, to: ClassIMP.self)(cls, injectedSEL)
-                }
-                if class_getInstanceMethod(cls, injectedSEL) != nil {
-                    injectedClasses.append(cls)
-                    print("""
-                        💉 As class \(cls) has an @objc injected() method, \
-                        InjectionIII will perform a "sweep" of all live \
-                        instances to determine which objects to message. \
-                        If this fails, subscribe to the notification \
-                        "INJECTION_BUNDLE_NOTIFICATION" instead.
-                        """)
-                    let kvoName = "NSKVONotifying_" + NSStringFromClass(cls)
-                    if let kvoCls = NSClassFromString(kvoName) {
-                        injectedClasses.append(kvoCls)
-                    }
+            if class_getInstanceMethod(cls, injectedSEL) != nil {
+                injectedClasses.append(cls)
+                print("""
+                    💉 As class \(cls) has an @objc injected() method, \
+                    InjectionIII will perform a "sweep" of all live \
+                    instances to determine which objects to message. \
+                    If this fails, subscribe to the notification \
+                    "INJECTION_BUNDLE_NOTIFICATION" instead.
+                    """)
+                let kvoName = "NSKVONotifying_" + NSStringFromClass(cls)
+                if let kvoCls = NSClassFromString(kvoName) {
+                    injectedClasses.append(kvoCls)
                 }
             }
+        }
 
-            // implement -injected() method using sweep of objects in application
-            if !injectedClasses.isEmpty {
-                #if os(iOS) || os(tvOS)
-                let app = UIApplication.shared
-                #else
-                let app = NSApplication.shared
-                #endif
-                let seeds: [Any] =  [app.delegate as Any] + app.windows
-                SwiftSweeper(instanceTask: {
-                    (instance: AnyObject) in
-                    if injectedClasses.contains(where: { $0 == object_getClass(instance) }) {
-                        let proto = unsafeBitCast(instance, to: SwiftInjected.self)
-                        if SwiftEval.sharedInstance().vaccineEnabled {
-                            performVaccineInjection(instance)
-                            proto.injected?()
-                            return
-                        }
-
+        // implement -injected() method using sweep of objects in application
+        if !injectedClasses.isEmpty {
+            #if os(iOS) || os(tvOS)
+            let app = UIApplication.shared
+            #else
+            let app = NSApplication.shared
+            #endif
+            let seeds: [Any] =  [app.delegate as Any] + app.windows
+            SwiftSweeper(instanceTask: {
+                (instance: AnyObject) in
+                if injectedClasses.contains(where: { $0 == object_getClass(instance) }) {
+                    let proto = unsafeBitCast(instance, to: SwiftInjected.self)
+                    if SwiftEval.sharedInstance().vaccineEnabled {
+                        performVaccineInjection(instance)
                         proto.injected?()
-
-                        #if os(iOS) || os(tvOS)
-                        if let vc = instance as? UIViewController {
-                            flash(vc: vc)
-                        }
-                        #endif
+                        return
                     }
-                }).sweepValue(seeds)
-            }
 
-            let notification = Notification.Name("INJECTION_BUNDLE_NOTIFICATION")
-            NotificationCenter.default.post(name: notification, object: oldClasses)
+                    proto.injected?()
+
+                    #if os(iOS) || os(tvOS)
+                    if let vc = instance as? UIViewController {
+                        flash(vc: vc)
+                    }
+                    #endif
+                }
+            }).sweepValue(seeds)
         }
     }
 

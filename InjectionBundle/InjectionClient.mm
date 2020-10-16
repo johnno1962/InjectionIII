@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#120 $
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#121 $
 //
 
 #import "InjectionClient.h"
@@ -193,6 +193,7 @@ static struct {
         NSMutableArray *frameworks = [NSMutableArray new];
         NSMutableArray *sysFrameworks = [NSMutableArray new];
         NSMutableDictionary *imageMap = [NSMutableDictionary new];
+        const char *bundleFrameworks = frameworksPath.UTF8String;
 
         for (int32_t i = _dyld_image_count()-1; i >= 0 ; i--) {
             const char *imageName = _dyld_get_image_name(i);
@@ -200,8 +201,8 @@ static struct {
             NSString *imagePath = [NSString stringWithUTF8String:imageName];
             NSString *frameworkName = imagePath.lastPathComponent;
             [imageMap setValue:imagePath forKey:frameworkName];
-            [strstr(imageName, "ontainers/") ? frameworks : sysFrameworks
-                                                 addObject:frameworkName];
+            [strstr(imageName, bundleFrameworks) ?
+             frameworks : sysFrameworks addObject:frameworkName];
         }
 
         [self writeCommand:InjectionFrameworkList withString:
