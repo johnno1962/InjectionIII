@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#121 $
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#131 $
 //
 
 #import "InjectionClient.h"
@@ -142,11 +142,6 @@ static struct {
 @interface SwiftTrace : NSObject
 @end
 
-@interface InjectionClient () {
-    BOOL tracing;
-}
-@end
-
 @implementation InjectionClient
 
 + (void)load {
@@ -256,10 +251,9 @@ static struct {
         case InjectionTrace:
             [SwiftTrace swiftTraceMainBundle];
             printf("💉 Added trace to non-final methods of classes in app bundle\n");
-            [self startedTracing];
+            [self filteringChanged];
             break;
         case InjectionUntrace:
-            tracing = FALSE;
             [SwiftTrace swiftTraceRemoveAllTraces];
             break;
         case InjectionTraceUI:
@@ -267,7 +261,7 @@ static struct {
             [SwiftTrace swiftTraceMainBundleMethods];
             [SwiftTrace swiftTraceMainBundle];
             printf("💉 Added trace to methods in main bundle\n");
-            [self startedTracing];
+            [self filteringChanged];
             break;
         case InjectionTraceUIKit:
             dispatch_sync(dispatch_get_main_queue(), ^{
@@ -276,13 +270,13 @@ static struct {
                 [OSView swiftTraceBundle];
                 printf("💉 Completed adding trace.\n");
             });
-            [self startedTracing];
+            [self filteringChanged];
             break;
         case InjectionTraceSwiftUI:
             if (Class AnyText = [self loadSwuftUISupprt]) {
                 printf("💉 Adding trace to SwiftUI calls.\n");
                 [SwiftTrace swiftTraceMethodsInFrameworkContaining:AnyText];
-                [self startedTracing];
+                [self filteringChanged];
             }
             break;
         case InjectionTraceFramework:
@@ -292,8 +286,11 @@ static struct {
                 printf("💉 Tracing %s\n", frameworkPath);
                 [SwiftTrace swiftTraceMethodsInBundle:frameworkPath];
                 [SwiftTrace swiftTraceBundlePath:frameworkPath];
-                [self startedTracing];
+                [self filteringChanged];
             }
+            break;
+        case InjectionQuietInclude:
+            [SwiftTrace setSwiftTraceFilterInclude:[self readString]];
             break;
         case InjectionInclude:
             [SwiftTrace setSwiftTraceFilterInclude:[self readString]];
@@ -304,10 +301,24 @@ static struct {
             [self filteringChanged];
             break;
         case InjectionStats:
-            if (!tracing)
-                printf("💉 ⚠️ You need to have traced something to gather stats.\n");
-            else
-                [SwiftInjection dumpStats];
+            [SwiftInjection dumpStats];
+            [self needsTracing];
+            break;
+        case InjectionCallOrder:
+            printf("\n💉 Function names in the order they were first called:\n"
+                   "💉 ===================================================\n");
+            for (NSString *signature : [SwiftInjection callOrder])
+                printf("%s\n", signature.UTF8String);
+            [self needsTracing];
+            break;
+        case InjectionFileOrder:
+            printf("\n💉 Source files in the order they were first referenced:\n"
+                   "💉 =====================================================\n"
+                   "💉 (Order the source files should be compiled in target)\n");
+            [self writeCommand:InjectionCallOrderList
+                    withString:[[SwiftInjection callOrder]
+                                componentsJoinedByString:CALLORDER_DELIMITER]];
+            [self needsTracing];
             break;
         case InjectionInvalid:
             printf("💉 ⚠️ Connection rejected. Are you running the correct version of InjectionIII.app from /Applications? ⚠️\n");
@@ -386,13 +397,13 @@ static struct {
     return nil;
 }
 
-- (void)startedTracing {
-    tracing = TRUE;
-    [self filteringChanged];
+- (void)needsTracing {
+    if (![SwiftTrace swiftTracing])
+        printf("💉 ⚠️ You need to have traced something to gather stats.\n");
 }
 
 - (void)filteringChanged {
-    if (tracing) {
+    if ([SwiftTrace swiftTracing]) {
         NSString *exclude = SwiftTrace.swiftTraceFilterExclude;
         if (NSString *include = SwiftTrace.swiftTraceFilterInclude)
             printf(exclude ?

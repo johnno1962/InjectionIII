@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#87 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#89 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -351,13 +351,17 @@ public class SwiftInjection: NSObject {
         let top = 200
         print("""
 
-            Sorted top \(top) elapsed time/invocations by method
-            =================================================
+            💉 Sorted top \(top) elapsed time/invocations by method
+            💉 =================================================
             """)
         let invocationCounts =  SwiftTrace.invocationCounts()
         for (method, elapsed) in SwiftTrace.sortedElapsedTimes(onlyFirst: top) {
             print("\(String(format: "%.1f", elapsed*1000.0))ms/\(invocationCounts[method] ?? 0)\t\(method)")
         }
+    }
+
+    @objc class func callOrder() -> [String] {
+        return SwiftTrace.callOrder().map { $0.signature }
     }
 }
 

@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#81 $
+//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#89 $
 //
 
 import Cocoa
@@ -296,7 +296,6 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     }
 
     @IBAction func traceStats(_ sender: NSMenuItem) {
-        toggleState(sender)
         lastConnection?.sendCommand(.stats, with: nil)
     }
 
@@ -306,7 +305,8 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     }
 
     @IBAction func updateTraceInclude(_ sender: NSButton?) {
-        update(filter: .include, textField: traceInclude)
+        update(filter: sender == nil ? .quietInclude : .include,
+               textField: traceInclude)
     }
 
     @IBAction func updateTraceExclude(_ sender: NSButton?) {
@@ -322,7 +322,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
             lastConnection?.sendCommand(filter, with: regex)
         } catch {
             let alert = NSAlert(error: error)
-            alert.informativeText = "Invalid regular expression syntax for filter. Characters [](){}|?*+\\ and . have special meanings. Type: man re_syntax, in the terminal."
+            alert.informativeText = "Invalid regular expression syntax '\(regex)' for filter. Characters [](){}|?*+\\ and . have special meanings. Type: man re_syntax, in the terminal."
             alert.runModal()
             textField.becomeFirstResponder()
             showTraceFilters(nil)
@@ -389,6 +389,48 @@ class AppDelegate : NSObject, NSApplicationDelegate {
         windowItem.isHidden = false
     }
 
+    @IBAction func callOrder(_ sender: NSMenuItem) {
+        lastConnection?.sendCommand(.callOrder, with: nil)
+    }
+
+    @IBAction func fileOrder(_ sender: NSMenuItem) {
+        lastConnection?.sendCommand(.fileOrder, with: nil)
+    }
+
+    func fileOrder(signatures: [String]) {
+        let builder = SwiftEval()
+        builder.projectFile = selectedProject
+
+        guard let projectRoot = selectedProject.flatMap({
+            URL(fileURLWithPath: $0).deletingLastPathComponent().path+"/"
+        }),
+            let (_, logsDir) =
+                try? builder.determineEnvironment(classNameOrFile: "") else {
+            lastConnection?.sendCommand(.log, with:
+                "💉 File ordering not available.")
+            return
+        }
+
+        let tmpfile = NSTemporaryDirectory()+"/eval101"
+        var typesSearched = Set<String>()
+        
+        for signature in signatures {
+            let parts = signature.components(separatedBy: ".")
+            if parts.count < 3 {
+                continue
+            }
+            let typeName = parts[1]
+            if  typesSearched.insert(typeName).inserted,
+                let (_, foundSourceFile) =
+                    try? builder.findCompileCommand(logsDir: logsDir,
+                        classNameOrFile: typeName, tmpfile: tmpfile) {
+                let relativePath = foundSourceFile
+                    .replacingOccurrences(of: projectRoot, with: "")
+                lastConnection?.sendCommand(.log, with: relativePath)
+            }
+        }
+    }
+
     @objc func injectionGoto(_ pboard: NSPasteboard, userData: NSString,
                         error: UnsafeMutablePointer<NSString>) {
         guard pboard.canReadObject(forClasses: [NSString.self], options:nil),
@@ -402,7 +444,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
         guard parts.count > 0, let (_, logsDir) =
             try? builder.determineEnvironment(classNameOrFile: "") else {
             lastConnection?.sendCommand(.log, with:
-                "💉 Injection Goto service not availble.\n")
+                "💉 Injection Goto service not availble.")
             return
         }
 

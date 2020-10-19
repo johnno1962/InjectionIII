@@ -12,6 +12,7 @@
 #define INJECTION_ADDRESS @":8898"
 #define INJECTION_KEY @"bvijkijyhbtrbrebzjbbzcfbbvvq"
 #define FRAMEWORK_DELIMITER @","
+#define CALLORDER_DELIMITER @"---"
 
 @interface InjectionClient : SimpleSocket
 
@@ -36,9 +37,12 @@ typedef NS_ENUM(int, InjectionCommand) {
     InjectionTraceUIKit,
     InjectionTraceSwiftUI,
     InjectionTraceFramework,
+    InjectionQuietInclude,
     InjectionInclude,
     InjectionExclude,
     InjectionStats,
+    InjectionCallOrder,
+    InjectionFileOrder,
 
     InjectionInvalid = 1000,
 
@@ -52,6 +56,7 @@ typedef NS_ENUM(int, InjectionResponse) {
     InjectionSign,
     InjectionError,
     InjectionFrameworkList,
+    InjectionCallOrderList,
 
     InjectionExit = ~0
 };

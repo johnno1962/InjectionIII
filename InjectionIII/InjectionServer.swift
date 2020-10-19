@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#55 $
+//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#56 $
 //
 
 let commandQueue = DispatchQueue(label: "InjectionCommand")
@@ -218,6 +218,12 @@ public class InjectionServer: SimpleSocket {
                 let signedOK = SignerService
                     .codesignDylib(tmpDir+"/eval"+readString()!, identity: nil)
                 sendCommand(.signed, with: signedOK ? "1": "0")
+                break
+            case .callOrderList:
+                if let calls = readString()?
+                    .components(separatedBy: CALLORDER_DELIMITER) {
+                    appDelegate.fileOrder(signatures: calls)
+                }
                 break
             case .error:
                 appDelegate.setMenuIcon("InjectionError")

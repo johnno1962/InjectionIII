@@ -740,7 +740,7 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Method Tracing" autoenablesItems="NO" id="LL4-BA-XJf">
                         <items>
-                            <menuItem title="Trace Main Bundle" allowsKeyEquivalentWhenHidden="YES" toolTip="Log methods defined in main bundle." id="3ZO-RG-jcD">
+                            <menuItem title="Trace Main Bundle" allowsKeyEquivalentWhenHidden="YES" toolTip="Log methods defined in app's main bundle." id="3ZO-RG-jcD">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <accessibility description="Trace App"/>
                                 <connections>
@@ -781,14 +781,14 @@
                                     <action selector="traceSwiftUI:" target="Voe-Tx-rLC" id="0xk-LY-4Pv"/>
                                 </connections>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="1Zk-TV-Nfy"/>
-                            <menuItem title="Dump Stats" toolTip="Dump elpased time stats per method." id="wMb-mC-poo">
+                            <menuItem title="Legacy Trace" hidden="YES" toolTip="Log app class messaging. Includes calls via Objective-C" id="u9J-81-lZJ">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <accessibility description="Trace App"/>
                                 <connections>
-                                    <action selector="traceStats:" target="Voe-Tx-rLC" id="2DR-dQ-dhn"/>
+                                    <action selector="traceApp:" target="Voe-Tx-rLC" id="Zxl-pa-7Xl"/>
                                 </connections>
                             </menuItem>
+                            <menuItem isSeparatorItem="YES" id="1Zk-TV-Nfy"/>
                             <menuItem title="Set Filters" toolTip="Set filters to manage trace output." id="Y20-on-vxe">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <accessibility description="Trace App"/>
@@ -796,11 +796,26 @@
                                     <action selector="showTraceFilters:" target="Voe-Tx-rLC" id="kaX-pV-f0v"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Legacy Trace" hidden="YES" toolTip="Log app class messaging. Includes calls via Objective-C" id="u9J-81-lZJ">
+                            <menuItem title="Dump Stats" toolTip="Dump elpased time and invocatio count stats per method." id="wMb-mC-poo">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <accessibility description="Trace App"/>
                                 <connections>
-                                    <action selector="traceApp:" target="Voe-Tx-rLC" id="Zxl-pa-7Xl"/>
+                                    <action selector="traceStats:" target="Voe-Tx-rLC" id="2DR-dQ-dhn"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Dump Call Order" toolTip="Dump methods invoked in order they were fist called." id="blr-cp-nYs">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <accessibility description="Trace App"/>
+                                <connections>
+                                    <action selector="callOrder:" target="Voe-Tx-rLC" id="Ea8-q9-ser"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Dump File Order" id="PNF-xc-Fxf">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <string key="toolTip">List files in project acoording to the order they were first referenced. Change order source files are compiled in project to minimise paging delays on app startup.</string>
+                                <accessibility description="Trace App"/>
+                                <connections>
+                                    <action selector="fileOrder:" target="Voe-Tx-rLC" id="ptN-4E-maE"/>
                                 </connections>
                             </menuItem>
                         </items>

@@ -245,6 +245,11 @@ that function. (To have the `Injection Goto` item appear on your services contex
 you need to select it in System Preferences/Keyboard, tab Shortcuts/Services, under the
 "Text" section.)
 
+There are other SwifTrace features that allow you to "profile" your application to optimise
+the order object files are linked into your application which could potentially minimise
+paging on startup. These are surfaced in the "Method Tracing" submenu but if I'm honest,
+these would only make a difference if you had a very, very large application binary.
+
 ### Remote Control
 
 Newer versions of InjectionIII contain a server that allows you to control your development device from your desktop once the service has been started. The UI allows you to record and replay macros of UI actions then verify the device screen against snapshots for end-to-end testing.
@@ -338,4 +343,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2020/10/11 $
+$Date: 2020/10/19 $
