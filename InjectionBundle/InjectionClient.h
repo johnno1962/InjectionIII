@@ -43,6 +43,7 @@ typedef NS_ENUM(int, InjectionCommand) {
     InjectionStats,
     InjectionCallOrder,
     InjectionFileOrder,
+    InjectionFileReorder,
 
     InjectionInvalid = 1000,
 
@@ -57,6 +58,7 @@ typedef NS_ENUM(int, InjectionResponse) {
     InjectionError,
     InjectionFrameworkList,
     InjectionCallOrderList,
+    InjectionCallReorderList,
 
     InjectionExit = ~0
 };

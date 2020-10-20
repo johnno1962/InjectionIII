@@ -818,6 +818,13 @@
                                     <action selector="fileOrder:" target="Voe-Tx-rLC" id="ptN-4E-maE"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Re-order Project" toolTip="Reorder source files in project according to when they are first used." id="3ZV-Dm-RPu">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <accessibility description="Trace App"/>
+                                <connections>
+                                    <action selector="fileReorder:" target="Voe-Tx-rLC" id="ZwN-Ob-mNa"/>
+                                </connections>
+                            </menuItem>
                         </items>
                         <accessibility description="Add method traces to App"/>
                     </menu>

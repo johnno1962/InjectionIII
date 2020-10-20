@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#131 $
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#133 $
 //
 
 #import "InjectionClient.h"
@@ -316,6 +316,12 @@ static struct {
                    "💉 =====================================================\n"
                    "💉 (Order the source files should be compiled in target)\n");
             [self writeCommand:InjectionCallOrderList
+                    withString:[[SwiftInjection callOrder]
+                                componentsJoinedByString:CALLORDER_DELIMITER]];
+            [self needsTracing];
+            break;
+        case InjectionFileReorder:
+            [self writeCommand:InjectionCallReorderList
                     withString:[[SwiftInjection callOrder]
                                 componentsJoinedByString:CALLORDER_DELIMITER]];
             [self needsTracing];

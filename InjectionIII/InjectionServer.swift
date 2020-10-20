@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#56 $
+//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#57 $
 //
 
 let commandQueue = DispatchQueue(label: "InjectionCommand")
@@ -220,9 +220,15 @@ public class InjectionServer: SimpleSocket {
                 sendCommand(.signed, with: signedOK ? "1": "0")
                 break
             case .callOrderList:
+                fallthrough
+            case .callReorderList:
                 if let calls = readString()?
                     .components(separatedBy: CALLORDER_DELIMITER) {
-                    appDelegate.fileOrder(signatures: calls)
+                    if command == .callOrderList {
+                        appDelegate.fileOrder(signatures: calls)
+                    } else {
+                        appDelegate.fileReorder(signatures: calls)
+                    }
                 }
                 break
             case .error:
