@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#146 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#149 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -724,6 +724,21 @@ public class SwiftEval: NSObject {
             .first
     }
 
+    class func uniqueTypeNames(signatures: [String], exec: (String) -> Void) {
+        var typesSearched = Set<String>()
+
+        for signature in signatures {
+            let parts = signature.components(separatedBy: ".")
+            if parts.count < 3 {
+                continue
+            }
+            let typeName = parts[1]
+            if typesSearched.insert(typeName).inserted {
+                exec(typeName)
+            }
+        }
+    }
+
     func shell(command: String) -> Bool {
         let commandFile = "\(tmpDir)/command.sh"
         try! command.write(toFile: commandFile, atomically: false, encoding: .utf8)
@@ -732,7 +747,7 @@ public class SwiftEval: NSObject {
         #if os(macOS)
         let task = Process()
         task.launchPath = "/bin/bash"
-        task.arguments = ["-c", command]
+        task.arguments = [commandFile]
         task.launch()
         task.waitUntilExit()
         return task.terminationStatus == EXIT_SUCCESS
@@ -758,7 +773,7 @@ public class SwiftEval: NSObject {
             if fork() == 0 {
                 let commandsIn = fdopen(commandsPipe[ForReading], "r")
                 let statusesOut = fdopen(statusesPipe[ForWriting], "w")
-                var buffer = [Int8](repeating: 0, count: 4096)
+                var buffer = [Int8](repeating: 0, count: Int(MAXPATHLEN))
 
                 close(commandsPipe[ForWriting])
                 close(statusesPipe[ForReading])

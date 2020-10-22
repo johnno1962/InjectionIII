@@ -5,7 +5,7 @@
 //  Created by User on 20/10/2020.
 //  Copyright © 2020 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/Experimental.swift#21 $
+//  $Id: //depot/ResidentEval/InjectionIII/Experimental.swift#26 $
 //
 
 import Cocoa
@@ -40,33 +40,6 @@ extension AppDelegate {
         lastConnection?.sendCommand(.fileReorder, with: nil)
     }
 
-    func fileOrder(signatures: [String]) {
-        let builder = SwiftEval()
-        builder.projectFile = selectedProject
-
-        guard let projectRoot = selectedProject.flatMap({
-                URL(fileURLWithPath: $0).deletingLastPathComponent().path+"/"
-            }),
-            let (_, logsDir) =
-                try? builder.determineEnvironment(classNameOrFile: "") else {
-            lastConnection?.sendCommand(.log, with:
-                "💉 File ordering not available.")
-            return
-        }
-
-        let tmpfile = NSTemporaryDirectory()+"/eval101"
-
-        uniqueTypeNames(signatures: signatures) { typeName in
-            if let (_, foundSourceFile) =
-                try? builder.findCompileCommand(logsDir: logsDir,
-                    classNameOrFile: typeName, tmpfile: tmpfile) {
-                let relativePath = foundSourceFile
-                    .replacingOccurrences(of: projectRoot, with: "")
-                lastConnection?.sendCommand(.log, with: relativePath)
-            }
-        }
-    }
-
     func fileReorder(signatures: [String]) {
         var projectEncoding: String.Encoding = .utf8
         let projectURL = selectedProject.flatMap {
@@ -85,7 +58,7 @@ extension AppDelegate {
 
         var orders = ["AppDelegate.swift": 0]
         var order = 1
-        uniqueTypeNames(signatures: signatures) { typeName in
+        SwiftEval.uniqueTypeNames(signatures: signatures) { typeName in
             orders[typeName+".swift"] = order
             order += 1
         }
@@ -136,27 +109,11 @@ extension AppDelegate {
         }
     }
 
-    func uniqueTypeNames(signatures: [String], exec: (String) -> Void) {
-        var typesSearched = Set<String>()
-
-        for signature in signatures {
-            let parts = signature.components(separatedBy: ".")
-            if parts.count < 3 {
-                continue
-            }
-            let typeName = parts[1]
-            if typesSearched.insert(typeName).inserted {
-                exec(typeName)
-            }
-        }
-    }
-
-
     /// Entry point for "Injection Goto" service
     /// - Parameters:
     ///   - pboard: NSPasteboard containing selected type [+method) name
     ///   - userData: N/A
-    ///   - error: N/A
+    ///   - errorPtr: NSString describing error on error
     @objc func injectionGoto(_ pboard: NSPasteboard, userData: NSString,
                              error errorPtr: UnsafeMutablePointer<NSString>) {
         guard pboard.canReadObject(forClasses: [NSString.self], options:nil),
@@ -199,7 +156,11 @@ extension AppDelegate {
             let finder = try? NSRegularExpression(pattern:
                 #"(?:\b(?:var|func|struct|class|enum)\s+|^[+-]\s*(?:\([^)]*\)\s*)?)(\#(className!))\b"#,
                 options: [.anchorsMatchLines]) else {
-            errorPtr.pointee = "💉 Unable to find source file for type '\(className!)' using build logs. Try with a clean build.\n" as NSString
+            errorPtr.pointee = """
+                💉 Unable to find source file for type '\(className!)' \
+                using build logs.\n💉 Do you have the right project selected? \
+                Try with a clean build.
+                """ as NSString
             lastConnection?.sendCommand(.log, with: errorPtr.pointee as String)
             return
         }

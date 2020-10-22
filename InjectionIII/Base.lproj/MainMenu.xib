@@ -747,6 +747,16 @@
                                     <action selector="traceUIApp:" target="Voe-Tx-rLC" id="oc5-Cw-bGO"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Trace Package" id="X2d-h8-G2Z">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Trace Package" id="FGp-MT-4bj">
+                                    <items>
+                                        <menuItem title="Item" id="ktC-DA-aLb">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
                             <menuItem title="Trace Framework" id="0BZ-xo-Zsc">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Trace Framework" autoenablesItems="NO" id="q6B-be-n35">

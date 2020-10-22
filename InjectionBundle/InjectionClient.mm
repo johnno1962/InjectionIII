@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#133 $
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#136 $
 //
 
 #import "InjectionClient.h"
@@ -122,6 +122,7 @@ static struct {
 #endif
 
 #import <XCTest/XCTest.h>
+#import "SwiftTrace-Swift.h"
 
 @implementation NSObject(RunXCTestCase)
 + (void)runXCTestCase:(Class)aTestCase {
@@ -137,9 +138,6 @@ static struct {
 
 @interface SwiftUISupport
 + (void)setupWithPointer:(void *)ptr;
-@end
-
-@interface SwiftTrace : NSObject
 @end
 
 @implementation InjectionClient
@@ -204,6 +202,8 @@ static struct {
          [frameworks componentsJoinedByString:FRAMEWORK_DELIMITER]];
         [self writeString:
          [sysFrameworks componentsJoinedByString:FRAMEWORK_DELIMITER]];
+        [self writeString:[[SwiftInjection packageNames]
+                           componentsJoinedByString:FRAMEWORK_DELIMITER]];
         frameworkPaths = imageMap;
     }
 
@@ -279,16 +279,23 @@ static struct {
                 [self filteringChanged];
             }
             break;
-        case InjectionTraceFramework:
-            if (NSString *frameworkName = [self readString]) {
-                const int8_t *frameworkPath =
-                    (const int8_t *)frameworkPaths[frameworkName].UTF8String;
+        case InjectionTraceFramework: {
+            NSString *frameworkName = [self readString];
+            if (const int8_t *frameworkPath =
+                (const int8_t *)frameworkPaths[frameworkName].UTF8String) {
                 printf("💉 Tracing %s\n", frameworkPath);
                 [SwiftTrace swiftTraceMethodsInBundle:frameworkPath];
                 [SwiftTrace swiftTraceBundlePath:frameworkPath];
-                [self filteringChanged];
             }
+            else {
+                printf("💉 Tracing package %s\n", frameworkName.UTF8String);
+                NSString *mainBundlePath = [NSBundle mainBundle].executablePath;
+                [SwiftTrace interposeMethodsInBundlePath:(const int8_t *)
+                 mainBundlePath.UTF8String packageName:frameworkName subLevels:0];
+            }
+            [self filteringChanged];
             break;
+        }
         case InjectionQuietInclude:
             [SwiftTrace setSwiftTraceFilterInclude:[self readString]];
             break;
@@ -301,7 +308,10 @@ static struct {
             [self filteringChanged];
             break;
         case InjectionStats:
-            [SwiftInjection dumpStats];
+            static int top = 200;
+            printf("\n💉 Sorted top %d elapsed time/invocations by method\n"
+                   "💉 =================================================\n", top);
+            [SwiftInjection dumpStatsWithTop:top];
             [self needsTracing];
             break;
         case InjectionCallOrder:
@@ -315,13 +325,11 @@ static struct {
             printf("\n💉 Source files in the order they were first referenced:\n"
                    "💉 =====================================================\n"
                    "💉 (Order the source files should be compiled in target)\n");
-            [self writeCommand:InjectionCallOrderList
-                    withString:[[SwiftInjection callOrder]
-                                componentsJoinedByString:CALLORDER_DELIMITER]];
+            [SwiftInjection fileOrder];
             [self needsTracing];
             break;
         case InjectionFileReorder:
-            [self writeCommand:InjectionCallReorderList
+            [self writeCommand:InjectionCallOrderList
                     withString:[[SwiftInjection callOrder]
                                 componentsJoinedByString:CALLORDER_DELIMITER]];
             [self needsTracing];

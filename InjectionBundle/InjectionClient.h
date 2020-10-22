@@ -58,7 +58,6 @@ typedef NS_ENUM(int, InjectionResponse) {
     InjectionError,
     InjectionFrameworkList,
     InjectionCallOrderList,
-    InjectionCallReorderList,
 
     InjectionExit = ~0
 };

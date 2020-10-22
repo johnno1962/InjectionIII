@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#57 $
+//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#60 $
 //
 
 let commandQueue = DispatchQueue(label: "InjectionCommand")
@@ -116,7 +116,6 @@ public class InjectionServer: SimpleSocket {
                 }
             }
         }
-        else { return }
 
         var pause: TimeInterval = 0.0
         var testCache = [String: [String]]()
@@ -186,6 +185,8 @@ public class InjectionServer: SimpleSocket {
                                           menuTitle: "Trace Framework")
                 appDelegate.setFrameworks(readString() ?? "",
                                           menuTitle: "Trace SysInternal")
+                appDelegate.setFrameworks(readString() ?? "",
+                                          menuTitle: "Trace Package")
             case .complete:
                 appDelegate.setMenuIcon("InjectionOK")
                 if appDelegate.frontItem.state == .on {
@@ -220,15 +221,9 @@ public class InjectionServer: SimpleSocket {
                 sendCommand(.signed, with: signedOK ? "1": "0")
                 break
             case .callOrderList:
-                fallthrough
-            case .callReorderList:
                 if let calls = readString()?
                     .components(separatedBy: CALLORDER_DELIMITER) {
-                    if command == .callOrderList {
-                        appDelegate.fileOrder(signatures: calls)
-                    } else {
-                        appDelegate.fileReorder(signatures: calls)
-                    }
+                    appDelegate.fileReorder(signatures: calls)
                 }
                 break
             case .error:
