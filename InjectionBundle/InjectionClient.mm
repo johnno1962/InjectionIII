@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#136 $
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#139 $
 //
 
 #import "InjectionClient.h"
@@ -122,7 +122,9 @@ static struct {
 #endif
 
 #import <XCTest/XCTest.h>
-#import "SwiftTrace-Swift.h"
+
+@interface SwiftTrace : NSObject
+@end
 
 @implementation NSObject(RunXCTestCase)
 + (void)runXCTestCase:(Class)aTestCase {
@@ -281,17 +283,17 @@ static struct {
             break;
         case InjectionTraceFramework: {
             NSString *frameworkName = [self readString];
-            if (const int8_t *frameworkPath =
-                (const int8_t *)frameworkPaths[frameworkName].UTF8String) {
+            if (const char *frameworkPath =
+                frameworkPaths[frameworkName].UTF8String) {
                 printf("💉 Tracing %s\n", frameworkPath);
-                [SwiftTrace swiftTraceMethodsInBundle:frameworkPath];
+                [SwiftTrace swiftTraceMethodsInBundle:frameworkPath packageName:nil];
                 [SwiftTrace swiftTraceBundlePath:frameworkPath];
             }
             else {
                 printf("💉 Tracing package %s\n", frameworkName.UTF8String);
                 NSString *mainBundlePath = [NSBundle mainBundle].executablePath;
-                [SwiftTrace interposeMethodsInBundlePath:(const int8_t *)
-                 mainBundlePath.UTF8String packageName:frameworkName subLevels:0];
+                [SwiftTrace swiftTraceMethodsInBundle:mainBundlePath.UTF8String
+                                          packageName:frameworkName];
             }
             [self filteringChanged];
             break;

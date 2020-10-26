@@ -84,7 +84,6 @@
 		BBE64E5D2524D1B50049B6D4 /* SwiftEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */; };
 		BBEB704C1FD28C6F00127711 /* XcodeHash.m in Sources */ = {isa = PBXBuildFile; fileRef = BBEB704B1FD28C6F00127711 /* XcodeHash.m */; };
 		BD35949E21A6C5DE0020EB94 /* Vaccine.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD35949D21A6C5DE0020EB94 /* Vaccine.swift */; };
-		CEBE11CD25418CF900B468FE /* SwiftTrace-Swift.h in Headers */ = {isa = PBXBuildFile; fileRef = CEBE11CC25418CF900B468FE /* SwiftTrace-Swift.h */; };
 		CEC1702A253ED117002E823F /* Experimental.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC17029253ED117002E823F /* Experimental.swift */; };
 		CEC17035253ED472002E823F /* SwiftRegex in Frameworks */ = {isa = PBXBuildFile; productRef = CEC17034253ED472002E823F /* SwiftRegex */; };
 /* End PBXBuildFile section */
@@ -266,7 +265,6 @@
 		BBEB704B1FD28C6F00127711 /* XcodeHash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XcodeHash.m; sourceTree = "<group>"; };
 		BD35949D21A6C5DE0020EB94 /* Vaccine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vaccine.swift; sourceTree = "<group>"; };
 		BDB6A7CE21824C800001CF95 /* UserDefaults.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserDefaults.h; sourceTree = "<group>"; };
-		CEBE11CC25418CF900B468FE /* SwiftTrace-Swift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SwiftTrace-Swift.h"; path = "SwiftTraceGuts/SwiftTrace-Swift.h"; sourceTree = "<group>"; };
 		CEC17029253ED117002E823F /* Experimental.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Experimental.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -445,7 +443,6 @@
 			children = (
 				BB6C87F72520D2C3005AFCFC /* xt_forwarding_trampoline_arm64.s */,
 				BB6C87F82520D2C3005AFCFC /* xt_forwarding_trampoline_x64.s */,
-				CEBE11CC25418CF900B468FE /* SwiftTrace-Swift.h */,
 				BB6C87C62520D0D2005AFCFC /* SwiftTrace.h */,
 				BB6C87F62520D2C3005AFCFC /* SwiftTrace.mm */,
 				BB6C87EA2520D152005AFCFC /* SwiftTrace.swift */,
@@ -591,7 +588,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CEBE11CD25418CF900B468FE /* SwiftTrace-Swift.h in Headers */,
 				BB6C87D62520D0D2005AFCFC /* SwiftTrace.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1393,7 +1389,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 2.4.0;
+				MARKETING_VERSION = 2.4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1416,7 +1412,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 2.4.0;
+				MARKETING_VERSION = 2.4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

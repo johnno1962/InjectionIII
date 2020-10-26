@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#101 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#104 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -230,7 +230,17 @@ public class SwiftInjection: NSObject {
         }
 
         #if !ORIGINAL_2_2_0_CODE
-        SwiftTrace.apply(interposes: interposes, haveInjected: true)
+        SwiftTrace.apply(interposes: interposes, onInjection: { header in
+            // Need to apply all previous interposes
+            // to the newly loaded dylib as well.
+            var previous = Array<dyld_interpose_tuple>()
+            for (replacee, replacement) in SwiftTrace.interposed {
+                previous.append(dyld_interpose_tuple(
+                    replacement: SwiftTrace.interposed(replacee: replacement)!,
+                    replacee: replacee))
+            }
+            dyld_dynamic_interpose(header, previous, previous.count)
+        })
         #else
         // Using array of new interpose structs
         interposes.withUnsafeBufferPointer { interps in

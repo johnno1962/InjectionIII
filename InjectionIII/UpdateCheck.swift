@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 17/09/2020.
 //  Copyright © 2020 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/UpdateCheck.swift#4 $
+//  $Id: //depot/ResidentEval/InjectionIII/UpdateCheck.swift#5 $
 //
 
 import Foundation
@@ -83,7 +83,7 @@ extension AppDelegate {
     func setUpdateCheck() {
         if updateItem.state == .on {
             defaults.set(Date.timeIntervalSinceReferenceDate +
-                         30 * 24 * 60 * 60, forKey: updateCheckKey)
+                         30 * 24 * 60 * 60, forKey: UserDefaultsUpdateCheck)
         }
     }
 

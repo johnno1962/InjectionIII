@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#90 $
+//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#93 $
 //
 
 import Cocoa
@@ -53,6 +53,16 @@ class AppDelegate : NSObject, NSApplicationDelegate {
         // Insert code here to initialize your application
         appDelegate = self
 
+        let statusBar = NSStatusBar.system
+        statusItem = statusBar.statusItem(withLength: statusBar.thickness)
+        statusItem.toolTip = "Code Injection"
+        statusItem.highlightMode = true
+        statusItem.menu = statusMenu
+        statusItem.isEnabled = true
+        statusItem.title = ""
+
+        InjectionServer.startServer(INJECTION_ADDRESS)
+
         if !FileManager.default.fileExists(atPath:
             "/Applications/Xcode.app/Contents/Developer") {
             let alert: NSAlert = NSAlert()
@@ -67,18 +77,8 @@ class AppDelegate : NSObject, NSApplicationDelegate {
             _ = alert.runModal()
         }
 
-        InjectionServer.startServer(INJECTION_ADDRESS)
-
-        let statusBar = NSStatusBar.system
-        statusItem = statusBar.statusItem(withLength: statusBar.thickness)
-        statusItem.toolTip = "Code Injection"
-        statusItem.highlightMode = true
-        statusItem.menu = statusMenu
-        statusItem.isEnabled = true
-        statusItem.title = ""
-
         defaultsMap = [
-            frontItem: orderFrontKey,
+            frontItem: UserDefaultsOrderFront,
             enabledTDDItem: UserDefaultsTDDEnabled,
             enableVaccineItem: UserDefaultsVaccineEnabled
         ]
@@ -94,13 +94,13 @@ class AppDelegate : NSObject, NSApplicationDelegate {
                target:self, action:#selector(autoInject(_:)), object:nil)
 
         NSApp.servicesProvider = self
-        if let lastWatched = defaults.string(forKey: lastWatchedKey) {
+        if let lastWatched = defaults.string(forKey: UserDefaultsLastWatched) {
             _ = self.application(NSApp, openFile: lastWatched)
         } else {
             NSUpdateDynamicServices()
         }
 
-        let nextUpdateCheck = defaults.double(forKey: updateCheckKey)
+        let nextUpdateCheck = defaults.double(forKey: UserDefaultsUpdateCheck)
         if  nextUpdateCheck != 0.0 {
             updateItem.state = .on
             if Date.timeIntervalSinceReferenceDate > nextUpdateCheck {
@@ -145,7 +145,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
 //                .deletingPathExtension().lastPathComponent
 //            traceInclude.stringValue = projectName
 //            updateTraceInclude(nil)
-            defaults.set(url.path, forKey: lastWatchedKey)
+            defaults.set(url.path, forKey: UserDefaultsLastWatched)
             return true
         }
 
@@ -164,7 +164,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     }
 
     func persist(url: URL) {
-        var bookmarks = defaults.value(forKey: bookmarkKey)
+        var bookmarks = defaults.value(forKey: UserDefaultsBookmarks)
             as? [String : Data] ?? [String: Data]()
         do {
             bookmarks[url.path] =
@@ -172,7 +172,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
                                                .securityScopeAllowOnlyReadAccess],
                                      includingResourceValuesForKeys: [],
                                      relativeTo: nil)
-            defaults.set(bookmarks, forKey: bookmarkKey)
+            defaults.set(bookmarks, forKey: UserDefaultsBookmarks)
         } catch {
             _ = InjectionServer.error("Bookmarking failed for \(url), \(error)")
         }
@@ -181,7 +181,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     func resolve(path: String) -> URL? {
         var isStale: Bool = false
         if let bookmarks =
-            defaults.value(forKey: bookmarkKey) as? [String : Data],
+            defaults.value(forKey: UserDefaultsBookmarks) as? [String : Data],
             let bookmark = bookmarks[path],
             let resolved = try? URL(resolvingBookmarkData: bookmark,
                            options: .withSecurityScope,
