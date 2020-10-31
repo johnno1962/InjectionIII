@@ -44,6 +44,7 @@ typedef NS_ENUM(int, InjectionCommand) {
     InjectionCallOrder,
     InjectionFileOrder,
     InjectionFileReorder,
+    InjectionUninterpose,
 
     InjectionInvalid = 1000,
 

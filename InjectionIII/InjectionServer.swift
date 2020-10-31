@@ -5,10 +5,11 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#60 $
+//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#61 $
 //
 
 let commandQueue = DispatchQueue(label: "InjectionCommand")
+let compileQueue = DispatchQueue(label: "InjectionCompile")
 
 var projectInjected = [String: [String: TimeInterval]]()
 let MIN_INJECTION_INTERVAL = 1.0
@@ -250,7 +251,7 @@ public class InjectionServer: SimpleSocket {
             source.hasSuffix(".storyboard") || source.hasSuffix(".xib") {
             sendCommand(.inject, with: source)
         } else {
-            DispatchQueue.main.asyncAfter(deadline: .now()+0.01) {
+            compileQueue.async {
                 if let dylib = try? self.builder.rebuildClass(oldClass: nil,
                                        classNameOrFile: source, extra: nil) {
                     self.sendCommand(.load, with: dylib)

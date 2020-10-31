@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#93 $
+//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#94 $
 //
 
 import Cocoa
@@ -297,6 +297,10 @@ class AppDelegate : NSObject, NSApplicationDelegate {
 
     @IBAction func traceStats(_ sender: NSMenuItem) {
         lastConnection?.sendCommand(.stats, with: nil)
+    }
+
+    @IBAction func remmoveTraces(_ sender: NSMenuItem?) {
+        lastConnection?.sendCommand(.uninterpose, with: nil)
     }
 
     @IBAction func showTraceFilters(_ sender: NSMenuItem?) {

@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#139 $
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#141 $
 //
 
 #import "InjectionClient.h"
@@ -335,6 +335,11 @@ static struct {
                     withString:[[SwiftInjection callOrder]
                                 componentsJoinedByString:CALLORDER_DELIMITER]];
             [self needsTracing];
+            break;
+        case InjectionUninterpose:
+            [SwiftTrace swiftTraceRevertAllInterposes];
+            [SwiftTrace swiftTraceRemoveAllTraces];
+            printf("💉 Removed all traces (and injections).\n");
             break;
         case InjectionInvalid:
             printf("💉 ⚠️ Connection rejected. Are you running the correct version of InjectionIII.app from /Applications? ⚠️\n");

@@ -9,6 +9,6 @@
 #ifndef SwiftUISupport_Bridging_Header_h
 #define SwiftUISupport_Bridging_Header_h
 
-#import "../SwiftTrace/SwiftTrace/SwiftTrace.h"
+#import "../SwiftTrace/SwiftTraceGuts/include/SwiftTrace.h"
 
 #endif /* SwiftUISupport_Bridging_Header_h */

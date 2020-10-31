@@ -791,6 +791,13 @@
                                     <action selector="traceSwiftUI:" target="Voe-Tx-rLC" id="0xk-LY-4Pv"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Undo Traces" allowsKeyEquivalentWhenHidden="YES" toolTip="Log calls made to SwiftUI." id="0Nz-cB-dDv">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <accessibility description="Trace App"/>
+                                <connections>
+                                    <action selector="remmoveTraces:" target="Voe-Tx-rLC" id="V0U-kh-UYB"/>
+                                </connections>
+                            </menuItem>
                             <menuItem title="Legacy Trace" hidden="YES" toolTip="Log app class messaging. Includes calls via Objective-C" id="u9J-81-lZJ">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <accessibility description="Trace App"/>
