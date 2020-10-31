@@ -10,6 +10,7 @@
 		BB1A84072522703C003873C3 /* macOSInjection.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02451FB1065D00E45F0F /* macOSInjection.bundle */; };
 		BB1A840A25227535003873C3 /* SwiftTrace.h in Resources */ = {isa = PBXBuildFile; fileRef = BB6C87C62520D0D2005AFCFC /* SwiftTrace.h */; };
 		BB1BA90B251DC54100044608 /* SwiftUISupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1BA90A251DC54100044608 /* SwiftUISupport.swift */; };
+		BB1C3246254BFAFD001EDFCC /* EasyPointer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3245254BFAFC001EDFCC /* EasyPointer.swift */; };
 		BB34C3FD244FAAB400D520A9 /* RMWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB34C3FC244FAAB400D520A9 /* RMWindowController.xib */; };
 		BB34C3FF244FAD3C00D520A9 /* log.html in Resources */ = {isa = PBXBuildFile; fileRef = BB34C3FE244FAD3C00D520A9 /* log.html */; };
 		BB34C401244FAE3000D520A9 /* iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BB34C400244FAE2F00D520A9 /* iphone.png */; };
@@ -140,6 +141,7 @@
 		BB1BA906251DC51900044608 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BB1BA90A251DC54100044608 /* SwiftUISupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUISupport.swift; sourceTree = "<group>"; };
 		BB1BA918251DD0CA00044608 /* SwiftUISupport-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftUISupport-Bridging-Header.h"; sourceTree = "<group>"; };
+		BB1C3245254BFAFC001EDFCC /* EasyPointer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EasyPointer.swift; path = ../../SwiftTrace/SwiftTrace/EasyPointer.swift; sourceTree = "<group>"; };
 		BB1DEA9A1FD6A74800AF509F /* Xtrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Xtrace.h; path = XprobePlugin/Classes/Xtrace.h; sourceTree = "<group>"; };
 		BB1DEA9B1FD6A74900AF509F /* IvarAccess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IvarAccess.h; path = XprobePlugin/Classes/IvarAccess.h; sourceTree = "<group>"; };
 		BB1DEA9C1FD6A74900AF509F /* Xprobe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Xprobe.h; path = XprobePlugin/Classes/Xprobe.h; sourceTree = "<group>"; };
@@ -455,6 +457,7 @@
 				BB6C87E22520D150005AFCFC /* SwiftMeta.swift */,
 				BB6C87E52520D151005AFCFC /* SwiftArgs.swift */,
 				BB64461F2545831200A83098 /* StringIndex.swift */,
+				BB1C3245254BFAFC001EDFCC /* EasyPointer.swift */,
 				BB6C87C72520D0D2005AFCFC /* Info.plist */,
 			);
 			path = SwiftTrace;
@@ -929,6 +932,7 @@
 				BB6C87EC2520D152005AFCFC /* SwiftInvoke.swift in Sources */,
 				BB6C87ED2520D152005AFCFC /* SwiftSwizzle.swift in Sources */,
 				BB6C87EE2520D152005AFCFC /* SwiftArgs.swift in Sources */,
+				BB1C3246254BFAFD001EDFCC /* EasyPointer.swift in Sources */,
 				BB6446202545831400A83098 /* StringIndex.swift in Sources */,
 				BB6C87EF2520D152005AFCFC /* SwiftStats.swift in Sources */,
 				BB6C87F02520D152005AFCFC /* SwiftAspects.swift in Sources */,
