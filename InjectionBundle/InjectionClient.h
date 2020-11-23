@@ -7,9 +7,12 @@
 //
 
 #import "SimpleSocket.h"
+#import "/tmp/InjectionSalt.h"
 
 #define INJECTION_ADDRESS @":8898"
 #define INJECTION_KEY @"bvijkijyhbtrbrebzjbbzcfbbvvq"
+#define FRAMEWORK_DELIMITER @","
+#define CALLORDER_DELIMITER @"---"
 
 @interface InjectionClient : SimpleSocket
 
@@ -30,6 +33,20 @@ typedef NS_ENUM(int, InjectionCommand) {
 
     InjectionTrace,
     InjectionUntrace,
+    InjectionTraceUI,
+    InjectionTraceUIKit,
+    InjectionTraceSwiftUI,
+    InjectionTraceFramework,
+    InjectionQuietInclude,
+    InjectionInclude,
+    InjectionExclude,
+    InjectionStats,
+    InjectionCallOrder,
+    InjectionFileOrder,
+    InjectionFileReorder,
+    InjectionUninterpose,
+
+    InjectionInvalid = 1000,
 
     InjectionEOF = ~0
 };
@@ -40,6 +57,8 @@ typedef NS_ENUM(int, InjectionResponse) {
     InjectionPause,
     InjectionSign,
     InjectionError,
+    InjectionFrameworkList,
+    InjectionCallOrderList,
 
     InjectionExit = ~0
 };

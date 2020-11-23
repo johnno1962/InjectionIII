@@ -15,8 +15,10 @@
     NSString *command = [NSString stringWithFormat:@""
                          "(export CODESIGN_ALLOCATE=/Applications/Xcode.app"
                          "/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/codesign_allocate; "
-                         "/usr/bin/codesign --force -s \"%@\" \"%@\")",
-                         identity ?: adhocSign, dylib];
+                         "if /usr/bin/file \"%@\" | grep ' bundle ' >/dev/null;"
+                         "then /usr/bin/codesign --force -s \"%@\" \"%@\";"
+                         "else exit 1; fi)",
+                         dylib, identity ?: adhocSign, dylib];
     return system(command.UTF8String) >> 8 == EXIT_SUCCESS;
 }
 

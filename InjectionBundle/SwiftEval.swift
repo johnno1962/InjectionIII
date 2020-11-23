@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#131 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#150 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -28,17 +28,23 @@ extension NSObject {
 
     private static var lastEvalByClass = [String: String]()
 
-    @objc public func evalSwift(_ expression: String) {
-        eval("{\n\(expression)\n}", (() -> ())?.self)?()
+    @objc public func swiftEval(code: String) -> Bool {
+        if let closure = swiftEval("{\n\(code)\n}", type: (() -> ())?.self) {
+            closure()
+            return true
+        }
+        return false
     }
 
     /// eval() for String value
-    public func eval(_ expression: String) -> String {
-        return eval("\"\(expression)\"", String.self)
+    @objc public func swiftEvalString(contents: String) -> String {
+        return swiftEval("""
+            "\(contents)"
+            """, type: String.self)
     }
 
     /// eval() for value of any type
-    public func eval<T>(_ expression: String, _ type: T.Type) -> T {
+    public func swiftEval<T>(_ expression: String, type: T.Type) -> T {
         let oldClass: AnyClass = object_getClass(self)!
         let className = "\(oldClass)"
         let extra = """
@@ -148,7 +154,13 @@ public class SwiftEval: NSObject {
     // client specific info
     @objc public var frameworks = Bundle.main.privateFrameworksPath
                                     ?? Bundle.main.bundlePath + "/Frameworks"
+    #if arch(arm64)
+    @objc public var arch = "arm64"
+    #elseif arch(x86_64)
     @objc public var arch = "x86_64"
+    #else
+    @objc public var arch = "i386"
+    #endif
 
     // Xcode related info
     @objc public var xcodeDev = "/Applications/Xcode.app/Contents/Developer"
@@ -168,10 +180,10 @@ public class SwiftEval: NSObject {
         return NSError(domain: "SwiftEval", code: -1, userInfo: [NSLocalizedDescriptionKey: message])
     }
 
-    @objc public var injectionNumber = 0
+    @objc public var injectionNumber = 100
     @objc public var lastIdeProcPath = ""
 
-    static var compileByClass = [String: (String, String)]()
+    var compileByClass = [String: (String, String)]()
 
     static var buildCacheFile = "/tmp/eval_builds.plist"
     static var longTermCache = NSMutableDictionary(contentsOfFile: buildCacheFile) ?? NSMutableDictionary()
@@ -187,8 +199,8 @@ public class SwiftEval: NSObject {
                 throw evalError("Could not locate derived data. Is the project under your home directory?")
         }
         guard let (projectFile, logsDir) =
-            self.derivedLogs
-                .flatMap({ (URL(fileURLWithPath: self.projectFile!), URL(fileURLWithPath: $0)) }) ??
+//            self.derivedLogs
+//                .flatMap({ (URL(fileURLWithPath: self.projectFile!), URL(fileURLWithPath: $0)) }) ??
                 self.projectFile
                     .flatMap({ logsDir(project: URL(fileURLWithPath: $0), derivedData: derivedData) })
                     .flatMap({ (URL(fileURLWithPath: self.projectFile!), $0) }) ??
@@ -301,14 +313,16 @@ public class SwiftEval: NSObject {
             .appendingPathComponent("eval\(injectionNumber)").path
         let logfile = "\(tmpfile).log"
 
-        guard var (compileCommand, sourceFile) = try SwiftEval.compileByClass[classNameOrFile] ??
+        guard var (compileCommand, sourceFile) = try compileByClass[classNameOrFile] ??
             findCompileCommand(logsDir: logsDir, classNameOrFile: classNameOrFile, tmpfile: tmpfile) ??
             SwiftEval.longTermCache[classNameOrFile].flatMap({ ($0 as! String, classNameOrFile) }) else {
             throw evalError("""
-                Could not locate compile command for \(classNameOrFile)
-                (Injection does not work with Whole Module Optimization.
-                There are also restrictions on characters allowed in paths.
-                All paths are also case sensitive is another thing to check.)
+                Could not locate compile command for \(classNameOrFile).
+                This could be due to one of the following:
+                1. Injection does not work with Whole Module Optimization.
+                2. There are restrictions on characters allowed in paths.
+                3. File paths in the simulator paths are case sensitive.
+                Try a build clean then rebuild to make logs available.
                 """)
         }
 
@@ -367,19 +381,20 @@ public class SwiftEval: NSObject {
 
         let projectDir = projectFile.deletingLastPathComponent().path
 
-        _ = evalError("Compiling \(sourceFile)")
+        _ = evalError("💉 Compiling \(sourceFile)")
 
         guard shell(command: """
                 (cd "\(projectDir.escaping("$"))" && \(compileCommand) -o \(tmpfile).o >\(logfile) 2>&1)
                 """) else {
-            SwiftEval.compileByClass.removeValue(forKey: classNameOrFile)
-            throw evalError("Re-compilation failed (\(tmpDir)/command.sh)\n\(try! String(contentsOfFile: logfile))")
+            compileByClass.removeValue(forKey: classNameOrFile)
+            throw evalError("Re-compilation failed (see: \(tmpDir)/command.sh)\n\(try! String(contentsOfFile: logfile))")
         }
 
-        SwiftEval.compileByClass[classNameOrFile] = (compileCommand, sourceFile)
+        compileByClass[classNameOrFile] = (compileCommand, sourceFile)
         if SwiftEval.longTermCache[classNameOrFile] as? String != compileCommand && classNameOrFile.hasPrefix("/") {
             SwiftEval.longTermCache[classNameOrFile] = compileCommand
-            SwiftEval.longTermCache.write(toFile: SwiftEval.buildCacheFile, atomically: false)
+            SwiftEval.longTermCache.write(toFile: SwiftEval.buildCacheFile,
+                                     atomically: false)
         }
 
         // link resulting object file to create dynamic library
@@ -398,7 +413,7 @@ public class SwiftEval: NSObject {
         }
 
         guard shell(command: """
-            \(xcodeDev)/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch "\(arch)" -bundle \(osSpecific) -dead_strip -Xlinker -objc_abi_version -Xlinker 2 -fobjc-arc \(tmpfile).o -L "\(frameworks)" -F "\(frameworks)" -rpath "\(frameworks)" -o \(tmpfile).dylib >>\(logfile) 2>&1
+            \(xcodeDev)/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch "\(arch)" -bundle \(osSpecific) -dead_strip -Xlinker -objc_abi_version -Xlinker 2 -fobjc-arc -fprofile-instr-generate \(tmpfile).o -L "\(frameworks)" -F "\(frameworks)" -rpath "\(frameworks)" -o \(tmpfile).dylib >>\(logfile) 2>&1
             """) else {
             throw evalError("Link failed, check \(tmpDir)/command.sh\n\(try! String(contentsOfFile: logfile))")
         }
@@ -406,7 +421,7 @@ public class SwiftEval: NSObject {
         // codesign dylib
 
         if signer != nil {
-            guard signer!("\(tmpfile).dylib") else {
+            guard signer!("\(injectionNumber).dylib") else {
                 throw evalError("Codesign failed. If you are using macOS 11 (Big Sur), Please download a new release from https://github.com/johnno1962/InjectionIII/releases")
             }
         }
@@ -709,13 +724,39 @@ public class SwiftEval: NSObject {
             .first
     }
 
+    class func uniqueTypeNames(signatures: [String], exec: (String) -> Void) {
+        var typesSearched = Set<String>()
+
+        for signature in signatures {
+            let parts = signature.components(separatedBy: ".")
+            if parts.count < 3 {
+                continue
+            }
+            let typeName = parts[1]
+            if typesSearched.insert(typeName).inserted {
+                exec(typeName)
+            }
+        }
+    }
+
     func shell(command: String) -> Bool {
         let commandFile = "\(tmpDir)/command.sh"
         try! command.write(toFile: commandFile, atomically: false, encoding: .utf8)
         debug(command)
+
+        #if os(macOS)
+        let task = Process()
+        task.launchPath = "/bin/bash"
+        task.arguments = [commandFile]
+        task.launch()
+        task.waitUntilExit()
+        return task.terminationStatus == EXIT_SUCCESS
+        #else
         return runner.run(script: commandFile)
+        #endif
     }
 
+    #if !os(macOS)
     let runner = ScriptRunner()
 
     class ScriptRunner {
@@ -732,7 +773,7 @@ public class SwiftEval: NSObject {
             if fork() == 0 {
                 let commandsIn = fdopen(commandsPipe[ForReading], "r")
                 let statusesOut = fdopen(statusesPipe[ForWriting], "w")
-                var buffer = [Int8](repeating: 0, count: 4096)
+                var buffer = [Int8](repeating: 0, count: Int(MAXPATHLEN))
 
                 close(commandsPipe[ForWriting])
                 close(statusesPipe[ForReading])
@@ -770,9 +811,16 @@ public class SwiftEval: NSObject {
             fputs("\(script)\n", commandsOut)
             var buffer = [Int8](repeating: 0, count: 10)
             fgets(&buffer, Int32(buffer.count), statusesIn)
-            return buffer[0] == "0".utf8.first!
+            return atoi(buffer) == EXIT_SUCCESS
         }
     }
+    #endif
+
+    #if DEBUG
+    deinit {
+        NSLog("\(self).deinit()")
+    }
+    #endif
 }
 
 @_silgen_name("fork")

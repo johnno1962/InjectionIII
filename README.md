@@ -7,6 +7,11 @@ in the iOS simulator without having to rebuild or restart your application. This
 This start-over implementation of [Injection for Xcode](https://github.com/johnno1962/injectionforxcode)
 has been built into a standalone app: `InjectionIII.app` which runs in the status bar and is [available from the Mac App Store](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12).
 
+This README includes descriptions of some newer features that are only available in more recent
+releases of the InjectionIII.app [available on github](https://github.com/johnno1962/InjectionIII/releases).
+You will need to use one of these releases for Apple Silicon or if you have upgraded to Big Sur
+due to changes to macOS codesigning that affect the sandboxed App Store version of the app.
+
 ![Icon](http://johnholdsworth.com/InjectionUI.gif)
 
 `InjectionIII.app` needs an Xcode 10.2 or greater at the path `/Applications/Xcode.app` , works for `Swift` and `Objective-C` and can be used alongside [AppCode](https://www.jetbrains.com/help/objc/create-a-swiftui-application.html) or by using the [AppCode Plugin](https://github.com/johnno1962/InjectionIII/blob/master/AppCodePlugin/INSTALL.md).
@@ -55,13 +60,18 @@ If you want to build this project from source (which you may need to do to use i
     
 ### Available downloads
 
-| Xcode 10.2+ | Big Sur (Beta) | AppCode Plugin |
+| Xcode 10.2+ | For Big Sur | AppCode Plugin |
 | ------------- | ------------- | ------------- |
-| [Mac app store](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12) | [Release Candidate](https://github.com/johnno1962/InjectionIII/releases) | [Install  Injection.jar](https://github.com/johnno1962/InjectionIII/tree/master/AppCodePlugin) |
+| [Mac app store](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12) | [Github Releases](https://github.com/johnno1962/InjectionIII/releases) | [Install  Injection.jar](https://github.com/johnno1962/InjectionIII/tree/master/AppCodePlugin) |
 
 ### Limitations/FAQ
 
-This new release of InjectionIII uses a [different patching technique](http://johnholdsworth.com/dyld_dynamic_interpose.html) than previous versions in that you can now update the implementations of class, struct and enum methods (final or not) provided they have not been inlined which shouldn't be the case for a debug build. You can't however alter the layout of a class or struct in the course of an injection i.e. add or rearrange properties with storage or add or move methods of a non-final class or your app will likely crash. Also, see the notes below for injecting `SwiftUI` views and how they require type erasure.
+New releases of InjectionIII use a [different patching technique](http://johnholdsworth.com/dyld_dynamic_interpose.html)
+than previous versions in that you can now update the implementations of class, struct and enum methods (final or not)
+provided they have not been inlined which shouldn't be the case for a debug build. You can't however alter the layout of
+a class or struct in the course of an injection i.e. add or rearrange properties with storage or add or move methods of a
+non-final class or your app will likely crash. Also, see the notes below for injecting `SwiftUI` views and how they require
+type erasure.
 
 If you have a complex project including Objective-C or C dependancies, using the `-interposable` flag may provoke the following error on linking:
 
@@ -83,7 +93,7 @@ get an error starting as follows reporting an undefined symbol:
 in /var/folders/nh/gqmp6jxn4tn2tyhwqdcwcpkc0000gn/T/com.johnholdsworth.InjectionIII/eval101.dylib ***
 ```
 If you encounter this problem, download and build [the unhide project](https://github.com/johnno1962/unhide) then add the following
-as a "Run Script", "Build Phase" to your project:
+as a "Run Script", "Build Phase" to your project after the linking phase:
 
 ```
 UNHIDE=~/bin/unhide.sh
@@ -166,6 +176,7 @@ extension View {
 
 To have the view you are working on redisplay automatically when it is injected it's sufficient
 to add an `@ObservedObject`, initialised to the `injectionObserver` instance as follows:
+
 ```Swift
         .eraseToAnyView()
     }
@@ -174,7 +185,6 @@ to add an `@ObservedObject`, initialised to the `injectionObserver` instance as 
     @ObservedObject var iO = injectionObserver
     #endif
 ```
-
 If you'd like to execute some code each time your interface is injected use the 
 `.onInjection { ... }` modifier instead of .`eraseToAnyView()`.
 
@@ -186,23 +196,69 @@ Library Validation" under the "Hardened Runtime" options for your project while 
 
 ### Storyboard injection
 
-Sometimes when you are iterating over a UI it is useful to be able to inject storyboards. This works slightly differently from code injection. To inject changes to a storyboard scene, make you changes then _build_ the project instead of saving the storyboard. The "nib" of the currently displayed view controlled should be reloaded and viewDidLoad etc. will be called.
+Sometimes when you are iterating over a UI it is useful to be able to inject storyboards. This works slightly differently from code injection. To inject changes to a storyboard scene, make your changes then _build_ the project instead of saving the storyboard. The "nib" of the currently displayed view controlled should be reloaded and viewDidLoad etc. will be called.
 
 ### Vaccine
 
 Injection now includes the higher level `Vaccine` functionality, for more information consult the [project README](https://github.com/zenangst/Vaccine) or one of the [following](https://medium.com/itch-design-no/code-injection-in-swift-c49be095414c) [references](https://medium.com/@robnorback/the-secret-to-1-second-compile-times-in-xcode-9de4ec8345a1).
 
-### App Tracing
+### App Tracing (SwiftTrace)
 
-The InjectionIII menu contains an item "Trace" which can be used to enable logging of all Objective-C and non-final Swift class method calls. This feature is experimental. Selecting the menu item again will turn the feature off.
+It's possible to inject tracing aspects into your program that don't
+affect it's operation but log every method call and where possible
+their arguments. You can add logging to all methods in your app's
+main bundle or the frameworks it uses or trace calls to system
+frameworks such as UIKit or SwiftUI.
 
-If you want finer grain control of what is being traced, include the following file in your project's bridging header and the internal api will be available to Swift (after an injection bundle has been loaded):
+These features are implemented by the package [SwiftTrace](https://github.com/johnno1962/SwiftTrace) which is built into the InjectionBundle.
+If you want finer grain control of what is being traced, include the following header file in
+your project's bridging header and a subset of the internal api will be available to Swift (after an
+injection bundle has been loaded):
 
 ```C++
 #import "/Applications/InjectionIII.app/Contents/Resources/SwiftTrace.h"
 ```
+The "Trace UI" menu item can be mimicked by using the following call:
 
-For more information consult the [SwiftTrace source repo](https://github.com/johnno1962/SwiftTrace).
+```Swift
+ NSObject.swiftTraceMainBundleMethods()
+```
+If you want instead to also trace all Swift calls your application makes to a system
+framework such as SwiftUI you can use the following:
+
+```Swift
+ NSObject.swiftTraceMethods(inFrameworkContaining:UIHostingController<ContentView>.self)
+```
+To include or exclude the methods to be traced use the `methodInclusionPattern`
+and `methodExclusionPattern` class properties of SwiftTrace. For more information
+consult the [SwiftTrace source repo](https://github.com/johnno1962/SwiftTrace). It's
+possible to use the Swift API of SwiftTrace directly in your app, for example, to add 
+a new handler to format a particular type by importing SwiftTrace and adding the
+following to your app's `"Framework Search Paths"` and `"Runpath Search Paths"`
+(for the Debug configuration):
+
+```
+/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle/Frameworks
+```
+Then, you can use something like the following to register the type:
+
+```
+SwiftTrace.addFormattedType(MovieSwift.MovieRow.Props.self)
+```
+In this case however the `MovieSwift.MovieRow.Props` type from the excellent 
+`MovieSwift` SwiftUI  [example project](https://github.com/Dimillian/MovieSwiftUI)
+is too large to format and needs to be changed to be a class.
+
+Finally, if you'd like to go directly to the file that defines a logged method, select the
+fully qualified method and use the service `Injection Goto` to open the file declaring
+that function. (To have the `Injection Goto` item appear on your services context menu
+you need to select it in System Preferences/Keyboard, tab Shortcuts/Services, under the
+"Text" section.)
+
+There are other SwifTrace features that allow you to "profile" your application to optimise
+the order object files are linked into your application which could potentially minimise
+paging on startup. These are surfaced in the "Method Tracing" submenu but if I'm honest,
+these would only make a difference if you had a very, very large application binary.
 
 ### Remote Control
 
@@ -292,9 +348,9 @@ This release includes a very slightly modified version of the excellent
 in an HTML canvas which is subject to an MIT license. The changes are to pass
 through the ID of the node to the node label tag (line 212), to reverse
 the rendering of nodes and the lines linking them (line 406) and to
-store edge paths so they can be colored (line 66 and 303) in "canviz-0.1/canviz.js".
+store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz.js".
 
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2020/08/26 $
+$Date: 2020/11/23 $

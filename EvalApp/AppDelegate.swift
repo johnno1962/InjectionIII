@@ -17,13 +17,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var closureText: NSTextField!
 
     @IBAction func performEval(_: Any) {
-        textView.string = eval(textField.stringValue)
+        textView.string = swiftEvalString(contents: textField.stringValue)
     }
 
     @IBAction func closureEval(_: Any) {
-        if let block = eval(closureText.stringValue, (() -> ())?.self) {
-            block()
-        }
+        _ = swiftEval(code: closureText.stringValue+"()")
     }
 
     @objc func injected() {
@@ -34,7 +32,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Insert code here to initialize your application
         SwiftEval.instance.evalError = {
             let err = $0
-            if !err.hasPrefix("Compiling ") {
+            if !err.hasPrefix("💉 Compiling ") {
                 DispatchQueue.main.async {
                     self.textView.string = err
                 }

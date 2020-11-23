@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -22,7 +22,11 @@
                 <outlet property="remoteItem" destination="of9-Ja-9Yf" id="z57-Ut-oxK"/>
                 <outlet property="startItem" destination="vsd-ll-3nr" id="ODN-wa-BTp"/>
                 <outlet property="statusMenu" destination="V8Q-mq-A2f" id="Epo-HD-J21"/>
-                <outlet property="traceItem" destination="Kkx-ex-NCv" id="EXz-O7-K34"/>
+                <outlet property="traceExclude" destination="K7d-6S-sPe" id="Nde-Aw-W6F"/>
+                <outlet property="traceFilters" destination="p7X-fx-AEQ" id="GzX-pA-y1C"/>
+                <outlet property="traceInclude" destination="Yzf-xB-GlM" id="7CV-7J-MQY"/>
+                <outlet property="traceItem" destination="GZB-KU-eto" id="sKh-RZ-dd0"/>
+                <outlet property="updateItem" destination="kFj-jW-1uq" id="zyq-6a-Hes"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
                 <outlet property="windowItem" destination="aUF-d1-5bR" id="MxW-hd-aZ7"/>
                 <outlet property="xprobeItem" destination="R6p-Yl-7qz" id="Ebf-Kl-PWB"/>
@@ -662,6 +666,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
                 <autoresizingMask key="autoresizingMask"/>
             </view>
+            <point key="canvasLocation" x="111" y="1043"/>
         </window>
         <menu autoenablesItems="NO" id="V8Q-mq-A2f">
             <items>
@@ -704,7 +709,7 @@
                         <action selector="toggleState:" target="Voe-Tx-rLC" id="old-T7-DMa"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Order Front" toolTip="Order Front SImulator" id="wFq-Rv-gfa">
+                <menuItem title="Order Front" toolTip="Order Front SImulator on injection" id="wFq-Rv-gfa">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="toggleState:" target="Voe-Tx-rLC" id="LCw-9g-CaP"/>
@@ -731,25 +736,128 @@
                         <action selector="runXprobe:" target="Voe-Tx-rLC" id="OLt-ZD-lyd"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Trace App" toolTip="Log app messaging" id="Kkx-ex-NCv">
+                <menuItem title="Method Tracing" id="GZB-KU-eto">
                     <modifierMask key="keyEquivalentModifierMask"/>
-                    <accessibility description="Trace App"/>
-                    <connections>
-                        <action selector="traceApp:" target="Voe-Tx-rLC" id="5zd-Ho-CaT"/>
-                    </connections>
-                </menuItem>
-                <menuItem title="Remote" id="of9-Ja-9Yf">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <menu key="submenu" title="Remote" id="eGx-OC-usD">
+                    <menu key="submenu" title="Method Tracing" autoenablesItems="NO" id="LL4-BA-XJf">
                         <items>
-                            <menuItem title="Start Server" toolTip="Control device from desktop" id="7Om-BV-MqZ">
+                            <menuItem title="Trace Main Bundle" allowsKeyEquivalentWhenHidden="YES" toolTip="Log methods defined in app's main bundle." id="3ZO-RG-jcD">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <accessibility description="Trace App"/>
+                                <connections>
+                                    <action selector="traceUIApp:" target="Voe-Tx-rLC" id="oc5-Cw-bGO"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Trace Package" id="X2d-h8-G2Z">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Trace Package" id="FGp-MT-4bj">
+                                    <items>
+                                        <menuItem title="Item" id="ktC-DA-aLb">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                            <menuItem title="Trace Framework" id="0BZ-xo-Zsc">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Trace Framework" autoenablesItems="NO" id="q6B-be-n35">
+                                    <items>
+                                        <menuItem title="Item" id="3gB-gt-655">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                            <menuItem title="Trace SysInternal" id="zzn-qk-eXx">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Trace SysInternal" autoenablesItems="NO" id="CGp-LR-3N2">
+                                    <items>
+                                        <menuItem title="Item" id="YDY-jD-b7s">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                            <menuItem title="Trace App/UIKit" allowsKeyEquivalentWhenHidden="YES" toolTip="Trace the entirety of UIKit or AppKit." id="uSA-e7-Idr">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <accessibility description="Trace App"/>
+                                <connections>
+                                    <action selector="traceUIKit:" target="Voe-Tx-rLC" id="P5g-dI-Yai"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Trace SwiftUI" allowsKeyEquivalentWhenHidden="YES" toolTip="Log calls made to SwiftUI." id="kbO-dx-98y">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <accessibility description="Trace App"/>
+                                <connections>
+                                    <action selector="traceSwiftUI:" target="Voe-Tx-rLC" id="0xk-LY-4Pv"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Undo Traces" allowsKeyEquivalentWhenHidden="YES" toolTip="Log calls made to SwiftUI." id="0Nz-cB-dDv">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <accessibility description="Trace App"/>
+                                <connections>
+                                    <action selector="remmoveTraces:" target="Voe-Tx-rLC" id="V0U-kh-UYB"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Legacy Trace" hidden="YES" toolTip="Log app class messaging. Includes calls via Objective-C" id="u9J-81-lZJ">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <accessibility description="Trace App"/>
+                                <connections>
+                                    <action selector="traceApp:" target="Voe-Tx-rLC" id="Zxl-pa-7Xl"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="1Zk-TV-Nfy"/>
+                            <menuItem title="Set Filters" toolTip="Set filters to manage trace output." id="Y20-on-vxe">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <accessibility description="Trace App"/>
+                                <connections>
+                                    <action selector="showTraceFilters:" target="Voe-Tx-rLC" id="kaX-pV-f0v"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Dump Stats" toolTip="Dump elpased time and invocatio count stats per method." id="wMb-mC-poo">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <accessibility description="Trace App"/>
+                                <connections>
+                                    <action selector="traceStats:" target="Voe-Tx-rLC" id="2DR-dQ-dhn"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Dump Call Order" toolTip="Dump methods invoked in order they were fist called." id="blr-cp-nYs">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <accessibility description="Trace App"/>
+                                <connections>
+                                    <action selector="callOrder:" target="Voe-Tx-rLC" id="Ea8-q9-ser"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Dump File Order" id="PNF-xc-Fxf">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <string key="toolTip">List files in project acoording to the order they were first referenced. Change order source files are compiled in project to minimise paging delays on app startup.</string>
+                                <accessibility description="Trace App"/>
+                                <connections>
+                                    <action selector="fileOrder:" target="Voe-Tx-rLC" id="ptN-4E-maE"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Re-order Project" toolTip="Reorder source files in project according to when they are first used." id="3ZV-Dm-RPu">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <accessibility description="Trace App"/>
+                                <connections>
+                                    <action selector="fileReorder:" target="Voe-Tx-rLC" id="ZwN-Ob-mNa"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                        <accessibility description="Add method traces to App"/>
+                    </menu>
+                </menuItem>
+                <menuItem title="Remote Control" id="of9-Ja-9Yf">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Remote Control" id="eGx-OC-usD">
+                        <items>
+                            <menuItem title="Start Server" toolTip="Control device from desktop. See README for how to set this up." id="7Om-BV-MqZ">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <accessibility description="Trace App"/>
                                 <connections>
                                     <action selector="startRemote:" target="Voe-Tx-rLC" id="odg-2Q-T1g"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Stop Server" id="Fa8-hf-Yom">
+                            <menuItem title="Stop Server" toolTip="Stop the remote server." id="Fa8-hf-Yom">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="stopRemote:" target="Voe-Tx-rLC" id="Fbl-rZ-MWg"/>
@@ -790,10 +898,22 @@
                         <action selector="orderFrontStandardAboutPanel:" target="-1" id="b6u-Vx-pO5"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Help/README" id="kFj-jW-1uq">
+                <menuItem title="Update Check" toolTip="Check for App updates" id="kFj-jW-1uq">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="help:" target="Voe-Tx-rLC" id="Scj-Z3-yFA"/>
+                        <action selector="updateCheck:" target="Voe-Tx-rLC" id="TpD-l0-JEf"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Help/README" toolTip="Open project README." id="DcW-s5-diF">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="help:" target="Voe-Tx-rLC" id="Jmr-Oc-zAH"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Sponsor Dev." toolTip="Sponsor the developer on Github." id="LVU-Kn-bbK">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="sponsor:" target="Voe-Tx-rLC" id="0Tc-w2-LJX"/>
                     </connections>
                 </menuItem>
                 <menuItem title="Quit Injection" toolTip="Quit InjectionIII" id="LUw-n8-2Gj">
@@ -804,8 +924,87 @@
                     </connections>
                 </menuItem>
             </items>
-            <point key="canvasLocation" x="112" y="602.5"/>
+            <point key="canvasLocation" x="3" y="613"/>
         </menu>
         <userDefaultsController representsSharedInstance="YES" id="mc2-qN-cFK"/>
+        <window title="Method Trace Filters" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="p7X-fx-AEQ" customClass="NSPanel">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="1940" y="1086" width="376" height="166"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+            <view key="contentView" id="Qow-ez-PwQ">
+                <rect key="frame" x="0.0" y="0.0" width="376" height="166"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <box fixedFrame="YES" borderType="line" title="Method inclusion regexp" translatesAutoresizingMaskIntoConstraints="NO" id="kIb-GT-XoA">
+                        <rect key="frame" x="17" y="87" width="342" height="59"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <view key="contentView" id="NsC-kE-14D">
+                            <rect key="frame" x="3" y="3" width="336" height="41"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <textField toolTip="Regular expression for methods to include in tracince output" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Yzf-xB-GlM">
+                                    <rect key="frame" x="8" y="10" width="249" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Regular Expression" drawsBackground="YES" id="OSD-Nr-QNY">
+                                        <font key="font" usesAppearanceFont="YES"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        <connections>
+                                            <action selector="performClick:" target="jPt-Lp-Ai7" id="j8I-Ow-rPY"/>
+                                        </connections>
+                                    </textFieldCell>
+                                </textField>
+                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jPt-Lp-Ai7">
+                                    <rect key="frame" x="259" y="3" width="75" height="32"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="KQ5-Pl-Kbr">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="updateTraceInclude:" target="Voe-Tx-rLC" id="CYM-8s-NyK"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                        </view>
+                    </box>
+                    <box fixedFrame="YES" borderType="line" title="Method exclusion regexp" translatesAutoresizingMaskIntoConstraints="NO" id="53A-2g-O1u">
+                        <rect key="frame" x="17" y="16" width="342" height="59"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <view key="contentView" id="G8z-1T-j7h">
+                            <rect key="frame" x="3" y="3" width="336" height="41"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <textField toolTip="Regular expression for methods to exclude in tracince output" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K7d-6S-sPe">
+                                    <rect key="frame" x="8" y="10" width="249" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Regular Expression" drawsBackground="YES" id="Tjb-Gh-qMa">
+                                        <font key="font" usesAppearanceFont="YES"/>
+                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        <connections>
+                                            <action selector="performClick:" target="M3g-Xv-ERw" id="SUf-FJ-Vfa"/>
+                                        </connections>
+                                    </textFieldCell>
+                                </textField>
+                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M3g-Xv-ERw">
+                                    <rect key="frame" x="259" y="3" width="75" height="32"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Iwe-df-0t1">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="updateTraceExclude:" target="Voe-Tx-rLC" id="WkU-xw-8KY"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                        </view>
+                    </box>
+                </subviews>
+            </view>
+            <point key="canvasLocation" x="-73" y="974"/>
+        </window>
     </objects>
 </document>

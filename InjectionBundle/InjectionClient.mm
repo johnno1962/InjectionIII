@@ -5,12 +5,15 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#74 $
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#141 $
 //
 
 #import "InjectionClient.h"
+#import "SwiftTrace.h"
+#import <mach-o/dyld.h>
 
 #ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
+#import <UIKit/UIKit.h>
 #if __has_include("tvOSInjection10-Swift.h")
 #import "tvOSInjection10-Swift.h"
 #elif __has_include("tvOSInjection-Swift.h")
@@ -20,7 +23,12 @@
 #else
 #import "iOSInjection-Swift.h"
 #endif
-#import <UIKit/UIKit.h>
+#import <objc/runtime.h>
+
+@interface NSObject (Remapped)
++ (void)addMappingFromIdentifier:(NSString *)identifier toObject:(id)object forCoder:(id)coder;
++ (id)mappedObjectForCoder:(id)decoder withIdentifier:(NSString *)identifier;
+@end
 
 @implementation NSObject (Remapper)
 
@@ -56,6 +64,21 @@ static struct {
 
 @interface UIViewController (StoryboardInjection)
 - (void)_loadViewFromNibNamed:(NSString *)a0 bundle:(NSBundle *)a1;
+@end
+@implementation UIViewController (iOS14StoryboardInjection)
+- (void)iOS14LoadViewFromNibNamed:(NSString *)nibName bundle:(NSBundle *)bundle {
+    if ([self respondsToSelector:@selector(_loadViewFromNibNamed:bundle:)])
+        [self _loadViewFromNibNamed:nibName bundle:bundle];
+    else {
+        size_t vcSize = class_getInstanceSize([UIViewController class]);
+        size_t mySize = class_getInstanceSize([self class]);
+        char *extra = (char *)(__bridge void *)self + vcSize;
+        NSData *ivars = [NSData dataWithBytes:extra length:mySize-vcSize];
+        (void)[self initWithNibName:nibName bundle:bundle];
+        memcpy(extra, ivars.bytes, ivars.length);
+        [self loadView];
+    }
+}
 @end
 #else
 #if __has_include("macOSInjection10-Swift.h")
@@ -98,10 +121,31 @@ static struct {
 @end
 #endif
 
+#import <XCTest/XCTest.h>
+
+@interface SwiftTrace : NSObject
+@end
+
+@implementation NSObject(RunXCTestCase)
++ (void)runXCTestCase:(Class)aTestCase {
+    Class _XCTestSuite = objc_getClass("XCTestSuite");
+    XCTestSuite *suite0 = [_XCTestSuite testSuiteWithName: @"InjectedTest"];
+    XCTestSuite *suite = [_XCTestSuite testSuiteForTestCaseClass: aTestCase];
+    Class _XCTestSuiteRun = objc_getClass("XCTestSuiteRun");
+    XCTestSuiteRun *tr = [_XCTestSuiteRun testRunWithTest: suite];
+    [suite0 addTest:suite];
+    [suite0 performTest:tr];
+}
+@end
+
+@interface SwiftUISupport
++ (void)setupWithPointer:(void *)ptr;
+@end
+
 @implementation InjectionClient
 
 + (void)load {
-    // connect to InjetionIII.app using sicket
+    // connect to InjectionIII.app using socket
     if (InjectionClient *client = [self connectTo:INJECTION_ADDRESS])
         [client run];
     else {
@@ -113,16 +157,19 @@ static struct {
 }
 
 - (void)runInBackground {
-    [SwiftEval sharedInstance].tmpDir = [self readString];
-    [SwiftEval sharedInstance].injectionNumber = 100;
+    SwiftEval *builder = [SwiftEval sharedInstance];
+    NSString *tmpDir = [self readString];
+    BOOL notPlugin = ![@"/tmp" isEqualToString:tmpDir];
+    builder.tmpDir = tmpDir;
 
+    if (notPlugin)
+        [self writeInt:INJECTION_SALT];
     [self writeString:INJECTION_KEY];
-    [self writeString:[NSBundle mainBundle].privateFrameworksPath];
-#ifdef __LP64__
-    [self writeString:@"x86_64"];
-#else
-    [self writeString:@"i386"];
-#endif
+
+    NSString *frameworksPath = [NSBundle mainBundle].privateFrameworksPath;
+    [self writeString:frameworksPath];
+
+    [self writeString:builder.arch];
     [self writeString:[NSBundle mainBundle].executablePath];
 
     int codesignStatusPipe[2];
@@ -131,10 +178,36 @@ static struct {
     SimpleSocket *writer = [[SimpleSocket alloc] initSocket:codesignStatusPipe[1]];
 
     // make available implementation of signing delegated to macOS app
-    [SwiftEval sharedInstance].signer = ^BOOL(NSString *_Nonnull dylib) {
+    builder.signer = ^BOOL(NSString *_Nonnull dylib) {
         [self writeCommand:InjectionSign withString:dylib];
         return [reader readString].boolValue;
     };
+
+    NSDictionary<NSString *,NSString *> *frameworkPaths;
+    if (notPlugin) {
+        NSMutableArray *frameworks = [NSMutableArray new];
+        NSMutableArray *sysFrameworks = [NSMutableArray new];
+        NSMutableDictionary *imageMap = [NSMutableDictionary new];
+        const char *bundleFrameworks = frameworksPath.UTF8String;
+
+        for (int32_t i = _dyld_image_count()-1; i >= 0 ; i--) {
+            const char *imageName = _dyld_get_image_name(i);
+            if (!strstr(imageName, ".framework/")) continue;
+            NSString *imagePath = [NSString stringWithUTF8String:imageName];
+            NSString *frameworkName = imagePath.lastPathComponent;
+            [imageMap setValue:imagePath forKey:frameworkName];
+            [strstr(imageName, bundleFrameworks) ?
+             frameworks : sysFrameworks addObject:frameworkName];
+        }
+
+        [self writeCommand:InjectionFrameworkList withString:
+         [frameworks componentsJoinedByString:FRAMEWORK_DELIMITER]];
+        [self writeString:
+         [sysFrameworks componentsJoinedByString:FRAMEWORK_DELIMITER]];
+        [self writeString:[[SwiftInjection packageNames]
+                           componentsJoinedByString:FRAMEWORK_DELIMITER]];
+        frameworkPaths = imageMap;
+    }
 
     // As tmp file names come in, inject them
     InjectionCommand command;
@@ -148,14 +221,14 @@ static struct {
             NSDictionary *dictionary = (NSDictionary *)json;
             if (dictionary != nil) {
                 NSNumber *vaccineEnabled = [dictionary valueForKey:@"Enabled Vaccine"];
-                [SwiftEval sharedInstance].vaccineEnabled = [vaccineEnabled boolValue];
+                builder.vaccineEnabled = [vaccineEnabled boolValue];
             }
             break;
         }
         case InjectionConnected: {
             NSString *projectFile = [self readString];
-            [SwiftEval sharedInstance].projectFile = projectFile;
-            [SwiftEval sharedInstance].derivedLogs = nil;
+            builder.projectFile = projectFile;
+            builder.derivedLogs = nil;
             printf("💉 Injection connected 👍\n");
             NSString *pbxFile = [projectFile
                  stringByAppendingPathComponent:@"project.pbxproj"];
@@ -178,13 +251,101 @@ static struct {
             [writer writeString:[self readString]];
             break;
         case InjectionTrace:
-            [SwiftTrace traceMainBundleWithSubLevels:0];
+            [SwiftTrace swiftTraceMainBundle];
+            printf("💉 Added trace to non-final methods of classes in app bundle\n");
+            [self filteringChanged];
             break;
         case InjectionUntrace:
-            [SwiftTrace removeAllTraces];
+            [SwiftTrace swiftTraceRemoveAllTraces];
+            break;
+        case InjectionTraceUI:
+            [self loadSwuftUISupprt];
+            [SwiftTrace swiftTraceMainBundleMethods];
+            [SwiftTrace swiftTraceMainBundle];
+            printf("💉 Added trace to methods in main bundle\n");
+            [self filteringChanged];
+            break;
+        case InjectionTraceUIKit:
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                Class OSView = objc_getClass("UIView") ?: objc_getClass("NSView");
+                printf("💉 Adding trace to the framework containg %s, this will take a while...\n", class_getName(OSView));
+                [OSView swiftTraceBundle];
+                printf("💉 Completed adding trace.\n");
+            });
+            [self filteringChanged];
+            break;
+        case InjectionTraceSwiftUI:
+            if (Class AnyText = [self loadSwuftUISupprt]) {
+                printf("💉 Adding trace to SwiftUI calls.\n");
+                [SwiftTrace swiftTraceMethodsInFrameworkContaining:AnyText];
+                [self filteringChanged];
+            }
+            break;
+        case InjectionTraceFramework: {
+            NSString *frameworkName = [self readString];
+            if (const char *frameworkPath =
+                frameworkPaths[frameworkName].UTF8String) {
+                printf("💉 Tracing %s\n", frameworkPath);
+                [SwiftTrace swiftTraceMethodsInBundle:frameworkPath packageName:nil];
+                [SwiftTrace swiftTraceBundlePath:frameworkPath];
+            }
+            else {
+                printf("💉 Tracing package %s\n", frameworkName.UTF8String);
+                NSString *mainBundlePath = [NSBundle mainBundle].executablePath;
+                [SwiftTrace swiftTraceMethodsInBundle:mainBundlePath.UTF8String
+                                          packageName:frameworkName];
+            }
+            [self filteringChanged];
+            break;
+        }
+        case InjectionQuietInclude:
+            [SwiftTrace setSwiftTraceFilterInclude:[self readString]];
+            break;
+        case InjectionInclude:
+            [SwiftTrace setSwiftTraceFilterInclude:[self readString]];
+            [self filteringChanged];
+            break;
+        case InjectionExclude:
+            [SwiftTrace setSwiftTraceFilterExclude:[self readString]];
+            [self filteringChanged];
+            break;
+        case InjectionStats:
+            static int top = 200;
+            printf("\n💉 Sorted top %d elapsed time/invocations by method\n"
+                   "💉 =================================================\n", top);
+            [SwiftInjection dumpStatsWithTop:top];
+            [self needsTracing];
+            break;
+        case InjectionCallOrder:
+            printf("\n💉 Function names in the order they were first called:\n"
+                   "💉 ===================================================\n");
+            for (NSString *signature : [SwiftInjection callOrder])
+                printf("%s\n", signature.UTF8String);
+            [self needsTracing];
+            break;
+        case InjectionFileOrder:
+            printf("\n💉 Source files in the order they were first referenced:\n"
+                   "💉 =====================================================\n"
+                   "💉 (Order the source files should be compiled in target)\n");
+            [SwiftInjection fileOrder];
+            [self needsTracing];
+            break;
+        case InjectionFileReorder:
+            [self writeCommand:InjectionCallOrderList
+                    withString:[[SwiftInjection callOrder]
+                                componentsJoinedByString:CALLORDER_DELIMITER]];
+            [self needsTracing];
+            break;
+        case InjectionUninterpose:
+            [SwiftTrace swiftTraceRevertAllInterposes];
+            [SwiftTrace swiftTraceRemoveAllTraces];
+            printf("💉 Removed all traces (and injections).\n");
+            break;
+        case InjectionInvalid:
+            printf("💉 ⚠️ Connection rejected. Are you running the correct version of InjectionIII.app from /Applications? ⚠️\n");
             break;
         case InjectionIdeProcPath: {
-            [SwiftEval sharedInstance].lastIdeProcPath = [self readString];
+            builder.lastIdeProcPath = [self readString];
             break;
         }
         default: {
@@ -215,10 +376,10 @@ static struct {
                     NSArray<NSString *> *parts = [changed componentsSeparatedByString:@"^"];
                     int pathID = parts[0].intValue;
                     [self writeCommand:InjectionPause withString:@"5"];
-                    if ([xprobePaths[pathID].object respondsToSelector:@selector(evalSwift:)])
-                        [xprobePaths[pathID].object evalSwift:parts[3].stringByRemovingPercentEncoding];
+                    if ([xprobePaths[pathID].object respondsToSelector:@selector(swiftEvalWithCode:)])
+                        (void)[xprobePaths[pathID].object swiftEvalWithCode:parts[3].stringByRemovingPercentEncoding];
                     else
-                        printf("Eval only works on NSObject subclasses\n");
+                        printf("💉 Xprobe: Eval only works on NSObject subclasses\n");
                     [Xprobe writeString:[NSString stringWithFormat:@"$('BUSY%d').hidden = true; ", pathID]];
                     break;
                 }
@@ -234,6 +395,47 @@ static struct {
             });
         }
         }
+    }
+}
+
+- (Class)loadSwuftUISupprt {
+    static char classInSwiftUIMangled[] = "$s7SwiftUI14AnyTextStorageCN";
+    if (Class AnyText = (__bridge Class)
+        dlsym(RTLD_DEFAULT, classInSwiftUIMangled)) {
+        NSString *swiftUIBundlePath = [[[NSBundle
+            bundleForClass:[self class]] bundlePath]
+            stringByReplacingOccurrencesOfString:@"Injection.bundle"
+                                 withString:@"SwiftUISupport.bundle"];
+        if (Class swiftUISupport = [[NSBundle
+                                     bundleWithPath:swiftUIBundlePath]
+                                    classNamed:@"SwiftUISupport"])
+            [swiftUISupport setupWithPointer:NULL];
+        else
+            printf("💉 Could not find SwiftUISupport at path: %s\n",
+                   swiftUIBundlePath.UTF8String);
+        return AnyText;
+    }
+    return nil;
+}
+
+- (void)needsTracing {
+    if (![SwiftTrace swiftTracing])
+        printf("💉 ⚠️ You need to have traced something to gather stats.\n");
+}
+
+- (void)filteringChanged {
+    if ([SwiftTrace swiftTracing]) {
+        NSString *exclude = SwiftTrace.swiftTraceFilterExclude;
+        if (NSString *include = SwiftTrace.swiftTraceFilterInclude)
+            printf(exclude ?
+               "💉 Filtering trace to include methods matching '%s' but not '%s'.\n" :
+               "💉 Filtering trace to include methods matching '%s'.\n",
+               include.UTF8String, exclude.UTF8String);
+        else
+            printf(exclude ?
+               "💉 Filtering trace to exclude methods matching '%s'.\n" :
+               "💉 Not filtering trace (Menu Item: 'Set Filters')\n",
+               exclude.UTF8String);
     }
 }
 
@@ -283,8 +485,8 @@ static struct {
             remapper.output = [NSMutableArray new];
             allOrder[nibName] = remapper.order = [NSMutableArray new];
 
-            [visibleVC _loadViewFromNibNamed:visibleVC.nibName
-                                      bundle:visibleVC.nibBundle];
+            [visibleVC iOS14LoadViewFromNibNamed:visibleVC.nibName
+                                          bundle:visibleVC.nibBundle];
 
             remapper.inputIndexes = nil;
             remapper.output = nil;
@@ -302,8 +504,8 @@ static struct {
         
         resetRemapper();
 
-        [visibleVC _loadViewFromNibNamed:visibleVC.nibName
-                                  bundle:visibleVC.nibBundle];
+        [visibleVC iOS14LoadViewFromNibNamed:visibleVC.nibName
+                                      bundle:visibleVC.nibBundle];
 
         if ([SwiftEval sharedInstance].vaccineEnabled == YES) {
             resetRemapper();

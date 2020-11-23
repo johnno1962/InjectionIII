@@ -5,10 +5,12 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#18 $
+//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#94 $
+//
 
 import Cocoa
 
+let XcodeBundleID = "com.apple.dt.Xcode"
 var appDelegate: AppDelegate!
 
 @NSApplicationMain
@@ -17,6 +19,9 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     @IBOutlet var window: NSWindow!
     @IBOutlet weak var enableWatcher: NSMenuItem!
     @IBOutlet weak var traceItem: NSMenuItem!
+    @IBOutlet weak var traceInclude: NSTextField!
+    @IBOutlet weak var traceExclude: NSTextField!
+    @IBOutlet weak var traceFilters: NSWindow!
     @IBOutlet weak var statusMenu: NSMenu!
     @IBOutlet weak var startItem: NSMenuItem!
     @IBOutlet weak var xprobeItem: NSMenuItem!
@@ -24,6 +29,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     @IBOutlet weak var enableVaccineItem: NSMenuItem!
     @IBOutlet weak var windowItem: NSMenuItem!
     @IBOutlet weak var remoteItem: NSMenuItem!
+    @IBOutlet weak var updateItem: NSMenuItem!
     @IBOutlet weak var frontItem: NSMenuItem!
     @IBOutlet var statusItem: NSStatusItem!
 
@@ -35,13 +41,17 @@ class AppDelegate : NSObject, NSApplicationDelegate {
                                         comment: "Project Directory")
 
     let defaults = UserDefaults.standard
-    let lastWatched = "lastWatched"
-    let bookmarkKey = "persistentBookmarks"
+    var defaultsMap: [NSMenuItem: String]!
+    lazy var isSandboxed =
+        ProcessInfo.processInfo.environment["APP_SANDBOX_CONTAINER_ID"] != nil
+    var runningXcodeDevURL: URL? =
+        NSRunningApplication.runningApplications(
+            withBundleIdentifier: XcodeBundleID).first?
+            .bundleURL?.appendingPathComponent("Contents/Developer")
 
     @objc func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
         appDelegate = self
-        InjectionServer.startServer(INJECTION_ADDRESS)
 
         let statusBar = NSStatusBar.system
         statusItem = statusBar.statusItem(withLength: statusBar.thickness)
@@ -51,10 +61,31 @@ class AppDelegate : NSObject, NSApplicationDelegate {
         statusItem.isEnabled = true
         statusItem.title = ""
 
-        enabledTDDItem.state = UserDefaults.standard.bool(forKey:UserDefaultsTDDEnabled)
-            ? .on : .off
-        enableVaccineItem.state = UserDefaults.standard.bool(forKey:UserDefaultsVaccineEnabled)
-            ? .on : .off
+        InjectionServer.startServer(INJECTION_ADDRESS)
+
+        if !FileManager.default.fileExists(atPath:
+            "/Applications/Xcode.app/Contents/Developer") {
+            let alert: NSAlert = NSAlert()
+            alert.messageText = "Missing Xcode at required location"
+            alert.informativeText = """
+                Xcode.app not found at path /Applications/Xcode.app. \
+                You need to have an Xcode at this location to be able \
+                to use InjectionIII. A symbolic link at that path is fine.
+                """
+            alert.alertStyle = .critical
+            alert.addButton(withTitle: "OK")
+            _ = alert.runModal()
+        }
+
+        defaultsMap = [
+            frontItem: UserDefaultsOrderFront,
+            enabledTDDItem: UserDefaultsTDDEnabled,
+            enableVaccineItem: UserDefaultsVaccineEnabled
+        ]
+
+        for (menuItem, defaultsKey) in defaultsMap {
+            menuItem.state = defaults.bool(forKey: defaultsKey) ? .on : .off
+        }
 
         setMenuIcon("InjectionIdle")
         DDHotKeyCenter.shared()?
@@ -62,8 +93,19 @@ class AppDelegate : NSObject, NSApplicationDelegate {
                modifierFlags: NSEvent.ModifierFlags.control.rawValue,
                target:self, action:#selector(autoInject(_:)), object:nil)
 
-        if let lastWatched = defaults.string(forKey: lastWatched) {
+        NSApp.servicesProvider = self
+        if let lastWatched = defaults.string(forKey: UserDefaultsLastWatched) {
             _ = self.application(NSApp, openFile: lastWatched)
+        } else {
+            NSUpdateDynamicServices()
+        }
+
+        let nextUpdateCheck = defaults.double(forKey: UserDefaultsUpdateCheck)
+        if  nextUpdateCheck != 0.0 {
+            updateItem.state = .on
+            if Date.timeIntervalSinceReferenceDate > nextUpdateCheck {
+                self.updateCheck(nil)
+            }
         }
     }
 
@@ -92,15 +134,18 @@ class AppDelegate : NSObject, NSApplicationDelegate {
             .contentsOfDirectory(atPath: url.path),
             let projectFile =
                 fileWithExtension("xcworkspace", inFiles: fileList) ??
-                fileWithExtension("xcodeproj", inFiles: fileList) ??
-                fileList.first(where: {$0 == "Package.swift"}) {
-            self.selectedProject = url
+                fileWithExtension("xcodeproj", inFiles: fileList) {
+            selectedProject = url
                 .appendingPathComponent(projectFile).path
-            self.watchedDirectories.removeAll()
-            self.watchedDirectories.insert(url.path)
-            self.lastConnection?.setProject(self.selectedProject!)
+            watchedDirectories.removeAll()
+            watchedDirectories.insert(url.path)
+            lastConnection?.setProject(self.selectedProject!)
             NSDocumentController.shared.noteNewRecentDocumentURL(url)
-            defaults.set(url.path, forKey: lastWatched)
+//            let projectName = URL(fileURLWithPath: projectFile)
+//                .deletingPathExtension().lastPathComponent
+//            traceInclude.stringValue = projectName
+//            updateTraceInclude(nil)
+            defaults.set(url.path, forKey: UserDefaultsLastWatched)
             return true
         }
 
@@ -119,7 +164,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     }
 
     func persist(url: URL) {
-        var bookmarks = defaults.value(forKey: bookmarkKey)
+        var bookmarks = defaults.value(forKey: UserDefaultsBookmarks)
             as? [String : Data] ?? [String: Data]()
         do {
             bookmarks[url.path] =
@@ -127,7 +172,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
                                                .securityScopeAllowOnlyReadAccess],
                                      includingResourceValuesForKeys: [],
                                      relativeTo: nil)
-            defaults.set(bookmarks, forKey: bookmarkKey)
+            defaults.set(bookmarks, forKey: UserDefaultsBookmarks)
         } catch {
             _ = InjectionServer.error("Bookmarking failed for \(url), \(error)")
         }
@@ -136,7 +181,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     func resolve(path: String) -> URL? {
         var isStale: Bool = false
         if let bookmarks =
-            defaults.value(forKey: bookmarkKey) as? [String : Data],
+            defaults.value(forKey: UserDefaultsBookmarks) as? [String : Data],
             let bookmark = bookmarks[path],
             let resolved = try? URL(resolvingBookmarkData: bookmark,
                            options: .withSecurityScope,
@@ -151,19 +196,28 @@ class AppDelegate : NSObject, NSApplicationDelegate {
 
     func setMenuIcon(_ tiffName: String) {
         DispatchQueue.main.async {
-            if let path = Bundle.main.path(forResource: tiffName, ofType:"tif"),
+            if let path = Bundle.main.path(forResource: tiffName, ofType: "tif"),
                 let image = NSImage(contentsOfFile: path) {
     //            image.template = TRUE;
                 self.statusItem.image = image
                 self.statusItem.alternateImage = self.statusItem.image
-                self.startItem.isEnabled = tiffName == "InjectionIdle"
-                self.xprobeItem.isEnabled = !self.startItem.isEnabled
+                let appRunning = tiffName != "InjectionIdle"
+                self.startItem.isEnabled = appRunning
+                self.xprobeItem.isEnabled = appRunning
+                for item in self.traceItem.submenu!.items {
+                    if item.title != "Set Filters" {
+                        item.isEnabled = appRunning
+                        if !appRunning {
+                            item.state = .off
+                        }
+                    }
+                }
             }
         }
     }
 
     @IBAction func openProject(_ sender: Any) {
-        _ = application(NSApp, openFile:"")
+        _ = application(NSApp, openFile: "")
     }
 
     @IBAction func addDirectory(_ sender: Any) {
@@ -181,17 +235,33 @@ class AppDelegate : NSObject, NSApplicationDelegate {
         }
     }
 
+    func setFrameworks(_ frameworks: String, menuTitle: String) {
+        DispatchQueue.main.async {
+            guard let frameworksMenu = self.traceItem.submenu?
+                    .item(withTitle: menuTitle)?.submenu else { return }
+            frameworksMenu.removeAllItems()
+            for framework in frameworks
+                .components(separatedBy: FRAMEWORK_DELIMITER).sorted()
+                where framework != "" {
+                frameworksMenu.addItem(withTitle: framework, action:
+                    #selector(self.traceFramework(_:)), keyEquivalent: "")
+                    .target = self
+            }
+        }
+    }
+
+    @objc func traceFramework(_ sender: NSMenuItem) {
+        toggleState(sender)
+        lastConnection?.sendCommand(.traceFramework, with: sender.title)
+    }
+
     @IBAction func toggleTDD(_ sender: NSMenuItem) {
         toggleState(sender)
-        let newSetting = sender.state == .on
-        UserDefaults.standard.set(newSetting, forKey:UserDefaultsTDDEnabled)
     }
 
     @IBAction func toggleVaccine(_ sender: NSMenuItem) {
         toggleState(sender)
-        let newSetting = sender.state == .on
-        UserDefaults.standard.set(newSetting, forKey:UserDefaultsVaccineEnabled)
-        self.lastConnection?.sendCommand(.vaccineSettingChanged, with:vaccineConfiguration())
+        lastConnection?.sendCommand(.vaccineSettingChanged, with:vaccineConfiguration())
     }
 
     @IBAction func startRemote(_ sender: NSMenuItem) {
@@ -206,8 +276,61 @@ class AppDelegate : NSObject, NSApplicationDelegate {
 
     @IBAction func traceApp(_ sender: NSMenuItem) {
         toggleState(sender)
-        self.lastConnection?.sendCommand(sender.state == NSControl.StateValue.on ?
+        lastConnection?.sendCommand(sender.state == .on ?
             .trace : .untrace, with: nil)
+    }
+
+    @IBAction func traceUIApp(_ sender: NSMenuItem) {
+        toggleState(sender)
+        lastConnection?.sendCommand(.traceUI, with: nil)
+    }
+
+    @IBAction func traceUIKit(_ sender: NSMenuItem) {
+        toggleState(sender)
+        lastConnection?.sendCommand(.traceUIKit, with: nil)
+    }
+
+    @IBAction func traceSwiftUI(_ sender: NSMenuItem) {
+        toggleState(sender)
+        lastConnection?.sendCommand(.traceSwiftUI, with: nil)
+    }
+
+    @IBAction func traceStats(_ sender: NSMenuItem) {
+        lastConnection?.sendCommand(.stats, with: nil)
+    }
+
+    @IBAction func remmoveTraces(_ sender: NSMenuItem?) {
+        lastConnection?.sendCommand(.uninterpose, with: nil)
+    }
+
+    @IBAction func showTraceFilters(_ sender: NSMenuItem?) {
+        NSApplication.shared.activate(ignoringOtherApps: true)
+        traceFilters.makeKeyAndOrderFront(sender)
+    }
+
+    @IBAction func updateTraceInclude(_ sender: NSButton?) {
+        update(filter: sender == nil ? .quietInclude : .include,
+               textField: traceInclude)
+    }
+
+    @IBAction func updateTraceExclude(_ sender: NSButton?) {
+        update(filter: .exclude, textField: traceExclude)
+    }
+
+    func update(filter: InjectionCommand, textField: NSTextField) {
+        let regex = textField.stringValue
+        do {
+            if regex != "" {
+                _ = try NSRegularExpression(pattern: regex, options: [])
+            }
+            lastConnection?.sendCommand(filter, with: regex)
+        } catch {
+            let alert = NSAlert(error: error)
+            alert.informativeText = "Invalid regular expression syntax '\(regex)' for filter. Characters [](){}|?*+\\ and . have special meanings. Type: man re_syntax, in the terminal."
+            alert.runModal()
+            textField.becomeFirstResponder()
+            showTraceFilters(nil)
+        }
     }
 
     func vaccineConfiguration() -> String {
@@ -221,10 +344,13 @@ class AppDelegate : NSObject, NSApplicationDelegate {
 
     @IBAction func toggleState(_ sender: NSMenuItem) {
         sender.state = sender.state == .on ? .off : .on
+        if let defaultsKey = defaultsMap[sender] {
+            defaults.set(sender.state, forKey: defaultsKey)
+        }
     }
 
     @IBAction func autoInject(_ sender: NSMenuItem) {
-        self.lastConnection?.injectPending()
+        lastConnection?.injectPending()
 //    #if false
 //        NSError *error = nil;
 //        // Install helper tool
@@ -256,22 +382,14 @@ class AppDelegate : NSObject, NSApplicationDelegate {
 //    #endif
     }
 
-    @IBAction func runXprobe(_ sender: NSMenuItem) {
-        if xprobePlugin == nil {
-            xprobePlugin = XprobePluginMenuController()
-            xprobePlugin.applicationDidFinishLaunching(Notification(name: Notification.Name(rawValue: "")))
-            xprobePlugin.injectionPlugin = unsafeBitCast(self, to: AnyClass.self)
-        }
-        lastConnection?.sendCommand(.xprobe, with:"")
-        windowItem.isHidden = false
-    }
-
-    @objc func evalCode(_ swift: String) {
-        self.lastConnection?.sendCommand(.eval, with:swift)
-    }
-
     @IBAction func help(_ sender: Any) {
-        _ = NSWorkspace.shared.open(URL(string: "https://github.com/johnno1962/InjectionIII")!)
+        _ = NSWorkspace.shared.open(URL(string:
+            "https://github.com/johnno1962/InjectionIII")!)
+    }
+
+    @IBAction func sponsor(_ sender: Any) {
+        _ = NSWorkspace.shared.open(URL(string:
+            "https://github.com/sponsors/johnno1962")!)
     }
 
     @objc

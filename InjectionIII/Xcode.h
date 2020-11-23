@@ -8,6 +8,14 @@
 
 @class XcodeApplication, XcodeDocument, XcodeWindow, XcodeFileDocument, XcodeTextDocument, XcodeSourceDocument, XcodeWorkspaceDocument, XcodeSchemeActionResult, XcodeSchemeActionIssue, XcodeBuildError, XcodeBuildWarning, XcodeAnalyzerIssue, XcodeTestFailure, XcodeScheme, XcodeRunDestination, XcodeDevice, XcodeBuildConfiguration, XcodeProject, XcodeBuildSetting, XcodeResolvedBuildSetting, XcodeTarget;
 
+// Category added for use with Swift
+@interface SBObject(InjectionIII)
+- (id) open:(id)x;  // Open a document.
+@property (copy) NSString *path;  // The document's path.
+@property (copy) NSArray<NSNumber *> *selectedCharacterRange;  // The first and last character positions in the selection.
+@property (copy) XcodeWorkspaceDocument *activeWorkspaceDocument;  // The active workspace document in Xcode.
+@end
+
 enum XcodeSaveOptions {
 	XcodeSaveOptionsYes = 'yes ' /* Save the file. */,
 	XcodeSaveOptionsNo = 'no  ' /* Do not save the file. */,
