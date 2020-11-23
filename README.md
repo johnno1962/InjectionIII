@@ -7,6 +7,11 @@ in the iOS simulator without having to rebuild or restart your application. This
 This start-over implementation of [Injection for Xcode](https://github.com/johnno1962/injectionforxcode)
 has been built into a standalone app: `InjectionIII.app` which runs in the status bar and is [available from the Mac App Store](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12).
 
+This README includes descriptions of some newer features that are only available in more recent
+releases of the InjectionIII.app [available on github](https://github.com/johnno1962/InjectionIII/releases).
+You will need to use one of these releases for Apple Silicon or if you have upgraded to Big Sur
+due to changes to macOS codesigning that affect the sandboxed App Store version of the app.
+
 ![Icon](http://johnholdsworth.com/InjectionUI.gif)
 
 `InjectionIII.app` needs an Xcode 10.2 or greater at the path `/Applications/Xcode.app` , works for `Swift` and `Objective-C` and can be used alongside [AppCode](https://www.jetbrains.com/help/objc/create-a-swiftui-application.html) or by using the [AppCode Plugin](https://github.com/johnno1962/InjectionIII/blob/master/AppCodePlugin/INSTALL.md).
@@ -55,13 +60,18 @@ If you want to build this project from source (which you may need to do to use i
     
 ### Available downloads
 
-| Xcode 10.2+ | Big Sur (Beta) | AppCode Plugin |
+| Xcode 10.2+ | For Big Sur | AppCode Plugin |
 | ------------- | ------------- | ------------- |
-| [Mac app store](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12) | [Release Candidate](https://github.com/johnno1962/InjectionIII/releases) | [Install  Injection.jar](https://github.com/johnno1962/InjectionIII/tree/master/AppCodePlugin) |
+| [Mac app store](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12) | [Github Releases](https://github.com/johnno1962/InjectionIII/releases) | [Install  Injection.jar](https://github.com/johnno1962/InjectionIII/tree/master/AppCodePlugin) |
 
 ### Limitations/FAQ
 
-This new release of InjectionIII uses a [different patching technique](http://johnholdsworth.com/dyld_dynamic_interpose.html) than previous versions in that you can now update the implementations of class, struct and enum methods (final or not) provided they have not been inlined which shouldn't be the case for a debug build. You can't however alter the layout of a class or struct in the course of an injection i.e. add or rearrange properties with storage or add or move methods of a non-final class or your app will likely crash. Also, see the notes below for injecting `SwiftUI` views and how they require type erasure.
+New releases of InjectionIII use a [different patching technique](http://johnholdsworth.com/dyld_dynamic_interpose.html)
+than previous versions in that you can now update the implementations of class, struct and enum methods (final or not)
+provided they have not been inlined which shouldn't be the case for a debug build. You can't however alter the layout of
+a class or struct in the course of an injection i.e. add or rearrange properties with storage or add or move methods of a
+non-final class or your app will likely crash. Also, see the notes below for injecting `SwiftUI` views and how they require
+type erasure.
 
 If you have a complex project including Objective-C or C dependancies, using the `-interposable` flag may provoke the following error on linking:
 
@@ -343,4 +353,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2020/11/10 $
+$Date: 2020/11/23 $
