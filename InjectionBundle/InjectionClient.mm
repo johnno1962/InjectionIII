@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#141 $
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#143 $
 //
 
 #import "InjectionClient.h"
@@ -340,6 +340,9 @@ static struct {
             [SwiftTrace swiftTraceRevertAllInterposes];
             [SwiftTrace swiftTraceRemoveAllTraces];
             printf("💉 Removed all traces (and injections).\n");
+            break;
+        case InjectionFeedback:
+            SwiftInjection.traceInjection = [self readString].intValue;
             break;
         case InjectionInvalid:
             printf("💉 ⚠️ Connection rejected. Are you running the correct version of InjectionIII.app from /Applications? ⚠️\n");

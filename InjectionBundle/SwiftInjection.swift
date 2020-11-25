@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#104 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#108 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -108,12 +108,20 @@ public class SwiftInjection: NSObject {
         return injectionNumber
     }
 
+    @objc static var traceInjection = false
+    static var injectionNumber = 0
+    static var injectedPrefix: String {
+        return "Injection#\(injectionNumber)/"
+    }
+
     @objc
     public class func inject(tmpfile: String) throws {
         let newClasses = try SwiftEval.instance.loadAndInject(tmpfile: tmpfile)
         let oldClasses = //oldClass != nil ? [oldClass!] :
             newClasses.map { objc_getClass(class_getName($0)) as! AnyClass }
         var testClasses = [AnyClass]()
+        injectionNumber += 1
+
         for i in 0..<oldClasses.count {
             let oldClass: AnyClass = oldClasses[i], newClass: AnyClass = newClasses[i]
 
@@ -216,12 +224,18 @@ public class SwiftInjection: NSObject {
                     let current = SwiftTrace.interposed(replacee: existing) else {
                     return
                 }
+                let method = SwiftTrace.demangle(symbol: symbol) ?? String(cString: symbol)
                 if detail {
-                    let method = SwiftTrace.demangle(symbol: symbol)
-                    print("💉 Replacing \(method ?? String(cString: symbol))")
+                    print("💉 Replacing \(method)")
+                }
+
+                var replacement = loadedFunc
+                if traceInjection, let tracer = SwiftTrace
+                    .trace(name: injectedPrefix+method, original: replacement) {
+                    replacement = autoBitCast(tracer)
                 }
                 interposes.append(dyld_interpose_tuple(
-                    replacement: loadedFunc, replacee: current))
+                    replacement: replacement, replacee: current))
                 #if ORIGINAL_2_2_0_CODE
                 SwiftTrace.interposed[existing] = loadedFunc
                 SwiftTrace.interposed[current] = loadedFunc
@@ -356,8 +370,15 @@ public class SwiftInjection: NSObject {
         var methodCount: UInt32 = 0
         if let methods = class_copyMethodList(newClass, &methodCount) {
             for i in 0 ..< Int(methodCount) {
-                class_replaceMethod(oldClass, method_getName(methods[i]),
-                                    method_getImplementation(methods[i]),
+                let method = method_getName(methods[i])
+                var replacement = method_getImplementation(methods[i])
+                if traceInjection, let tracer = SwiftTrace
+                    .trace(name: injectedPrefix+NSStringFromSelector(method),
+                    objcMethod: methods[i], objcClass: newClass,
+                    original: autoBitCast(replacement)) {
+                    replacement = autoBitCast(tracer)
+                }
+                class_replaceMethod(oldClass, method, replacement,
                                     method_getTypeEncoding(methods[i]))
             }
             free(methods)

@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#94 $
+//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#97 $
 //
 
 import Cocoa
@@ -31,6 +31,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     @IBOutlet weak var remoteItem: NSMenuItem!
     @IBOutlet weak var updateItem: NSMenuItem!
     @IBOutlet weak var frontItem: NSMenuItem!
+    @IBOutlet weak var feedbackItem: NSMenuItem!
     @IBOutlet var statusItem: NSStatusItem!
 
     var watchedDirectories = Set<String>()
@@ -80,7 +81,8 @@ class AppDelegate : NSObject, NSApplicationDelegate {
         defaultsMap = [
             frontItem: UserDefaultsOrderFront,
             enabledTDDItem: UserDefaultsTDDEnabled,
-            enableVaccineItem: UserDefaultsVaccineEnabled
+            enableVaccineItem: UserDefaultsVaccineEnabled,
+            feedbackItem: UserDefaultsFeedback
         ]
 
         for (menuItem, defaultsKey) in defaultsMap {
@@ -205,7 +207,8 @@ class AppDelegate : NSObject, NSApplicationDelegate {
                 self.startItem.isEnabled = appRunning
                 self.xprobeItem.isEnabled = appRunning
                 for item in self.traceItem.submenu!.items {
-                    if item.title != "Set Filters" {
+                    if item.title != "Set Filters" &&
+                        item.title != "Trace Injected" {
                         item.isEnabled = appRunning
                         if !appRunning {
                             item.state = .off
@@ -262,6 +265,12 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     @IBAction func toggleVaccine(_ sender: NSMenuItem) {
         toggleState(sender)
         lastConnection?.sendCommand(.vaccineSettingChanged, with:vaccineConfiguration())
+    }
+
+    @IBAction func toggleFeedback(_ sender: NSMenuItem?) {
+        sender.flatMap { toggleState($0) }
+        lastConnection?.sendCommand(.feedback,
+                                    with: feedbackItem.state == .on ? "1" : "0")
     }
 
     @IBAction func startRemote(_ sender: NSMenuItem) {

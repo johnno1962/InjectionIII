@@ -18,6 +18,7 @@
                 <outlet property="enableVaccineItem" destination="cCv-GY-3Rv" id="Joe-DQ-AWO"/>
                 <outlet property="enableWatcher" destination="0iA-WA-gxc" id="vVT-sI-q78"/>
                 <outlet property="enabledTDDItem" destination="Mdd-tb-kGc" id="ccs-nb-DKk"/>
+                <outlet property="feedbackItem" destination="CQY-su-z8C" id="OSy-SI-Uso"/>
                 <outlet property="frontItem" destination="wFq-Rv-gfa" id="MPU-fL-HYl"/>
                 <outlet property="remoteItem" destination="of9-Ja-9Yf" id="z57-Ut-oxK"/>
                 <outlet property="startItem" destination="vsd-ll-3nr" id="ODN-wa-BTp"/>
@@ -747,6 +748,12 @@
                                     <action selector="traceUIApp:" target="Voe-Tx-rLC" id="oc5-Cw-bGO"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Trace Injected" tag="1" toolTip="Order Front SImulator on injection" id="CQY-su-z8C">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="toggleFeedback:" target="Voe-Tx-rLC" id="X5V-3g-VjO"/>
+                                </connections>
+                            </menuItem>
                             <menuItem title="Trace Package" id="X2d-h8-G2Z">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Trace Package" id="FGp-MT-4bj">
@@ -806,7 +813,7 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="1Zk-TV-Nfy"/>
-                            <menuItem title="Set Filters" toolTip="Set filters to manage trace output." id="Y20-on-vxe">
+                            <menuItem title="Set Filters" tag="2" toolTip="Set filters to manage trace output." id="Y20-on-vxe">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <accessibility description="Trace App"/>
                                 <connections>
