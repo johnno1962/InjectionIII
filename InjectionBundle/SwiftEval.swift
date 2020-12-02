@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#150 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#151 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -488,27 +488,25 @@ public class SwiftEval: NSObject {
         else {
             // grep out symbols for classes being injected from object file
 
-            let classSymbolNames = try extractClasSymbols(tmpfile: tmpfile)
-
-            return Set(classSymbolNames.compactMap {
-                dlsym(dl, String($0.dropFirst())) })
-                .map { unsafeBitCast($0, to: AnyClass.self) }
+            return try extractClasses(dl: dl, tmpfile: tmpfile)
         }
     }
 
-    func extractClasSymbols(tmpfile: String) throws -> [String] {
-
+    // Overridden by SwiftInjectionEval subclass for injection
+    @objc func extractClasses(dl: UnsafeMutableRawPointer,
+                              tmpfile: String) throws -> [AnyClass] {
         guard shell(command: """
             \(xcodeDev)/Toolchains/XcodeDefault.xctoolchain/usr/bin/nm \(tmpfile).o | grep -E ' S _OBJC_CLASS_\\$_| _(_T0|\\$S|\\$s).*CN$' | awk '{print $3}' >\(tmpfile).classes
             """) else {
             throw evalError("Could not list class symbols")
         }
-        guard var symbols = (try? String(contentsOfFile: "\(tmpfile).classes"))?.components(separatedBy: "\n") else {
+        guard var classSymbolNames = (try? String(contentsOfFile: "\(tmpfile).classes"))?.components(separatedBy: "\n") else {
             throw evalError("Could not load class symbol list")
         }
-        symbols.removeLast()
-
-        return symbols
+        classSymbolNames.removeLast()
+        return Set(classSymbolNames.compactMap {
+            dlsym(dl, String($0.dropFirst())) })
+            .map { unsafeBitCast($0, to: AnyClass.self) }
     }
 
     func findCompileCommand(logsDir: URL, classNameOrFile: String, tmpfile: String) throws -> (compileCommand: String, sourceFile: String)? {

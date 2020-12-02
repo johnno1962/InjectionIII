@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#143 $
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#144 $
 //
 
 #import "InjectionClient.h"
@@ -157,7 +157,7 @@ static struct {
 }
 
 - (void)runInBackground {
-    SwiftEval *builder = [SwiftEval sharedInstance];
+    SwiftEval *builder = [SwiftInjectionEval sharedInstance];
     NSString *tmpDir = [self readString];
     BOOL notPlugin = ![@"/tmp" isEqualToString:tmpDir];
     builder.tmpDir = tmpDir;
