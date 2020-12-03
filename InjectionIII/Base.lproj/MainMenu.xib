@@ -2,7 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17506"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -20,6 +20,7 @@
                 <outlet property="enabledTDDItem" destination="Mdd-tb-kGc" id="ccs-nb-DKk"/>
                 <outlet property="feedbackItem" destination="CQY-su-z8C" id="OSy-SI-Uso"/>
                 <outlet property="frontItem" destination="wFq-Rv-gfa" id="MPU-fL-HYl"/>
+                <outlet property="lookupItem" destination="4Bd-Sy-26q" id="Orx-2R-4gC"/>
                 <outlet property="remoteItem" destination="of9-Ja-9Yf" id="z57-Ut-oxK"/>
                 <outlet property="startItem" destination="vsd-ll-3nr" id="ODN-wa-BTp"/>
                 <outlet property="statusMenu" destination="V8Q-mq-A2f" id="Epo-HD-J21"/>
@@ -662,7 +663,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="480" height="360"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1055"/>
             <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -803,6 +804,13 @@
                                     <action selector="traceSwiftUI:" target="Voe-Tx-rLC" id="0xk-LY-4Pv"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Type Lookup" tag="2" toolTip="Automatically lookup type meta data to enrich trace." id="4Bd-Sy-26q">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <accessibility description="Type Lookup"/>
+                                <connections>
+                                    <action selector="toggleLookup:" target="Voe-Tx-rLC" id="wr4-om-ANO"/>
+                                </connections>
+                            </menuItem>
                             <menuItem title="Undo Traces" allowsKeyEquivalentWhenHidden="YES" toolTip="Remove all Traces" id="0Nz-cB-dDv">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <accessibility description="Undo Traces"/>
@@ -818,7 +826,7 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="1Zk-TV-Nfy"/>
-                            <menuItem title="Set Filters" tag="2" toolTip="Set filters to manage trace output." id="Y20-on-vxe">
+                            <menuItem title="Set Filters" tag="3" toolTip="Set filters to manage trace output." id="Y20-on-vxe">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <accessibility description="Set Filters"/>
                                 <connections>
@@ -947,7 +955,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="1940" y="1086" width="376" height="166"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1055"/>
             <view key="contentView" id="Qow-ez-PwQ">
                 <rect key="frame" x="0.0" y="0.0" width="376" height="166"/>
                 <autoresizingMask key="autoresizingMask"/>

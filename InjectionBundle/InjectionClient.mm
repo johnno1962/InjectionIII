@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#144 $
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#145 $
 //
 
 #import "InjectionClient.h"
@@ -343,6 +343,9 @@ static struct {
             break;
         case InjectionFeedback:
             SwiftInjection.traceInjection = [self readString].intValue;
+            break;
+        case InjectionLookup:
+            [SwiftTrace setSwiftTraceTypeLookup:[self readString].intValue];
             break;
         case InjectionInvalid:
             printf("💉 ⚠️ Connection rejected. Are you running the correct version of InjectionIII.app from /Applications? ⚠️\n");

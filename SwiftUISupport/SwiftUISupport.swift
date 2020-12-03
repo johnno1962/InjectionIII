@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 25/09/2020.
 //  Copyright © 2020 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/SwiftUISupport/SwiftUISupport.swift#13 $
+//  $Id: //depot/ResidentEval/SwiftUISupport/SwiftUISupport.swift#14 $
 //
 
 import SwiftUI
@@ -13,7 +13,8 @@ import SwiftTrace
 
 extension SwiftUI.EdgeInsets: SwiftTraceFloatArg {}
 extension SwiftUI.UnitPoint: SwiftTraceFloatArg {}
-
+extension SwiftUI.Angle: SwiftTraceFloatArg {}
+    
 @objc (SwiftUISupport)
 class SwiftUISupport: NSObject {
 

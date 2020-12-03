@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#97 $
+//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#98 $
 //
 
 import Cocoa
@@ -32,6 +32,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     @IBOutlet weak var updateItem: NSMenuItem!
     @IBOutlet weak var frontItem: NSMenuItem!
     @IBOutlet weak var feedbackItem: NSMenuItem!
+    @IBOutlet weak var lookupItem: NSMenuItem!
     @IBOutlet var statusItem: NSStatusItem!
 
     var watchedDirectories = Set<String>()
@@ -82,7 +83,8 @@ class AppDelegate : NSObject, NSApplicationDelegate {
             frontItem: UserDefaultsOrderFront,
             enabledTDDItem: UserDefaultsTDDEnabled,
             enableVaccineItem: UserDefaultsVaccineEnabled,
-            feedbackItem: UserDefaultsFeedback
+            feedbackItem: UserDefaultsFeedback,
+            lookupItem: UserDefaultsLookup
         ]
 
         for (menuItem, defaultsKey) in defaultsMap {
@@ -207,8 +209,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
                 self.startItem.isEnabled = appRunning
                 self.xprobeItem.isEnabled = appRunning
                 for item in self.traceItem.submenu!.items {
-                    if item.title != "Set Filters" &&
-                        item.title != "Trace Injected" {
+                    if item.tag == 0 {
                         item.isEnabled = appRunning
                         if !appRunning {
                             item.state = .off
@@ -271,6 +272,12 @@ class AppDelegate : NSObject, NSApplicationDelegate {
         sender.flatMap { toggleState($0) }
         lastConnection?.sendCommand(.feedback,
                                     with: feedbackItem.state == .on ? "1" : "0")
+    }
+
+    @IBAction func toggleLookup(_ sender: NSMenuItem?) {
+        sender.flatMap { toggleState($0) }
+        lastConnection?.sendCommand(.lookup,
+                                    with: lookupItem.state == .on ? "1" : "0")
     }
 
     @IBAction func startRemote(_ sender: NSMenuItem) {

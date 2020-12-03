@@ -202,23 +202,26 @@ Sometimes when you are iterating over a UI it is useful to be able to inject sto
 
 Injection now includes the higher level `Vaccine` functionality, for more information consult the [project README](https://github.com/zenangst/Vaccine) or one of the [following](https://medium.com/itch-design-no/code-injection-in-swift-c49be095414c) [references](https://medium.com/@robnorback/the-secret-to-1-second-compile-times-in-xcode-9de4ec8345a1).
 
-### App Tracing (SwiftTrace)
+### Method Tracing menu item (SwiftTrace)
 
 It's possible to inject tracing aspects into your program that don't
-affect it's operation but log every method call and where possible
-their arguments. You can add logging to all methods in your app's
-main bundle or the frameworks it uses or trace calls to system
-frameworks such as UIKit or SwiftUI.
+affect it's operation but log every method call. Where possible
+it will also decorate their arguments. You can add logging to all
+methods in your app's main bundle or the frameworks it uses
+or trace calls to system frameworks such as UIKit or SwiftUI.
+If you opt into "Type Lookup", custom types in your appliction
+can also be decorated using the CustomStringConvertable
+conformance or the default formatter for structs.
 
-These features are implemented by the package [SwiftTrace](https://github.com/johnno1962/SwiftTrace) which is built into the InjectionBundle.
-If you want finer grain control of what is being traced, include the following header file in
-your project's bridging header and a subset of the internal api will be available to Swift (after an
-injection bundle has been loaded):
+These features are implemented by the package [SwiftTrace](https://github.com/johnno1962/SwiftTrace)
+which is built into the InjectionBundle. If you want finer grain control of what is being traced,
+include the following header file in your project's bridging header and a subset of the internal
+api will be available to Swift (after an injection bundle has been loaded):
 
 ```C++
 #import "/Applications/InjectionIII.app/Contents/Resources/SwiftTrace.h"
 ```
-The "Trace UI" menu item can be mimicked by using the following call:
+The "Trace Main Bundle" menu item can be mimicked by using the following call:
 
 ```Swift
  NSObject.swiftTraceMainBundleMethods()
@@ -231,8 +234,8 @@ framework such as SwiftUI you can use the following:
 ```
 To include or exclude the methods to be traced use the `methodInclusionPattern`
 and `methodExclusionPattern` class properties of SwiftTrace. For more information
-consult the [SwiftTrace source repo](https://github.com/johnno1962/SwiftTrace). It's
-possible to use the Swift API of SwiftTrace directly in your app, for example, to add 
+consult the [SwiftTrace source repo](https://github.com/johnno1962/SwiftTrace). It's also
+possible to access the Swift API of SwiftTrace directly in your app. For example, to add 
 a new handler to format a particular type by importing SwiftTrace and adding the
 following to your app's `"Framework Search Paths"` and `"Runpath Search Paths"`
 (for the Debug configuration):
@@ -243,11 +246,11 @@ following to your app's `"Framework Search Paths"` and `"Runpath Search Paths"`
 Then, you can use something like the following to register the type:
 
 ```
-SwiftTrace.addFormattedType(MovieSwift.MovieRow.Props.self)
+SwiftTrace.makeTraceable(types: [MovieSwift.MovieRow.Props.self])
 ```
 In this case however the `MovieSwift.MovieRow.Props` type from the excellent 
 `MovieSwift` SwiftUI  [example project](https://github.com/Dimillian/MovieSwiftUI)
-is too large to format and needs to be changed to be a class.
+is too large to format but can be changed to be a class instead of a struct.
 
 Finally, if you'd like to go directly to the file that defines a logged method, select the
 fully qualified method and use the service `Injection Goto` to open the file declaring
@@ -295,13 +298,13 @@ to capture animated transitions.
 
 ![Icon](https://courses.cs.washington.edu/courses/cse190m/10su/lectures/slides/images/drevil.png)
 
-SwiftEval is a [single Swift source](InjectionBundle/SwiftEval.swift) you can add to your iOS simulator
-or macOS projects to implement an eval function inside classes that inherit from NSObject.
-There is a generic form which has the following signature:
+InjectionIII started out as the SwiftEval class which is a [single Swift source](InjectionBundle/SwiftEval.swift)
+that can be added to your iOS simulator or macOS projects to implement an eval function inside
+classes that inherit from NSObject. There is a generic form which has the following signature:
 
 ```Swift
 extension NSObject {
-	public func eval<T>(_ expression: String, _ type: T.Type) -> T {
+	public func eval<T>(_ expression: String, type: T.Type) -> T {
 ```
 
 This takes a Swift expression as a String and returns an entity of the type specified.
@@ -309,7 +312,7 @@ There is also a shorthand function for expressions of type String which accepts 
 contents of the String literal as it's argument:
 
 ```Swift
-	public func eval(_ expression: String) -> String {
+	public func swiftEvalString(contents: String) -> String {
 	    return eval("\"" + expression + "\"", String.self)
 	}
 ```
@@ -318,13 +321,11 @@ An example of how it is used can be found in the EvalApp example.
 
 ```Swift
     @IBAction func performEval(_: Any) {
-        textView.string = eval(textField.stringValue)
+        textView.string = swiftEvalString(contents: textField.stringValue)
     }
 
     @IBAction func closureEval(_: Any) {
-        if let block = eval(closureText.stringValue, (() -> ())?.self) {
-            block()
-        }
+        _ = swiftEval(code: closureText.stringValue+"()")
     }
 ```
 
@@ -353,4 +354,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2020/11/23 $
+$Date: 2020/12/04 $

@@ -13,3 +13,4 @@ static NSString *const UserDefaultsBookmarks = @"persistentBookmarks";
 static NSString *const UserDefaultsUpdateCheck = @"nextUpdateCheck";
 static NSString *const UserDefaultsOrderFront = @"orderFront";
 static NSString *const UserDefaultsFeedback = @"feedback";
+static NSString *const UserDefaultsLookup = @"typeLookup";
