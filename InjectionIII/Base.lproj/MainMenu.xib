@@ -18,6 +18,7 @@
                 <outlet property="enableVaccineItem" destination="cCv-GY-3Rv" id="Joe-DQ-AWO"/>
                 <outlet property="enableWatcher" destination="0iA-WA-gxc" id="vVT-sI-q78"/>
                 <outlet property="enabledTDDItem" destination="Mdd-tb-kGc" id="ccs-nb-DKk"/>
+                <outlet property="feedbackItem" destination="CQY-su-z8C" id="OSy-SI-Uso"/>
                 <outlet property="frontItem" destination="wFq-Rv-gfa" id="MPU-fL-HYl"/>
                 <outlet property="remoteItem" destination="of9-Ja-9Yf" id="z57-Ut-oxK"/>
                 <outlet property="startItem" destination="vsd-ll-3nr" id="ODN-wa-BTp"/>
@@ -705,12 +706,14 @@
                 </menuItem>
                 <menuItem title="File Watcher" state="on" toolTip="Enable/Disable file watcher" id="0iA-WA-gxc">
                     <modifierMask key="keyEquivalentModifierMask"/>
+                    <accessibility description="Toggle File Watcher"/>
                     <connections>
                         <action selector="toggleState:" target="Voe-Tx-rLC" id="old-T7-DMa"/>
                     </connections>
                 </menuItem>
                 <menuItem title="Order Front" toolTip="Order Front SImulator on injection" id="wFq-Rv-gfa">
                     <modifierMask key="keyEquivalentModifierMask"/>
+                    <accessibility description="Order Front"/>
                     <connections>
                         <action selector="toggleState:" target="Voe-Tx-rLC" id="LCw-9g-CaP"/>
                     </connections>
@@ -747,6 +750,12 @@
                                     <action selector="traceUIApp:" target="Voe-Tx-rLC" id="oc5-Cw-bGO"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Trace Injected" tag="1" toolTip="Trace functions that have been injected." id="CQY-su-z8C">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="toggleFeedback:" target="Voe-Tx-rLC" id="X5V-3g-VjO"/>
+                                </connections>
+                            </menuItem>
                             <menuItem title="Trace Package" id="X2d-h8-G2Z">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Trace Package" id="FGp-MT-4bj">
@@ -755,6 +764,7 @@
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                         </menuItem>
                                     </items>
+                                    <accessibility description="Trace Package"/>
                                 </menu>
                             </menuItem>
                             <menuItem title="Trace Framework" id="0BZ-xo-Zsc">
@@ -765,6 +775,7 @@
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                         </menuItem>
                                     </items>
+                                    <accessibility description="Trace Framework"/>
                                 </menu>
                             </menuItem>
                             <menuItem title="Trace SysInternal" id="zzn-qk-eXx">
@@ -775,25 +786,26 @@
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                         </menuItem>
                                     </items>
+                                    <accessibility description="Trace Internal"/>
                                 </menu>
                             </menuItem>
                             <menuItem title="Trace App/UIKit" allowsKeyEquivalentWhenHidden="YES" toolTip="Trace the entirety of UIKit or AppKit." id="uSA-e7-Idr">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <accessibility description="Trace App"/>
+                                <accessibility description="Trace UIKit"/>
                                 <connections>
                                     <action selector="traceUIKit:" target="Voe-Tx-rLC" id="P5g-dI-Yai"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Trace SwiftUI" allowsKeyEquivalentWhenHidden="YES" toolTip="Log calls made to SwiftUI." id="kbO-dx-98y">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <accessibility description="Trace App"/>
+                                <accessibility description="Trace SwiftUI"/>
                                 <connections>
                                     <action selector="traceSwiftUI:" target="Voe-Tx-rLC" id="0xk-LY-4Pv"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Undo Traces" allowsKeyEquivalentWhenHidden="YES" toolTip="Log calls made to SwiftUI." id="0Nz-cB-dDv">
+                            <menuItem title="Undo Traces" allowsKeyEquivalentWhenHidden="YES" toolTip="Remove all Traces" id="0Nz-cB-dDv">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <accessibility description="Trace App"/>
+                                <accessibility description="Undo Traces"/>
                                 <connections>
                                     <action selector="remmoveTraces:" target="Voe-Tx-rLC" id="V0U-kh-UYB"/>
                                 </connections>
@@ -806,23 +818,23 @@
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="1Zk-TV-Nfy"/>
-                            <menuItem title="Set Filters" toolTip="Set filters to manage trace output." id="Y20-on-vxe">
+                            <menuItem title="Set Filters" tag="2" toolTip="Set filters to manage trace output." id="Y20-on-vxe">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <accessibility description="Trace App"/>
+                                <accessibility description="Set Filters"/>
                                 <connections>
                                     <action selector="showTraceFilters:" target="Voe-Tx-rLC" id="kaX-pV-f0v"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Dump Stats" toolTip="Dump elpased time and invocatio count stats per method." id="wMb-mC-poo">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <accessibility description="Trace App"/>
+                                <accessibility description="Dump Stats"/>
                                 <connections>
                                     <action selector="traceStats:" target="Voe-Tx-rLC" id="2DR-dQ-dhn"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Dump Call Order" toolTip="Dump methods invoked in order they were fist called." id="blr-cp-nYs">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <accessibility description="Trace App"/>
+                                <accessibility description="Dump Call Order"/>
                                 <connections>
                                     <action selector="callOrder:" target="Voe-Tx-rLC" id="Ea8-q9-ser"/>
                                 </connections>
@@ -830,14 +842,14 @@
                             <menuItem title="Dump File Order" id="PNF-xc-Fxf">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <string key="toolTip">List files in project acoording to the order they were first referenced. Change order source files are compiled in project to minimise paging delays on app startup.</string>
-                                <accessibility description="Trace App"/>
+                                <accessibility description="Dump File Order"/>
                                 <connections>
                                     <action selector="fileOrder:" target="Voe-Tx-rLC" id="ptN-4E-maE"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Re-order Project" toolTip="Reorder source files in project according to when they are first used." id="3ZV-Dm-RPu">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <accessibility description="Trace App"/>
+                                <accessibility description="Re-order Project"/>
                                 <connections>
                                     <action selector="fileReorder:" target="Voe-Tx-rLC" id="ZwN-Ob-mNa"/>
                                 </connections>
@@ -852,13 +864,14 @@
                         <items>
                             <menuItem title="Start Server" toolTip="Control device from desktop. See README for how to set this up." id="7Om-BV-MqZ">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <accessibility description="Trace App"/>
+                                <accessibility description="Start Remote"/>
                                 <connections>
                                     <action selector="startRemote:" target="Voe-Tx-rLC" id="odg-2Q-T1g"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Stop Server" toolTip="Stop the remote server." id="Fa8-hf-Yom">
                                 <modifierMask key="keyEquivalentModifierMask"/>
+                                <accessibility description="Stop Remote"/>
                                 <connections>
                                     <action selector="stopRemote:" target="Voe-Tx-rLC" id="Fbl-rZ-MWg"/>
                                 </connections>
@@ -900,18 +913,21 @@
                 </menuItem>
                 <menuItem title="Update Check" toolTip="Check for App updates" id="kFj-jW-1uq">
                     <modifierMask key="keyEquivalentModifierMask"/>
+                    <accessibility description="Update Check"/>
                     <connections>
                         <action selector="updateCheck:" target="Voe-Tx-rLC" id="TpD-l0-JEf"/>
                     </connections>
                 </menuItem>
                 <menuItem title="Help/README" toolTip="Open project README." id="DcW-s5-diF">
                     <modifierMask key="keyEquivalentModifierMask"/>
+                    <accessibility description="Open README"/>
                     <connections>
                         <action selector="help:" target="Voe-Tx-rLC" id="Jmr-Oc-zAH"/>
                     </connections>
                 </menuItem>
                 <menuItem title="Sponsor Dev." toolTip="Sponsor the developer on Github." id="LVU-Kn-bbK">
                     <modifierMask key="keyEquivalentModifierMask"/>
+                    <accessibility description="Sponsor Dev"/>
                     <connections>
                         <action selector="sponsor:" target="Voe-Tx-rLC" id="0Tc-w2-LJX"/>
                     </connections>

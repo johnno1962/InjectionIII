@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#61 $
+//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#62 $
 //
 
 let commandQueue = DispatchQueue(label: "InjectionCommand")
@@ -170,6 +170,7 @@ public class InjectionServer: SimpleSocket {
         DispatchQueue.main.sync {
             appDelegate.updateTraceInclude(nil)
             appDelegate.updateTraceExclude(nil)
+            appDelegate.toggleFeedback(nil)
         }
 
         // read status requests from client app
