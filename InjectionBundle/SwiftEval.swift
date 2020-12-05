@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#151 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#152 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -547,7 +547,7 @@ public class SwiftEval: NSObject {
                         if ($line =~ /^\\s*cd /) {
                             $realPath = $line;
                         }
-                        elsif ($line =~ m@\(regexp.escaping("\"$"))@oi and $line =~ " \(arch)") {
+                        elsif ($line =~ m@\(regexp.escaping("\"$"))@oi and $line =~ " \(arch)" and $line !~ /watchos/) {
                             # found compile command
                             # may need to extract file list
                             if ($line =~ / -filelist /) {
