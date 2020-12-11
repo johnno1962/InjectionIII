@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#110 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#111 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -16,13 +16,13 @@ import Foundation
 import SwiftTrace
 
 /** pointer to a function implementing a Swift method */
-public typealias SIMP = SwiftTrace.SIMP
-public typealias ClassMetadataSwift = SwiftTrace.TargetClassMetadata
+public typealias SIMP = SwiftMeta.SIMP
+public typealias ClassMetadataSwift = SwiftMeta.TargetClassMetadata
 
 #if swift(>=3.0)
 public func _stdlib_demangleName(_ mangledName: String) -> String {
     return mangledName.withCString {
-        SwiftTrace.demangle(symbol: $0) ?? mangledName }
+        SwiftMeta.demangle(symbol: $0) ?? mangledName }
 }
 #endif
 
@@ -131,9 +131,9 @@ public class SwiftInjection: NSObject {
 
             // overwrite Swift vtable of existing class with implementations from new class
             let existingClass = unsafeBitCast(oldClass, to:
-                UnsafeMutablePointer<SwiftTrace.TargetClassMetadata>.self)
+                UnsafeMutablePointer<ClassMetadataSwift>.self)
             let classMetadata = unsafeBitCast(newClass, to:
-                UnsafeMutablePointer<SwiftTrace.TargetClassMetadata>.self)
+                UnsafeMutablePointer<ClassMetadataSwift>.self)
 
             // Is this a Swift class?
             // Reference: https://github.com/apple/swift/blob/master/include/swift/ABI/Metadata.h#L1195
@@ -146,7 +146,7 @@ public class SwiftInjection: NSObject {
                     print("💉 ⚠️ Adding or removing methods on Swift classes is not supported. Your application will likely crash. ⚠️")
                 }
 
-                #if false // replaced by "interpose" code below
+                #if true // replaced by "interpose" code below
                 func byteAddr<T>(_ location: UnsafeMutablePointer<T>) -> UnsafeMutablePointer<UInt8> {
                     return location.withMemoryRebound(to: UInt8.self, capacity: 1) { $0 }
                 }
@@ -224,7 +224,7 @@ public class SwiftInjection: NSObject {
                     let current = SwiftTrace.interposed(replacee: existing) else {
                     return
                 }
-                let method = SwiftTrace.demangle(symbol: symbol) ?? String(cString: symbol)
+                let method = SwiftMeta.demangle(symbol: symbol) ?? String(cString: symbol)
                 if detail {
                     print("💉 Replacing \(method)")
                 }
@@ -432,7 +432,7 @@ public class SwiftInjection: NSObject {
         for suffix in SwiftTrace.swiftFunctionSuffixes {
             findSwiftSymbols(Bundle.main.executablePath!, suffix) {
                 (_, symname: UnsafePointer<Int8>, _, _) in
-                if let sym = SwiftTrace.demangle(symbol: String(cString: symname)),
+                if let sym = SwiftMeta.demangle(symbol: String(cString: symname)),
                     !sym.hasPrefix("(extension in "),
                     let endPackage = sym.firstIndex(of: ".") {
                     packages.insert(sym[..<(endPackage+0)])
