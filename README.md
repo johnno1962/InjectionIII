@@ -137,9 +137,9 @@ private var loadInjection = {
 
 import Combine
 
-let injectionObserver = InjectionObserver()
+public let injectionObserver = InjectionObserver()
 
-class InjectionObserver: ObservableObject {
+public class InjectionObserver: ObservableObject {
     @Published var injectionNumber = 0
     var cancellable: AnyCancellable? = nil
     let publisher = PassthroughSubject<Void, Never>()
@@ -154,11 +154,11 @@ class InjectionObserver: ObservableObject {
 }
 
 extension View {
-    func eraseToAnyView() -> some View {
+    public func eraseToAnyView() -> some View {
         _ = loadInjection
         return AnyView(self)
     }
-    func onInjection(bumpState: @escaping () -> ()) -> some View {
+    public func onInjection(bumpState: @escaping () -> ()) -> some View {
         return self
             .onReceive(injectionObserver.publisher, perform: bumpState)
             .eraseToAnyView()
@@ -166,8 +166,8 @@ extension View {
 }
 #else
 extension View {
-    func eraseToAnyView() -> some View { return self }
-    func onInjection(bumpState: @escaping () -> ()) -> some View {
+    public func eraseToAnyView() -> some View { return self }
+    public func onInjection(bumpState: @escaping () -> ()) -> some View {
         return self
     }
 }
@@ -354,4 +354,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2020/12/04 $
+$Date: 2020/12/15 $

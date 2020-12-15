@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#145 $
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#146 $
 //
 
 #import "InjectionClient.h"
@@ -236,7 +236,7 @@ static struct {
                  stringWithContentsOfFile:pbxFile
                  encoding:NSUTF8StringEncoding error:NULL];
             if (![pbxContents containsString:@"-interposable"])
-                printf("💉 Have you remembered to add \"-Xlinker -interposable\" to your project's \"Other Linker Flags\"?\n");
+                printf("💉 ⚠️ Have you remembered to add \"-Xlinker -interposable\" to your project's \"Other Linker Flags\"? ⚠️\n");
             break;
         }
         case InjectionWatching: {
