@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#153 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#154 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -542,12 +542,12 @@ public class SwiftEval: NSObject {
                     open GUNZIP, "/usr/bin/gunzip <\\"$ARGV[0]\\" 2>/dev/null |" or die;
 
                     # grep the log until there is a match
-                    my $realPath;
+                    my ($realPath, $command);
                     while (defined (my $line = <GUNZIP>)) {
                         if ($line =~ /^\\s*cd /) {
                             $realPath = $line;
                         }
-                        elsif ($line =~ m@\(regexp.escaping("\"$"))@oi and $line =~ " \(arch)" and $line !~ /watchos/) {
+                        elsif ($line =~ m@\(regexp.escaping("\"$"))@oi and $line =~ " \(arch)") {
                             # found compile command
                             # may need to extract file list
                             if ($line =~ / -filelist /) {
@@ -573,12 +573,16 @@ public class SwiftEval: NSObject {
                             if ($realPath and (undef, $realPath) = $realPath =~ /cd (\\"?)(.*?)\\1\\r/) {
             #                                print "cd \\"$realPath\\" && ";
                             }
-                            # stop search
-                            print $line;
-                            exit 0;
+                            # find last
+                            $command = $line
+                            #exit 0;
                         }
                     }
 
+                    if ($command) {
+                        print $command;
+                        exit 0;
+                    }
                     # class/file not found
                     exit 1;
             PERL

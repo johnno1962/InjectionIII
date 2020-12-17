@@ -5,7 +5,7 @@
 //  Created by User on 20/10/2020.
 //  Copyright © 2020 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/Experimental.swift#26 $
+//  $Id: //depot/ResidentEval/InjectionIII/Experimental.swift#29 $
 //
 
 import Cocoa
@@ -212,6 +212,144 @@ extension AppDelegate {
                     NSLog("\(errorPtr.pointee)")
                 }
             }
+        }
+    }
+
+    @IBAction func prepareProject(_ sender: NSMenuItem) {
+        guard let selectedProject = selectedProject else {
+            let alert = NSAlert()
+            alert.messageText = "Please select a project directory."
+            _ = alert.runModal()
+            return
+        }
+
+        let pbxURL = URL(fileURLWithPath: selectedProject)
+            .appendingPathComponent("project.pbxproj")
+        do {
+            var pbxContents = try String(contentsOf: pbxURL)
+            if !pbxContents.contains("-interposable") {
+                pbxContents[#"""
+                    /\* Debug \*/ = \{
+                    \s+isa = XCBuildConfiguration;
+                    (?:.*\n)*?(\s+)buildSettings = \{
+                    ((?:.*\n)*?\1\};)
+                    """#, group: 2] = """
+                                        OTHER_LDFLAGS = (
+                                            "-Xlinker",
+                                            "-interposable",
+                                            "-Xlinker",
+                                            "-undefined",
+                                            "-Xlinker",
+                                            dynamic_lookup,
+                                        );
+                                        ENABLE_BITCODE = NO;
+                        $2
+                        """
+
+                try pbxContents.write(to: pbxURL, atomically: false, encoding: .utf8)
+            }
+        } catch {
+            let alert = NSAlert()
+            alert.messageText = "Could not process project file \(pbxURL): \(error)"
+            _ = alert.runModal()
+            return
+        }
+
+        for directory in watchedDirectories {
+            prepareSwiftUI(projectRoot: URL(fileURLWithPath: directory))
+        }
+    }
+
+    func prepareSwiftUI(projectRoot: URL) {
+        do {
+            let alert = NSAlert()
+            alert.addButton(withTitle: "Go ahead")
+            alert.addButton(withTitle: "Cancel")
+            alert.messageText = "About to patch SwiftUI files in the currently selected project: \(projectRoot.path) for injection. This should have also added -Xlinker -interposable to your project setting's \"Other Linker Flags\"."
+            switch alert.runModal() {
+            case .alertSecondButtonReturn:
+                return
+            default:
+                break
+            }
+
+            for file in FileManager.default.enumerator(atPath: projectRoot.path)! {
+                guard let file = file as? String, file.hasSuffix(".swift"),
+                      !file.hasPrefix("Packages"),
+                      var source = try? String(contentsOf: projectRoot
+                        .appendingPathComponent(file)) else {
+                    continue
+                }
+
+                source[#"""
+                    ^((\s+)(public )?(var body:|func body\([^)]*\) -\>) some View \{\n\#
+                    (\2(?!    (if|switch) )\s+[\w.}](?!(eraseToAnyView|orEach)).*\n|\n)+)\2\}\n
+                    """#.anchorsMatchLines] = """
+                    $1$2    .eraseToAnyView()
+                    $2}
+
+                    $2#if DEBUG
+                    $2@ObservedObject var iO = injectionObserver
+                    $2#endif
+
+                    """
+
+                if source.contains("class AppDelegate") ||
+                    source.contains("@main") && !source.contains("InjectionIII") {
+                    source += """
+
+                        #if DEBUG
+                        private var loadInjection = {
+                            Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle")?.load()
+                        }()
+
+                        import Combine
+
+                        public let injectionObserver = InjectionObserver()
+
+                        public class InjectionObserver: ObservableObject {
+                            @Published var injectionNumber = 0
+                            var cancellable: AnyCancellable? = nil
+                            let publisher = PassthroughSubject<Void, Never>()
+                            init() {
+                                cancellable = NotificationCenter.default.publisher(for:
+                                    Notification.Name("INJECTION_BUNDLE_NOTIFICATION"))
+                                    .sink { [weak self] change in
+                                    self?.injectionNumber += 1
+                                    self?.publisher.send()
+                                }
+                            }
+                        }
+
+                        extension View {
+                            public func eraseToAnyView() -> some View {
+                                _ = loadInjection
+                                return AnyView(self)
+                            }
+                            public func onInjection(bumpState: @escaping () -> ()) -> some View {
+                                return self
+                                    .onReceive(injectionObserver.publisher, perform: bumpState)
+                                    .eraseToAnyView()
+                            }
+                        }
+                        #else
+                        extension View {
+                            public func eraseToAnyView() -> some View { return self }
+                            public func onInjection(bumpState: @escaping () -> ()) -> some View {
+                                return self
+                            }
+                        }
+                        #endif
+
+                        """
+                }
+
+                try source.write(to: projectRoot.appendingPathComponent(file),
+                             atomically: false, encoding: .utf8)
+            }
+        }
+        catch {
+            print(error)
         }
     }
 }

@@ -740,6 +740,13 @@
                         <action selector="runXprobe:" target="Voe-Tx-rLC" id="OLt-ZD-lyd"/>
                     </connections>
                 </menuItem>
+                <menuItem title="Prepare Project" toolTip="Inspect app object state" id="FTT-4e-p2a">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <accessibility description="Open Xprobe"/>
+                    <connections>
+                        <action selector="prepareProject:" target="Voe-Tx-rLC" id="LC6-Th-i3d"/>
+                    </connections>
+                </menuItem>
                 <menuItem title="Method Tracing" id="GZB-KU-eto">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Method Tracing" autoenablesItems="NO" id="LL4-BA-XJf">

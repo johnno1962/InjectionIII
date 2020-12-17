@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#146 $
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#147 $
 //
 
 #import "InjectionClient.h"
@@ -275,9 +275,9 @@ static struct {
             [self filteringChanged];
             break;
         case InjectionTraceSwiftUI:
-            if (Class AnyText = [self loadSwuftUISupprt]) {
+            if (const char *AnyText = [self loadSwuftUISupprt]) {
                 printf("💉 Adding trace to SwiftUI calls.\n");
-                [SwiftTrace swiftTraceMethodsInFrameworkContaining:AnyText];
+                [SwiftTrace swiftTraceMethodsInBundle:AnyText packageName:nil];
                 [self filteringChanged];
             }
             break;
@@ -404,10 +404,9 @@ static struct {
     }
 }
 
-- (Class)loadSwuftUISupprt {
-    static char classInSwiftUIMangled[] = "$s7SwiftUI14AnyTextStorageCN";
-    if (Class AnyText = (__bridge Class)
-        dlsym(RTLD_DEFAULT, classInSwiftUIMangled)) {
+- (const char *)loadSwuftUISupprt {
+    static const char *AnyText;
+    if (!AnyText && (AnyText = swiftUIBundlePath())) {
         NSString *swiftUIBundlePath = [[[NSBundle
             bundleForClass:[self class]] bundlePath]
             stringByReplacingOccurrencesOfString:@"Injection.bundle"
@@ -421,7 +420,7 @@ static struct {
                    swiftUIBundlePath.UTF8String);
         return AnyText;
     }
-    return nil;
+    return AnyText;
 }
 
 - (void)needsTracing {
