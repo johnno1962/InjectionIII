@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#147 $
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#155 $
 //
 
 #import "InjectionClient.h"
@@ -20,6 +20,8 @@
 #import "tvOSInjection-Swift.h"
 #elif __has_include("iOSInjection10-Swift.h")
 #import "iOSInjection10-Swift.h"
+#elif __has_include("maciOSInjection-Swift.h")
+#import "maciOSInjection-Swift.h"
 #else
 #import "iOSInjection-Swift.h"
 #endif
@@ -280,6 +282,8 @@ static struct {
                 [SwiftTrace swiftTraceMethodsInBundle:AnyText packageName:nil];
                 [self filteringChanged];
             }
+            else
+                printf("💉 Your app doesn't seem to use SwiftUI.\n");
             break;
         case InjectionTraceFramework: {
             NSString *frameworkName = [self readString];

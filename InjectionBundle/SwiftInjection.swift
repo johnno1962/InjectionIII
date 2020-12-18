@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#112 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#114 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -546,7 +546,7 @@ extension NSObject {
         let object = "@".utf16.first!
         while cls != nil && cls != NSObject.self && cls != NSURL.self {
             let className = NSStringFromClass(cls!)
-            if className.hasPrefix("_") {
+            if className.hasPrefix("_") || className.hasPrefix("NS") {
                 return
             }
             #if os(OSX)

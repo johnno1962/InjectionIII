@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#63 $
+//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#70 $
 //
 
 let commandQueue = DispatchQueue(label: "InjectionCommand")
@@ -66,7 +66,10 @@ public class InjectionServer: SimpleSocket {
 
         builder = SwiftEval()
         builder.tmpDir = tmpDir
-        defer { builder = nil }
+        defer {
+            builder.signer = nil
+            builder = nil
+        }
 
         // client spcific data for building
         if let frameworks = readString() {
@@ -83,6 +86,15 @@ public class InjectionServer: SimpleSocket {
             self.sendCommand(.log, with:message)
             return NSError(domain:"SwiftEval", code:-1,
                            userInfo:[NSLocalizedDescriptionKey: message])
+        }
+
+        builder.signer = {
+            let identity = appDelegate.defaults.string(forKey: projectFile)
+            if identity != nil {
+                NSLog("Signing with identity: \(identity!)")
+            }
+            return SignerService.codesignDylib(
+                self.builder.tmpDir+"/eval"+$0, identity: identity)
         }
 
         // Xcode specific config
@@ -215,13 +227,8 @@ public class InjectionServer: SimpleSocket {
                     sendCommand(.signed, with: "0")
                     break
                 }
-//                let identity = appDelegate.defaults.string(forKey: projectFile)
-//                if identity != nil {
-//                    NSLog("Signing with identity: \(identity!)")
-//                }
-                let signedOK = SignerService
-                    .codesignDylib(tmpDir+"/eval"+readString()!, identity: nil)
-                sendCommand(.signed, with: signedOK ? "1": "0")
+                sendCommand(.signed, with: builder
+                                .signer!(readString() ?? "") ? "1": "0")
                 break
             case .callOrderList:
                 if let calls = readString()?

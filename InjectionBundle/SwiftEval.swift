@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#154 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#158 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -268,7 +268,7 @@ public class SwiftEval: NSObject {
             do if (find . -name '*.nib' -a -newer "\(storyboard)" | \
             grep .nib >/dev/null); then break; fi; sleep 1; done; \
             while (ps auxww | grep -v grep | grep "/ibtool " >/dev/null); do sleep 1; done; \
-            for i in `find . -name '*.nib'`; do cp -rf "$i" "\(Bundle.main.bundlePath)/$i"; done >\(logfile) 2>&1)
+            for i in `find . -name '*.nib'`; do cp -rf "$i" "\(Bundle.main.bundlePath)/$i"; done >"\(logfile)" 2>&1)
             """) else {
                 throw evalError("Re-compilation failed (\(tmpDir)/command.sh)\n\(try! String(contentsOfFile: logfile))")
         }
@@ -384,7 +384,7 @@ public class SwiftEval: NSObject {
         _ = evalError("💉 Compiling \(sourceFile)")
 
         guard shell(command: """
-                (cd "\(projectDir.escaping("$"))" && \(compileCommand) -o \(tmpfile).o >\(logfile) 2>&1)
+                (cd "\(projectDir.escaping("$"))" && \(compileCommand) -o \"\(tmpfile).o\" >\"\(logfile)\" 2>&1)
                 """) else {
             compileByClass.removeValue(forKey: classNameOrFile)
             throw evalError("Re-compilation failed (see: \(tmpDir)/command.sh)\n\(try! String(contentsOfFile: logfile))")
@@ -406,6 +406,8 @@ public class SwiftEval: NSObject {
         let osSpecific: String
         if compileCommand.contains("iPhoneSimulator.platform") {
             osSpecific = "-isysroot \(xcodeDev)/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk -mios-simulator-version-min=9.0 -L\(toolchain)/usr/lib/swift/iphonesimulator -undefined dynamic_lookup"// -Xlinker -bundle_loader -Xlinker \"\(Bundle.main.executablePath!)\""
+        } else if compileCommand.contains("iPhoneOS.platform") {
+            osSpecific = "-isysroot \(xcodeDev)/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk -miphoneos-version-min=9.0 -L\(toolchain)/usr/lib/swift/iphoneos -undefined dynamic_lookup"// -Xlinker -bundle_loader -Xlinker \"\(Bundle.main.executablePath!)\""
         } else if compileCommand.contains("AppleTVSimulator.platform") {
             osSpecific = "-isysroot \(xcodeDev)/Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator.sdk -mtvos-simulator-version-min=9.0 -L\(toolchain)/usr/lib/swift/appletvsimulator -undefined dynamic_lookup"// -Xlinker -bundle_loader -Xlinker \"\(Bundle.main.executablePath!)\""
         } else {
@@ -413,7 +415,7 @@ public class SwiftEval: NSObject {
         }
 
         guard shell(command: """
-            \(xcodeDev)/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch "\(arch)" -bundle \(osSpecific) -dead_strip -Xlinker -objc_abi_version -Xlinker 2 -fobjc-arc -fprofile-instr-generate \(tmpfile).o -L "\(frameworks)" -F "\(frameworks)" -rpath "\(frameworks)" -o \(tmpfile).dylib >>\(logfile) 2>&1
+            \(xcodeDev)/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch "\(arch)" -bundle \(osSpecific) -dead_strip -Xlinker -objc_abi_version -Xlinker 2 -fobjc-arc -fprofile-instr-generate \"\(tmpfile).o\" -L "\(frameworks)" -F "\(frameworks)" -rpath "\(frameworks)" -o \"\(tmpfile).dylib\" >>\"\(logfile)\" 2>&1
             """) else {
             throw evalError("Link failed, check \(tmpDir)/command.sh\n\(try! String(contentsOfFile: logfile))")
         }

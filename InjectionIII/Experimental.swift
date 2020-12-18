@@ -5,7 +5,7 @@
 //  Created by User on 20/10/2020.
 //  Copyright © 2020 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/Experimental.swift#29 $
+//  $Id: //depot/ResidentEval/InjectionIII/Experimental.swift#32 $
 //
 
 import Cocoa
@@ -275,15 +275,18 @@ extension AppDelegate {
 
             for file in FileManager.default.enumerator(atPath: projectRoot.path)! {
                 guard let file = file as? String, file.hasSuffix(".swift"),
-                      !file.hasPrefix("Packages"),
-                      var source = try? String(contentsOf: projectRoot
-                        .appendingPathComponent(file)) else {
+                      !file.hasPrefix("Packages") else {
+                    continue
+                }
+                let fileURL = projectRoot.appendingPathComponent(file)
+                guard let original = try? String(contentsOf: fileURL) else {
                     continue
                 }
 
-                source[#"""
+                var patched = original
+                patched[#"""
                     ^((\s+)(public )?(var body:|func body\([^)]*\) -\>) some View \{\n\#
-                    (\2(?!    (if|switch) )\s+[\w.}](?!(eraseToAnyView|orEach)).*\n|\n)+)\2\}\n
+                    (\2(?!    (if|switch) )\s+(?!\.eraseToAnyView|ForEach)\S.*\n|\n)+)(?<!#endif\n)\2\}\n
                     """#.anchorsMatchLines] = """
                     $1$2    .eraseToAnyView()
                     $2}
@@ -294,9 +297,9 @@ extension AppDelegate {
 
                     """
 
-                if source.contains("class AppDelegate") ||
-                    source.contains("@main") && !source.contains("InjectionIII") {
-                    source += """
+                if patched.contains("class AppDelegate") ||
+                    patched.contains("@main") && !patched.contains("InjectionIII") {
+                    patched += """
 
                         #if DEBUG
                         private var loadInjection = {
@@ -344,8 +347,10 @@ extension AppDelegate {
                         """
                 }
 
-                try source.write(to: projectRoot.appendingPathComponent(file),
-                             atomically: false, encoding: .utf8)
+                if patched != original {
+                    try patched.write(to: fileURL,
+                                      atomically: false, encoding: .utf8)
+                }
             }
         }
         catch {

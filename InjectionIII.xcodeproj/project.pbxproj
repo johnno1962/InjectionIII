@@ -1056,6 +1056,8 @@
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 9V5A8WE85E;
+				ENABLE_BITCODE = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					$PLATFORM_DIR/Developer/Library/Frameworks,
 					$SYMROOT/macOSInjection.bundle/MacOS/Frameworks,
@@ -1097,6 +1099,8 @@
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 9V5A8WE85E;
+				ENABLE_BITCODE = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					$PLATFORM_DIR/Developer/Library/Frameworks,
 					$SYMROOT/macOSInjection.bundle/MacOS/Frameworks,
