@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#70 $
+//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#71 $
 //
 
 let commandQueue = DispatchQueue(label: "InjectionCommand")
@@ -41,9 +41,6 @@ public class InjectionServer: SimpleSocket {
     }
 
     @objc override public func runInBackground() {
-        let tmpDir = NSTemporaryDirectory()
-        write(tmpDir)
-
         var candiateProjectFile = appDelegate.selectedProject
 
         if candiateProjectFile == nil {
@@ -65,7 +62,6 @@ public class InjectionServer: SimpleSocket {
         }
 
         builder = SwiftEval()
-        builder.tmpDir = tmpDir
         defer {
             builder.signer = nil
             builder = nil
@@ -79,6 +75,9 @@ public class InjectionServer: SimpleSocket {
         if let arch = readString() {
             builder.arch = arch
         } else { return }
+
+        builder.tmpDir = builder.frameworks
+        write(builder.tmpDir)
 
         // log errors to client
         builder.evalError = {

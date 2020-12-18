@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#155 $
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#156 $
 //
 
 #import "InjectionClient.h"
@@ -160,19 +160,19 @@ static struct {
 
 - (void)runInBackground {
     SwiftEval *builder = [SwiftInjectionEval sharedInstance];
-    NSString *tmpDir = [self readString];
-    BOOL notPlugin = ![@"/tmp" isEqualToString:tmpDir];
-    builder.tmpDir = tmpDir;
+    builder.tmpDir = NSTemporaryDirectory();
 
-    if (notPlugin)
-        [self writeInt:INJECTION_SALT];
+    [self writeInt:INJECTION_SALT];
     [self writeString:INJECTION_KEY];
 
     NSString *frameworksPath = [NSBundle mainBundle].privateFrameworksPath;
-    [self writeString:frameworksPath];
+    [self writeString:builder.tmpDir];
 
     [self writeString:builder.arch];
     [self writeString:[NSBundle mainBundle].executablePath];
+
+    NSString *tmpDir = [self readString];
+    BOOL notPlugin = ![@"/tmp" isEqualToString:tmpDir];
 
     int codesignStatusPipe[2];
     pipe(codesignStatusPipe);

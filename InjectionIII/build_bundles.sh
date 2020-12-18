@@ -6,7 +6,7 @@
 #  Created by John Holdsworth on 04/10/2019.
 #  Copyright © 2019 John Holdsworth. All rights reserved.
 #
-#  $Id: //depot/ResidentEval/InjectionIII/build_bundles.sh#59 $
+#  $Id: //depot/ResidentEval/InjectionIII/build_bundles.sh#60 $
 #
 
 # Injection has to assume a fixed path for Xcode.app as it uses
@@ -26,12 +26,13 @@ function build_bundle () {
     fi
     "$DEVELOPER_BIN_DIR"/xcodebuild SYMROOT=$SYMROOT ARCHS="$ARCHS" -sdk $SDK -config $CONFIGURATION -target SwiftTrace &&
     "$DEVELOPER_BIN_DIR"/xcodebuild SYMROOT=$SYMROOT ARCHS="$ARCHS" PRODUCT_NAME="${FAMILY}Injection" LD_RUNPATH_SEARCH_PATHS="$SWIFT_DYLIBS_PATH $XCTEST_FRAMEWORK_PATH @loader_path/Frameworks" -sdk $SDK -config $CONFIGURATION -target InjectionBundle &&
-    "$DEVELOPER_BIN_DIR"/xcodebuild SYMROOT=$SYMROOT ARCHS="$ARCHS" -sdk $SDK -config $CONFIGURATION -target SwiftUISupport
+    "$DEVELOPER_BIN_DIR"/xcodebuild SYMROOT=$SYMROOT ARCHS="$ARCHS" PRODUCT_NAME="${FAMILY}SwiftUISupport" -sdk $SDK -config $CONFIGURATION -target SwiftUISupport
 }
 
 #build_bundle macOS MacOSX macosx &&
 build_bundle iOS iPhoneSimulator iphonesimulator &&
 build_bundle tvOS AppleTVSimulator appletvsimulator &&
+build_bundle maciOS iPhoneOS iphoneos &&
 
 # macOSSwiftUISupport needs to be built separately from the main app
 "$DEVELOPER_BIN_DIR"/xcodebuild SYMROOT=$SYMROOT ARCHS="$ARCHS" -sdk macosx -config $CONFIGURATION -target SwiftUISupport &&
@@ -41,6 +42,7 @@ rsync -au $SYMROOT/$CONFIGURATION/macOSSwiftUISupport.bundle $SYMROOT/$CONFIGURA
 rsync -au $SYMROOT/$CONFIGURATION/SwiftTrace.framework/{Headers,Modules,Versions} "$CODESIGNING_FOLDER_PATH/Contents/Resources/macOSInjection.bundle/Contents/Frameworks/SwiftTrace.framework" &&
 rsync -au $SYMROOT/$CONFIGURATION-iphonesimulator/SwiftTrace.framework/{Headers,Modules} "$CODESIGNING_FOLDER_PATH/Contents/Resources/iOSInjection.bundle/Frameworks/SwiftTrace.framework" &&
 rsync -au $SYMROOT/$CONFIGURATION-appletvsimulator/SwiftTrace.framework/{Headers,Modules} "$CODESIGNING_FOLDER_PATH/Contents/Resources/tvOSInjection.bundle/Frameworks/SwiftTrace.framework" &&
+rsync -au $SYMROOT/$CONFIGURATION-iphoneos/SwiftTrace.framework/{Headers,Modules} "$CODESIGNING_FOLDER_PATH/Contents/Resources/maciOSInjection.bundle/Frameworks/SwiftTrace.framework" &&
 # This seems to be a bug producing .swiftinterface files.
-perl -pi.bak -e 's/SwiftTrace.(Swift(Trace|Meta)|dyld_interpose_tuple)/$1/g' $CODESIGNING_FOLDER_PATH/Contents/Resources/{macOSInjection.bundle/Contents,{i,tv}OSInjection.bundle}/Frameworks/SwiftTrace.framework/Modules/*/*.swiftinterface &&
+perl -pi.bak -e 's/SwiftTrace.(Swift(Trace|Meta)|dyld_interpose_tuple)/$1/g' $CODESIGNING_FOLDER_PATH/Contents/Resources/{macOSInjection.bundle/Contents,{i,maci,tv}OSInjection.bundle}/Frameworks/SwiftTrace.framework/Modules/*/*.swiftinterface &&
 find $CODESIGNING_FOLDER_PATH/Contents/Resources/*.bundle -name '*.bak' -delete
