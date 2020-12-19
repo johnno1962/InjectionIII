@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#114 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#115 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -214,7 +214,8 @@ public class SwiftInjection: NSObject {
     public class func interpose(functionsIn dylib: String) {
         let main = dlopen(nil, RTLD_NOW)
         let detail = getenv("INJECTION_DETAIL") != nil
-        var interposes = Array<dyld_interpose_tuple>()
+        var interposes = [dyld_interpose_tuple]()
+        var symbols = [UnsafePointer<Int8>]()
 
         // Find all definitions of Swift functions and ...
         // SwiftUI body properties defined in the new dylib.
@@ -236,6 +237,7 @@ public class SwiftInjection: NSObject {
                 }
                 interposes.append(dyld_interpose_tuple(
                     replacement: replacement, replacee: current))
+                symbols.append(symbol)
                 #if ORIGINAL_2_2_0_CODE
                 SwiftTrace.interposed[existing] = loadedFunc
                 SwiftTrace.interposed[current] = loadedFunc
@@ -244,7 +246,8 @@ public class SwiftInjection: NSObject {
         }
 
         #if !ORIGINAL_2_2_0_CODE
-        SwiftTrace.apply(interposes: interposes, onInjection: { header in
+        SwiftTrace.apply(interposes: interposes, symbols: symbols, onInjection: { header in
+            #if !arch(arm64)
             let interposed = NSObject.swiftTraceInterposed.bindMemory(to:
                 [UnsafeRawPointer : UnsafeRawPointer].self, capacity: 1)
             // Need to apply all previous interposes
@@ -255,7 +258,8 @@ public class SwiftInjection: NSObject {
                     replacement: SwiftTrace.interposed(replacee: replacement)!,
                     replacee: replacee))
             }
-            SwiftTrace.apply(interposes: previous)
+            SwiftTrace.apply(interposes: previous, symbols: symbols)
+            #endif
         })
         #else
         // Using array of new interpose structs

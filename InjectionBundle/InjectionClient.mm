@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#156 $
+//  $Id: //depot/ResidentEval/InjectionBundle/InjectionClient.mm#157 $
 //
 
 #import "InjectionClient.h"
@@ -171,8 +171,8 @@ static struct {
     [self writeString:builder.arch];
     [self writeString:[NSBundle mainBundle].executablePath];
 
-    NSString *tmpDir = [self readString];
-    BOOL notPlugin = ![@"/tmp" isEqualToString:tmpDir];
+    builder.tmpDir = [self readString];
+    BOOL notPlugin = ![@"/tmp" isEqualToString:builder.tmpDir];
 
     int codesignStatusPipe[2];
     pipe(codesignStatusPipe);

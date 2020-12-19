@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 17/09/2020.
 //  Copyright © 2020 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/UpdateCheck.swift#5 $
+//  $Id: //depot/ResidentEval/InjectionIII/UpdateCheck.swift#6 $
 //
 
 import Foundation
@@ -70,7 +70,9 @@ extension AppDelegate {
                     }
                 }
                 else if let error = error {
-                    throw error
+                    if appDelegate.isSandboxed {
+                        throw error
+                    }
                 }
             } catch {
                 DispatchQueue.main.async {
