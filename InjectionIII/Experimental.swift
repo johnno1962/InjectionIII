@@ -5,7 +5,7 @@
 //  Created by User on 20/10/2020.
 //  Copyright © 2020 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/Experimental.swift#32 $
+//  $Id: //depot/ResidentEval/InjectionIII/Experimental.swift#35 $
 //
 
 import Cocoa
@@ -302,8 +302,17 @@ extension AppDelegate {
                     patched += """
 
                         #if DEBUG
-                        private var loadInjection = {
-                            Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle")?.load()
+                        private var loadInjection: () = {
+                            #if os(macOS)
+                            let bundleName = "macOSInjection.bundle"
+                            #elseif os(tvOS)
+                            let bundleName = "tvOSInjection.bundle"
+                            #elseif targetEnvironment(simulator)
+                            let bundleName = "iOSInjection.bundle"
+                            #else
+                            let bundleName = "maciOSInjection.bundle"
+                            #endif
+                            Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/"+bundleName)!.load()
                         }()
 
                         import Combine

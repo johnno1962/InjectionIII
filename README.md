@@ -49,8 +49,13 @@ When you run your application without rebuilding (^⌘R), recent injections will
 You can detect when a *class* has been injected in your code (to reload a view controller for example) by adding an `@objc func
 injected()` class or instance method.  The instance `@objc
 func injected()` method relies on a "sweep" of all objects in your application to find those of
-the class you have just injected which can be unreliable when using `unowned` instance variables. If you encounter problems, subscribe to the `"INJECTION_BUNDLE_NOTIFICATION"` instead.
+the class you have just injected which can be unreliable when using `unowned` instance variables. If you encounter problems, remomve the injected() method and subscribe to the `"INJECTION_BUNDLE_NOTIFICATION"` instead along the lines of the following:
 
+```
+    NotificationCenter.default.addObserver(self,
+        selector: #selector(configureView),
+        name: Notification.Name("INJECTION_BUNDLE_NOTIFICATION"), object: nil)
+```
 Included in this release is "Xprobe" which allows you to browse and inspect the objects in
 your application through a web-like interface and execute code against them. Enter text into the search textfield to locate objects quickly by class name.
 
@@ -131,8 +136,17 @@ the very end of any declaration of a view's body property that you want to injec
 
 ```Swift
 #if DEBUG
-private var loadInjection = {
-    Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle")?.load()
+private var loadInjection: () = {
+    #if os(macOS)
+    let bundleName = "macOSInjection.bundle"
+    #elseif os(tvOS)
+    let bundleName = "tvOSInjection.bundle"
+    #elseif targetEnvironment(simulator)
+    let bundleName = "iOSInjection.bundle"
+    #else
+    let bundleName = "maciOSInjection.bundle"
+    #endif
+    Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/"+bundleName)!.load()
 }()
 
 import Combine
@@ -185,7 +199,8 @@ to add an `@ObservedObject`, initialised to the `injectionObserver` instance as 
     @ObservedObject var iO = injectionObserver
     #endif
 ```
-If you'd like to execute some code each time your interface is injected use the 
+You can make all these changes automatically once you've opened a project using the
+`"Prepare Project"` menu item. If you'd like to execute some code each time your interface is injected, use the 
 `.onInjection { ... }` modifier instead of .`eraseToAnyView()`.
 
 ### macOS Injection
@@ -194,6 +209,25 @@ It is possible to use injection with a macOS/Catalyst project but it is getting 
 with each release of the OS. You need to make sure to turn off the "App Sandbox" and also "Disable 
 Library Validation" under the "Hardened Runtime" options for your project while you inject.
 
+With an Apple Silicon Mac it is possible to run your iOS application natively on macOS.
+You cuse injection with these apps but as you can't turn off library validation it's a little
+involved. You need re-codesign the maciOSInjection.bundle contained in the InjectionIII
+app package using the signing identity used by your target app which you can determine
+from the `Sign` phase in your app's build logs. You will also need to set a user default with
+the path to your project file as the name and the signing identity as the value to injected
+code changes can be signed properly.
+
+All this is best done by adding the following as a build phase to your target project:
+
+```
+# Type a script or drag a script file from your workspace to insert its path.
+export CODESIGN_ALLOCATE\=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/codesign_allocate
+INJECTION_APP_RESOURCES=/Applications/InjectionIII.app/Contents/Resources
+/usr/bin/codesign --force --sign $EXPANDED_CODE_SIGN_IDENTITY  $INJECTION_APP_RESOURCES/maciOSInjection.bundle/maciOSInjection
+/usr/bin/codesign --force --sign $EXPANDED_CODE_SIGN_IDENTITY  $INJECTION_APP_RESOURCES/maciOSSwiftUISupport.bundle/maciOSSwiftUISupport
+/usr/bin/codesign --force --sign $EXPANDED_CODE_SIGN_IDENTITY $INJECTION_APP_RESOURCES/maciOSInjection.bundle/Frameworks/SwiftTrace.framework/SwiftTrace
+defaults write com.johnholdsworth.InjectionIII "$PROJECT_FILE_PATH" $EXPANDED_CODE_SIGN_IDENTITY
+```
 ### Storyboard injection
 
 Sometimes when you are iterating over a UI it is useful to be able to inject storyboards. This works slightly differently from code injection. To inject changes to a storyboard scene, make your changes then _build_ the project instead of saving the storyboard. The "nib" of the currently displayed view controlled should be reloaded and viewDidLoad etc. will be called.
@@ -344,6 +378,10 @@ respective licenses.
 
 The App Tracing functionality uses the [OliverLetterer/imp_implementationForwardingToSelector](https://github.com/OliverLetterer/imp_implementationForwardingToSelector) trampoline implementation via the [SwiftTrace](https://github.com/johnno1962/SwiftTrace) project under an MIT license.
 
+SwiftTrace uses the very handy [https://github.com/facebook/fishhook](https://github.com/facebook/fishhook).
+See the project source and header file included in the app bundle
+for licensing details.
+
 This release includes a very slightly modified version of the excellent
 [canviz](https://code.google.com/p/canviz/) library to render "dot" files
 in an HTML canvas which is subject to an MIT license. The changes are to pass
@@ -354,4 +392,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2020/12/15 $
+$Date: 2020/12/19 $
