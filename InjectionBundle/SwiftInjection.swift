@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#115 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#116 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -222,6 +222,7 @@ public class SwiftInjection: NSObject {
         for suffix in SwiftTrace.swiftFunctionSuffixes {
             findSwiftSymbols(dylib, suffix) { (loadedFunc, symbol, _, _) in
                 guard let existing = dlsym(main, symbol),
+                    UnsafeRawPointer(existing) != loadedFunc,
                     let current = SwiftTrace.interposed(replacee: existing) else {
                     return
                 }

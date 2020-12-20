@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#158 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#160 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -451,7 +451,25 @@ public class SwiftEval: NSObject {
         return tmpfile
     }
 
+    lazy var loadXCTest: () = {
+        #if os(macOS)
+        let sdk = "MacOSX"
+        #elseif os(tvOS)
+        let sdk = "AppleTVSimulator"
+        #elseif targetEnvironment(simulator)
+        let sdk = "iPhoneSimulator"
+        #else
+        let sdk = "iPhoneOS"
+        #endif
+
+        if dlopen("\(xcodeDev)/Platforms/\(sdk).platform/Developer/Library/Frameworks/XCTest.framework/XCTest", RTLD_LAZY) == nil {
+            debug(String(cString: dlerror()))
+        }
+    }()
+
     @objc func loadAndInject(tmpfile: String, oldClass: AnyClass? = nil) throws -> [AnyClass] {
+
+        _ = loadXCTest
 
         print("💉 Loading .dylib ...")
         // load patched .dylib into process with new version of class
