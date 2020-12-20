@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#98 $
+//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#101 $
 //
 
 import Cocoa
@@ -33,6 +33,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     @IBOutlet weak var frontItem: NSMenuItem!
     @IBOutlet weak var feedbackItem: NSMenuItem!
     @IBOutlet weak var lookupItem: NSMenuItem!
+    @IBOutlet weak var sponsorItem: NSMenuItem!
     @IBOutlet var statusItem: NSStatusItem!
 
     var watchedDirectories = Set<String>()
@@ -62,6 +63,11 @@ class AppDelegate : NSObject, NSApplicationDelegate {
         statusItem.menu = statusMenu
         statusItem.isEnabled = true
         statusItem.title = ""
+
+        if isSandboxed {
+            sponsorItem.isHidden = true
+            updateItem.isHidden = true
+        }
 
         InjectionServer.startServer(INJECTION_ADDRESS)
 
@@ -105,7 +111,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
         }
 
         let nextUpdateCheck = defaults.double(forKey: UserDefaultsUpdateCheck)
-        if  nextUpdateCheck != 0.0 {
+        if !isSandboxed && nextUpdateCheck != 0.0 {
             updateItem.state = .on
             if Date.timeIntervalSinceReferenceDate > nextUpdateCheck {
                 self.updateCheck(nil)

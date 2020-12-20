@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 17/09/2020.
 //  Copyright © 2020 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/UpdateCheck.swift#6 $
+//  $Id: //depot/ResidentEval/InjectionIII/UpdateCheck.swift#8 $
 //
 
 import Foundation
@@ -14,7 +14,8 @@ extension AppDelegate {
 
     @IBAction func updateCheck(_ sender: NSMenuItem?) {
 
-        URLSession(configuration: .default).dataTask(with: URL(string:
+        URLSession(configuration: .default).dataTask(with:
+            URL(string:
             "https://api.github.com/repos/johnno1962/InjectionIII/releases")!) {
                 data, response, error in
             do {
@@ -70,9 +71,7 @@ extension AppDelegate {
                     }
                 }
                 else if let error = error {
-                    if appDelegate.isSandboxed {
-                        throw error
-                    }
+                    throw error
                 }
             } catch {
                 DispatchQueue.main.async {
