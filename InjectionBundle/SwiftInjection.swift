@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#116 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#117 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -232,7 +232,7 @@ public class SwiftInjection: NSObject {
                 }
 
                 var replacement = loadedFunc
-                if traceInjection, let tracer = SwiftTrace
+                if traceInjection || SwiftTrace.isTracing, let tracer = SwiftTrace
                     .trace(name: injectedPrefix+method, original: replacement) {
                     replacement = autoBitCast(tracer)
                 }
