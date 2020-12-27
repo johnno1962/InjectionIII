@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#160 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#162 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -545,7 +545,7 @@ public class SwiftEval: NSObject {
 //        print(regexp)
 
         // messy but fast
-        guard shell(command: """
+        let logScanCommand = """
             # search through build logs, most recent first
             cd "\(logsDir.path.escaping("$"))"
             for log in `ls -t *.xcactivitylog`; do
@@ -609,11 +609,18 @@ public class SwiftEval: NSObject {
                 ) "$log" >"\(tmpfile).sh" && exit 0
             done
             exit 1;
-            """) else {
+            """
+
+        guard shell(command: logScanCommand) else {
             return nil
         }
 
-        var compileCommand = try! String(contentsOfFile: "\(tmpfile).sh")
+        var compileCommand: String
+        do {
+            compileCommand = try String(contentsOfFile: "\(tmpfile).sh")
+        } catch {
+            throw evalError("Error reading \(tmpfile).sh, scanCommand: \(logScanCommand)")
+        }
         compileCommand = compileCommand.components(separatedBy: " -o ")[0] + " "
 
         // remove excess escaping in new build system
@@ -779,7 +786,7 @@ public class SwiftEval: NSObject {
     }
 
     #if !os(macOS)
-    let runner = ScriptRunner()
+    lazy var runner = ScriptRunner()
 
     class ScriptRunner {
         let commandsOut: UnsafeMutablePointer<FILE>

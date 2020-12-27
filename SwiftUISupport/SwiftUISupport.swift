@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 25/09/2020.
 //  Copyright © 2020 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/SwiftUISupport/SwiftUISupport.swift#24 $
+//  $Id: //depot/ResidentEval/SwiftUISupport/SwiftUISupport.swift#25 $
 //
 
 import SwiftUI
@@ -41,6 +41,7 @@ class SwiftUISupport: NSObject {
             SwiftMeta.bindGeneric(name: "getBindingType", owner: Self.self)
         SwiftMeta.wrapperHandlers["SwiftUI.State<"] =
             SwiftMeta.bindGeneric(name: "getStateType", owner: Self.self)
+        SwiftTrace.makeTraceable(types: [SwiftUI.Text.self])
         print("💉 Installed SwiftUI type handlers")
     }
 }
