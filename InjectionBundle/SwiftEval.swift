@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#162 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#165 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -172,6 +172,9 @@ public class SwiftEval: NSObject {
 //            SwiftEval.buildCacheFile = "\(tmpDir)/eval_builds.plist"
         }
     }
+    public var commandFile: String {
+        URL(fileURLWithPath: tmpDir).appendingPathComponent("command.sh").path
+    }
 
     /// Error handler
     @objc public var evalError = {
@@ -270,7 +273,7 @@ public class SwiftEval: NSObject {
             while (ps auxww | grep -v grep | grep "/ibtool " >/dev/null); do sleep 1; done; \
             for i in `find . -name '*.nib'`; do cp -rf "$i" "\(Bundle.main.bundlePath)/$i"; done >"\(logfile)" 2>&1)
             """) else {
-                throw evalError("Re-compilation failed (\(tmpDir)/command.sh)\n\(try! String(contentsOfFile: logfile))")
+                throw evalError("Re-compilation failed (\(commandFile))\n\(try! String(contentsOfFile: logfile))")
         }
 
         _ = evalError("Copied \(storyboard)")
@@ -322,7 +325,8 @@ public class SwiftEval: NSObject {
                 1. Injection does not work with Whole Module Optimization.
                 2. There are restrictions on characters allowed in paths.
                 3. File paths in the simulator paths are case sensitive.
-                Try a build clean then rebuild to make logs available.
+                Try a build clean then rebuild to make logs available or
+                consult: "\(commandFile)".
                 """)
         }
 
@@ -387,7 +391,7 @@ public class SwiftEval: NSObject {
                 (cd "\(projectDir.escaping("$"))" && \(compileCommand) -o \"\(tmpfile).o\" >\"\(logfile)\" 2>&1)
                 """) else {
             compileByClass.removeValue(forKey: classNameOrFile)
-            throw evalError("Re-compilation failed (see: \(tmpDir)/command.sh)\n\(try! String(contentsOfFile: logfile))")
+            throw evalError("Re-compilation failed (see: \(commandFile)\n\(try! String(contentsOfFile: logfile))")
         }
 
         compileByClass[classNameOrFile] = (compileCommand, sourceFile)
@@ -417,7 +421,7 @@ public class SwiftEval: NSObject {
         guard shell(command: """
             \(xcodeDev)/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch "\(arch)" -bundle \(osSpecific) -dead_strip -Xlinker -objc_abi_version -Xlinker 2 -fobjc-arc -fprofile-instr-generate \"\(tmpfile).o\" -L "\(frameworks)" -F "\(frameworks)" -rpath "\(frameworks)" -o \"\(tmpfile).dylib\" >>\"\(logfile)\" 2>&1
             """) else {
-            throw evalError("Link failed, check \(tmpDir)/command.sh\n\(try! String(contentsOfFile: logfile))")
+            throw evalError("Link failed, check \(commandFile)\n\(try! String(contentsOfFile: logfile))")
         }
 
         // codesign dylib
@@ -545,53 +549,48 @@ public class SwiftEval: NSObject {
 //        print(regexp)
 
         // messy but fast
-        let logScanCommand = """
-            # search through build logs, most recent first
-            cd "\(logsDir.path.escaping("$"))"
-            for log in `ls -t *.xcactivitylog`; do
-                #echo "Scanning $log"
-                /usr/bin/env perl <(cat <<'PERL'
+        try #"""
                     use JSON::PP;
                     use English;
                     use strict;
 
                     # line separator in Xcode logs
-                    $INPUT_RECORD_SEPARATOR = "\\r";
+                    $INPUT_RECORD_SEPARATOR = "\r";
 
                     # format is gzip
-                    open GUNZIP, "/usr/bin/gunzip <\\"$ARGV[0]\\" 2>/dev/null |" or die;
+                    open GUNZIP, "/usr/bin/gunzip <\"$ARGV[0]\" 2>/dev/null |" or die;
 
                     # grep the log until there is a match
                     my ($realPath, $command);
                     while (defined (my $line = <GUNZIP>)) {
-                        if ($line =~ /^\\s*cd /) {
+                        if ($line =~ /^\s*cd /) {
                             $realPath = $line;
                         }
-                        elsif ($line =~ m@\(regexp.escaping("\"$"))@oi and $line =~ " \(arch)") {
+                        elsif ($line =~ m@\#(regexp.escaping("\"$"))@oi and $line =~ " \#(arch)") {
                             # found compile command
                             # may need to extract file list
                             if ($line =~ / -filelist /) {
                                 while (defined (my $line2 = <GUNZIP>)) {
-                                    if (my($filemap) = $line2 =~ / -output-file-map ([^ \\\\]+(?:\\\\ [^ \\\\]+)*) / ) {
-                                        $filemap =~ s/\\\\//g;
+                                    if (my($filemap) = $line2 =~ / -output-file-map ([^ \\]+(?:\\ [^ \\]+)*) / ) {
+                                        $filemap =~ s/\\//g;
                                         my $file_handle = IO::File->new( "< $filemap" )
                                             or die "Could not open filemap '$filemap'";
                                         my $json_text = join'', $file_handle->getlines();
                                         my $json_map = decode_json( $json_text, { utf8  => 1 } );
-                                        my $filelist = "\(tmpDir)/filelist.txt";
+                                        my $filelist = "\#(tmpDir)/filelist.txt";
                                         my $swift_sources = join "\n", keys %$json_map;
                                         my $listfile = IO::File->new( "> $filelist" )
                                             or die "Could not open list file '$filelist'";
                                         binmode $listfile, ':utf8';
                                         $listfile->print( $swift_sources );
                                         $listfile->close();
-                                        $line =~ s/( -filelist )(\\S+)( )/$1$filelist$3/;
+                                        $line =~ s/( -filelist )(\S+)( )/$1$filelist$3/;
                                         last;
                                     }
                                 }
                             }
-                            if ($realPath and (undef, $realPath) = $realPath =~ /cd (\\"?)(.*?)\\1\\r/) {
-            #                                print "cd \\"$realPath\\" && ";
+                            if ($realPath and (undef, $realPath) = $realPath =~ /cd (\"?)(.*?)\1\r/) {
+                    #           print "cd \"$realPath\" && ";
                             }
                             # find last
                             $command = $line
@@ -605,13 +604,18 @@ public class SwiftEval: NSObject {
                     }
                     # class/file not found
                     exit 1;
-            PERL
-                ) "$log" >"\(tmpfile).sh" && exit 0
+                    """#.write(toFile: "\(tmpfile).pl",
+                               atomically: false, encoding: .utf8)
+
+        guard shell(command: """
+            # search through build logs, most recent first
+            cd "\(logsDir.path.escaping("$"))" &&
+            for log in `ls -t *.xcactivitylog`; do
+                #echo "Scanning $log"
+                /usr/bin/env perl "\(tmpfile).pl" "$log" >"\(tmpfile).sh" && exit 0
             done
             exit 1;
-            """
-
-        guard shell(command: logScanCommand) else {
+            """) else {
             return nil
         }
 
@@ -619,7 +623,9 @@ public class SwiftEval: NSObject {
         do {
             compileCommand = try String(contentsOfFile: "\(tmpfile).sh")
         } catch {
-            throw evalError("Error reading \(tmpfile).sh, scanCommand: \(logScanCommand)")
+            throw evalError("""
+                Error reading \(tmpfile).sh, scanCommand: \(commandFile)
+                """)
         }
         compileCommand = compileCommand.components(separatedBy: " -o ")[0] + " "
 
@@ -769,7 +775,6 @@ public class SwiftEval: NSObject {
     }
 
     func shell(command: String) -> Bool {
-        let commandFile = "\(tmpDir)/command.sh"
         try! command.write(toFile: commandFile, atomically: false, encoding: .utf8)
         debug(command)
 
