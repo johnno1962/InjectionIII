@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#101 $
+//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#102 $
 //
 
 import Cocoa
@@ -65,7 +65,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
         statusItem.title = ""
 
         if isSandboxed {
-            sponsorItem.isHidden = true
+//            sponsorItem.isHidden = true
             updateItem.isHidden = true
         }
 
