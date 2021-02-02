@@ -16,6 +16,8 @@ due to changes to macOS codesigning that affect the sandboxed App Store version 
 
 `InjectionIII.app` needs an Xcode 10.2 or greater at the path `/Applications/Xcode.app` , works for `Swift` and `Objective-C` and can be used alongside [AppCode](https://www.jetbrains.com/help/objc/create-a-swiftui-application.html) or by using the [AppCode Plugin](https://github.com/johnno1962/InjectionIII/blob/master/AppCodePlugin/INSTALL.md).
 
+To understand how InjectionIII works and the techniques it uses consult the book [Swift Secrets](http://books.apple.com/us/book/id1551005489).
+
 ### Getting Started
 
 To use injection, download the app from the App Store and run it. Then, you must add `"-Xlinker -interposable"` (without the double quotes) to your project's `"Other Linker Flags"` for the Debug target (qualified by the simulator SDK to avoid complications with bitcode). Finally, add one of the following to your application delegate's `applicationDidFinishLaunching:`
@@ -392,4 +394,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2020/12/19 $
+$Date: 2021/02/03 $
