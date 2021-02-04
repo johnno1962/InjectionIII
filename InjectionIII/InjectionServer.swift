@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#72 $
+//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#73 $
 //
 
 let commandQueue = DispatchQueue(label: "InjectionCommand")
@@ -118,7 +118,7 @@ public class InjectionServer: SimpleSocket {
         }
 
         guard let executable = readString() else { return }
-        if appDelegate.enableWatcher.state == .on {
+        if false && appDelegate.enableWatcher.state == .on {
             let mtime = {
                 (path: String) -> time_t in
                 var info = stat()
