@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#117 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#120 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -173,7 +173,7 @@ public class SwiftInjection: NSObject {
                 #endif
             }
 
-            print("💉 Injected '\(oldClass)'")
+            print("💉 Injected class '\(oldClass)'")
 
             if let XCTestCase = objc_getClass("XCTestCase") as? AnyClass,
                 newClass.isSubclass(of: XCTestCase) {
@@ -181,6 +181,18 @@ public class SwiftInjection: NSObject {
 //                if ( [newClass isSubclassOfClass:objc_getClass("QuickSpec")] )
 //                [[objc_getClass("_TtC5Quick5World") sharedWorld]
 //                setCurrentExampleMetadata:nil];
+            }
+        }
+
+        findSwiftSymbols("\(tmpfile).dylib", "VN") {
+            (typePtr, symbol, _, _) in
+            if let existing: Any.Type =
+                autoBitCast(dlsym(SwiftMeta.RTLD_DEFAULT, symbol)) {
+                print("💉 Injected value type '\(existing)'")
+                if SwiftMeta.sizeof(anyType: autoBitCast(typePtr)) !=
+                   SwiftMeta.sizeof(anyType: existing) {
+                    print("💉 ⚠️ Size of type \(_typeName(existing)) has changed. You cannot inject changes to memory layout. This will likely just crash. ⚠️")
+                }
             }
         }
 
