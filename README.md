@@ -303,23 +303,9 @@ these would only make a difference if you had a very, very large application bin
 
 Newer versions of InjectionIII contain a server that allows you to control your development device from your desktop once the service has been started. The UI allows you to record and replay macros of UI actions then verify the device screen against snapshots for end-to-end testing.
 
-To use, add an Objective-C class to your project and `#import` its header file in the Swift bridging header and include the following in the class *header* file:
-
-```C++
-#import "/Applications/InjectionIII.app/Contents/Resources/RemoteCapture.h"
-```
-
-Finally, include the following in your application's initialisation
-
-```Swift
-#if DEBUG
-RemoteCapture.start("192.168.1.14")
-#endif
-```
-(replace
-`192.168.1.14` with the IPV4 network address or hostname of your development 
-machine or your colleague's machine you would like to project your device 
-onto if they are also running InjectionIII.)
+To use, import the Swift Package `https://github.com/johnno1962/Remote.git`
+and call `RemoteCapture.start("hostname")` where hostname is a space
+separated list of hostnames or IP addreses.
 
 When InjectionIII is running, select the "Remote/Start Server" menu item to start the
 server and then run your app. It should connect to the server which will pop up a
@@ -327,7 +313,7 @@ window showing the device display and accepting tap events. Events can be
 saved as `macros` and replayed. If you include a snapshot in a macro this will
 be compared against the device display (within a tolerance) when you replay
 the macro for automated testing. Remote can also be used to capture videos
-of your app in operation but as it operates over the network, it isn't fast enough
+of your app in operation but, as it operates over the network, it isn't fast enough
 to capture animated transitions.
 
 ## SwiftEval - Yes, it's eval() for Swift
@@ -394,4 +380,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2021/02/03 $
+$Date: 2021/02/18 $
