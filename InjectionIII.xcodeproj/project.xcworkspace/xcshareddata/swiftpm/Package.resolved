@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "SwiftRegex",
+        "repositoryURL": "http://github.com/johnno1962/SwiftRegex5",
+        "state": {
+          "branch": null,
+          "revision": "bc9b22e4b4521075057ae98826def52cea5226f0",
+          "version": "5.2.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

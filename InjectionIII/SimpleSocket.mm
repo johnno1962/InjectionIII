@@ -5,12 +5,20 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
+//  $Id: //depot/ResidentEval/InjectionIII/SimpleSocket.mm#33 $
+//
 
 #import "SimpleSocket.h"
 
 #include <sys/socket.h>
 #include <netinet/tcp.h>
 #include <netdb.h>
+
+#if 0
+#define SLog NSLog
+#else
+#define SLog while(0) NSLog
+#endif
 
 @implementation SimpleSocket
 
@@ -140,6 +148,7 @@
     int32_t anint;
     if (read(clientSocket, &anint, sizeof anint) != sizeof anint)
         return ~0;
+    SLog(@"#%d <- %d", clientSocket, anint);
     return anint;
 }
 
@@ -148,25 +157,32 @@
     if (length == ~0)
         return nil;
     char utf8[length + 1];
-    if (read(clientSocket, utf8, length) != length)
+    size_t rd, ptr = 0;
+    while (ptr < length &&
+           (rd = read(clientSocket, utf8+ptr, length)) > 0)
+        ptr += rd;
+    if (ptr < length)
         return nil;
     utf8[length] = '\000';
+    SLog(@"#%d <- %d '%s'", clientSocket, length, utf8);
     return [NSString stringWithUTF8String:utf8];
 }
 
 - (BOOL)writeInt:(int)length {
+    SLog(@"#%d %d ->", clientSocket, length);
     return write(clientSocket, &length, sizeof length) == sizeof length;
 }
 
 - (BOOL)writeString:(NSString *)string {
     const char *utf8 = string.UTF8String;
     uint32_t length = (uint32_t)strlen(utf8);
+    SLog(@"#%d %d '%s' ->", clientSocket, length, utf8);
     return [self writeInt:length] &&
         write(clientSocket, utf8, length) == length;
 }
 
 - (BOOL)writeCommand:(int)command withString:(NSString *)string {
-    return write(clientSocket, &command, sizeof command) == sizeof command &&
+    return [self writeInt:command] &&
         (!string || [self writeString:string]);
 }
 

@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 05/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#120 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftInjection.swift#121 $
 //
 //  Cut-down version of code injection in Swift. Uses code
 //  from SwiftEval.swift to recompile and reload class.
@@ -14,6 +14,9 @@
 #if arch(x86_64) || arch(i386) || arch(arm64) // simulator/macOS only
 import Foundation
 import SwiftTrace
+#if SWIFT_PACKAGE
+import SwiftTraceGuts
+#endif
 
 /** pointer to a function implementing a Swift method */
 public typealias SIMP = SwiftMeta.SIMP
@@ -143,7 +146,7 @@ public class SwiftInjection: NSObject {
             if isSwiftClass {
                 // Old mechanism for Swift equivalent of "Swizzling".
                 if classMetadata.pointee.ClassSize != existingClass.pointee.ClassSize {
-                    print("💉 ⚠️ Adding or removing methods on Swift classes is not supported. Your application will likely crash. ⚠️")
+                    print("\(prefix)⚠️ Adding or removing methods on Swift classes is not supported. Your application will likely crash. ⚠️")
                 }
 
                 #if true // replaced by "interpose" code below
@@ -173,7 +176,7 @@ public class SwiftInjection: NSObject {
                 #endif
             }
 
-            print("💉 Injected class '\(oldClass)'")
+            print("\(prefix)Injected class '\(oldClass)'")
 
             if let XCTestCase = objc_getClass("XCTestCase") as? AnyClass,
                 newClass.isSubclass(of: XCTestCase) {
@@ -188,10 +191,10 @@ public class SwiftInjection: NSObject {
             (typePtr, symbol, _, _) in
             if let existing: Any.Type =
                 autoBitCast(dlsym(SwiftMeta.RTLD_DEFAULT, symbol)) {
-                print("💉 Injected value type '\(existing)'")
+                print("\(prefix)Injected value type '\(existing)'")
                 if SwiftMeta.sizeof(anyType: autoBitCast(typePtr)) !=
                    SwiftMeta.sizeof(anyType: existing) {
-                    print("💉 ⚠️ Size of type \(_typeName(existing)) has changed. You cannot inject changes to memory layout. This will likely just crash. ⚠️")
+                    print("\(prefix)⚠️ Size of type \(_typeName(existing)) has changed. You cannot inject changes to memory layout. This will likely just crash. ⚠️")
                 }
             }
         }
@@ -240,7 +243,7 @@ public class SwiftInjection: NSObject {
                 }
                 let method = SwiftMeta.demangle(symbol: symbol) ?? String(cString: symbol)
                 if detail {
-                    print("💉 Replacing \(method)")
+                    print("\(prefix)Replacing \(method)")
                 }
 
                 var replacement = loadedFunc
@@ -318,7 +321,7 @@ public class SwiftInjection: NSObject {
             if class_getInstanceMethod(cls, injectedSEL) != nil {
                 injectedClasses.append(cls)
                 print("""
-                    💉 As class \(cls) has an @objc injected() method, \
+                    \(prefix)As class \(cls) has an @objc injected() method, \
                     InjectionIII will perform a "sweep" of all live \
                     instances to determine which objects to message. \
                     If this fails, subscribe to the notification \
@@ -424,7 +427,7 @@ public class SwiftInjection: NSObject {
             }),
             let (_, logsDir) =
                 try? builder.determineEnvironment(classNameOrFile: "") else {
-            print("💉 File ordering not available.")
+            print("\(prefix)File ordering not available.")
             return
         }
 
@@ -442,7 +445,7 @@ public class SwiftInjection: NSObject {
         }
         
         if !found {
-            print("💉 Do you have the right project selected?")
+            print("\(prefix)Do you have the right project selected?")
         }
     }
 
@@ -563,7 +566,8 @@ extension NSObject {
         let object = "@".utf16.first!
         while cls != nil && cls != NSObject.self && cls != NSURL.self {
             let className = NSStringFromClass(cls!)
-            if className.hasPrefix("_") || className.hasPrefix("NS") {
+            if className.hasPrefix("_") || className.hasPrefix("NS") ||
+                className.hasPrefix("WK") {
                 return
             }
             #if os(OSX)
