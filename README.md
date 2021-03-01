@@ -208,7 +208,10 @@ to add an `@ObservedObject`, initialised to the `injectionObserver` instance as 
 ```
 You can make all these changes automatically once you've opened a project using the
 `"Prepare Project"` menu item. If you'd like to execute some code each time your interface is injected, use the 
-`.onInjection { ... }` modifier instead of .`eraseToAnyView()`.
+`.onInjection { ... }` modifier instead of .`eraseToAnyView()`. As an alternative
+this code is available in the [HotSwiftUI](https://github.com/johnno1962/HotSwiftUI)
+Swift Package though you would remember to load the `iOSInjection.bundle`
+separately.
 
 ### macOS Injection
 
@@ -385,4 +388,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2021/02/25 $
+$Date: 2021/03/02 $

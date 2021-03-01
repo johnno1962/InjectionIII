@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/SimpleSocket.mm#33 $
+//  $Id: //depot/ResidentEval/InjectionIII/SimpleSocket.mm#34 $
 //
 
 #import "SimpleSocket.h"
@@ -159,7 +159,7 @@
     char utf8[length + 1];
     size_t rd, ptr = 0;
     while (ptr < length &&
-           (rd = read(clientSocket, utf8+ptr, length)) > 0)
+       (rd = read(clientSocket, utf8+ptr, length-ptr)) > 0)
         ptr += rd;
     if (ptr < length)
         return nil;

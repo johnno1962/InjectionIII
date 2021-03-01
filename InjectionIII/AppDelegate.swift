@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#107 $
+//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#108 $
 //
 
 import Cocoa
@@ -68,7 +68,11 @@ class AppDelegate : NSObject, NSApplicationDelegate {
 
         let statusBar = NSStatusBar.system
         statusItem = statusBar.statusItem(withLength: statusBar.thickness)
+        #if SWIFT_PACKAGE
+        statusItem.toolTip = "Hot Reloading"
+        #else
         statusItem.toolTip = "Code Injection"
+        #endif
         statusItem.highlightMode = true
         statusItem.menu = statusMenu
         statusItem.isEnabled = true

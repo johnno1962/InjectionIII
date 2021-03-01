@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#87 $
+//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#92 $
 //
 
 import Cocoa
@@ -59,7 +59,7 @@ public class InjectionServer: SimpleSocket {
         }
 
         // tell client app the inferred project being watched
-        NSLog("Connection with project file: \(projectFile)")
+        NSLog("Connection for project file: \(projectFile)")
 
         if readInt() != INJECTION_SALT || readString() != INJECTION_KEY {
             NSLog("*** Error: SALT or KEY invalid. Are you running start_daemon.sh or InjectionIII.app from the right directory?")
@@ -74,7 +74,7 @@ public class InjectionServer: SimpleSocket {
             builder = nil
         }
 
-        // client spcific data for building
+        // client specific data for building
         if let frameworks = readString() {
             builder.frameworks = frameworks
         } else { return }
@@ -93,6 +93,7 @@ public class InjectionServer: SimpleSocket {
         // log errors to client
         builder.evalError = {
             (message: String) in
+            NSLog("%@", message)
             self.sendCommand(.log, with:message)
             return NSError(domain:"SwiftEval", code:-1,
                            userInfo:[NSLocalizedDescriptionKey: message])
@@ -188,6 +189,9 @@ public class InjectionServer: SimpleSocket {
 
         // start up file watchers to write generated tmpfile path to client app
         setProject(projectFile)
+        if projectFile.contains("/Desktop/") || projectFile.contains("/Documents/") {
+            sendCommand(.log, with: "\(APP_PREFIX)⚠️ Your project file seems to be in the Desktop or Documents folder and may prevent \(APP_NAME) working as it has special permissions.")
+        }
 
         DispatchQueue.main.sync {
             appDelegate.updateTraceInclude(nil)

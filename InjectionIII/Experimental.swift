@@ -5,7 +5,7 @@
 //  Created by User on 20/10/2020.
 //  Copyright © 2020 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/Experimental.swift#38 $
+//  $Id: //depot/ResidentEval/InjectionIII/Experimental.swift#40 $
 //
 
 import Cocoa
@@ -55,7 +55,7 @@ extension AppDelegate {
                                             usedEncoding: &projectEncoding)
         else {
             lastConnection?.sendCommand(.log, with:
-                "💉 Could not load project file \(projectURL?.path ?? "unknown").")
+                "\(APP_PREFIX)Could not load project file \(projectURL?.path ?? "unknown").")
             return
         }
 
@@ -129,7 +129,7 @@ extension AppDelegate {
 
         guard parts.count > 0, let (_, logsDir) =
             try? builder.determineEnvironment(classNameOrFile: "") else {
-            errorPtr.pointee = "💉 Injection Goto service not availble."
+            errorPtr.pointee = "\(APP_PREFIX)Injection Goto service not availble." as NSString
             lastConnection?.sendCommand(.log, with: errorPtr.pointee as String)
             return
         }
@@ -160,8 +160,8 @@ extension AppDelegate {
                 #"(?:\b(?:var|func|struct|class|enum)\s+|^[+-]\s*(?:\([^)]*\)\s*)?)(\#(className!))\b"#,
                 options: [.anchorsMatchLines]) else {
             errorPtr.pointee = """
-                💉 Unable to find source file for type '\(className!)' \
-                using build logs.\n💉 Do you have the right project selected? \
+                \(APP_PREFIX)Unable to find source file for type '\(className!)' \
+                using build logs.\n\(APP_PREFIX)Do you have the right project selected? \
                 Try with a clean build.
                 """ as NSString
             lastConnection?.sendCommand(.log, with: errorPtr.pointee as String)
@@ -211,7 +211,7 @@ extension AppDelegate {
                     task.launch()
                     task.waitUntilExit()
                 } catch {
-                    errorPtr.pointee = "💉 Failed to write \(script): \(error)" as NSString
+                    errorPtr.pointee = "\(APP_PREFIX)Failed to write \(script): \(error)" as NSString
                     NSLog("\(errorPtr.pointee)")
                 }
             }
