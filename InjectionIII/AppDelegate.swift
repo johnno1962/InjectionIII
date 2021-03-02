@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#108 $
+//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#109 $
 //
 
 import Cocoa
@@ -451,6 +451,11 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     @IBAction func sponsor(_ sender: Any) {
         _ = NSWorkspace.shared.open(URL(string:
             "https://github.com/sponsors/johnno1962")!)
+    }
+
+    @IBAction func book(_ sender: Any) {
+        _ = NSWorkspace.shared.open(URL(string:
+            "https://books.apple.com/book/id1551005489")!)
     }
 
     @objc

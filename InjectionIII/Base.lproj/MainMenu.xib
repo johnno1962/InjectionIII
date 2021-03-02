@@ -941,11 +941,18 @@
                         <action selector="help:" target="Voe-Tx-rLC" id="Jmr-Oc-zAH"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Sponsor Dev." toolTip="Sponsor the developer on Github." id="LVU-Kn-bbK">
+                <menuItem title="Sponsor Dev." hidden="YES" toolTip="Sponsor the developer on Github." id="LVU-Kn-bbK">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <accessibility description="Sponsor Dev"/>
                     <connections>
                         <action selector="sponsor:" target="Voe-Tx-rLC" id="0Tc-w2-LJX"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Buy the Book" toolTip="Sponsor the developer on Github." id="wXJ-16-IFN">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <accessibility description="Sponsor Dev"/>
+                    <connections>
+                        <action selector="book:" target="Voe-Tx-rLC" id="QZr-Ns-1YW"/>
                     </connections>
                 </menuItem>
                 <menuItem title="Quit Injection" toolTip="Quit InjectionIII" id="LUw-n8-2Gj">
