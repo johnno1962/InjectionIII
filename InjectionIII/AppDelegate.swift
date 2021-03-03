@@ -5,15 +5,24 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#102 $
+//  $Id: //depot/ResidentEval/InjectionIII/AppDelegate.swift#112 $
 //
 
 import Cocoa
+#if SWIFT_PACKAGE
+import HotReloadingGuts
+import injectiondGuts
+
+// nib compatability...
+import WebKit
+@objc(WebView)
+class WebView : WKWebView {}
+#endif
 
 let XcodeBundleID = "com.apple.dt.Xcode"
 var appDelegate: AppDelegate!
 
-@NSApplicationMain
+@objc(AppDelegate)
 class AppDelegate : NSObject, NSApplicationDelegate {
 
     @IBOutlet var window: NSWindow!
@@ -51,6 +60,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
         NSRunningApplication.runningApplications(
             withBundleIdentifier: XcodeBundleID).first?
             .bundleURL?.appendingPathComponent("Contents/Developer")
+    var derivedLogs: String?
 
     @objc func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
@@ -58,7 +68,11 @@ class AppDelegate : NSObject, NSApplicationDelegate {
 
         let statusBar = NSStatusBar.system
         statusItem = statusBar.statusItem(withLength: statusBar.thickness)
+        #if SWIFT_PACKAGE
+        statusItem.toolTip = "Hot Reloading"
+        #else
         statusItem.toolTip = "Code Injection"
+        #endif
         statusItem.highlightMode = true
         statusItem.menu = statusMenu
         statusItem.isEnabled = true
@@ -71,6 +85,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
 
         InjectionServer.startServer(INJECTION_ADDRESS)
 
+        #if !SWIFT_PACKAGE
         if !FileManager.default.fileExists(atPath:
             "/Applications/Xcode.app/Contents/Developer") {
             let alert: NSAlert = NSAlert()
@@ -84,31 +99,54 @@ class AppDelegate : NSObject, NSApplicationDelegate {
             alert.addButton(withTitle: "OK")
             _ = alert.runModal()
         }
+        #endif
 
         defaultsMap = [
             frontItem: UserDefaultsOrderFront,
             enabledTDDItem: UserDefaultsTDDEnabled,
             enableVaccineItem: UserDefaultsVaccineEnabled,
             feedbackItem: UserDefaultsFeedback,
-            lookupItem: UserDefaultsLookup
+            lookupItem: UserDefaultsLookup,
+            remoteItem: UserDefaultsRemote
         ]
 
         for (menuItem, defaultsKey) in defaultsMap {
             menuItem.state = defaults.bool(forKey: defaultsKey) ? .on : .off
         }
 
+        if remoteItem.state == .on {
+            remoteItem.state = .off
+            startRemote(remoteItem)
+        }
+
         setMenuIcon("InjectionIdle")
+        #if !SWIFT_PACKAGE
         DDHotKeyCenter.shared()?
             .registerHotKey(withKeyCode: UInt16(kVK_ANSI_Equal),
                modifierFlags: NSEvent.ModifierFlags.control.rawValue,
                target:self, action:#selector(autoInject(_:)), object:nil)
+        #endif
 
+        #if SWIFT_PACKAGE
+        var arguments = CommandLine.arguments.dropFirst()
+        let projectURL = URL(fileURLWithPath: arguments.removeFirst())
+        derivedLogs = arguments.removeFirst()
+
+        NSDocumentController.shared.noteNewRecentDocumentURL(projectURL)
+        selectedProject = projectURL.path
+        appDelegate.watchedDirectories
+            .insert(projectURL.deletingLastPathComponent().path)
+        for dir in arguments {
+            appDelegate.watchedDirectories.insert(dir)
+        }
+        #else
         NSApp.servicesProvider = self
         if let lastWatched = defaults.string(forKey: UserDefaultsLastWatched) {
             _ = self.application(NSApp, openFile: lastWatched)
         } else {
             NSUpdateDynamicServices()
         }
+        #endif
 
         let nextUpdateCheck = defaults.double(forKey: UserDefaultsUpdateCheck)
         if !isSandboxed && nextUpdateCheck != 0.0 {
@@ -120,6 +158,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     }
 
     func application(_ theApplication: NSApplication, openFile filename: String) -> Bool {
+        #if !SWIFT_PACKAGE
         let url: URL
         if let resolved = resolve(path: filename) {
             url = resolved
@@ -165,7 +204,7 @@ class AppDelegate : NSObject, NSApplicationDelegate {
         alert.alertStyle = NSAlert.Style.warning
         alert.addButton(withTitle: "OK")
         _ = alert.runModal()
-
+        #endif
         return false
     }
 
@@ -287,13 +326,15 @@ class AppDelegate : NSObject, NSApplicationDelegate {
     }
 
     @IBAction func startRemote(_ sender: NSMenuItem) {
+        remoteItem.state = .off
+        toggleState(remoteItem)
         RMWindowController.startServer(sender)
-        remoteItem.state = .on
     }
 
     @IBAction func stopRemote(_ sender: NSMenuItem) {
+        remoteItem.state = .on
+        toggleState(remoteItem)
         RMWindowController.stopServer()
-        remoteItem.state = .off
     }
 
     @IBAction func traceApp(_ sender: NSMenuItem) {
@@ -414,11 +455,18 @@ class AppDelegate : NSObject, NSApplicationDelegate {
             "https://github.com/sponsors/johnno1962")!)
     }
 
+    @IBAction func book(_ sender: Any) {
+        _ = NSWorkspace.shared.open(URL(string:
+            "https://books.apple.com/book/id1551005489")!)
+    }
+
     @objc
     public func applicationWillTerminate(aNotification: NSNotification) {
             // Insert code here to tear down your application
+        #if !SWIFT_PACKAGE
         DDHotKeyCenter.shared()
             .unregisterHotKey(withKeyCode: UInt16(kVK_ANSI_Equal),
              modifierFlags: NSEvent.ModifierFlags.control.rawValue)
+        #endif
     }
 }

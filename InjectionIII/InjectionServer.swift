@@ -5,8 +5,13 @@
 //  Created by John Holdsworth on 06/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#73 $
+//  $Id: //depot/ResidentEval/InjectionIII/InjectionServer.swift#92 $
 //
+
+import Cocoa
+#if SWIFT_PACKAGE
+import injectiondGuts
+#endif
 
 let commandQueue = DispatchQueue(label: "InjectionCommand")
 let compileQueue = DispatchQueue(label: "InjectionCompile")
@@ -53,11 +58,13 @@ public class InjectionServer: SimpleSocket {
             return
         }
 
-        NSLog("Connection with project file: \(projectFile)")
-
         // tell client app the inferred project being watched
+        NSLog("Connection for project file: \(projectFile)")
+
         if readInt() != INJECTION_SALT || readString() != INJECTION_KEY {
-            sendCommand(.invalid, with: nil)
+            NSLog("*** Error: SALT or KEY invalid. Are you running start_daemon.sh or InjectionIII.app from the right directory?")
+            write("/tmp")
+            write(InjectionCommand.invalid.rawValue)
             return
         }
 
@@ -67,7 +74,7 @@ public class InjectionServer: SimpleSocket {
             builder = nil
         }
 
-        // client spcific data for building
+        // client specific data for building
         if let frameworks = readString() {
             builder.frameworks = frameworks
         } else { return }
@@ -86,6 +93,7 @@ public class InjectionServer: SimpleSocket {
         // log errors to client
         builder.evalError = {
             (message: String) in
+            NSLog("%@", message)
             self.sendCommand(.log, with:message)
             return NSError(domain:"SwiftEval", code:-1,
                            userInfo:[NSLocalizedDescriptionKey: message])
@@ -181,6 +189,9 @@ public class InjectionServer: SimpleSocket {
 
         // start up file watchers to write generated tmpfile path to client app
         setProject(projectFile)
+        if projectFile.contains("/Desktop/") || projectFile.contains("/Documents/") {
+            sendCommand(.log, with: "\(APP_PREFIX)⚠️ Your project file seems to be in the Desktop or Documents folder and may prevent \(APP_NAME) working as it has special permissions.")
+        }
 
         DispatchQueue.main.sync {
             appDelegate.updateTraceInclude(nil)
@@ -232,7 +243,6 @@ public class InjectionServer: SimpleSocket {
                 }
                 sendCommand(.signed, with: builder
                                 .signer!(readString() ?? "") ? "1": "0")
-                break
             case .callOrderList:
                 if let calls = readString()?
                     .components(separatedBy: CALLORDER_DELIMITER) {
@@ -261,6 +271,10 @@ public class InjectionServer: SimpleSocket {
         appDelegate.setMenuIcon("InjectionBusy")
         if appDelegate.isSandboxed ||
             source.hasSuffix(".storyboard") || source.hasSuffix(".xib") {
+            #if SWIFT_PACKAGE
+            try? source.write(toFile: "/tmp/injecting_storyboard.txt",
+                              atomically: false, encoding: .utf8)
+            #endif
             sendCommand(.inject, with: source)
         } else {
             compileQueue.async {
@@ -291,6 +305,7 @@ public class InjectionServer: SimpleSocket {
         guard fileChangeHandler != nil else { return }
 
         builder?.projectFile = projectFile
+        #if !SWIFT_PACKAGE
         let projectName = URL(fileURLWithPath: projectFile)
             .deletingPathExtension().lastPathComponent
         let derivedLogs = String(format:
@@ -299,6 +314,9 @@ public class InjectionServer: SimpleSocket {
                                     .replacingOccurrences(of: #"[\s]+"#, with:"_",
                                                    options: .regularExpression),
             XcodeHash.hashString(forPath: projectFile))
+        #else
+        let derivedLogs = appDelegate.derivedLogs ?? "No derived logs"
+        #endif
         if FileManager.default.fileExists(atPath: derivedLogs) {
             builder?.derivedLogs = derivedLogs
         }

@@ -13,7 +13,7 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="InjectionIII">
+        <customObject id="Voe-Tx-rLC" customClass="AppDelegate">
             <connections>
                 <outlet property="enableVaccineItem" destination="cCv-GY-3Rv" id="Joe-DQ-AWO"/>
                 <outlet property="enableWatcher" destination="0iA-WA-gxc" id="vVT-sI-q78"/>
@@ -941,11 +941,18 @@
                         <action selector="help:" target="Voe-Tx-rLC" id="Jmr-Oc-zAH"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Sponsor Dev." toolTip="Sponsor the developer on Github." id="LVU-Kn-bbK">
+                <menuItem title="Sponsor Dev." hidden="YES" toolTip="Sponsor the developer on Github." id="LVU-Kn-bbK">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <accessibility description="Sponsor Dev"/>
                     <connections>
                         <action selector="sponsor:" target="Voe-Tx-rLC" id="0Tc-w2-LJX"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Buy the Book" toolTip="Sponsor the developer" id="wXJ-16-IFN">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <accessibility description="Sponsor Dev"/>
+                    <connections>
+                        <action selector="book:" target="Voe-Tx-rLC" id="QZr-Ns-1YW"/>
                     </connections>
                 </menuItem>
                 <menuItem title="Quit Injection" toolTip="Quit InjectionIII" id="LUw-n8-2Gj">

@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BB16653A25E9A5F2001407AE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BB16653925E9A5F0001407AE /* main.m */; };
+		BB16653E25EC5FE0001407AE /* InjectionClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB16653D25EC5FDF001407AE /* InjectionClient.swift */; };
+		BB16653F25EC6158001407AE /* Xprobe+Service.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB56393F1FD5D535002FFCEF /* Xprobe+Service.mm */; };
+		BB16654025EC6163001407AE /* Xprobe.mm in Sources */ = {isa = PBXBuildFile; fileRef = BBB64FE91FD583B60020BE47 /* Xprobe.mm */; };
+		BB16654125EC6167001407AE /* Xtrace.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB5639401FD5D535002FFCEF /* Xtrace.mm */; };
+		BB16654425ECD828001407AE /* ClientBoot.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB16654325ECD827001407AE /* ClientBoot.mm */; };
 		BB1A84072522703C003873C3 /* macOSInjection.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02451FB1065D00E45F0F /* macOSInjection.bundle */; };
 		BB1A840A25227535003873C3 /* SwiftTrace.h in Resources */ = {isa = PBXBuildFile; fileRef = BB6C87C62520D0D2005AFCFC /* SwiftTrace.h */; };
 		BB1BA90B251DC54100044608 /* SwiftUISupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1BA90A251DC54100044608 /* SwiftUISupport.swift */; };
@@ -73,7 +79,6 @@
 		BBCA02511FB107AF00E45F0F /* SwiftInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */; };
 		BBCA02561FB1099500E45F0F /* InjectionServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCA02551FB1099500E45F0F /* InjectionServer.swift */; };
 		BBCA02591FB112F500E45F0F /* App.icns in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02581FB112F500E45F0F /* App.icns */; };
-		BBCA025D1FB114FF00E45F0F /* InjectionClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = BBCA025C1FB114FF00E45F0F /* InjectionClient.mm */; settings = {COMPILER_FLAGS = "-Wno-ignored-attributes"; }; };
 		BBCA02601FB122C300E45F0F /* InjectionIdle.tif in Resources */ = {isa = PBXBuildFile; fileRef = BBCA025E1FB122C300E45F0F /* InjectionIdle.tif */; };
 		BBCA02611FB122C300E45F0F /* InjectionOK.tif in Resources */ = {isa = PBXBuildFile; fileRef = BBCA025F1FB122C300E45F0F /* InjectionOK.tif */; };
 		BBCA02621FB1312A00E45F0F /* SimpleSocket.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB67DBB31FB0CDA8000EAC8A /* SimpleSocket.mm */; };
@@ -140,6 +145,9 @@
 		BB037DF41FAD80D0004B267C /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		BB070C252512851B002FC45A /* AppCodePlugin */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AppCodePlugin; sourceTree = "<group>"; };
 		BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftInjection.swift; sourceTree = "<group>"; };
+		BB16653925E9A5F0001407AE /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		BB16653D25EC5FDF001407AE /* InjectionClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InjectionClient.swift; sourceTree = "<group>"; };
+		BB16654325ECD827001407AE /* ClientBoot.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ClientBoot.mm; sourceTree = "<group>"; };
 		BB1BA904251DC51900044608 /* SwiftUISupport.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftUISupport.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB1BA906251DC51900044608 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BB1BA90A251DC54100044608 /* SwiftUISupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUISupport.swift; sourceTree = "<group>"; };
@@ -496,6 +504,7 @@
 		BBCA01FF1FB0F10300E45F0F /* InjectionIII */ = {
 			isa = PBXGroup;
 			children = (
+				BB16653925E9A5F0001407AE /* main.m */,
 				BB6306FD1FCD1A410021D30C /* Credits.rtf */,
 				BBCA02011FB0F10300E45F0F /* AppDelegate.swift */,
 				BB7D7CAB2512F8F00069FE2C /* UpdateCheck.swift */,
@@ -542,8 +551,10 @@
 			isa = PBXGroup;
 			children = (
 				BBCA02471FB1065D00E45F0F /* Info.plist */,
+				BB16654325ECD827001407AE /* ClientBoot.mm */,
 				BBCA025B1FB114FF00E45F0F /* InjectionClient.h */,
 				BBCA025C1FB114FF00E45F0F /* InjectionClient.mm */,
+				BB16653D25EC5FDF001407AE /* InjectionClient.swift */,
 				BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */,
 				BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */,
 				BBB64FE41FD576AA0020BE47 /* XprobeSwift-Bridging-Header.h */,
@@ -879,7 +890,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"$PRODUCT_NAME\" = \"macOSInjection\" ]; then\n    perl -e 'print \"#define INJECTION_SALT @{[1_000_000 + int(rand() * ((1 << 31)) - 1_000_000)]}\\n\"' >/tmp/InjectionSalt.h\nfi\n";
+			shellScript = "if [ \"$PRODUCT_NAME\" = \"macOSInjection\" ]; then\n    perl -e 'print \"#define INJECTION_SALT @{[1_000_000 + int(rand() * ((1 << 31)) - 1_000_000)]}\\n\"' >/tmp/InjectionIIISalt.h\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		BB6306FF1FCD1DAA0021D30C /* ShellScript */ = {
@@ -966,6 +977,7 @@
 				BB79FC79245CC02200A4B4CB /* TimeLapseBuilder.swift in Sources */,
 				CEC1702A253ED117002E823F /* Experimental.swift in Sources */,
 				BB56393C1FD5C25A002FFCEF /* SignerService.m in Sources */,
+				BB16653A25E9A5F2001407AE /* main.m in Sources */,
 				BBEB704C1FD28C6F00127711 /* XcodeHash.m in Sources */,
 				BBCA02021FB0F10300E45F0F /* AppDelegate.swift in Sources */,
 				BB7D7CAC2512F8F00069FE2C /* UpdateCheck.swift in Sources */,
@@ -982,13 +994,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB16654025EC6163001407AE /* Xprobe.mm in Sources */,
+				BB16653E25EC5FE0001407AE /* InjectionClient.swift in Sources */,
+				BB16654125EC6167001407AE /* Xtrace.mm in Sources */,
 				BBCA02501FB107AF00E45F0F /* SwiftEval.swift in Sources */,
 				BD35949E21A6C5DE0020EB94 /* Vaccine.swift in Sources */,
 				BBCA02511FB107AF00E45F0F /* SwiftInjection.swift in Sources */,
 				BBB64FE11FD575260020BE47 /* XprobeSwift.swift in Sources */,
+				BB16654425ECD828001407AE /* ClientBoot.mm in Sources */,
+				BB16653F25EC6158001407AE /* Xprobe+Service.mm in Sources */,
 				BBB64FE61FD577EB0020BE47 /* SwiftSwizzler.swift in Sources */,
 				BBCA02621FB1312A00E45F0F /* SimpleSocket.mm in Sources */,
-				BBCA025D1FB114FF00E45F0F /* InjectionClient.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1183,6 +1199,7 @@
 					"DEBUG=1",
 					"XPROBE_PORT=8891",
 					"INJECTION_ADDR=INADDR_LOOPBACK",
+					INJECTION_III_APP,
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -1249,6 +1266,7 @@
 					"DEBUG=1",
 					"XPROBE_PORT=8891",
 					"INJECTION_ADDR=INADDR_LOOPBACK",
+					INJECTION_III_APP,
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -1407,7 +1425,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 2.5.5;
+				MARKETING_VERSION = 2.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1430,7 +1448,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 2.5.5;
+				MARKETING_VERSION = 2.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

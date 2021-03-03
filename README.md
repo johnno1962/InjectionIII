@@ -7,6 +7,11 @@ in the iOS simulator without having to rebuild or restart your application. This
 This start-over implementation of [Injection for Xcode](https://github.com/johnno1962/injectionforxcode)
 has been built into a standalone app: `InjectionIII.app` which runs in the status bar and is [available from the Mac App Store](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12).
 
+**Stop Press:**, The functionality of InjectionIII is now  available as a Swift Package
+in the [HotReloading Project](https://github.com/johnno1962/HotReloading). No
+need to download the app, just add this project to yours and add a one line
+"Run Script" "Build Phase" as described in the README.md.
+
 This README includes descriptions of some newer features that are only available in more recent
 releases of the InjectionIII.app [available on github](https://github.com/johnno1962/InjectionIII/releases).
 You will need to use one of these releases for Apple Silicon or if you have upgraded to Big Sur
@@ -203,7 +208,10 @@ to add an `@ObservedObject`, initialised to the `injectionObserver` instance as 
 ```
 You can make all these changes automatically once you've opened a project using the
 `"Prepare Project"` menu item. If you'd like to execute some code each time your interface is injected, use the 
-`.onInjection { ... }` modifier instead of .`eraseToAnyView()`.
+`.onInjection { ... }` modifier instead of .`eraseToAnyView()`. As an alternative
+this code is available in the [HotSwiftUI](https://github.com/johnno1962/HotSwiftUI)
+Swift Package though you would have to remember to load the 
+`iOSInjection.bundle` separately.
 
 ### macOS Injection
 
@@ -380,4 +388,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2021/02/18 $
+$Date: 2021/03/03 $

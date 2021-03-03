@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 02/11/2017.
 //  Copyright © 2017 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#165 $
+//  $Id: //depot/ResidentEval/InjectionBundle/SwiftEval.swift#174 $
 //
 //  Basic implementation of a Swift "eval()" including the
 //  mechanics of recompiling a class and loading the new
@@ -15,6 +15,9 @@
 
 #if arch(x86_64) || arch(i386) || arch(arm64) // simulator/macOS only
 import Foundation
+#if SWIFT_PACKAGE
+import HotReloadingGuts
+#endif
 
 private func debug(_ str: String) {
 //    print(str)
@@ -139,7 +142,7 @@ fileprivate extension StringProtocol {
     }
 }
 
-@objc
+@objc(SwiftEval)
 public class SwiftEval: NSObject {
 
     static var instance = SwiftEval()
@@ -172,19 +175,30 @@ public class SwiftEval: NSObject {
 //            SwiftEval.buildCacheFile = "\(tmpDir)/eval_builds.plist"
         }
     }
-    public var commandFile: String {
-        URL(fileURLWithPath: tmpDir).appendingPathComponent("command.sh").path
+    @objc public var injectionNumber = 100
+    @objc public var lastIdeProcPath = ""
+
+    var tmpfile: String { URL(fileURLWithPath: tmpDir)
+        .appendingPathComponent("eval\(injectionNumber)").path }
+    var logfile: String { "\(tmpfile).log" }
+    var cmdfile: String { URL(fileURLWithPath: tmpDir)
+        .appendingPathComponent("command.sh").path
     }
 
     /// Error handler
     @objc public var evalError = {
         (_ message: String) -> Error in
-        print("💉 *** \(message) ***")
+        print("\(APP_PREFIX)*** \(message) ***")
         return NSError(domain: "SwiftEval", code: -1, userInfo: [NSLocalizedDescriptionKey: message])
     }
 
-    @objc public var injectionNumber = 100
-    @objc public var lastIdeProcPath = ""
+    func scriptError(_ what: String) -> Error {
+        return evalError("""
+            \(what) failed (see: \(cmdfile))
+            \((try? String(contentsOfFile: logfile)) ??
+                "Could not read log file '\(logfile)'")
+            """)
+    }
 
     var compileByClass = [String: (String, String)]()
 
@@ -222,8 +236,6 @@ public class SwiftEval: NSObject {
         let (_, logsDir) = try determineEnvironment(classNameOrFile: storyboard)
 
         injectionNumber += 1
-        let tmpfile = "\(tmpDir)/eval\(injectionNumber)"
-        let logfile = "\(tmpfile).log"
 
         // messy but fast
         guard shell(command: """
@@ -273,7 +285,7 @@ public class SwiftEval: NSObject {
             while (ps auxww | grep -v grep | grep "/ibtool " >/dev/null); do sleep 1; done; \
             for i in `find . -name '*.nib'`; do cp -rf "$i" "\(Bundle.main.bundlePath)/$i"; done >"\(logfile)" 2>&1)
             """) else {
-                throw evalError("Re-compilation failed (\(commandFile))\n\(try! String(contentsOfFile: logfile))")
+                throw scriptError("Re-compilation")
         }
 
         _ = evalError("Copied \(storyboard)")
@@ -312,9 +324,6 @@ public class SwiftEval: NSObject {
         // locate compile command for class
 
         injectionNumber += 1
-        let tmpfile = URL(fileURLWithPath: tmpDir)
-            .appendingPathComponent("eval\(injectionNumber)").path
-        let logfile = "\(tmpfile).log"
 
         guard var (compileCommand, sourceFile) = try compileByClass[classNameOrFile] ??
             findCompileCommand(logsDir: logsDir, classNameOrFile: classNameOrFile, tmpfile: tmpfile) ??
@@ -326,7 +335,7 @@ public class SwiftEval: NSObject {
                 2. There are restrictions on characters allowed in paths.
                 3. File paths in the simulator paths are case sensitive.
                 Try a build clean then rebuild to make logs available or
-                consult: "\(commandFile)".
+                consult: "\(cmdfile)".
                 """)
         }
 
@@ -340,8 +349,8 @@ public class SwiftEval: NSObject {
                 let escaped = normalised.escaping("' ${}()&*~")
                 if filepath != escaped {
                     print("""
-                            💉 Mapped: \(filepath)
-                            💉 ... to: \(escaped)
+                            \(APP_PREFIX)Mapped: \(filepath)
+                            \(APP_PREFIX)... to: \(escaped)
                             """)
                     compileCommand = compileCommand
                         .replacingOccurrences(of: filepath, with: escaped,
@@ -385,13 +394,13 @@ public class SwiftEval: NSObject {
 
         let projectDir = projectFile.deletingLastPathComponent().path
 
-        _ = evalError("💉 Compiling \(sourceFile)")
+        _ = evalError("Compiling \(sourceFile)")
 
         guard shell(command: """
                 (cd "\(projectDir.escaping("$"))" && \(compileCommand) -o \"\(tmpfile).o\" >\"\(logfile)\" 2>&1)
                 """) else {
             compileByClass.removeValue(forKey: classNameOrFile)
-            throw evalError("Re-compilation failed (see: \(commandFile)\n\(try! String(contentsOfFile: logfile))")
+            throw scriptError("Re-compilation")
         }
 
         compileByClass[classNameOrFile] = (compileCommand, sourceFile)
@@ -407,21 +416,25 @@ public class SwiftEval: NSObject {
             .firstMatch(in: compileCommand, options: [], range: NSMakeRange(0, compileCommand.utf16.count))?
             .range(at: 1)).flatMap { compileCommand[$0] } ?? "\(xcodeDev)/Toolchains/XcodeDefault.xctoolchain"
 
-        let osSpecific: String
+        let platform: String, osSpecific: String
         if compileCommand.contains("iPhoneSimulator.platform") {
-            osSpecific = "-isysroot \(xcodeDev)/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk -mios-simulator-version-min=9.0 -L\(toolchain)/usr/lib/swift/iphonesimulator -undefined dynamic_lookup"// -Xlinker -bundle_loader -Xlinker \"\(Bundle.main.executablePath!)\""
+            platform = "iPhoneSimulator"
+            osSpecific = "-mios-simulator-version-min=9.0"// -Xlinker -bundle_loader -Xlinker \"\(Bundle.main.executablePath!)\""
         } else if compileCommand.contains("iPhoneOS.platform") {
-            osSpecific = "-isysroot \(xcodeDev)/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk -miphoneos-version-min=9.0 -L\(toolchain)/usr/lib/swift/iphoneos -undefined dynamic_lookup"// -Xlinker -bundle_loader -Xlinker \"\(Bundle.main.executablePath!)\""
+            platform = "iPhoneOS"
+            osSpecific = "-miphoneos-version-min=9.0"// -Xlinker -bundle_loader -Xlinker \"\(Bundle.main.executablePath!)\""
         } else if compileCommand.contains("AppleTVSimulator.platform") {
-            osSpecific = "-isysroot \(xcodeDev)/Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator.sdk -mtvos-simulator-version-min=9.0 -L\(toolchain)/usr/lib/swift/appletvsimulator -undefined dynamic_lookup"// -Xlinker -bundle_loader -Xlinker \"\(Bundle.main.executablePath!)\""
+            platform = "AppleTVSimulator"
+            osSpecific = "-mtvos-simulator-version-min=9.0"// -Xlinker -bundle_loader -Xlinker \"\(Bundle.main.executablePath!)\""
         } else {
-            osSpecific = "-isysroot \(xcodeDev)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -mmacosx-version-min=10.11 -L\(toolchain)/usr/lib/swift/macosx -undefined dynamic_lookup"
+            platform = "MacOSX"
+            osSpecific = "-mmacosx-version-min=10.11"
         }
 
         guard shell(command: """
-            \(xcodeDev)/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch "\(arch)" -bundle \(osSpecific) -dead_strip -Xlinker -objc_abi_version -Xlinker 2 -fobjc-arc -fprofile-instr-generate \"\(tmpfile).o\" -L "\(frameworks)" -F "\(frameworks)" -rpath "\(frameworks)" -o \"\(tmpfile).dylib\" >>\"\(logfile)\" 2>&1
+            "\(xcodeDev)/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang" -arch "\(arch)" -bundle -isysroot "\(xcodeDev)/Platforms/\(platform).platform/Developer/SDKs/\(platform).sdk" -L"\(toolchain)/usr/lib/swift/\(platform.lowercased())" \(osSpecific) -undefined dynamic_lookup -dead_strip -Xlinker -objc_abi_version -Xlinker 2 -fobjc-arc -fprofile-instr-generate \"\(tmpfile).o\" -L "\(frameworks)" -F "\(frameworks)" -rpath "\(frameworks)" -o \"\(tmpfile).dylib\" >>\"\(logfile)\" 2>&1
             """) else {
-            throw evalError("Link failed, check \(commandFile)\n\(try! String(contentsOfFile: logfile))")
+            throw scriptError("Linking")
         }
 
         // codesign dylib
@@ -475,15 +488,15 @@ public class SwiftEval: NSObject {
 
         _ = loadXCTest
 
-        print("💉 Loading .dylib ...")
+        print("\(APP_PREFIX)Loading .dylib ...")
         // load patched .dylib into process with new version of class
         guard let dl = dlopen("\(tmpfile).dylib", RTLD_NOW) else {
             let error = String(cString: dlerror())
             if error.contains("___llvm_profile_runtime") {
-                print("💉 Loading .dylib has failed, try turning off collection of test coverage in your scheme")
+                print("\(APP_PREFIX)Loading .dylib has failed, try turning off collection of test coverage in your scheme")
             } else if error.contains("Symbol not found:") {
                 print("""
-                    💉 Loading .dylib has failed, This may be because Swift \
+                    \(APP_PREFIX)Loading .dylib has failed, This may be because Swift \
                     code being injected refers to a function with a default \
                     argument. Consult the section in the README at \
                     https://github.com/johnno1962/InjectionIII about \
@@ -492,7 +505,7 @@ public class SwiftEval: NSObject {
             }
             throw evalError("dlopen() error: \(error)")
         }
-        print("💉 Loaded .dylib - Ignore any duplicate class warning ^")
+        print("\(APP_PREFIX)Loaded .dylib - Ignore any duplicate class warning ^")
 
         if oldClass != nil {
             // find patched version of class using symbol for existing
@@ -624,7 +637,7 @@ public class SwiftEval: NSObject {
             compileCommand = try String(contentsOfFile: "\(tmpfile).sh")
         } catch {
             throw evalError("""
-                Error reading \(tmpfile).sh, scanCommand: \(commandFile)
+                Error reading \(tmpfile).sh, scanCommand: \(cmdfile)
                 """)
         }
         compileCommand = compileCommand.components(separatedBy: " -o ")[0] + " "
@@ -775,18 +788,18 @@ public class SwiftEval: NSObject {
     }
 
     func shell(command: String) -> Bool {
-        try! command.write(toFile: commandFile, atomically: false, encoding: .utf8)
+        try! command.write(toFile: cmdfile, atomically: false, encoding: .utf8)
         debug(command)
 
         #if os(macOS)
         let task = Process()
         task.launchPath = "/bin/bash"
-        task.arguments = [commandFile]
+        task.arguments = [cmdfile]
         task.launch()
         task.waitUntilExit()
         return task.terminationStatus == EXIT_SUCCESS
         #else
-        return runner.run(script: commandFile)
+        return runner.run(script: cmdfile)
         #endif
     }
 
@@ -850,7 +863,7 @@ public class SwiftEval: NSObject {
     }
     #endif
 
-    #if DEBUG
+    #if DEBUG && !SWIFT_PACKAGE
     deinit {
         NSLog("\(self).deinit()")
     }
