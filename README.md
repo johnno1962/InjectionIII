@@ -51,7 +51,6 @@ The file watcher can be disabled & enabled while the app is running using the st
 While the file watcher is disabled you can still force injections through manually using a hotkey `ctrl-=` (remember to save the file first!)
 
 If you inject a subclass of `XCTest` InjectionIII will try running that individual test inside your application provided has been compiled at some time in the past and doesn't require test specific support code.
-When you run your application without rebuilding (^⌘R), recent injections will be re-applied.
 
 You can detect when a *class* has been injected in your code (to reload a view controller for example) by adding an `@objc func
 injected()` class or instance method.  The instance `@objc
@@ -117,11 +116,6 @@ fi
 ```
 This changes the visibility of symbols for default argument generators
 and this issue should disappear.
-
-If you are using Code Coverage, you may need to disable it or you will receive a:
->	`Symbol not found: ___llvm_profile_runtime` error.`
-
-Go to `Edit Scheme -> Test -> Options -> Code Coverage` and (temporarily) disable.
 
 Keep in mind global state -- If the file you're injecting has top level variables e.g. singletons, static or global vars
 they will be reset when you inject the code as the new method implementations will refer to the newly loaded
@@ -220,12 +214,12 @@ with each release of the OS. You need to make sure to turn off the "App Sandbox"
 Library Validation" under the "Hardened Runtime" options for your project while you inject.
 
 With an Apple Silicon Mac it is possible to run your iOS application natively on macOS.
-You cuse injection with these apps but as you can't turn off library validation it's a little
+You can use injection with these apps but as you can't turn off library validation it's a little
 involved. You need re-codesign the maciOSInjection.bundle contained in the InjectionIII
 app package using the signing identity used by your target app which you can determine
 from the `Sign` phase in your app's build logs. You will also need to set a user default with
-the path to your project file as the name and the signing identity as the value to injected
-code changes can be signed properly.
+the path to your project file as the name and the signing identity as the value so injected
+code changes can be signed properly as you can not turn off library validation.
 
 All this is best done by adding the following as a build phase to your target project:
 
@@ -388,4 +382,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2021/03/03 $
+$Date: 2021/03/05 $
