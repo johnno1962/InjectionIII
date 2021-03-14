@@ -993,6 +993,9 @@
                                             <action selector="performClick:" target="jPt-Lp-Ai7" id="j8I-Ow-rPY"/>
                                         </connections>
                                     </textFieldCell>
+                                    <connections>
+                                        <binding destination="Voe-Tx-rLC" name="value" keyPath="defaults.traceInclude" id="bNo-Ul-w8U"/>
+                                    </connections>
                                 </textField>
                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jPt-Lp-Ai7">
                                     <rect key="frame" x="259" y="3" width="75" height="32"/>
@@ -1026,6 +1029,9 @@
                                             <action selector="performClick:" target="M3g-Xv-ERw" id="SUf-FJ-Vfa"/>
                                         </connections>
                                     </textFieldCell>
+                                    <connections>
+                                        <binding destination="Voe-Tx-rLC" name="value" keyPath="defaults.traceExclude" id="FXJ-pl-tOo"/>
+                                    </connections>
                                 </textField>
                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M3g-Xv-ERw">
                                     <rect key="frame" x="259" y="3" width="75" height="32"/>
