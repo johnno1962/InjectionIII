@@ -7,9 +7,9 @@ in the iOS simulator without having to rebuild or restart your application. This
 This start-over implementation of [Injection for Xcode](https://github.com/johnno1962/injectionforxcode)
 has been built into a standalone app: `InjectionIII.app` which runs in the status bar and is [available from the Mac App Store](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12).
 
-**Stop Press:**, The functionality of InjectionIII is now  available as a Swift Package
+**Stop Press:** The functionality of InjectionIII is now  available as a Swift Package
 in the [HotReloading Project](https://github.com/johnno1962/HotReloading). No
-need to download the app, just add this project to yours and add a one line
+need to download the app, just add this project to yours and add a short
 "Run Script" "Build Phase" as described in the README.md.
 
 This README includes descriptions of some newer features that are only available in more recent
@@ -211,7 +211,9 @@ Swift Package though you would have to remember to load the
 
 It is possible to use injection with a macOS/Catalyst project but it is getting progressively more difficult
 with each release of the OS. You need to make sure to turn off the "App Sandbox" and also "Disable 
-Library Validation" under the "Hardened Runtime" options for your project while you inject.
+Library Validation" under the "Hardened Runtime" options for your project while you inject. 
+On an M1 Mac, if you "Disable  Library Validation" and your app has web content 
+you will likely also have to enable "Allow execution of JIT-compiled code".
 
 With an Apple Silicon Mac it is possible to run your iOS application natively on macOS.
 You can use injection with these apps but as you can't turn off library validation it's a little
@@ -288,7 +290,9 @@ SwiftTrace.makeTraceable(types: [MovieSwift.MovieRow.Props.self])
 ```
 In this case however the `MovieSwift.MovieRow.Props` type from the excellent 
 `MovieSwift` SwiftUI  [example project](https://github.com/Dimillian/MovieSwiftUI)
-is too large to format but can be changed to be a class instead of a struct.
+is too large to format but can be changed to be a class instead of a struct. 
+More recent versions of SwiftTrace have the ability to register classes automatically 
+if you opt-in using the "Method Tracing/Type Lookup" menu item.
 
 Finally, if you'd like to go directly to the file that defines a logged method, select the
 fully qualified method and use the service `Injection Goto` to open the file declaring
@@ -382,4 +386,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2021/03/05 $
+$Date: 2021/03/18 $
