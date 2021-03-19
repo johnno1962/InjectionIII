@@ -156,7 +156,7 @@
 		BB1DEA9A1FD6A74800AF509F /* Xtrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Xtrace.h; path = XprobePlugin/Classes/Xtrace.h; sourceTree = "<group>"; };
 		BB1DEA9B1FD6A74900AF509F /* IvarAccess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IvarAccess.h; path = XprobePlugin/Classes/IvarAccess.h; sourceTree = "<group>"; };
 		BB1DEA9C1FD6A74900AF509F /* Xprobe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Xprobe.h; path = XprobePlugin/Classes/Xprobe.h; sourceTree = "<group>"; };
-		BB1DEA9D1FD6A74900AF509F /* XprobeConsole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XprobeConsole.h; path = XprobePlugin/Classes/XprobeConsole.h; sourceTree = "<group>"; };
+		BB1DEA9D1FD6A74900AF509F /* XprobeConsole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XprobeConsole.h; path = HotReloading/Sources/injectiondGuts/include/XprobeConsole.h; sourceTree = "<group>"; };
 		BB1DEA9E1FD6A74900AF509F /* XprobePluginMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XprobePluginMenuController.h; path = XprobePlugin/Classes/XprobePluginMenuController.h; sourceTree = "<group>"; };
 		BB1EBC4C258DE29D001F2AA4 /* fishhook.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = fishhook.c; path = SwiftTraceGuts/fishhook.c; sourceTree = "<group>"; };
 		BB1EBC4E258DE2AC001F2AA4 /* fishhook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fishhook.h; path = SwiftTraceGuts/include/fishhook.h; sourceTree = "<group>"; };
@@ -183,7 +183,7 @@
 		BB4EC3FF244FA42A0079E244 /* RemoteCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteCapture.h; path = Remote/Sources/Remote/include/RemoteCapture.h; sourceTree = SOURCE_ROOT; };
 		BB4EC400244FA4420079E244 /* RMWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RMWindowController.h; path = Remote/Classes/RMWindowController.h; sourceTree = SOURCE_ROOT; };
 		BB53B647244FC2F800F006E3 /* RemoteHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteHeaders.h; path = Remote/Sources/Remote/include/RemoteHeaders.h; sourceTree = SOURCE_ROOT; };
-		BB56393F1FD5D535002FFCEF /* Xprobe+Service.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = "Xprobe+Service.mm"; path = "XprobePlugin/Classes/Xprobe+Service.mm"; sourceTree = "<group>"; };
+		BB56393F1FD5D535002FFCEF /* Xprobe+Service.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = "Xprobe+Service.mm"; path = "HotReloading/Sources/HotReloadingGuts/Xprobe+Service.mm"; sourceTree = "<group>"; };
 		BB5639401FD5D535002FFCEF /* Xtrace.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = Xtrace.mm; path = XprobePlugin/Classes/Xtrace.mm; sourceTree = "<group>"; };
 		BB6125D224EA882000A7C230 /* Injection.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; name = Injection.jar; path = AppCodePlugin/Injection.jar; sourceTree = "<group>"; };
 		BB6224411FC5B0E300AD7A3A /* HelperProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelperProxy.m; sourceTree = "<group>"; };
@@ -234,21 +234,21 @@
 		BBB148DE1FAD53BE00CB6B33 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		BBB148E01FAD53BE00CB6B33 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BBB148E11FAD53BE00CB6B33 /* EvalApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EvalApp.entitlements; sourceTree = "<group>"; };
-		BBB64DD11FD56F570020BE47 /* XprobePluginMenuController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XprobePluginMenuController.m; path = XprobePlugin/Classes/XprobePluginMenuController.m; sourceTree = SOURCE_ROOT; };
-		BBB64DD21FD56F570020BE47 /* XprobeConsole.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XprobeConsole.m; path = XprobePlugin/Classes/XprobeConsole.m; sourceTree = SOURCE_ROOT; };
+		BBB64DD11FD56F570020BE47 /* XprobePluginMenuController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XprobePluginMenuController.m; path = HotReloading/Sources/injectiondGuts/XprobePluginMenuController.m; sourceTree = SOURCE_ROOT; };
+		BBB64DD21FD56F570020BE47 /* XprobeConsole.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XprobeConsole.m; path = HotReloading/Sources/injectiondGuts/XprobeConsole.m; sourceTree = SOURCE_ROOT; };
 		BBB64DD61FD570210020BE47 /* graph-xdot.gv */ = {isa = PBXFileReference; lastKnownFileType = text; name = "graph-xdot.gv"; path = "XprobePlugin/graph-xdot.gv"; sourceTree = SOURCE_ROOT; };
 		BBB64DD71FD570210020BE47 /* CodeMirror */ = {isa = PBXFileReference; lastKnownFileType = folder; name = CodeMirror; path = XprobePlugin/CodeMirror; sourceTree = SOURCE_ROOT; };
-		BBB64DD81FD570210020BE47 /* xprobe.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = xprobe.html; path = XprobePlugin/xprobe.html; sourceTree = SOURCE_ROOT; };
+		BBB64DD81FD570210020BE47 /* xprobe.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = xprobe.html; path = HotReloading/Contents/Resources/xprobe.html; sourceTree = SOURCE_ROOT; };
 		BBB64DD91FD570210020BE47 /* canviz-0.1 */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "canviz-0.1"; path = "XprobePlugin/canviz-0.1"; sourceTree = SOURCE_ROOT; };
 		BBB64DDA1FD570220020BE47 /* canviz.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = canviz.html; path = XprobePlugin/canviz.html; sourceTree = SOURCE_ROOT; };
 		BBB64DDB1FD570220020BE47 /* tiny_red.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = tiny_red.gif; path = XprobePlugin/tiny_red.gif; sourceTree = SOURCE_ROOT; };
 		BBB64DE41FD571300020BE47 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
 		BBB64FDC1FD5744A0020BE47 /* XprobeConsole.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = XprobeConsole.xib; path = XprobePlugin/Classes/XprobeConsole.xib; sourceTree = SOURCE_ROOT; };
 		BBB64FDD1FD5744A0020BE47 /* XprobePluginMenuController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = XprobePluginMenuController.xib; path = XprobePlugin/Classes/XprobePluginMenuController.xib; sourceTree = SOURCE_ROOT; };
-		BBB64FE01FD575260020BE47 /* XprobeSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = XprobeSwift.swift; path = XprobePlugin/XprobeSwift/XprobeSwift/XprobeSwift.swift; sourceTree = SOURCE_ROOT; };
+		BBB64FE01FD575260020BE47 /* XprobeSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = XprobeSwift.swift; path = HotReloading/Sources/HotReloading/XprobeSwift.swift; sourceTree = SOURCE_ROOT; };
 		BBB64FE41FD576AA0020BE47 /* XprobeSwift-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XprobeSwift-Bridging-Header.h"; sourceTree = "<group>"; };
 		BBB64FE51FD577EB0020BE47 /* SwiftSwizzler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SwiftSwizzler.swift; path = XprobePlugin/XprobeSwift/XprobeSwift/SwiftSwizzler.swift; sourceTree = SOURCE_ROOT; };
-		BBB64FE91FD583B60020BE47 /* Xprobe.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = Xprobe.mm; path = XprobePlugin/Classes/Xprobe.mm; sourceTree = SOURCE_ROOT; };
+		BBB64FE91FD583B60020BE47 /* Xprobe.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = Xprobe.mm; path = HotReloading/Sources/HotReloadingGuts/Xprobe.mm; sourceTree = SOURCE_ROOT; };
 		BBB64FEB1FD585D50020BE47 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/WebKit.framework; sourceTree = DEVELOPER_DIR; };
 		BBBEC42D1FC56522004188B3 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		BBCA01FE1FB0F10300E45F0F /* InjectionIII.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InjectionIII.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1200,6 +1200,7 @@
 					"XPROBE_PORT=8891",
 					"INJECTION_ADDR=INADDR_LOOPBACK",
 					INJECTION_III_APP,
+					ZIPPED_SNAPSHOTS,
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -1268,6 +1269,7 @@
 					"XPROBE_PORT=8891",
 					"INJECTION_ADDR=INADDR_LOOPBACK",
 					INJECTION_III_APP,
+					ZIPPED_SNAPSHOTS,
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -1427,7 +1429,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 2.6.2;
+				MARKETING_VERSION = 2.6.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1450,7 +1452,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 2.6.2;
+				MARKETING_VERSION = 2.6.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
