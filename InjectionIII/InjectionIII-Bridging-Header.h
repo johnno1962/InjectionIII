@@ -17,5 +17,5 @@
 #import <libproc.h>
 
 #ifdef XPROBE_PORT
-#import "../XprobePlugin/Classes/XprobePluginMenuController.h"
+#import "../XprobePlugin/Sources/XprobeUI/include/XprobePluginMenuController.h"
 #endif
