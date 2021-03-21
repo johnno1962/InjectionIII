@@ -145,6 +145,10 @@
 		BB037DF41FAD80D0004B267C /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		BB070C252512851B002FC45A /* AppCodePlugin */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AppCodePlugin; sourceTree = "<group>"; };
 		BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SwiftInjection.swift; path = ../HotReloading/Sources/HotReloading/SwiftInjection.swift; sourceTree = "<group>"; };
+		BB13764F2606DD8F0065126A /* RMPluginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RMPluginController.h; path = Remote/Sources/RemoteUI/include/RMPluginController.h; sourceTree = SOURCE_ROOT; };
+		BB1376502606DD8F0065126A /* RMImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RMImageView.h; path = Remote/Sources/RemoteUI/include/RMImageView.h; sourceTree = SOURCE_ROOT; };
+		BB1376512606DD8F0065126A /* RMMacroManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RMMacroManager.h; path = Remote/Sources/RemoteUI/include/RMMacroManager.h; sourceTree = SOURCE_ROOT; };
+		BB1376522606DD8F0065126A /* RMDeviceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RMDeviceController.h; path = Remote/Sources/RemoteUI/include/RMDeviceController.h; sourceTree = SOURCE_ROOT; };
 		BB16653925E9A5F0001407AE /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		BB16653D25EC5FDF001407AE /* InjectionClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InjectionClient.swift; path = ../HotReloading/Sources/HotReloading/InjectionClient.swift; sourceTree = "<group>"; };
 		BB16654325ECD827001407AE /* ClientBoot.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ClientBoot.mm; path = ../HotReloading/Sources/HotReloadingGuts/ClientBoot.mm; sourceTree = "<group>"; };
@@ -176,13 +180,13 @@
 		BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SwiftEval.swift; path = ../HotReloading/Sources/injectiond/SwiftEval.swift; sourceTree = "<group>"; };
 		BB439BAC1FAC030E00B4F50B /* SwiftEval.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SwiftEval.entitlements; sourceTree = "<group>"; };
 		BB439BB31FAC185200B4F50B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		BB4EC3F7244FA3C30079E244 /* RMMacroManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMMacroManager.m; path = Remote/Classes/RMMacroManager.m; sourceTree = SOURCE_ROOT; };
-		BB4EC3F8244FA3C30079E244 /* RMDeviceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMDeviceController.m; path = Remote/Classes/RMDeviceController.m; sourceTree = SOURCE_ROOT; };
-		BB4EC3F9244FA3C40079E244 /* RMImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMImageView.m; path = Remote/Classes/RMImageView.m; sourceTree = SOURCE_ROOT; };
-		BB4EC3FA244FA3C40079E244 /* RMWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMWindowController.m; path = Remote/Classes/RMWindowController.m; sourceTree = SOURCE_ROOT; };
-		BB4EC3FF244FA42A0079E244 /* RemoteCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteCapture.h; path = Remote/Sources/Remote/include/RemoteCapture.h; sourceTree = SOURCE_ROOT; };
-		BB4EC400244FA4420079E244 /* RMWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RMWindowController.h; path = Remote/Classes/RMWindowController.h; sourceTree = SOURCE_ROOT; };
-		BB53B647244FC2F800F006E3 /* RemoteHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteHeaders.h; path = Remote/Sources/Remote/include/RemoteHeaders.h; sourceTree = SOURCE_ROOT; };
+		BB4EC3F7244FA3C30079E244 /* RMMacroManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMMacroManager.m; path = Remote/Sources/RemoteUI/RMMacroManager.m; sourceTree = SOURCE_ROOT; };
+		BB4EC3F8244FA3C30079E244 /* RMDeviceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMDeviceController.m; path = Remote/Sources/RemoteUI/RMDeviceController.m; sourceTree = SOURCE_ROOT; };
+		BB4EC3F9244FA3C40079E244 /* RMImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMImageView.m; path = Remote/Sources/RemoteUI/RMImageView.m; sourceTree = SOURCE_ROOT; };
+		BB4EC3FA244FA3C40079E244 /* RMWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMWindowController.m; path = Remote/Sources/RemoteUI/RMWindowController.m; sourceTree = SOURCE_ROOT; };
+		BB4EC3FF244FA42A0079E244 /* RemoteCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteCapture.h; path = Remote/Sources/RemoteCapture/include/RemoteCapture.h; sourceTree = SOURCE_ROOT; };
+		BB4EC400244FA4420079E244 /* RMWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RMWindowController.h; path = Remote/Sources/RemoteUI/include/RMWindowController.h; sourceTree = SOURCE_ROOT; };
+		BB53B647244FC2F800F006E3 /* RemoteHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteHeaders.h; path = Remote/Sources/RemoteCapture/include/RemoteHeaders.h; sourceTree = SOURCE_ROOT; };
 		BB56393F1FD5D535002FFCEF /* Xprobe+Service.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = "Xprobe+Service.mm"; path = "XprobePlugin/Sources/Xprobe/Xprobe+Service.mm"; sourceTree = "<group>"; };
 		BB5639401FD5D535002FFCEF /* Xtrace.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = Xtrace.mm; path = XprobePlugin/Classes/Xtrace.mm; sourceTree = "<group>"; };
 		BB6125D224EA882000A7C230 /* Injection.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; name = Injection.jar; path = AppCodePlugin/Injection.jar; sourceTree = "<group>"; };
@@ -537,9 +541,13 @@
 				BB53B647244FC2F800F006E3 /* RemoteHeaders.h */,
 				BB4EC400244FA4420079E244 /* RMWindowController.h */,
 				BB4EC3FA244FA3C40079E244 /* RMWindowController.m */,
+				BB13764F2606DD8F0065126A /* RMPluginController.h */,
 				BB34C3FC244FAAB400D520A9 /* RMWindowController.xib */,
+				BB1376522606DD8F0065126A /* RMDeviceController.h */,
 				BB4EC3F8244FA3C30079E244 /* RMDeviceController.m */,
+				BB1376512606DD8F0065126A /* RMMacroManager.h */,
 				BB4EC3F7244FA3C30079E244 /* RMMacroManager.m */,
+				BB1376502606DD8F0065126A /* RMImageView.h */,
 				BB4EC3F9244FA3C40079E244 /* RMImageView.m */,
 				BB79FC78245CC02200A4B4CB /* TimeLapseBuilder.swift */,
 				BB34C400244FAE2F00D520A9 /* iphone.png */,
