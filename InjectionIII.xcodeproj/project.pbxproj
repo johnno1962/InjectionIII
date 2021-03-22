@@ -11,7 +11,6 @@
 		BB16653E25EC5FE0001407AE /* InjectionClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB16653D25EC5FDF001407AE /* InjectionClient.swift */; };
 		BB16653F25EC6158001407AE /* Xprobe+Service.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB56393F1FD5D535002FFCEF /* Xprobe+Service.mm */; };
 		BB16654025EC6163001407AE /* Xprobe.mm in Sources */ = {isa = PBXBuildFile; fileRef = BBB64FE91FD583B60020BE47 /* Xprobe.mm */; };
-		BB16654125EC6167001407AE /* Xtrace.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB5639401FD5D535002FFCEF /* Xtrace.mm */; };
 		BB16654425ECD828001407AE /* ClientBoot.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB16654325ECD827001407AE /* ClientBoot.mm */; };
 		BB1A84072522703C003873C3 /* macOSInjection.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02451FB1065D00E45F0F /* macOSInjection.bundle */; };
 		BB1A840A25227535003873C3 /* SwiftTrace.h in Resources */ = {isa = PBXBuildFile; fileRef = BB6C87C62520D0D2005AFCFC /* SwiftTrace.h */; };
@@ -70,6 +69,7 @@
 		BBB64FE61FD577EB0020BE47 /* SwiftSwizzler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB64FE51FD577EB0020BE47 /* SwiftSwizzler.swift */; };
 		BBB64FEA1FD583B60020BE47 /* Xprobe.mm in Sources */ = {isa = PBXBuildFile; fileRef = BBB64FE91FD583B60020BE47 /* Xprobe.mm */; };
 		BBB64FEC1FD585D50020BE47 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBB64FEB1FD585D50020BE47 /* WebKit.framework */; };
+		BBBE71BB260652E000F45DE2 /* SweepSeeding.m in Sources */ = {isa = PBXBuildFile; fileRef = BBBE71BA260652E000F45DE2 /* SweepSeeding.m */; };
 		BBBFD2D01FCFEE300057D899 /* SwiftEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */; };
 		BBCA02021FB0F10300E45F0F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCA02011FB0F10300E45F0F /* AppDelegate.swift */; };
 		BBCA02041FB0F10300E45F0F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02031FB0F10300E45F0F /* Assets.xcassets */; };
@@ -145,6 +145,10 @@
 		BB037DF41FAD80D0004B267C /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		BB070C252512851B002FC45A /* AppCodePlugin */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AppCodePlugin; sourceTree = "<group>"; };
 		BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SwiftInjection.swift; path = ../HotReloading/Sources/HotReloading/SwiftInjection.swift; sourceTree = "<group>"; };
+		BB13764F2606DD8F0065126A /* RMPluginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RMPluginController.h; path = Remote/Sources/RemoteUI/include/RMPluginController.h; sourceTree = SOURCE_ROOT; };
+		BB1376502606DD8F0065126A /* RMImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RMImageView.h; path = Remote/Sources/RemoteUI/include/RMImageView.h; sourceTree = SOURCE_ROOT; };
+		BB1376512606DD8F0065126A /* RMMacroManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RMMacroManager.h; path = Remote/Sources/RemoteUI/include/RMMacroManager.h; sourceTree = SOURCE_ROOT; };
+		BB1376522606DD8F0065126A /* RMDeviceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RMDeviceController.h; path = Remote/Sources/RemoteUI/include/RMDeviceController.h; sourceTree = SOURCE_ROOT; };
 		BB16653925E9A5F0001407AE /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		BB16653D25EC5FDF001407AE /* InjectionClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InjectionClient.swift; path = ../HotReloading/Sources/HotReloading/InjectionClient.swift; sourceTree = "<group>"; };
 		BB16654325ECD827001407AE /* ClientBoot.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ClientBoot.mm; path = ../HotReloading/Sources/HotReloadingGuts/ClientBoot.mm; sourceTree = "<group>"; };
@@ -154,10 +158,10 @@
 		BB1BA918251DD0CA00044608 /* SwiftUISupport-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftUISupport-Bridging-Header.h"; sourceTree = "<group>"; };
 		BB1C3245254BFAFC001EDFCC /* EasyPointer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EasyPointer.swift; path = SwiftTrace/EasyPointer.swift; sourceTree = "<group>"; };
 		BB1DEA9A1FD6A74800AF509F /* Xtrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Xtrace.h; path = XprobePlugin/Classes/Xtrace.h; sourceTree = "<group>"; };
-		BB1DEA9B1FD6A74900AF509F /* IvarAccess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IvarAccess.h; path = XprobePlugin/Classes/IvarAccess.h; sourceTree = "<group>"; };
-		BB1DEA9C1FD6A74900AF509F /* Xprobe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Xprobe.h; path = XprobePlugin/Classes/Xprobe.h; sourceTree = "<group>"; };
-		BB1DEA9D1FD6A74900AF509F /* XprobeConsole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XprobeConsole.h; path = HotReloading/Sources/injectiondGuts/include/XprobeConsole.h; sourceTree = "<group>"; };
-		BB1DEA9E1FD6A74900AF509F /* XprobePluginMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XprobePluginMenuController.h; path = XprobePlugin/Classes/XprobePluginMenuController.h; sourceTree = "<group>"; };
+		BB1DEA9B1FD6A74900AF509F /* IvarAccess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IvarAccess.h; path = XprobePlugin/Sources/Xprobe/include/IvarAccess.h; sourceTree = "<group>"; };
+		BB1DEA9C1FD6A74900AF509F /* Xprobe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Xprobe.h; path = XprobePlugin/Sources/Xprobe/include/Xprobe.h; sourceTree = "<group>"; };
+		BB1DEA9D1FD6A74900AF509F /* XprobeConsole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XprobeConsole.h; path = XprobePlugin/Sources/XprobeUI/include/XprobeConsole.h; sourceTree = "<group>"; };
+		BB1DEA9E1FD6A74900AF509F /* XprobePluginMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XprobePluginMenuController.h; path = XprobePlugin/Sources/XprobeUI/include/XprobePluginMenuController.h; sourceTree = "<group>"; };
 		BB1EBC4C258DE29D001F2AA4 /* fishhook.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = fishhook.c; path = SwiftTraceGuts/fishhook.c; sourceTree = "<group>"; };
 		BB1EBC4E258DE2AC001F2AA4 /* fishhook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fishhook.h; path = SwiftTraceGuts/include/fishhook.h; sourceTree = "<group>"; };
 		BB34C3FC244FAAB400D520A9 /* RMWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RMWindowController.xib; path = Remote/Classes/RMWindowController.xib; sourceTree = SOURCE_ROOT; };
@@ -176,14 +180,14 @@
 		BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SwiftEval.swift; path = ../HotReloading/Sources/injectiond/SwiftEval.swift; sourceTree = "<group>"; };
 		BB439BAC1FAC030E00B4F50B /* SwiftEval.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SwiftEval.entitlements; sourceTree = "<group>"; };
 		BB439BB31FAC185200B4F50B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		BB4EC3F7244FA3C30079E244 /* RMMacroManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMMacroManager.m; path = Remote/Classes/RMMacroManager.m; sourceTree = SOURCE_ROOT; };
-		BB4EC3F8244FA3C30079E244 /* RMDeviceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMDeviceController.m; path = Remote/Classes/RMDeviceController.m; sourceTree = SOURCE_ROOT; };
-		BB4EC3F9244FA3C40079E244 /* RMImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMImageView.m; path = Remote/Classes/RMImageView.m; sourceTree = SOURCE_ROOT; };
-		BB4EC3FA244FA3C40079E244 /* RMWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMWindowController.m; path = Remote/Classes/RMWindowController.m; sourceTree = SOURCE_ROOT; };
-		BB4EC3FF244FA42A0079E244 /* RemoteCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteCapture.h; path = Remote/Sources/Remote/include/RemoteCapture.h; sourceTree = SOURCE_ROOT; };
-		BB4EC400244FA4420079E244 /* RMWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RMWindowController.h; path = Remote/Classes/RMWindowController.h; sourceTree = SOURCE_ROOT; };
-		BB53B647244FC2F800F006E3 /* RemoteHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteHeaders.h; path = Remote/Sources/Remote/include/RemoteHeaders.h; sourceTree = SOURCE_ROOT; };
-		BB56393F1FD5D535002FFCEF /* Xprobe+Service.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = "Xprobe+Service.mm"; path = "HotReloading/Sources/HotReloadingGuts/Xprobe+Service.mm"; sourceTree = "<group>"; };
+		BB4EC3F7244FA3C30079E244 /* RMMacroManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMMacroManager.m; path = Remote/Sources/RemoteUI/RMMacroManager.m; sourceTree = SOURCE_ROOT; };
+		BB4EC3F8244FA3C30079E244 /* RMDeviceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMDeviceController.m; path = Remote/Sources/RemoteUI/RMDeviceController.m; sourceTree = SOURCE_ROOT; };
+		BB4EC3F9244FA3C40079E244 /* RMImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMImageView.m; path = Remote/Sources/RemoteUI/RMImageView.m; sourceTree = SOURCE_ROOT; };
+		BB4EC3FA244FA3C40079E244 /* RMWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMWindowController.m; path = Remote/Sources/RemoteUI/RMWindowController.m; sourceTree = SOURCE_ROOT; };
+		BB4EC3FF244FA42A0079E244 /* RemoteCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteCapture.h; path = Remote/Sources/RemoteCapture/include/RemoteCapture.h; sourceTree = SOURCE_ROOT; };
+		BB4EC400244FA4420079E244 /* RMWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RMWindowController.h; path = Remote/Sources/RemoteUI/include/RMWindowController.h; sourceTree = SOURCE_ROOT; };
+		BB53B647244FC2F800F006E3 /* RemoteHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteHeaders.h; path = Remote/Sources/RemoteCapture/include/RemoteHeaders.h; sourceTree = SOURCE_ROOT; };
+		BB56393F1FD5D535002FFCEF /* Xprobe+Service.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = "Xprobe+Service.mm"; path = "XprobePlugin/Sources/Xprobe/Xprobe+Service.mm"; sourceTree = "<group>"; };
 		BB5639401FD5D535002FFCEF /* Xtrace.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = Xtrace.mm; path = XprobePlugin/Classes/Xtrace.mm; sourceTree = "<group>"; };
 		BB6125D224EA882000A7C230 /* Injection.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; name = Injection.jar; path = AppCodePlugin/Injection.jar; sourceTree = "<group>"; };
 		BB6224411FC5B0E300AD7A3A /* HelperProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelperProxy.m; sourceTree = "<group>"; };
@@ -225,7 +229,7 @@
 		BB6C87F62520D2C3005AFCFC /* SwiftTrace.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = SwiftTrace.mm; path = SwiftTraceGuts/SwiftTrace.mm; sourceTree = "<group>"; };
 		BB6C87F72520D2C3005AFCFC /* xt_forwarding_trampoline_arm64.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; name = xt_forwarding_trampoline_arm64.s; path = SwiftTraceGuts/xt_forwarding_trampoline_arm64.s; sourceTree = "<group>"; };
 		BB6C87F82520D2C3005AFCFC /* xt_forwarding_trampoline_x64.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; name = xt_forwarding_trampoline_x64.s; path = SwiftTraceGuts/xt_forwarding_trampoline_x64.s; sourceTree = "<group>"; };
-		BB79FC78245CC02200A4B4CB /* TimeLapseBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeLapseBuilder.swift; path = Remote/Classes/TimeLapseBuilder.swift; sourceTree = SOURCE_ROOT; };
+		BB79FC78245CC02200A4B4CB /* TimeLapseBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeLapseBuilder.swift; path = Remote/Sources/RemoteMovie/TimeLapseBuilder.swift; sourceTree = SOURCE_ROOT; };
 		BB7D7CAB2512F8F00069FE2C /* UpdateCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UpdateCheck.swift; path = ../HotReloading/Sources/injectiond/UpdateCheck.swift; sourceTree = "<group>"; };
 		BBA7BE0223473D660067124D /* build_bundles.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = build_bundles.sh; sourceTree = "<group>"; };
 		BBB040631FB1798A007DDD0A /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/ScriptingBridge.framework; sourceTree = DEVELOPER_DIR; };
@@ -234,22 +238,23 @@
 		BBB148DE1FAD53BE00CB6B33 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		BBB148E01FAD53BE00CB6B33 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BBB148E11FAD53BE00CB6B33 /* EvalApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EvalApp.entitlements; sourceTree = "<group>"; };
-		BBB64DD11FD56F570020BE47 /* XprobePluginMenuController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XprobePluginMenuController.m; path = HotReloading/Sources/injectiondGuts/XprobePluginMenuController.m; sourceTree = SOURCE_ROOT; };
-		BBB64DD21FD56F570020BE47 /* XprobeConsole.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XprobeConsole.m; path = HotReloading/Sources/injectiondGuts/XprobeConsole.m; sourceTree = SOURCE_ROOT; };
+		BBB64DD11FD56F570020BE47 /* XprobePluginMenuController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XprobePluginMenuController.m; path = XprobePlugin/Sources/XprobeUI/XprobePluginMenuController.m; sourceTree = SOURCE_ROOT; };
+		BBB64DD21FD56F570020BE47 /* XprobeConsole.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XprobeConsole.m; path = XprobePlugin/Sources/XprobeUI/XprobeConsole.m; sourceTree = SOURCE_ROOT; };
 		BBB64DD61FD570210020BE47 /* graph-xdot.gv */ = {isa = PBXFileReference; lastKnownFileType = text; name = "graph-xdot.gv"; path = "XprobePlugin/graph-xdot.gv"; sourceTree = SOURCE_ROOT; };
 		BBB64DD71FD570210020BE47 /* CodeMirror */ = {isa = PBXFileReference; lastKnownFileType = folder; name = CodeMirror; path = XprobePlugin/CodeMirror; sourceTree = SOURCE_ROOT; };
-		BBB64DD81FD570210020BE47 /* xprobe.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = xprobe.html; path = HotReloading/Contents/Resources/xprobe.html; sourceTree = SOURCE_ROOT; };
+		BBB64DD81FD570210020BE47 /* xprobe.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = xprobe.html; path = XprobePlugin/xprobe.html; sourceTree = SOURCE_ROOT; };
 		BBB64DD91FD570210020BE47 /* canviz-0.1 */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "canviz-0.1"; path = "XprobePlugin/canviz-0.1"; sourceTree = SOURCE_ROOT; };
 		BBB64DDA1FD570220020BE47 /* canviz.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = canviz.html; path = XprobePlugin/canviz.html; sourceTree = SOURCE_ROOT; };
 		BBB64DDB1FD570220020BE47 /* tiny_red.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = tiny_red.gif; path = XprobePlugin/tiny_red.gif; sourceTree = SOURCE_ROOT; };
 		BBB64DE41FD571300020BE47 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
 		BBB64FDC1FD5744A0020BE47 /* XprobeConsole.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = XprobeConsole.xib; path = XprobePlugin/Classes/XprobeConsole.xib; sourceTree = SOURCE_ROOT; };
 		BBB64FDD1FD5744A0020BE47 /* XprobePluginMenuController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = XprobePluginMenuController.xib; path = XprobePlugin/Classes/XprobePluginMenuController.xib; sourceTree = SOURCE_ROOT; };
-		BBB64FE01FD575260020BE47 /* XprobeSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = XprobeSwift.swift; path = HotReloading/Sources/HotReloading/XprobeSwift.swift; sourceTree = SOURCE_ROOT; };
+		BBB64FE01FD575260020BE47 /* XprobeSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = XprobeSwift.swift; path = XprobePlugin/Sources/XprobeSwift/XprobeSwift.swift; sourceTree = SOURCE_ROOT; };
 		BBB64FE41FD576AA0020BE47 /* XprobeSwift-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XprobeSwift-Bridging-Header.h"; sourceTree = "<group>"; };
 		BBB64FE51FD577EB0020BE47 /* SwiftSwizzler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SwiftSwizzler.swift; path = XprobePlugin/XprobeSwift/XprobeSwift/SwiftSwizzler.swift; sourceTree = SOURCE_ROOT; };
-		BBB64FE91FD583B60020BE47 /* Xprobe.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = Xprobe.mm; path = HotReloading/Sources/HotReloadingGuts/Xprobe.mm; sourceTree = SOURCE_ROOT; };
+		BBB64FE91FD583B60020BE47 /* Xprobe.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = Xprobe.mm; path = XprobePlugin/Sources/Xprobe/Xprobe.mm; sourceTree = SOURCE_ROOT; };
 		BBB64FEB1FD585D50020BE47 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/WebKit.framework; sourceTree = DEVELOPER_DIR; };
+		BBBE71BA260652E000F45DE2 /* SweepSeeding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SweepSeeding.m; path = XprobePlugin/Sources/Xprobe/SweepSeeding.m; sourceTree = SOURCE_ROOT; };
 		BBBEC42D1FC56522004188B3 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		BBCA01FE1FB0F10300E45F0F /* InjectionIII.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InjectionIII.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBCA02011FB0F10300E45F0F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ../HotReloading/Sources/injectiond/AppDelegate.swift; sourceTree = "<group>"; };
@@ -536,9 +541,13 @@
 				BB53B647244FC2F800F006E3 /* RemoteHeaders.h */,
 				BB4EC400244FA4420079E244 /* RMWindowController.h */,
 				BB4EC3FA244FA3C40079E244 /* RMWindowController.m */,
+				BB13764F2606DD8F0065126A /* RMPluginController.h */,
 				BB34C3FC244FAAB400D520A9 /* RMWindowController.xib */,
+				BB1376522606DD8F0065126A /* RMDeviceController.h */,
 				BB4EC3F8244FA3C30079E244 /* RMDeviceController.m */,
+				BB1376512606DD8F0065126A /* RMMacroManager.h */,
 				BB4EC3F7244FA3C30079E244 /* RMMacroManager.m */,
+				BB1376502606DD8F0065126A /* RMImageView.h */,
 				BB4EC3F9244FA3C40079E244 /* RMImageView.m */,
 				BB79FC78245CC02200A4B4CB /* TimeLapseBuilder.swift */,
 				BB34C400244FAE2F00D520A9 /* iphone.png */,
@@ -552,6 +561,7 @@
 			children = (
 				BBCA02471FB1065D00E45F0F /* Info.plist */,
 				BB16654325ECD827001407AE /* ClientBoot.mm */,
+				BBBE71BA260652E000F45DE2 /* SweepSeeding.m */,
 				BBCA025B1FB114FF00E45F0F /* InjectionClient.h */,
 				BBCA025C1FB114FF00E45F0F /* InjectionClient.mm */,
 				BB16653D25EC5FDF001407AE /* InjectionClient.swift */,
@@ -996,7 +1006,6 @@
 			files = (
 				BB16654025EC6163001407AE /* Xprobe.mm in Sources */,
 				BB16653E25EC5FE0001407AE /* InjectionClient.swift in Sources */,
-				BB16654125EC6167001407AE /* Xtrace.mm in Sources */,
 				BBCA02501FB107AF00E45F0F /* SwiftEval.swift in Sources */,
 				BD35949E21A6C5DE0020EB94 /* Vaccine.swift in Sources */,
 				BBCA02511FB107AF00E45F0F /* SwiftInjection.swift in Sources */,
@@ -1005,6 +1014,7 @@
 				BB16653F25EC6158001407AE /* Xprobe+Service.mm in Sources */,
 				BBB64FE61FD577EB0020BE47 /* SwiftSwizzler.swift in Sources */,
 				BBCA02621FB1312A00E45F0F /* SimpleSocket.mm in Sources */,
+				BBBE71BB260652E000F45DE2 /* SweepSeeding.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

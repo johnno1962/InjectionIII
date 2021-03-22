@@ -4,8 +4,8 @@
 
 #import "InjectionClient.h"
 #import "UserDefaults.h"
-#import "../XprobePlugin/Classes/Xtrace.h"
-#import "../XprobePlugin/Classes/Xprobe.h"
+#import "../XprobePlugin/Sources/Xprobe/include/Xtrace.h"
+#import "../XprobePlugin/Sources/Xprobe/include/Xprobe.h"
 
 @interface NSObject(InjectionSweep)
 - (void)bsweep;
