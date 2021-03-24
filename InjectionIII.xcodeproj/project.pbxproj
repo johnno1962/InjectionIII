@@ -67,7 +67,6 @@
 		BBB64FDF1FD5744A0020BE47 /* XprobePluginMenuController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBB64FDD1FD5744A0020BE47 /* XprobePluginMenuController.xib */; };
 		BBB64FE11FD575260020BE47 /* XprobeSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB64FE01FD575260020BE47 /* XprobeSwift.swift */; };
 		BBB64FE61FD577EB0020BE47 /* SwiftSwizzler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB64FE51FD577EB0020BE47 /* SwiftSwizzler.swift */; };
-		BBB64FEA1FD583B60020BE47 /* Xprobe.mm in Sources */ = {isa = PBXBuildFile; fileRef = BBB64FE91FD583B60020BE47 /* Xprobe.mm */; };
 		BBB64FEC1FD585D50020BE47 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBB64FEB1FD585D50020BE47 /* WebKit.framework */; };
 		BBBE71BB260652E000F45DE2 /* SweepSeeding.m in Sources */ = {isa = PBXBuildFile; fileRef = BBBE71BA260652E000F45DE2 /* SweepSeeding.m */; };
 		BBBFD2D01FCFEE300057D899 /* SwiftEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */; };
@@ -980,7 +979,6 @@
 				BB877CE42186EB6E0070EEC7 /* DDHotKeyCenter.m in Sources */,
 				BB877CE52186EB6E0070EEC7 /* DDHotKeyUtilities.m in Sources */,
 				BB4EC3FD244FA3C40079E244 /* RMImageView.m in Sources */,
-				BBB64FEA1FD583B60020BE47 /* Xprobe.mm in Sources */,
 				BBB64DD31FD56F570020BE47 /* XprobePluginMenuController.m in Sources */,
 				BBB64DD41FD56F570020BE47 /* XprobeConsole.m in Sources */,
 				BBCA022A1FB0F64800E45F0F /* SimpleSocket.mm in Sources */,
