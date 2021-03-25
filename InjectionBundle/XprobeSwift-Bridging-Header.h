@@ -3,5 +3,14 @@
 //
 
 #import "SimpleSocket.h"
+#import "UserDefaults.h"
 #import "InjectionClient.h"
 #import "../XprobePlugin/Sources/Xprobe/include/Xprobe.h"
+
+@interface NSObject(InjectionSweep)
+- (void)bsweep;
+@end
+
+@interface NSObject(RunXCTestCase)
++ (void)runXCTestCase:(Class)aTestCase;
+@end
