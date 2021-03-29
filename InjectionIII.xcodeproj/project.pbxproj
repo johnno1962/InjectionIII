@@ -157,7 +157,7 @@
 		BB1BA918251DD0CA00044608 /* SwiftUISupport-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftUISupport-Bridging-Header.h"; sourceTree = "<group>"; };
 		BB1C3245254BFAFC001EDFCC /* EasyPointer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EasyPointer.swift; path = SwiftTrace/EasyPointer.swift; sourceTree = "<group>"; };
 		BB1DEA9A1FD6A74800AF509F /* Xtrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Xtrace.h; path = XprobePlugin/Classes/Xtrace.h; sourceTree = "<group>"; };
-		BB1DEA9B1FD6A74900AF509F /* IvarAccess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IvarAccess.h; path = XprobePlugin/Sources/Xprobe/include/IvarAccess.h; sourceTree = "<group>"; };
+		BB1DEA9B1FD6A74900AF509F /* IvarAccess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IvarAccess.h; path = XprobePlugin/Sources/Xprobe/IvarAccess.h; sourceTree = "<group>"; };
 		BB1DEA9C1FD6A74900AF509F /* Xprobe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Xprobe.h; path = XprobePlugin/Sources/Xprobe/include/Xprobe.h; sourceTree = "<group>"; };
 		BB1DEA9D1FD6A74900AF509F /* XprobeConsole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XprobeConsole.h; path = XprobePlugin/Sources/XprobeUI/include/XprobeConsole.h; sourceTree = "<group>"; };
 		BB1DEA9E1FD6A74900AF509F /* XprobePluginMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XprobePluginMenuController.h; path = XprobePlugin/Sources/XprobeUI/include/XprobePluginMenuController.h; sourceTree = "<group>"; };
@@ -1437,7 +1437,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 2.6.5;
+				MARKETING_VERSION = 2.6.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1460,7 +1460,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 2.6.5;
+				MARKETING_VERSION = 2.6.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
