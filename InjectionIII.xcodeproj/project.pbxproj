@@ -66,7 +66,6 @@
 		BBB64FDE1FD5744A0020BE47 /* XprobeConsole.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBB64FDC1FD5744A0020BE47 /* XprobeConsole.xib */; };
 		BBB64FDF1FD5744A0020BE47 /* XprobePluginMenuController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBB64FDD1FD5744A0020BE47 /* XprobePluginMenuController.xib */; };
 		BBB64FE11FD575260020BE47 /* XprobeSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB64FE01FD575260020BE47 /* XprobeSwift.swift */; };
-		BBB64FE61FD577EB0020BE47 /* SwiftSwizzler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB64FE51FD577EB0020BE47 /* SwiftSwizzler.swift */; };
 		BBB64FEC1FD585D50020BE47 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBB64FEB1FD585D50020BE47 /* WebKit.framework */; };
 		BBBE71BB260652E000F45DE2 /* SweepSeeding.m in Sources */ = {isa = PBXBuildFile; fileRef = BBBE71BA260652E000F45DE2 /* SweepSeeding.m */; };
 		BBBFD2D01FCFEE300057D899 /* SwiftEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */; };
@@ -1010,7 +1009,6 @@
 				BBB64FE11FD575260020BE47 /* XprobeSwift.swift in Sources */,
 				BB16654425ECD828001407AE /* ClientBoot.mm in Sources */,
 				BB16653F25EC6158001407AE /* Xprobe+Service.mm in Sources */,
-				BBB64FE61FD577EB0020BE47 /* SwiftSwizzler.swift in Sources */,
 				BBCA02621FB1312A00E45F0F /* SimpleSocket.mm in Sources */,
 				BBBE71BB260652E000F45DE2 /* SweepSeeding.m in Sources */,
 			);
