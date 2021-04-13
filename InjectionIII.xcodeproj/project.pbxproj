@@ -69,6 +69,10 @@
 		BBB64FEC1FD585D50020BE47 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBB64FEB1FD585D50020BE47 /* WebKit.framework */; };
 		BBBE71BB260652E000F45DE2 /* SweepSeeding.m in Sources */ = {isa = PBXBuildFile; fileRef = BBBE71BA260652E000F45DE2 /* SweepSeeding.m */; };
 		BBBFD2D01FCFEE300057D899 /* SwiftEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */; };
+		BBC03BBD2625F269005C1A06 /* Unhide.mm in Sources */ = {isa = PBXBuildFile; fileRef = BBC03BBC2625F268005C1A06 /* Unhide.mm */; };
+		BBC03BBE2625F269005C1A06 /* Unhide.mm in Sources */ = {isa = PBXBuildFile; fileRef = BBC03BBC2625F268005C1A06 /* Unhide.mm */; };
+		BBC03BC02625F27C005C1A06 /* UnhidingEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC03BBF2625F27C005C1A06 /* UnhidingEval.swift */; };
+		BBC03BC12625F27C005C1A06 /* UnhidingEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC03BBF2625F27C005C1A06 /* UnhidingEval.swift */; };
 		BBCA02021FB0F10300E45F0F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCA02011FB0F10300E45F0F /* AppDelegate.swift */; };
 		BBCA02041FB0F10300E45F0F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02031FB0F10300E45F0F /* Assets.xcassets */; };
 		BBCA02071FB0F10300E45F0F /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02051FB0F10300E45F0F /* MainMenu.xib */; };
@@ -254,6 +258,8 @@
 		BBB64FEB1FD585D50020BE47 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/WebKit.framework; sourceTree = DEVELOPER_DIR; };
 		BBBE71BA260652E000F45DE2 /* SweepSeeding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SweepSeeding.m; path = XprobePlugin/Sources/Xprobe/SweepSeeding.m; sourceTree = SOURCE_ROOT; };
 		BBBEC42D1FC56522004188B3 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		BBC03BBC2625F268005C1A06 /* Unhide.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Unhide.mm; path = HotReloading/Sources/HotReloadingGuts/Unhide.mm; sourceTree = SOURCE_ROOT; };
+		BBC03BBF2625F27C005C1A06 /* UnhidingEval.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UnhidingEval.swift; path = HotReloading/Sources/injectiond/UnhidingEval.swift; sourceTree = SOURCE_ROOT; };
 		BBCA01FE1FB0F10300E45F0F /* InjectionIII.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InjectionIII.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBCA02011FB0F10300E45F0F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ../HotReloading/Sources/injectiond/AppDelegate.swift; sourceTree = "<group>"; };
 		BBCA02031FB0F10300E45F0F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -565,6 +571,8 @@
 				BB16653D25EC5FDF001407AE /* InjectionClient.swift */,
 				BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */,
 				BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */,
+				BBC03BBF2625F27C005C1A06 /* UnhidingEval.swift */,
+				BBC03BBC2625F268005C1A06 /* Unhide.mm */,
 				BBB64FE41FD576AA0020BE47 /* XprobeSwift-Bridging-Header.h */,
 				BD35949D21A6C5DE0020EB94 /* Vaccine.swift */,
 			);
@@ -985,6 +993,7 @@
 				CEC1702A253ED117002E823F /* Experimental.swift in Sources */,
 				BB56393C1FD5C25A002FFCEF /* SignerService.m in Sources */,
 				BB16653A25E9A5F2001407AE /* main.m in Sources */,
+				BBC03BBD2625F269005C1A06 /* Unhide.mm in Sources */,
 				BBEB704C1FD28C6F00127711 /* XcodeHash.m in Sources */,
 				BBCA02021FB0F10300E45F0F /* AppDelegate.swift in Sources */,
 				BB7D7CAC2512F8F00069FE2C /* UpdateCheck.swift in Sources */,
@@ -992,6 +1001,7 @@
 				BBE490D01FB2368A003D41BB /* FileWatcher.swift in Sources */,
 				BB4EC3FC244FA3C40079E244 /* RMDeviceController.m in Sources */,
 				BBCA02561FB1099500E45F0F /* InjectionServer.swift in Sources */,
+				BBC03BC02625F27C005C1A06 /* UnhidingEval.swift in Sources */,
 				BB4EC3FB244FA3C40079E244 /* RMMacroManager.m in Sources */,
 				BBBFD2D01FCFEE300057D899 /* SwiftEval.swift in Sources */,
 			);
@@ -1002,7 +1012,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB16654025EC6163001407AE /* Xprobe.mm in Sources */,
+				BBC03BBE2625F269005C1A06 /* Unhide.mm in Sources */,
 				BB16653E25EC5FE0001407AE /* InjectionClient.swift in Sources */,
+				BBC03BC12625F27C005C1A06 /* UnhidingEval.swift in Sources */,
 				BBCA02501FB107AF00E45F0F /* SwiftEval.swift in Sources */,
 				BD35949E21A6C5DE0020EB94 /* Vaccine.swift in Sources */,
 				BBCA02511FB107AF00E45F0F /* SwiftInjection.swift in Sources */,
@@ -1435,7 +1447,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 2.6.6;
+				MARKETING_VERSION = 2.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1458,7 +1470,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 2.6.6;
+				MARKETING_VERSION = 2.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
