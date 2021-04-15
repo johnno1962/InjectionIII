@@ -73,6 +73,7 @@
 		BBC03BBE2625F269005C1A06 /* Unhide.mm in Sources */ = {isa = PBXBuildFile; fileRef = BBC03BBC2625F268005C1A06 /* Unhide.mm */; };
 		BBC03BC02625F27C005C1A06 /* UnhidingEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC03BBF2625F27C005C1A06 /* UnhidingEval.swift */; };
 		BBC03BC12625F27C005C1A06 /* UnhidingEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC03BBF2625F27C005C1A06 /* UnhidingEval.swift */; };
+		BBC03BC726282358005C1A06 /* SwiftSweeper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC03BC626282358005C1A06 /* SwiftSweeper.swift */; };
 		BBCA02021FB0F10300E45F0F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCA02011FB0F10300E45F0F /* AppDelegate.swift */; };
 		BBCA02041FB0F10300E45F0F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02031FB0F10300E45F0F /* Assets.xcassets */; };
 		BBCA02071FB0F10300E45F0F /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02051FB0F10300E45F0F /* MainMenu.xib */; };
@@ -260,6 +261,7 @@
 		BBBEC42D1FC56522004188B3 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		BBC03BBC2625F268005C1A06 /* Unhide.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Unhide.mm; path = HotReloading/Sources/HotReloadingGuts/Unhide.mm; sourceTree = SOURCE_ROOT; };
 		BBC03BBF2625F27C005C1A06 /* UnhidingEval.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UnhidingEval.swift; path = HotReloading/Sources/injectiond/UnhidingEval.swift; sourceTree = SOURCE_ROOT; };
+		BBC03BC626282358005C1A06 /* SwiftSweeper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftSweeper.swift; path = HotReloading/Sources/HotReloading/SwiftSweeper.swift; sourceTree = SOURCE_ROOT; };
 		BBCA01FE1FB0F10300E45F0F /* InjectionIII.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InjectionIII.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBCA02011FB0F10300E45F0F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ../HotReloading/Sources/injectiond/AppDelegate.swift; sourceTree = "<group>"; };
 		BBCA02031FB0F10300E45F0F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -570,8 +572,9 @@
 				BBCA025C1FB114FF00E45F0F /* InjectionClient.mm */,
 				BB16653D25EC5FDF001407AE /* InjectionClient.swift */,
 				BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */,
-				BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */,
 				BBC03BBF2625F27C005C1A06 /* UnhidingEval.swift */,
+				BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */,
+				BBC03BC626282358005C1A06 /* SwiftSweeper.swift */,
 				BBC03BBC2625F268005C1A06 /* Unhide.mm */,
 				BBB64FE41FD576AA0020BE47 /* XprobeSwift-Bridging-Header.h */,
 				BD35949D21A6C5DE0020EB94 /* Vaccine.swift */,
@@ -1012,6 +1015,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB16654025EC6163001407AE /* Xprobe.mm in Sources */,
+				BBC03BC726282358005C1A06 /* SwiftSweeper.swift in Sources */,
 				BBC03BBE2625F269005C1A06 /* Unhide.mm in Sources */,
 				BB16653E25EC5FE0001407AE /* InjectionClient.swift in Sources */,
 				BBC03BC12625F27C005C1A06 /* UnhidingEval.swift in Sources */,

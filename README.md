@@ -103,23 +103,12 @@ get an error starting as follows reporting an undefined symbol:
  Expected in: flat namespace
 in /var/folders/nh/gqmp6jxn4tn2tyhwqdcwcpkc0000gn/T/com.johnholdsworth.InjectionIII/eval101.dylib ***
 ```
-If you encounter this problem, download and build [the unhide project](https://github.com/johnno1962/unhide) then add the following
-as a "Run Script", "Build Phase" to your project after the linking phase:
+This typically becuase you are injecting code that uses a default argument.
+If you encounter this problem, restart your app and you should find this issue disappears.
 
-```
-UNHIDE=~/bin/unhide.sh
-if [ -f $UNHIDE ]; then
-    $UNHIDE
-else
-    echo "File $UNHIDE used for code Injection does not exist. Download and build the https://github.com/johnno1962/unhide project."
-fi
-```
-This changes the visibility of symbols for default argument generators
-and this issue should disappear.
-
-Keep in mind global state -- If the file you're injecting has top level variables e.g. singletons, static or global vars
-they will be reset when you inject the code as the new method implementations will refer to the newly loaded
-object file containing the type.
+Keep in mind global state -- If the file you're injecting has top level variables e.g. singletons,
+static or global vars they will be reset when you inject the code as the new method
+implementations will refer to the newly loaded object file containing the type.
 
 As injection needs to know how to compile Swift files individually it is not compatible with building using
 `Whole Module Optimisation`. A workaround for this is to build with `WMO` switched off so there are
@@ -386,4 +375,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2021/03/18 $
+$Date: 2021/04/15 $
