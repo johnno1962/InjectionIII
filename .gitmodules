@@ -10,3 +10,6 @@
 [submodule "HotReloading"]
 	path = HotReloading
 	url = https://github.com/johnno1962/HotReloading.git
+[submodule "DLKit"]
+	path = DLKit
+	url = https://github.com/johnno1962/DLKit
