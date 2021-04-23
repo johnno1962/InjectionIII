@@ -87,6 +87,7 @@
 		BBCA02621FB1312A00E45F0F /* SimpleSocket.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB67DBB31FB0CDA8000EAC8A /* SimpleSocket.mm */; };
 		BBD0AB3E262F24E5003ED7B1 /* DLKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD0AB3D262F24E4003ED7B1 /* DLKit.swift */; };
 		BBD0AB42262F2549003ED7B1 /* DLKitC.c in Sources */ = {isa = PBXBuildFile; fileRef = BBD0AB40262F2549003ED7B1 /* DLKitC.c */; };
+		BBD0AB52263298D9003ED7B1 /* SwiftLifetime.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD0AB51263298D7003ED7B1 /* SwiftLifetime.swift */; };
 		BBE3B2E72524915A00300BF8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE3B2E62524915A00300BF8 /* AppDelegate.swift */; };
 		BBE3B2E92524916000300BF8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBE3B2E82524916000300BF8 /* Assets.xcassets */; };
 		BBE3B2EC2524916000300BF8 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBE3B2EA2524916000300BF8 /* MainMenu.xib */; };
@@ -283,6 +284,7 @@
 		BBD0AB3F262F2549003ED7B1 /* fishhook.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = fishhook.c; path = DLKit/Sources/DLKitC/fishhook.c; sourceTree = SOURCE_ROOT; };
 		BBD0AB40262F2549003ED7B1 /* DLKitC.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = DLKitC.c; path = DLKit/Sources/DLKitC/DLKitC.c; sourceTree = SOURCE_ROOT; };
 		BBD0AB43262F256B003ED7B1 /* DLKitC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DLKitC.h; path = DLKit/Sources/DLKitC/include/DLKitC.h; sourceTree = SOURCE_ROOT; };
+		BBD0AB51263298D7003ED7B1 /* SwiftLifetime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftLifetime.swift; path = SwiftTrace/SwiftLifetime.swift; sourceTree = "<group>"; };
 		BBDF943C2349277A00334E08 /* InjectionIII-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "InjectionIII-Bridging-Header.h"; sourceTree = "<group>"; };
 		BBE3B2E42524915A00300BF8 /* EvalApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EvalApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBE3B2E62524915A00300BF8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -481,6 +483,7 @@
 				BB6C87E42520D151005AFCFC /* SwiftSwizzle.swift */,
 				BB6C87E72520D151005AFCFC /* SwiftAspects.swift */,
 				BB6C87E82520D151005AFCFC /* SwiftInterpose.swift */,
+				BBD0AB51263298D7003ED7B1 /* SwiftLifetime.swift */,
 				BB6C87E32520D151005AFCFC /* SwiftInvoke.swift */,
 				BB6C87E92520D151005AFCFC /* SwiftStack.swift */,
 				BB6C87E62520D151005AFCFC /* SwiftStats.swift */,
@@ -984,6 +987,7 @@
 				BB6C87EE2520D152005AFCFC /* SwiftArgs.swift in Sources */,
 				BB1C3246254BFAFD001EDFCC /* EasyPointer.swift in Sources */,
 				BB6446202545831400A83098 /* StringIndex.swift in Sources */,
+				BBD0AB52263298D9003ED7B1 /* SwiftLifetime.swift in Sources */,
 				BB6C87EF2520D152005AFCFC /* SwiftStats.swift in Sources */,
 				BB6C87F02520D152005AFCFC /* SwiftAspects.swift in Sources */,
 				BB6C87F12520D152005AFCFC /* SwiftInterpose.swift in Sources */,

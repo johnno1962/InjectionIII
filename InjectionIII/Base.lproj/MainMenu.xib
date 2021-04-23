@@ -848,6 +848,13 @@
                                     <action selector="traceStats:" target="Voe-Tx-rLC" id="2DR-dQ-dhn"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Instance Counts" toolTip="Dump elpased time and invocatio count stats per method." id="PEk-Np-Rg5">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <accessibility description="Dump Stats"/>
+                                <connections>
+                                    <action selector="objectCounts:" target="Voe-Tx-rLC" id="SuE-rF-kxQ"/>
+                                </connections>
+                            </menuItem>
                             <menuItem title="Dump Call Order" toolTip="Dump methods invoked in order they were fist called." id="blr-cp-nYs">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <accessibility description="Dump Call Order"/>
