@@ -85,8 +85,6 @@
 		BBCA02601FB122C300E45F0F /* InjectionIdle.tif in Resources */ = {isa = PBXBuildFile; fileRef = BBCA025E1FB122C300E45F0F /* InjectionIdle.tif */; };
 		BBCA02611FB122C300E45F0F /* InjectionOK.tif in Resources */ = {isa = PBXBuildFile; fileRef = BBCA025F1FB122C300E45F0F /* InjectionOK.tif */; };
 		BBCA02621FB1312A00E45F0F /* SimpleSocket.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB67DBB31FB0CDA8000EAC8A /* SimpleSocket.mm */; };
-		BBD0AB3E262F24E5003ED7B1 /* DLKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD0AB3D262F24E4003ED7B1 /* DLKit.swift */; };
-		BBD0AB42262F2549003ED7B1 /* DLKitC.c in Sources */ = {isa = PBXBuildFile; fileRef = BBD0AB40262F2549003ED7B1 /* DLKitC.c */; };
 		BBD0AB52263298D9003ED7B1 /* SwiftLifetime.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD0AB51263298D7003ED7B1 /* SwiftLifetime.swift */; };
 		BBE3B2E72524915A00300BF8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE3B2E62524915A00300BF8 /* AppDelegate.swift */; };
 		BBE3B2E92524916000300BF8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBE3B2E82524916000300BF8 /* Assets.xcassets */; };
@@ -1031,11 +1029,9 @@
 				BB16654025EC6163001407AE /* Xprobe.mm in Sources */,
 				BBC03BC726282358005C1A06 /* SwiftSweeper.swift in Sources */,
 				BBC03BBE2625F269005C1A06 /* Unhide.mm in Sources */,
-				BBD0AB42262F2549003ED7B1 /* DLKitC.c in Sources */,
 				BB16653E25EC5FE0001407AE /* InjectionClient.swift in Sources */,
 				BBC03BC12625F27C005C1A06 /* UnhidingEval.swift in Sources */,
 				BBCA02501FB107AF00E45F0F /* SwiftEval.swift in Sources */,
-				BBD0AB3E262F24E5003ED7B1 /* DLKit.swift in Sources */,
 				BD35949E21A6C5DE0020EB94 /* Vaccine.swift in Sources */,
 				BBCA02511FB107AF00E45F0F /* SwiftInjection.swift in Sources */,
 				BBB64FE11FD575260020BE47 /* XprobeSwift.swift in Sources */,
@@ -1467,7 +1463,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 2.7.1;
+				MARKETING_VERSION = 2.7.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1490,7 +1486,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 2.7.1;
+				MARKETING_VERSION = 2.7.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
