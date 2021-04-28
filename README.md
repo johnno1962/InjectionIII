@@ -107,7 +107,9 @@ This typically becuase you are injecting code that uses a default argument.
 If you encounter this problem, restart your app and you should find this issue
 disappears. If you are using the App Store version of the App, adding
 [unhide](https://github.com/johnno1962/unhide) to your project should
-eventually resolve the problem.
+eventually resolve the problem or better, use one of the recent 
+[github releases](https://github.com/johnno1962/InjectionIII/releases)
+which integrates "unhide".
 
 Keep in mind global state -- If the file you're injecting has top level variables e.g. singletons,
 static or global vars they will be reset when you inject the code as the new method
@@ -377,4 +379,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2021/04/19 $
+$Date: 2021/04/29 $
