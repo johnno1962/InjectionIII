@@ -30,13 +30,13 @@ To use injection, download the app from the App Store and run it. Then, you must
 Xcode 10.2 and later (Swift 5+):
 
 ```Swift
-	#if DEBUG
-	Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle")?.load()
-	//for tvOS:
-	Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/tvOSInjection.bundle")?.load()
-	//Or for macOS:
-	Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/macOSInjection.bundle")?.load()
-	#endif
+#if DEBUG
+Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle")?.load()
+//for tvOS:
+Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/tvOSInjection.bundle")?.load()
+//Or for macOS:
+Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/macOSInjection.bundle")?.load()
+#endif
 ```
 
 Adding one of these lines loads a bundle included in the `InjectionIII.app`'s
@@ -57,10 +57,10 @@ injected()` class or instance method.  The instance `@objc
 func injected()` method relies on a "sweep" of all objects in your application to find those of
 the class you have just injected which can be unreliable when using `unowned` instance variables. If you encounter problems, remomve the injected() method and subscribe to the `"INJECTION_BUNDLE_NOTIFICATION"` instead along the lines of the following:
 
-```
-    NotificationCenter.default.addObserver(self,
-        selector: #selector(configureView),
-        name: Notification.Name("INJECTION_BUNDLE_NOTIFICATION"), object: nil)
+```Swift
+NotificationCenter.default.addObserver(self,
+    selector: #selector(configureView),
+    name: Notification.Name("INJECTION_BUNDLE_NOTIFICATION"), object: nil)
 ```
 Included in this release is "Xprobe" which allows you to browse and inspect the objects in
 your application through a web-like interface and execute code against them. Enter text into the search textfield to locate objects quickly by class name.
@@ -217,7 +217,7 @@ code changes can be signed properly as you can not turn off library validation.
 
 All this is best done by adding the following as a build phase to your target project:
 
-```
+```shell
 # Type a script or drag a script file from your workspace to insert its path.
 export CODESIGN_ALLOCATE\=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/codesign_allocate
 INJECTION_APP_RESOURCES=/Applications/InjectionIII.app/Contents/Resources
@@ -277,7 +277,7 @@ following to your app's `"Framework Search Paths"` and `"Runpath Search Paths"`
 ```
 Then, you can use something like the following to register the type:
 
-```
+```Swift
 SwiftTrace.makeTraceable(types: [MovieSwift.MovieRow.Props.self])
 ```
 In this case however the `MovieSwift.MovieRow.Props` type from the excellent 
@@ -322,7 +322,8 @@ classes that inherit from NSObject. There is a generic form which has the follow
 
 ```Swift
 extension NSObject {
-	public func eval<T>(_ expression: String, type: T.Type) -> T {
+    public func eval<T>(_ expression: String, type: T.Type) -> T
+}
 ```
 
 This takes a Swift expression as a String and returns an entity of the type specified.
@@ -330,21 +331,21 @@ There is also a shorthand function for expressions of type String which accepts 
 contents of the String literal as it's argument:
 
 ```Swift
-	public func swiftEvalString(contents: String) -> String {
-	    return eval("\"" + expression + "\"", String.self)
-	}
+public func swiftEvalString(contents: String) -> String {
+    return eval("\"" + expression + "\"", String.self)
+}
 ```
 
 An example of how it is used can be found in the EvalApp example.
 
 ```Swift
-    @IBAction func performEval(_: Any) {
-        textView.string = swiftEvalString(contents: textField.stringValue)
-    }
+@IBAction func performEval(_: Any) {
+    textView.string = swiftEvalString(contents: textField.stringValue)
+}
 
-    @IBAction func closureEval(_: Any) {
-        _ = swiftEval(code: closureText.stringValue+"()")
-    }
+@IBAction func closureEval(_: Any) {
+    _ = swiftEval(code: closureText.stringValue+"()")
+}
 ```
 
 The code works by adding an extension to your class source containing the expression.
