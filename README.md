@@ -47,7 +47,7 @@ you save to disk a Swift (or Objective-C) source in the project, the target app 
 If your project is organised across multiple directories or the project file is not at the root of the source tree you can add other directories to be watched for file changes using the "Add Directory"
 menu item. This list resets when you select a new project.
 
-The file watcher can be disabled & enabled while the app is running using the status bar men.
+The file watcher can be disabled & enabled while the app is running using the status bar menu.
 While the file watcher is disabled you can still force injections through manually using a hotkey `ctrl-=` (remember to save the file first!)
 
 If you inject a subclass of `XCTest` InjectionIII will try running that individual test inside your application provided has been compiled at some time in the past and doesn't require test specific support code.
