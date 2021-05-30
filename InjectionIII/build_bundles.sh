@@ -39,7 +39,7 @@ function build_bundle () {
 
 #build_bundle macOS MacOSX macosx &&
 build_bundle iOS iPhoneSimulator iphonesimulator &&
-#build_bundle tvOS AppleTVSimulator appletvsimulator &&
+build_bundle tvOS AppleTVSimulator appletvsimulator &&
 
 # iphoneos on M1 mac (requires Sanbox switched off)
 #build_bundle maciOS iPhoneOS iphoneos &&
