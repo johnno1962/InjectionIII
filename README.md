@@ -23,6 +23,32 @@ due to changes to macOS codesigning that affect the sandboxed App Store version 
 
 To understand how InjectionIII works and the techniques it uses consult the book [Swift Secrets](http://books.apple.com/us/book/id1551005489).
 
+### Managing Expectations
+
+By rights, InjectionIII shouldn't work and this seems to be a common perception for
+people who haven't actually tried it and yet it does. It relies on documented features
+of Apple's dynamic linker which have proven to be reliable for years now. That said
+you can't just inject any source file. You might anticipate problems injecting a file
+that contains a protocol definition or conformance for example but keep in mind 
+that the worst case is that your application will crash during debugging and you'll
+have to restart it as you would have had to normally. The injectionIII bundle is only
+used during development in the simulator and cannot affect your application when 
+it is actually deployed into production.
+
+To reason about your app while you are using injection, separate  data and program
+in your mind. You can't inject changes to the way data is laid out in memory by adding 
+properties on the fly but apart from that exchanging  method implementations is 
+performed on the main thread and perfectly reliable. A common question for new
+users is: I injected a new version of the code, why can't I see the changes on the screen?
+To have effect, the new code needs to be actually executed and it's up to the user to use 
+either an `@objc func injected()` method or a notification to reload a view controller 
+or refresh a table view to see changes or perform some user action that forces a redisplay.
+
+If you try InjectionIII and you think it doesn't work, please, please file an issue so we can
+either explain what is going on, improve the documentation or resolve the particular edge 
+case you have encountered. The project is quite mature now and provided you're holding 
+it correctly and don't ask too much of it, it should "just work".
+
 ### Getting Started
 
 To use injection, download the app from the App Store and run it. Then, you must add `"-Xlinker -interposable"` (without the double quotes) to your project's `"Other Linker Flags"` for the Debug target (qualified by the simulator SDK to avoid complications with bitcode). Finally, add one of the following to your application delegate's `applicationDidFinishLaunching:`
@@ -84,7 +110,7 @@ a class or struct in the course of an injection i.e. add or rearrange properties
 non-final class or your app will likely crash. Also, see the notes below for injecting `SwiftUI` views and how they require
 type erasure.
 
-If you have a complex project including Objective-C or C dependancies, using the `-interposable` flag may provoke the following error on linking:
+If you have a complex project including Objective-C or C dependancies, using the `-interposable` flag may provoke undefined symbols or the following error on linking:
 
 ```
 Can't find ordinal for imported symbol for architecture x86_64
@@ -105,11 +131,8 @@ in /var/folders/nh/gqmp6jxn4tn2tyhwqdcwcpkc0000gn/T/com.johnholdsworth.Injection
 ```
 This typically becuase you are injecting code that uses a default argument.
 If you encounter this problem, restart your app and you should find this issue
-disappears. If you are using the App Store version of the App, adding
-[unhide](https://github.com/johnno1962/unhide) to your project should
-eventually resolve the problem or better, use one of the recent 
-[github releases](https://github.com/johnno1962/InjectionIII/releases)
-which integrates "unhide".
+disappears due to a background task [unhide](https://github.com/johnno1962/unhide)
+which is integrated into into InjectionIII.
 
 Keep in mind global state -- If the file you're injecting has top level variables e.g. singletons,
 static or global vars they will be reset when you inject the code as the new method
@@ -379,4 +402,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2021/05/05 $
+$Date: 2021/05/31 $
