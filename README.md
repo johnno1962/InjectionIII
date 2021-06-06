@@ -28,27 +28,27 @@ To understand how InjectionIII works and the techniques it uses consult the book
 
 By rights, InjectionIII shouldn't work and this seems to be a common perception for the
 sceptics out there who haven't actually tried it and yet it does. It relies on documented 
-features of Apple's dynamic linker which have proven to be reliable for years now. That 
-said,  you can't just inject _any_ any source file. You may encounter problems injecting a 
-file that contains a protocol definition or the implementation of a conformance for example 
-or casting using `as` but keep in mind  that the worst case is that your application will 
-crash during debugging  and you'll have to restart it as you would have had to normally. 
-The injectionIII bundle is only used during development in the simulator and cannot affect 
-your application when it is actually deployed into production.
+features of Apple's dynamic linker which have proven to be reliable for a year now. That 
+said,  you can't just inject _any_ source file. For example, it's best not to try to inject a
+file containing a protocol definition. Keep in mind though the worst case is that your
+application might crash during debugging and you'll have to restart it as you would have 
+had to anyway. Gaining trust in the changes you can inject builds with experience and
+with it, the amount of time you save. The injectionIII bundle is only used during development 
+in the simulator and cannot affect your application when it is deployed into production.
 
 To reason about your app while you are using injection, separate  data and program
 in your mind. You can't inject changes to the way data is laid out in memory by adding 
-properties on the fly but apart from that exchanging  method implementations is 
-performed on the main thread and perfectly reliable. A common question for new
+properties or methods on the fly but apart from that exchanging  method implementations
+is performed on the main thread and perfectly reliable. A common question for new
 users is: I injected a new version of the code, why can't I see the changes on the screen?
 To have effect, the new code needs to be actually executed and it's up to the user to use 
 either an `@objc func injected()` method or a notification to reload a view controller 
 or refresh a table view to see changes or perform some user action that forces a redisplay.
 
 If you try InjectionIII and you think it doesn't work, please, please file an issue so we can
-either explain what is going on, improve the documentation or resolve the particular edge 
-case you have encountered. The project is quite mature now and provided you're holding 
-it correctly and don't ask too much of it, it should "just work".
+either explain what is going on, improve the documentation or try to resolve the particular 
+edge case you have encountered. The project is quite mature now and provided you're 
+holding it correctly and don't ask too much of it, it should "just work".
 
 ### Getting Started
 
@@ -125,7 +125,7 @@ If this is the case, add the following additional "Other linker Flags" and it sh
 If you have a project using extensive bridging & Objective-C it's recommended to use
 one of the [binary github releases](https://github.com/johnno1962/InjectionIII/releases)
 that have the sandbox turned off. This is beacuse the App Store version operates in 
-a case sensitive file system which can create problems if filenames in your proejct do 
+a case sensitive file system which can create problems if filenames in your project do 
 not have the identical casing as the actual filename on disk.
 
 If you inject code which calls a function with default arguments you may
@@ -410,4 +410,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2021/06/03 $
+$Date: 2021/06/06 $
