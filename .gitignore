@@ -2,3 +2,4 @@ build/*
 *Library/*
 *xcuserdata*
 InjectionIII *
+.DS_Store
