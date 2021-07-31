@@ -10,7 +10,7 @@
    
    2、安装后，打开InjectionIII,选择Open Project,选择你的项目目录
    
-![截屏2021-07-29 下午4.57.01.png](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0d197c0ef51f43768c1d00b29ea29bc7~tplv-k3u1fbpfcp-watermark.image)
+![image.png](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0d197c0ef51f43768c1d00b29ea29bc7~tplv-k3u1fbpfcp-watermark.image)
 
    3、选择的项目会在OPen Recent中展示，同时保持File Watcher的选项勾选。
    
