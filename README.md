@@ -1,5 +1,7 @@
 # InjectionIII - overdue Swift rewrite of InjectionForXcode 
-# [中文集成指南](https://github.com/looha518/InjectionIII/blob/main/README_%20Chinese.md)，[掘金教程](https://juejin.cn/post/6990285526901522463)
+
+Chinese language README & Tutorial:  [中文集成指南](https://github.com/johnno1962/InjectionIII/blob/main/README_Chinese.md)，[掘金教程](https://juejin.cn/post/6990285526901522463)
+
 ![Icon](http://johnholdsworth.com/Syringe_128.png)
 
 Code injection allows you to update the implementation of functions and any method of a class, struct or enum incrementally
@@ -410,4 +412,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2021/06/06 $
+$Date: 2021/07/31 $

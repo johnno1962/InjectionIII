@@ -48,6 +48,7 @@
 		BB6C881F2520D799005AFCFC /* SwiftTrace.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BB6C87C42520D0D1005AFCFC /* SwiftTrace.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BB79FC79245CC02200A4B4CB /* TimeLapseBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB79FC78245CC02200A4B4CB /* TimeLapseBuilder.swift */; };
 		BB7D7CAC2512F8F00069FE2C /* UpdateCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D7CAB2512F8F00069FE2C /* UpdateCheck.swift */; };
+		BB80B3B526B573BE0055FAAE /* README_Chinese.md in Resources */ = {isa = PBXBuildFile; fileRef = BB80B3B426B573BE0055FAAE /* README_Chinese.md */; };
 		BB877CE42186EB6E0070EEC7 /* DDHotKeyCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6306F51FCD16600021D30C /* DDHotKeyCenter.m */; };
 		BB877CE52186EB6E0070EEC7 /* DDHotKeyUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6306F61FCD16600021D30C /* DDHotKeyUtilities.m */; };
 		BBB040641FB17A6C007DDD0A /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBB040631FB1798A007DDD0A /* ScriptingBridge.framework */; };
@@ -235,6 +236,7 @@
 		BB6C87F82520D2C3005AFCFC /* xt_forwarding_trampoline_x64.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; name = xt_forwarding_trampoline_x64.s; path = SwiftTraceGuts/xt_forwarding_trampoline_x64.s; sourceTree = "<group>"; };
 		BB79FC78245CC02200A4B4CB /* TimeLapseBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeLapseBuilder.swift; path = Remote/Sources/RemoteMovie/TimeLapseBuilder.swift; sourceTree = SOURCE_ROOT; };
 		BB7D7CAB2512F8F00069FE2C /* UpdateCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UpdateCheck.swift; path = ../HotReloading/Sources/injectiond/UpdateCheck.swift; sourceTree = "<group>"; };
+		BB80B3B426B573BE0055FAAE /* README_Chinese.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README_Chinese.md; sourceTree = "<group>"; };
 		BBA7BE0223473D660067124D /* build_bundles.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = build_bundles.sh; sourceTree = "<group>"; };
 		BBB040631FB1798A007DDD0A /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/ScriptingBridge.framework; sourceTree = DEVELOPER_DIR; };
 		BBB148D91FAD53BE00CB6B33 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -366,6 +368,7 @@
 			children = (
 				BB037DF41FAD80D0004B267C /* LICENSE */,
 				BB037DF31FAD808B004B267C /* README.md */,
+				BB80B3B426B573BE0055FAAE /* README_Chinese.md */,
 				BB6125D224EA882000A7C230 /* Injection.jar */,
 				BBCA01FF1FB0F10300E45F0F /* InjectionIII */,
 				BBCA02461FB1065D00E45F0F /* InjectionBundle */,
@@ -866,6 +869,7 @@
 				BBB64DDC1FD570220020BE47 /* graph-xdot.gv in Resources */,
 				BBB64DDD1FD570220020BE47 /* CodeMirror in Resources */,
 				BBB64DDE1FD570220020BE47 /* xprobe.html in Resources */,
+				BB80B3B526B573BE0055FAAE /* README_Chinese.md in Resources */,
 				BBB64DDF1FD570220020BE47 /* canviz-0.1 in Resources */,
 				BBB64DE01FD570220020BE47 /* canviz.html in Resources */,
 				BBB64DE11FD570220020BE47 /* tiny_red.gif in Resources */,
@@ -1463,7 +1467,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 2.9.1;
+				MARKETING_VERSION = 2.9.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1486,7 +1490,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 2.9.1;
+				MARKETING_VERSION = 2.9.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
