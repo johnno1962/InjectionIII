@@ -66,7 +66,7 @@
           
           
           
- # 项目额外的配置
+ # 更多设置
      1、Build Settings - Swift Compiler-Code Generation
          Compilation Mode - Debug模式改为 Incremental
          Optimization Level - Debug模式改为 No Optimization [-Onone]
@@ -90,7 +90,7 @@
     in /var/folders/nh/gqmp6jxn4tn2tyhwqdcwcpkc0000gn/T/com.johnholdsworth.InjectionIII/eval101.dylib ***
     
 
-             
+# 更加详细的问题请多在项目README和issues查找
           
             
 
