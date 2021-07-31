@@ -1,12 +1,12 @@
 
 # Injection
-国外作者John的一个开源项目，年代比较久远了，支持OC、Swift以及Swift和OC混编项目，采取在**模拟器**(真机不支持)注入方式实现UI热重载，修改完UI直接com+s，不用重新编译运行就能看到UI效果，堪称神器。
+支持OC、Swift以及Swift和OC混编项目，采取在**模拟器**(真机不支持)注入方式实现UI热重载，修改完UI直接com+s，不用重新编译运行就能看到UI效果，堪称神器。
 [github](https://github.com/johnno1962/InjectionIII),而且[AppStore](https://apps.apple.com/cn/app/injectioniii/id1380446739)也有发布。
 目前已经更新支持Xcode13和iOS15。
 
-# 食用方法
+# 使用方法
 ## 1、Injection安装
-   1、[github](https://github.com/johnno1962/InjectionIII)下载最新release版本，或者[AppStore](https://apps.apple.com/cn/app/injectioniii/id1380446739)下载安装即可，推荐[github](https://github.com/johnno1962/InjectionIII)下载安装,github更新比AppStore更新快。
+   1、[github](https://github.com/johnno1962/InjectionIII)下载最新release版本，或者[AppStore](https://apps.apple.com/cn/app/injectioniii/id1380446739)下载安装即可，推荐[github](https://github.com/johnno1962/InjectionIII)下载安装,github更新比AppStore更新快。如果你的项目使用混编OC时，强烈建议使用github的[releases](https://github.com/johnno1962/InjectionIII/releases)版本
    
    2、安装后，打开InjectionIII,选择Open Project,选择你的项目目录
    
@@ -60,21 +60,36 @@
              }
              
           4、在UI阶段，修改外UI，直接com+s就能看到效果，部分页面可能需要重新进入该页面才能看到效果。
+          ps：当你的项目使用unowned时，项目都配置完成并没有报错，但是修改完UI，按com+s并没有相应的效果，则删除injected方法，在需要热重载的界面或者(baseVC)添加通知INJECTION_BUNDLE_NOTIFICATION即可
+              NotificationCenter.default.addObserver(self, selector:#selector(hotReloadingUI), name: Notification.Name("INJECTION_BUNDLE_NOTIFICATION"), object: nil)
+
+          
+          
           
  # 项目额外的配置
      1、Build Settings - Swift Compiler-Code Generation
          Compilation Mode - Debug模式改为 Incremental
          Optimization Level - Debug模式改为 No Optimization [-Onone]
-     2、User-Defined 
+     2、不支持Swift的SWIFT_WHOLE_MODULE_OPTIMIZATION 模式，需要在关闭它
+         User-Defined - 
          SWIFT_WHOLE_MODULE_OPTIMIZATION Debug模式改为NO
          
      3、如果想对final方法和structs方法热重载，在Build Settings - Other Linker Flags中加入 -Xlinker，-interposable
-        项目编译报错增加 -undefined，dynamic_lookup即可
+        项目编译报错：Can't find ordinal for imported symbol for architecture x86_64
+        增加 -undefined，dynamic_lookup即可
 
        
 ![image.png](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ea18dd9722f84aab87c9fdf2cbdfa3d7~tplv-k3u1fbpfcp-watermark.image)
 
 ![image.png](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0a92e51cf8fe4b5d89f56e78d226a26a~tplv-k3u1fbpfcp-watermark.image)
+
+    4、如果你的方法有默认参数，而报以下错误时，重新启动App即可
+    💉 *** dlopen() error: dlopen(/var/folders/nh/gqmp6jxn4tn2tyhwqdcwcpkc0000gn/T/com.johnholdsworth.InjectionIII/eval101.dylib, 2): Symbol not found: _$s13TestInjection15QTNavigationRowC4text10detailText4icon6object13customization6action21accessoryButtonActionACyxGSS_AA08QTDetailG0OAA6QTIconOSgypSgySo15UITableViewCellC_AA5QTRow_AA0T5StyleptcSgyAaT_pcSgAWtcfcfA1_
+     Referenced from: /var/folders/nh/gqmp6jxn4tn2tyhwqdcwcpkc0000gn/T/com.johnholdsworth.InjectionIII/eval101.dylib
+     Expected in: flat namespace
+    in /var/folders/nh/gqmp6jxn4tn2tyhwqdcwcpkc0000gn/T/com.johnholdsworth.InjectionIII/eval101.dylib ***
+    
+
              
           
             
