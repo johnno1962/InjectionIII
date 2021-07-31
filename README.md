@@ -1,5 +1,5 @@
 # InjectionIII - overdue Swift rewrite of InjectionForXcode 
-
+# [中文集成指南](https://github.com/looha518/InjectionIII/blob/main/README_%20Chinese.md)，[掘金教程](https://juejin.cn/post/6990285526901522463)
 ![Icon](http://johnholdsworth.com/Syringe_128.png)
 
 Code injection allows you to update the implementation of functions and any method of a class, struct or enum incrementally

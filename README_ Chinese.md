@@ -1,7 +1,7 @@
 
 # Injection
-# [中文集成指南](https://github.com/johnno1962/InjectionIII)，[掘金教程](https://github.com/johnno1962/InjectionIII)
-支持OC、Swift以及Swift和OC混编项目，采取在**模拟器**(真机不支持)注入方式实现UI热重载，修改完UI直接com+s，不用重新编译运行就能看到UI效果，堪称神器。
+
+支持OC、Swift以及Swift和OC混编项目的UI热重载工具，采取在**模拟器**(真机不支持)注入方式实现UI热重载，修改完UI直接com+s，不用重新编译运行就能看到UI效果，堪称神器。
 [github](https://github.com/johnno1962/InjectionIII),而且[AppStore](https://apps.apple.com/cn/app/injectioniii/id1380446739)也有发布。
 目前已经更新支持Xcode13和iOS15。
 
