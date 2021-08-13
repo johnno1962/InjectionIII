@@ -83,8 +83,6 @@
 		BBCA02511FB107AF00E45F0F /* SwiftInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */; };
 		BBCA02561FB1099500E45F0F /* InjectionServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCA02551FB1099500E45F0F /* InjectionServer.swift */; };
 		BBCA02591FB112F500E45F0F /* App.icns in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02581FB112F500E45F0F /* App.icns */; };
-		BBCA02601FB122C300E45F0F /* InjectionIdle.tif in Resources */ = {isa = PBXBuildFile; fileRef = BBCA025E1FB122C300E45F0F /* InjectionIdle.tif */; };
-		BBCA02611FB122C300E45F0F /* InjectionOK.tif in Resources */ = {isa = PBXBuildFile; fileRef = BBCA025F1FB122C300E45F0F /* InjectionOK.tif */; };
 		BBCA02621FB1312A00E45F0F /* SimpleSocket.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB67DBB31FB0CDA8000EAC8A /* SimpleSocket.mm */; };
 		BBD0AB52263298D9003ED7B1 /* SwiftLifetime.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD0AB51263298D7003ED7B1 /* SwiftLifetime.swift */; };
 		BBE3B2E72524915A00300BF8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE3B2E62524915A00300BF8 /* AppDelegate.swift */; };
@@ -93,8 +91,6 @@
 		BBE3B2F2252491BC00300BF8 /* SwiftEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */; };
 		BBE3B2F32524965400300BF8 /* App.icns in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02581FB112F500E45F0F /* App.icns */; };
 		BBE490D01FB2368A003D41BB /* FileWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE490CE1FB2368A003D41BB /* FileWatcher.swift */; };
-		BBE490DB1FB2C643003D41BB /* InjectionBusy.tif in Resources */ = {isa = PBXBuildFile; fileRef = BBE490D91FB2C643003D41BB /* InjectionBusy.tif */; };
-		BBE490DC1FB2C643003D41BB /* InjectionError.tif in Resources */ = {isa = PBXBuildFile; fileRef = BBE490DA1FB2C643003D41BB /* InjectionError.tif */; };
 		BBE64E5D2524D1B50049B6D4 /* SwiftEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */; };
 		BBEB704C1FD28C6F00127711 /* XcodeHash.m in Sources */ = {isa = PBXBuildFile; fileRef = BBEB704B1FD28C6F00127711 /* XcodeHash.m */; };
 		BD35949E21A6C5DE0020EB94 /* Vaccine.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD35949D21A6C5DE0020EB94 /* Vaccine.swift */; };
@@ -278,8 +274,6 @@
 		BBCA025A1FB1132700E45F0F /* Xcode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Xcode.h; path = ../HotReloading/Sources/injectiondGuts/include/Xcode.h; sourceTree = "<group>"; };
 		BBCA025B1FB114FF00E45F0F /* InjectionClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = InjectionClient.h; path = ../HotReloading/Sources/HotReloadingGuts/include/InjectionClient.h; sourceTree = "<group>"; };
 		BBCA025C1FB114FF00E45F0F /* InjectionClient.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = InjectionClient.mm; sourceTree = "<group>"; };
-		BBCA025E1FB122C300E45F0F /* InjectionIdle.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = InjectionIdle.tif; sourceTree = "<group>"; };
-		BBCA025F1FB122C300E45F0F /* InjectionOK.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = InjectionOK.tif; sourceTree = "<group>"; };
 		BBD0AB3D262F24E4003ED7B1 /* DLKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DLKit.swift; path = DLKit/Sources/DLKit/DLKit.swift; sourceTree = SOURCE_ROOT; };
 		BBD0AB3F262F2549003ED7B1 /* fishhook.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = fishhook.c; path = DLKit/Sources/DLKitC/fishhook.c; sourceTree = SOURCE_ROOT; };
 		BBD0AB40262F2549003ED7B1 /* DLKitC.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = DLKitC.c; path = DLKit/Sources/DLKitC/DLKitC.c; sourceTree = SOURCE_ROOT; };
@@ -293,8 +287,6 @@
 		BBE3B2ED2524916000300BF8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BBE3B2EE2524916000300BF8 /* EvalApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EvalApp.entitlements; sourceTree = "<group>"; };
 		BBE490CE1FB2368A003D41BB /* FileWatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FileWatcher.swift; path = ../HotReloading/Sources/injectiond/FileWatcher.swift; sourceTree = "<group>"; };
-		BBE490D91FB2C643003D41BB /* InjectionBusy.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = InjectionBusy.tif; sourceTree = "<group>"; };
-		BBE490DA1FB2C643003D41BB /* InjectionError.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = InjectionError.tif; sourceTree = "<group>"; };
 		BBEB704A1FD28C6F00127711 /* XcodeHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XcodeHash.h; sourceTree = "<group>"; };
 		BBEB704B1FD28C6F00127711 /* XcodeHash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XcodeHash.m; sourceTree = "<group>"; };
 		BD35949D21A6C5DE0020EB94 /* Vaccine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Vaccine.swift; path = ../HotReloading/Sources/HotReloading/Vaccine.swift; sourceTree = "<group>"; };
@@ -543,10 +535,6 @@
 				BB6224411FC5B0E300AD7A3A /* HelperProxy.m */,
 				BDB6A7CE21824C800001CF95 /* UserDefaults.h */,
 				BBCA02031FB0F10300E45F0F /* Assets.xcassets */,
-				BBCA025E1FB122C300E45F0F /* InjectionIdle.tif */,
-				BBCA025F1FB122C300E45F0F /* InjectionOK.tif */,
-				BBE490D91FB2C643003D41BB /* InjectionBusy.tif */,
-				BBE490DA1FB2C643003D41BB /* InjectionError.tif */,
 				BBCA02051FB0F10300E45F0F /* MainMenu.xib */,
 				BBCA02081FB0F10400E45F0F /* Info.plist */,
 				BBCA02581FB112F500E45F0F /* App.icns */,
@@ -875,17 +863,13 @@
 				BBB64DE11FD570220020BE47 /* tiny_red.gif in Resources */,
 				BBB64DC61FD450B40020BE47 /* LICENSE in Resources */,
 				BBB64DC51FD450AF0020BE47 /* README.md in Resources */,
-				BBE490DC1FB2C643003D41BB /* InjectionError.tif in Resources */,
 				BBCA02591FB112F500E45F0F /* App.icns in Resources */,
-				BBCA02601FB122C300E45F0F /* InjectionIdle.tif in Resources */,
 				BB6306FE1FCD1A410021D30C /* Credits.rtf in Resources */,
-				BBCA02611FB122C300E45F0F /* InjectionOK.tif in Resources */,
 				BBCA02041FB0F10300E45F0F /* Assets.xcassets in Resources */,
 				BB34C3FF244FAD3C00D520A9 /* log.html in Resources */,
 				BBCA02071FB0F10300E45F0F /* MainMenu.xib in Resources */,
 				BB34C3FD244FAAB400D520A9 /* RMWindowController.xib in Resources */,
 				BB34C401244FAE3000D520A9 /* iphone.png in Resources */,
-				BBE490DB1FB2C643003D41BB /* InjectionBusy.tif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
