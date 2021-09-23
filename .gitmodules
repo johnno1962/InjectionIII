@@ -13,3 +13,6 @@
 [submodule "DLKit"]
 	path = DLKit
 	url = https://github.com/johnno1962/DLKit
+[submodule "SwiftRegex5"]
+	path = SwiftRegex5
+	url = https://github.com/johnno1962/SwiftRegex5

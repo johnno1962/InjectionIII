@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 48;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -54,6 +54,8 @@
 		BB877CE42186EB6E0070EEC7 /* DDHotKeyCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6306F51FCD16600021D30C /* DDHotKeyCenter.m */; };
 		BB877CE52186EB6E0070EEC7 /* DDHotKeyUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6306F61FCD16600021D30C /* DDHotKeyUtilities.m */; };
 		BBB040641FB17A6C007DDD0A /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBB040631FB1798A007DDD0A /* ScriptingBridge.framework */; };
+		BBB2C6FE26FC9C2900E91E67 /* TupleRegex.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB2C6FD26FC9C2900E91E67 /* TupleRegex.swift */; };
+		BBB2C6FF26FC9C2900E91E67 /* TupleRegex.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB2C6FD26FC9C2900E91E67 /* TupleRegex.swift */; };
 		BBB64DC51FD450AF0020BE47 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = BB037DF31FAD808B004B267C /* README.md */; };
 		BBB64DC61FD450B40020BE47 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = BB037DF41FAD80D0004B267C /* LICENSE */; };
 		BBB64DD31FD56F570020BE47 /* XprobePluginMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBB64DD11FD56F570020BE47 /* XprobePluginMenuController.m */; };
@@ -101,7 +103,6 @@
 		BBEB704C1FD28C6F00127711 /* XcodeHash.m in Sources */ = {isa = PBXBuildFile; fileRef = BBEB704B1FD28C6F00127711 /* XcodeHash.m */; };
 		BD35949E21A6C5DE0020EB94 /* Vaccine.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD35949D21A6C5DE0020EB94 /* Vaccine.swift */; };
 		CEC1702A253ED117002E823F /* Experimental.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC17029253ED117002E823F /* Experimental.swift */; };
-		CEC17035253ED472002E823F /* SwiftRegex in Frameworks */ = {isa = PBXBuildFile; productRef = CEC17034253ED472002E823F /* SwiftRegex */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -246,6 +247,7 @@
 		BBB148DE1FAD53BE00CB6B33 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		BBB148E01FAD53BE00CB6B33 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BBB148E11FAD53BE00CB6B33 /* EvalApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EvalApp.entitlements; sourceTree = "<group>"; };
+		BBB2C6FD26FC9C2900E91E67 /* TupleRegex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TupleRegex.swift; path = SwiftRegex5/SwiftRegex5.playground/Sources/TupleRegex.swift; sourceTree = SOURCE_ROOT; };
 		BBB64DD11FD56F570020BE47 /* XprobePluginMenuController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XprobePluginMenuController.m; path = XprobePlugin/Sources/XprobeUI/XprobePluginMenuController.m; sourceTree = SOURCE_ROOT; };
 		BBB64DD21FD56F570020BE47 /* XprobeConsole.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = XprobeConsole.m; path = XprobePlugin/Sources/XprobeUI/XprobeConsole.m; sourceTree = SOURCE_ROOT; };
 		BBB64DD61FD570210020BE47 /* graph-xdot.gv */ = {isa = PBXFileReference; lastKnownFileType = text; name = "graph-xdot.gv"; path = "XprobePlugin/graph-xdot.gv"; sourceTree = SOURCE_ROOT; };
@@ -265,7 +267,7 @@
 		BBBE71BA260652E000F45DE2 /* SweepSeeding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SweepSeeding.m; path = XprobePlugin/Sources/Xprobe/SweepSeeding.m; sourceTree = SOURCE_ROOT; };
 		BBBEC42D1FC56522004188B3 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		BBC03BBC2625F268005C1A06 /* Unhide.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Unhide.mm; path = HotReloading/Sources/HotReloadingGuts/Unhide.mm; sourceTree = SOURCE_ROOT; };
-		BBC03BBF2625F27C005C1A06 /* UnhidingEval.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UnhidingEval.swift; path = HotReloading/Sources/injectiond/UnhidingEval.swift; sourceTree = SOURCE_ROOT; };
+		BBC03BBF2625F27C005C1A06 /* UnhidingEval.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UnhidingEval.swift; path = HotReloading/Sources/HotReloading/UnhidingEval.swift; sourceTree = SOURCE_ROOT; };
 		BBC03BC626282358005C1A06 /* SwiftSweeper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftSweeper.swift; path = HotReloading/Sources/HotReloading/SwiftSweeper.swift; sourceTree = SOURCE_ROOT; };
 		BBCA01FE1FB0F10300E45F0F /* InjectionIII.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InjectionIII.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBCA02011FB0F10300E45F0F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ../HotReloading/Sources/injectiond/AppDelegate.swift; sourceTree = "<group>"; };
@@ -332,7 +334,6 @@
 			files = (
 				BBB64FEC1FD585D50020BE47 /* WebKit.framework in Frameworks */,
 				BBB040641FB17A6C007DDD0A /* ScriptingBridge.framework in Frameworks */,
-				CEC17035253ED472002E823F /* SwiftRegex in Frameworks */,
 				BBB64DE51FD571310020BE47 /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -533,6 +534,7 @@
 				BB7D7CAB2512F8F00069FE2C /* UpdateCheck.swift */,
 				BBCA02551FB1099500E45F0F /* InjectionServer.swift */,
 				CEC17029253ED117002E823F /* Experimental.swift */,
+				BBB2C6FD26FC9C2900E91E67 /* TupleRegex.swift */,
 				BBE490CE1FB2368A003D41BB /* FileWatcher.swift */,
 				BBCA025A1FB1132700E45F0F /* Xcode.h */,
 				BBEB704A1FD28C6F00127711 /* XcodeHash.h */,
@@ -723,7 +725,6 @@
 			);
 			name = InjectionIII;
 			packageProductDependencies = (
-				CEC17034253ED472002E823F /* SwiftRegex */,
 			);
 			productName = InjectionIII;
 			productReference = BBCA01FE1FB0F10300E45F0F /* InjectionIII.app */;
@@ -819,7 +820,6 @@
 			);
 			mainGroup = BB439B5C1FABA64300B4F50B;
 			packageReferences = (
-				CEC17033253ED472002E823F /* XCRemoteSwiftPackageReference "SwiftRegex5" */,
 			);
 			productRefGroup = BB439B661FABA64300B4F50B /* Products */;
 			projectDirPath = "";
@@ -1004,6 +1004,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBB2C6FE26FC9C2900E91E67 /* TupleRegex.swift in Sources */,
 				BB877CE42186EB6E0070EEC7 /* DDHotKeyCenter.m in Sources */,
 				BB877CE52186EB6E0070EEC7 /* DDHotKeyUtilities.m in Sources */,
 				BB4EC3FD244FA3C40079E244 /* RMImageView.m in Sources */,
@@ -1032,6 +1033,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBB2C6FF26FC9C2900E91E67 /* TupleRegex.swift in Sources */,
 				BB16654025EC6163001407AE /* Xprobe.mm in Sources */,
 				BBC03BC726282358005C1A06 /* SwiftSweeper.swift in Sources */,
 				BBC03BBE2625F269005C1A06 /* Unhide.mm in Sources */,
@@ -1137,11 +1139,7 @@
 				INFOPLIST_FILE = SwiftUISupport/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../../macOSInjection.bundle/Contents/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../../macOSInjection.bundle/Contents/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -1180,11 +1178,7 @@
 				INFOPLIST_FILE = SwiftUISupport/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../../macOSInjection.bundle/Contents/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../../macOSInjection.bundle/Contents/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.SwiftUISupport;
@@ -1253,10 +1247,7 @@
 				HEADER_SEARCH_PATHS = $SRCROOT/HotReloading/Sources/HotReloadingGuts/include;
 				HELPER_MACH_ID = com.johnholdsworth.InjectionIII.Helper.mach;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(TOOLCHAIN_DIR)/usr/lib/swift/$(SWIFT_PLATFORM_TARGET_PREFIX)",
-					$PLATFORM_DIR/Developer/Library/Frameworks,
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/$(SWIFT_PLATFORM_TARGET_PREFIX) $PLATFORM_DIR/Developer/Library/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "-Xfrontend -warn-long-expression-type-checking=150";
@@ -1322,15 +1313,11 @@
 				HEADER_SEARCH_PATHS = $SRCROOT/HotReloading/Sources/HotReloadingGuts/include;
 				HELPER_MACH_ID = com.johnholdsworth.InjectionIII.Helper.mach;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(TOOLCHAIN_DIR)/usr/lib/swift/$(SWIFT_PLATFORM_TARGET_PREFIX)",
-					$PLATFORM_DIR/Developer/Library/Frameworks,
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/$(SWIFT_PLATFORM_TARGET_PREFIX) $PLATFORM_DIR/Developer/Library/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = macOSInjection;
 				SDKROOT = iphoneos;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1344,11 +1331,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = SwiftEvalTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.SwiftEvalTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1366,11 +1349,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = SwiftEvalTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.SwiftEvalTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1402,11 +1381,7 @@
 				);
 				INFOPLIST_FILE = SwiftTrace/SwiftTrace/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -1439,11 +1414,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = SwiftTrace/SwiftTrace/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.SwiftTrace;
@@ -1471,7 +1442,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 3.0.2;
+				MARKETING_VERSION = 3.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1494,7 +1465,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 3.0.2;
+				MARKETING_VERSION = 3.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1513,11 +1484,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = InjectionBundle/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME)",
-					/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks,
-					"@loader_path/../Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks @loader_path/../Frameworks";
 				MACH_O_TYPE = mh_dylib;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionBundle;
@@ -1541,11 +1508,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = InjectionBundle/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME)",
-					/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks,
-					"@loader_path/../Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks @loader_path/../Frameworks";
 				MACH_O_TYPE = mh_dylib;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionBundle;
@@ -1577,10 +1540,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = EvalApp/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -1605,10 +1565,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = EvalApp/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.EvalApp;
@@ -1685,25 +1642,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		CEC17033253ED472002E823F /* XCRemoteSwiftPackageReference "SwiftRegex5" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "http://github.com/johnno1962/SwiftRegex5";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.2.1;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		CEC17034253ED472002E823F /* SwiftRegex */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CEC17033253ED472002E823F /* XCRemoteSwiftPackageReference "SwiftRegex5" */;
-			productName = SwiftRegex;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BB439B5D1FABA64300B4F50B /* Project object */;
 }
