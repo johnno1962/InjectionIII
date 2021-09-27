@@ -12,12 +12,12 @@ has been built into a standalone app: `InjectionIII.app` which runs in the statu
 **Stop Press:** The functionality of InjectionIII is now  available as a Swift Package
 in the [HotReloading Project](https://github.com/johnno1962/HotReloading). No
 need to download the app, just add this project to yours and add a short
-"Run Script" "Build Phase" as described in the README.md.
+"Run Script" "Build Phase" as described in the README.md. Do not
+release your app with the HotReloading package included!
 
 This README includes descriptions of some newer features that are only available in more recent
 releases of the InjectionIII.app [available on github](https://github.com/johnno1962/InjectionIII/releases).
-You may need to use one of these releases for Apple Silicon or if you have upgraded to Big Sur
-due to changes to macOS codesigning that affect the sandboxed App Store version of the app.
+You should use one of these releases for Apple Silicon or if you have upgraded to macOS Monterey or Xcode 13.
 
 ![Icon](http://johnholdsworth.com/InjectionUI.gif)
 
@@ -100,7 +100,7 @@ If you want to build this project from source (which you may need to do to use i
     
 ### Available downloads
 
-| Xcode 10.2+ | For Big Sur | AppCode Plugin |
+| Xcode 10.2+ | Monterey & Xcode 13 | AppCode Plugin |
 | ------------- | ------------- | ------------- |
 | [Mac app store](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12) | [Github Releases](https://github.com/johnno1962/InjectionIII/releases) | [Install  Injection.jar](https://github.com/johnno1962/InjectionIII/tree/master/AppCodePlugin) |
 
@@ -139,7 +139,6 @@ get an error starting as follows reporting an undefined symbol:
  Expected in: flat namespace
 in /var/folders/nh/gqmp6jxn4tn2tyhwqdcwcpkc0000gn/T/com.johnholdsworth.InjectionIII/eval101.dylib ***
 ```
-This typically becuase you are injecting code that uses a default argument.
 If you encounter this problem, restart your app and you should find this issue
 disappears due to a background task [unhide](https://github.com/johnno1962/unhide)
 which is integrated into InjectionIII.
@@ -412,4 +411,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2021/07/31 $
+$Date: 2021/09/27 $
