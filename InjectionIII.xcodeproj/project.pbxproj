@@ -12,6 +12,7 @@
 		BB16653F25EC6158001407AE /* Xprobe+Service.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB56393F1FD5D535002FFCEF /* Xprobe+Service.mm */; };
 		BB16654025EC6163001407AE /* Xprobe.mm in Sources */ = {isa = PBXBuildFile; fileRef = BBB64FE91FD583B60020BE47 /* Xprobe.mm */; };
 		BB16654425ECD828001407AE /* ClientBoot.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB16654325ECD827001407AE /* ClientBoot.mm */; };
+		BB18D2E8274E1748004BB4A5 /* DynamicCast.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB18D2E7274E1746004BB4A5 /* DynamicCast.swift */; };
 		BB19058C26D0C59200D57FB7 /* DLKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD0AB3D262F24E4003ED7B1 /* DLKit.swift */; };
 		BB19058D26D0C62F00D57FB7 /* DLKitC.c in Sources */ = {isa = PBXBuildFile; fileRef = BBD0AB40262F2549003ED7B1 /* DLKitC.c */; };
 		BB1A84072522703C003873C3 /* macOSInjection.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02451FB1065D00E45F0F /* macOSInjection.bundle */; };
@@ -160,6 +161,7 @@
 		BB16653925E9A5F0001407AE /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		BB16653D25EC5FDF001407AE /* InjectionClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InjectionClient.swift; path = ../HotReloading/Sources/HotReloading/InjectionClient.swift; sourceTree = "<group>"; };
 		BB16654325ECD827001407AE /* ClientBoot.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ClientBoot.mm; path = ../HotReloading/Sources/HotReloadingGuts/ClientBoot.mm; sourceTree = "<group>"; };
+		BB18D2E7274E1746004BB4A5 /* DynamicCast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DynamicCast.swift; path = HotReloading/Sources/HotReloading/DynamicCast.swift; sourceTree = SOURCE_ROOT; };
 		BB1BA904251DC51900044608 /* SwiftUISupport.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftUISupport.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB1BA906251DC51900044608 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BB1BA90A251DC54100044608 /* SwiftUISupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUISupport.swift; sourceTree = "<group>"; };
@@ -581,6 +583,7 @@
 				BBC03BBF2625F27C005C1A06 /* UnhidingEval.swift */,
 				BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */,
 				BBC03BC626282358005C1A06 /* SwiftSweeper.swift */,
+				BB18D2E7274E1746004BB4A5 /* DynamicCast.swift */,
 				BBD0AB3D262F24E4003ED7B1 /* DLKit.swift */,
 				BBD0AB43262F256B003ED7B1 /* DLKitC.h */,
 				BBD0AB40262F2549003ED7B1 /* DLKitC.c */,
@@ -1029,6 +1032,7 @@
 				BB16654025EC6163001407AE /* Xprobe.mm in Sources */,
 				BBC03BC726282358005C1A06 /* SwiftSweeper.swift in Sources */,
 				BBC03BBE2625F269005C1A06 /* Unhide.mm in Sources */,
+				BB18D2E8274E1748004BB4A5 /* DynamicCast.swift in Sources */,
 				BB16653E25EC5FE0001407AE /* InjectionClient.swift in Sources */,
 				BBC03BC12625F27C005C1A06 /* UnhidingEval.swift in Sources */,
 				BBCA02501FB107AF00E45F0F /* SwiftEval.swift in Sources */,
@@ -1434,7 +1438,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 3.1.5;
+				MARKETING_VERSION = 3.1.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1457,7 +1461,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 3.1.5;
+				MARKETING_VERSION = 3.1.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
