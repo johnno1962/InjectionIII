@@ -13,7 +13,7 @@
    
 ![image.png](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0d197c0ef51f43768c1d00b29ea29bc7~tplv-k3u1fbpfcp-watermark.image)
 
-   3、选择的项目会在OPen Recent中展示，同时保持File Watcher的选项勾选。
+   3、选择的项目会在Open Recent中展示，同时保持File Watcher的选项勾选。
    
 ![image.png](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/572778a7c6a24fa1a49edbb8727b0d98~tplv-k3u1fbpfcp-watermark.image)
 
