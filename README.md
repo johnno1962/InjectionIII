@@ -143,9 +143,9 @@ If you encounter this problem, restart your app and you should find this issue
 disappears due to a background task [unhide](https://github.com/johnno1962/unhide)
 which is integrated into InjectionIII.
 
-Keep in mind global state -- If the file you're injecting has top level variables e.g. singletons,
-static or global vars they will be reset when you inject the code as the new method
-implementations will refer to the newly loaded object file containing the variable.
+Recent github releases of the InjectionIII app will retain the values of
+top-level and static variables over an injection by redirecting references
+to a variable's storage to that in the main app bundle.
 
 As injection needs to know how to compile Swift files individually it is not compatible with building using
 `Whole Module Optimisation`. A workaround for this is to build with `WMO` switched off so there are
@@ -228,10 +228,21 @@ to add an `@ObservedObject`, initialised to the `injectionObserver` instance as 
 ```
 You can make all these changes automatically once you've opened a project using the
 `"Prepare Project"` menu item. If you'd like to execute some code each time your interface is injected, use the 
-`.onInjection { ... }` modifier instead of .`eraseToAnyView()`. As an alternative
-this code is available in the [HotSwiftUI](https://github.com/johnno1962/HotSwiftUI)
+`.onInjection { ... }` modifier instead of .`eraseToAnyView()`.
+As an alternative, this code is available in the
+[HotSwiftUI](https://github.com/johnno1962/HotSwiftUI)
 Swift Package though you would have to remember to load the 
-`iOSInjection.bundle` separately.
+`iOSInjection.bundle` separately by using the `.loadInjection()`
+modifier on a view struct somewhere in your app.
+
+### InjectionIII and "The Composable Architecture"
+
+Applications written using "TCA" can have the "reducer" functions
+update their implementations without having to restart the application.
+You'll need to use a
+[slightly modified version of TCA](https://github.com/thebrowsercompany/swift-composable-architecture/tree/develop) 
+and wrap the initialisers of top level reducer variables in a call to the
+global function `ARCInjectable()` defined in that repo.
 
 ### macOS Injection
 
@@ -411,4 +422,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2021/09/27 $
+$Date: 2021/12/15 $
