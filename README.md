@@ -12,8 +12,8 @@ has been built into a standalone app: `InjectionIII.app` which runs in the statu
 **Stop Press:** The functionality of InjectionIII is now  available as a Swift Package
 in the [HotReloading Project](https://github.com/johnno1962/HotReloading). No
 need to download the app, just add this project to yours and add a short
-"Run Script" "Build Phase" as described in the README.md. Do not
-release your app with the HotReloading package included!
+"Run Script" "Build Phase" as described in the README.md. _Do not
+release your app with the HotReloading package included!_
 
 This README includes descriptions of some newer features that are only available in more recent
 releases of the InjectionIII.app [available on github](https://github.com/johnno1962/InjectionIII/releases).
@@ -21,7 +21,8 @@ You should use one of these releases for Apple Silicon or if you have upgraded t
 
 ![Icon](http://johnholdsworth.com/InjectionUI.gif)
 
-`InjectionIII.app` needs an Xcode 10.2 or greater at the path `/Applications/Xcode.app` , works for `Swift` and `Objective-C` and can be used alongside [AppCode](https://www.jetbrains.com/help/objc/create-a-swiftui-application.html) or by using the [AppCode Plugin](https://github.com/johnno1962/InjectionIII/blob/master/AppCodePlugin/INSTALL.md)
+`InjectionIII.app` needs an Xcode 10.2 or greater at the path `/Applications/Xcode.app` , 
+works for `Swift`,  `Objective-C` and since 3.2.2 `C++` and can be used alongside [AppCode](https://www.jetbrains.com/help/objc/create-a-swiftui-application.html) or by using the [AppCode Plugin](https://github.com/johnno1962/InjectionIII/blob/master/AppCodePlugin/INSTALL.md)
 instead.
 
 To understand how InjectionIII works and the techniques it uses consult the book [Swift Secrets](http://books.apple.com/us/book/id1551005489).
@@ -35,8 +36,9 @@ said,  you can't just inject _any_ source file. For example, it's best not to tr
 file containing a protocol definition. Keep in mind though the worst case is that your
 application might crash during debugging and you'll have to restart it as you would have 
 had to anyway. Gaining trust in the changes you can inject builds with experience and
-with it, the amount of time you save. The injectionIII bundle is only used during development 
-in the simulator and cannot affect your application when it is deployed into production.
+with it, the amount of time you save. The `iOSInjection.bundle` is only loaded during
+development  in the simulator and cannot affect your application when it is deployed 
+into production.
 
 To reason about your app while you are using injection, separate  data and program
 in your mind. You can't inject changes to the way data is laid out in memory by adding 
@@ -84,7 +86,7 @@ If you inject a subclass of `XCTest` InjectionIII will try running that individu
 You can detect when a *class* has been injected in your code (to reload a view controller for example) by adding an `@objc func
 injected()` class or instance method.  The instance `@objc
 func injected()` method relies on a "sweep" of all objects in your application to find those of
-the class you have just injected which can be unreliable when using `unowned` instance variables. If you encounter problems, remomve the injected() method and subscribe to the `"INJECTION_BUNDLE_NOTIFICATION"` instead along the lines of the following:
+the class you have just injected which can be unreliable when using `unowned` instance variables. If you encounter problems, remove the injected() method and subscribe to the `"INJECTION_BUNDLE_NOTIFICATION"` instead along the lines of the following:
 
 ```Swift
 NotificationCenter.default.addObserver(self,
@@ -126,7 +128,7 @@ If this is the case, add the following additional "Other linker Flags" and it sh
 
 If you have a project using extensive bridging & Objective-C it's recommended to use
 one of the [binary github releases](https://github.com/johnno1962/InjectionIII/releases)
-that have the sandbox turned off. This is beacuse the App Store version operates in 
+that have the sandbox turned off. This is because the App Store version operates in 
 a case sensitive file system which can create problems if filenames in your project do 
 not have the identical casing as the actual filename on disk.
 
@@ -165,7 +167,7 @@ to rebind non-final methods to their new dynamically loaded
 implementation. "Interposing" uses a low level dynamic linker
 feature to effectively re-link call sites to the newly loaded versions
 (provided the "-Xlinker -interposable" "Other Linker Flag" build 
-settting has been supplied).
+setting has been supplied).
 
 In order to implement the `@objc func injected()` call to your 
 class when an instance is injected, a sweep of all live objects in your
@@ -311,11 +313,11 @@ Injection now includes the higher level `Vaccine` functionality, for more inform
 ### Method Tracing menu item (SwiftTrace)
 
 It's possible to inject tracing aspects into your program that don't
-affect it's operation but log every method call. Where possible
+affect its operation but log every method call. Where possible
 it will also decorate their arguments. You can add logging to all
 methods in your app's main bundle or the frameworks it uses
 or trace calls to system frameworks such as UIKit or SwiftUI.
-If you opt into "Type Lookup", custom types in your appliction
+If you opt into "Type Lookup", custom types in your application
 can also be decorated using the CustomStringConvertable
 conformance or the default formatter for structs.
 
@@ -377,7 +379,7 @@ Newer versions of InjectionIII contain a server that allows you to control your 
 
 To use, import the Swift Package [https://github.com/johnno1962/Remote.git](https://github.com/johnno1962/Remote.git)
 and it should connect automatically to your desktop provided you have selected the 
-"Remote Control/Start Server" menu item in InjectionIII to start it's server.
+"Remote Control/Start Server" menu item in InjectionIII to start its server.
 Your app should connect to this server when you next run it and will pop up a
 window showing the device display and accepting tap events. Events can be
 saved as `macros` and replayed. If you include a snapshot in a macro this will
@@ -451,4 +453,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2022/01/06 $
+$Date: 2022/01/07 $
