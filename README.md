@@ -182,6 +182,15 @@ you can exclude the type shown just before the crash using the
 **SWEEP_EXCLUDE** environment variable (which can be a 
 regular expression).
 
+As the application is now released with debug information, if you experience a 
+crash inside the Injection.bundle use the following command to clone the InjectionIII 
+project into /tmp and you'll be able to provide a full strack trace in your bug report:
+
+```
+$ cd /tmp
+$ git clone https://github.com/johnno1962/InjectionIII --recurse-submodules
+```
+
 ### SwiftUI Injection
 
 It is possible to inject `SwiftUI` interfaces but it requires some minor
@@ -453,4 +462,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2022/01/07 $
+$Date: 2022/01/10 $
