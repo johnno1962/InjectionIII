@@ -151,6 +151,43 @@ As injection needs to know how to compile Swift files individually it is not com
 `Whole Module Optimisation`. A workaround for this is to build with `WMO` switched off so there are
 logs of individual compiles available then switching `WMO` back on if it suits your workflow better.
 
+### Resolving issues
+
+InjectionIII has a number of environment variables that can be used 
+when you launch your app to get a better idea what is going on.
+
+**INJECTION_DETAIL** Providing any value for this variable in the
+your scheme will produce detailed output of how InjectionIII is
+stiching your new implementation into your application. "Swizzling"
+is the legacy Objective-C way of rebinding symbols though the
+runtime API. "Patching" is where the "vtable" of a class is overridden
+to rebind non-final methods to their new dynamically loaded
+implementation. "Interposing" uses a low level dynamic linker
+feature to effectively re-link call sites to the newly loaded versions
+(provided the "-Xlinker -interposable" "Other Linker Flag" build 
+setting has been supplied).
+
+In order to implement the `@objc func injected()` call to your 
+class when an instance is injected, a sweep of all live objects in your
+app is performed. This has two limitations. The instance needs to be
+"seen" by a reference to a reference to a reference from an initial set 
+of seed instances e.g. appDelegate, rootViewController. Secondly,
+technically this is ambitious and can crash for some app states.
+If you encounter this, provide a value for the environment variable
+**DEBUG_SWEEP** and, as it sweeps it will print the type name of 
+the object about to be swept.  If you see a crash, from version 3.2.2
+you can exclude the type shown just before the crash using the
+**SWEEP_EXCLUDE** environment variable (which can be a 
+regular expression).
+
+As the application is now released with debug information, if you experience a 
+crash inside the Injection.bundle use the following command to clone the InjectionIII 
+project into /tmp and you'll be able to provide a full strack trace in your bug report:
+
+```
+$ cd /tmp
+$ git clone https://github.com/johnno1962/InjectionIII --recurse-submodules -b 3-2-1
+```
 ### SwiftUI Injection
 
 It is possible to inject `SwiftUI` interfaces but it requires some minor
