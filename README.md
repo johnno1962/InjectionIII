@@ -106,6 +106,27 @@ If you want to build this project from source (which you may need to do to use i
 | ------------- | ------------- | ------------- |
 | [Mac app store](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12) | [Github Releases](https://github.com/johnno1962/InjectionIII/releases) | [Install  Injection.jar](https://github.com/johnno1962/InjectionIII/tree/master/AppCodePlugin) |
 
+### Variations on the InjectionIII app:
+
+App store version: get it for free, load the injection bundle and you can
+perform code injection in the simulator.
+
+[Binary Releases](https://github.com/johnno1962/InjectionIII/releases): Download these as they are often slightly more up to date than the App Store release.
+
+[HotReloading Project](https://github.com/johnno1962/HotReloading):
+See the project README for details. Add it as a SwiftPackage to 
+your project along with "Run Script", "Build Phase" to effectively run
+a version of InjectionIII as a daemon (automatically selecting you
+project). Don't leave this configured in for a release build!
+
+Device injection: Add HotReloading to your project and use either
+the "Build Phase" to run the injectiond daemon or use one of the binary
+downloads. While the HotReloading Swift package manifest attempts
+to work out your Mac's hostname to connect to over WiFi, if you have
+problems clone it and hardcode the IP address in Package.swift. For
+more detail and the limitations see the README of the HotReloading
+project.
+
 ### Limitations/FAQ
 
 New releases of InjectionIII use a [different patching technique](http://johnholdsworth.com/dyld_dynamic_interpose.html)
@@ -462,4 +483,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2022/01/10 $
+$Date: 2022/01/22 $
