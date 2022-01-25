@@ -1247,8 +1247,8 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"HELPER_MACH_ID=\\\"$HELPER_MACH_ID\\\"",
 					"DEBUG=1",
+					"HELPER_MACH_ID=\\\"$HELPER_MACH_ID\\\"",
 					"XPROBE_PORT=8891",
 					"INJECTION_ADDR=INADDR_LOOPBACK",
 					INJECTION_III_APP,
@@ -1314,7 +1314,6 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"HELPER_MACH_ID=\\\"$HELPER_MACH_ID\\\"",
-					"DEBUG=1",
 					"XPROBE_PORT=8891",
 					"INJECTION_ADDR=INADDR_LOOPBACK",
 					INJECTION_III_APP,
@@ -1391,10 +1390,6 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
 				INFOPLIST_FILE = SwiftTrace/SwiftTrace/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
