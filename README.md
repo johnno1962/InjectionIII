@@ -117,15 +117,17 @@ perform code injection in the simulator.
 See the project README for details. Add it as a SwiftPackage to 
 your project along with "Run Script", "Build Phase" to effectively run
 a version of InjectionIII as a daemon (automatically selecting you
-project). Don't leave this configured in for a release build!
+project). Don't leave this package configured in for a release build
+or it will bloat your app binary.
 
 Device injection: Add HotReloading to your project and use either
 the "Build Phase" to run the injectiond daemon or use one of the binary
-downloads. While the HotReloading Swift package manifest attempts
-to work out your Mac's hostname to connect to over WiFi, if you have
-problems clone it and hardcode the IP address in Package.swift. For
-more detail and the limitations see the README of the HotReloading
-project.
+downloads to perform injection on a iOS or tvOS device. While the
+HotReloading Swift Package manifest attempts to work out your Mac's
+hostname to connect to over WiFi automatically, if you have problems,
+clone the repo and hardcode the IP address of your Ma in 
+Package.swift. For more detail and the limitations see the README of
+the HotReloading project.
 
 ### Limitations/FAQ
 
@@ -483,4 +485,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2022/01/22 $
+$Date: 2022/01/24 $
