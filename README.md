@@ -123,13 +123,13 @@ project). Remember not to leave this package configured into your
 project for a release build or it will bloat your app binary!
 
 **On-Device Injection**: Instead of loading  the `iOSInjection.bundle`, add the [HotReloading](https://github.com/johnno1962/HotReloading) Swift Package 
-to your project and use either a "Build Phase" to run the `injectiond` daemon 
-or use one of the recent binary downloads [from GitHub](https://github.com/johnno1962/InjectionIII/releases) of the InjectionIII.app and you 
-should be able to perform injection on a iOS or tvOS device. While the HotReloading 
-Swift Package manifest attempts to automatically work out your Mac's hostname to 
-connect to over WiFi but, if it cannot connect, clone the repo and hardcode the IP address 
-of your development Mac against the hostname variable in HotReloading/Package.swift. 
-For more detail and the limitations of this new feature, see the README of the 
+to your project and add a "Build Phase" above to run the `injectiond` daemon 
+version of the InjectionIII.app and you should be able to perform injection on a 
+iOS or tvOS device. While the HotReloading Swift Package manifest attempts to 
+automatically work out your Mac's hostname to  connect to over WiFi but, if it fails to
+connect, clone the repo and hardcode the IP address of your development Mac against
+the hostname variable in HotReloading/Package.swift. For more detail and the limitations 
+of this new feature, see the README of the 
 [HotReloading](https://github.com/johnno1962/HotReloading) project.
 
 ### Limitations/FAQ
