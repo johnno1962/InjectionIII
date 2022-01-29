@@ -10,7 +10,7 @@ This start-over implementation of [Injection for Xcode](https://github.com/johnn
 has been built into a standalone app: `InjectionIII.app` which runs in the status bar and is [available from the Mac App Store](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12).
 
 **Stop Press:** The functionality of InjectionIII is now  available as a Swift Package
-in the [HotReloading Project](https://github.com/johnno1962/HotReloading). No
+in the [HotReloading Project](https://github.com/johnno1962/HotReloading) which also supports dynamic code updates on a device. No
 need to download the app, just add this project to yours and add a short
 "Run Script" "Build Phase" as described in the README.md. _Do not
 release your app with the HotReloading package included!_
@@ -29,9 +29,8 @@ To understand how InjectionIII works and the techniques it uses consult the book
 
 ### Managing Expectations
 
-By rights, InjectionIII shouldn't work and this seems to be a common perception for the
-sceptics out there who haven't actually tried it and yet it does. It relies on documented 
-features of Apple's dynamic linker which have proven to be reliable for a year now. That 
+By rights, InjectionIII shouldn't work and this seems to be a common perception for those who haven't actually tried it and yet it does. It relies on documented 
+features of Apple's dynamic linker which have proven to be reliable for over a year now. That 
 said,  you can't just inject _any_ source file. For example, it's best not to try to inject a
 file containing a protocol definition. Keep in mind though the worst case is that your
 application might crash during debugging and you'll have to restart it as you would have 
@@ -43,7 +42,7 @@ into production.
 To reason about your app while you are using injection, separate  data and program
 in your mind. You can't inject changes to the way data is laid out in memory by adding 
 properties or methods on the fly but apart from that exchanging  method implementations
-is performed on the main thread and perfectly reliable. A common question for new
+is performed on the main thread and generally reliable. A common question for new
 users is: I injected a new version of the code, why can't I see the changes on the screen?
 To have effect, the new code needs to be actually executed and it's up to the user to use 
 either an `@objc func injected()` method or a notification to reload a view controller 
@@ -102,9 +101,36 @@ If you want to build this project from source (which you may need to do to use i
     
 ### Available downloads
 
-| Xcode 10.2+ | Monterey & Xcode 13 | AppCode Plugin |
+| Xcode 10.2+ | Monterey & Xcode 13 |
 | ------------- | ------------- | ------------- |
-| [Mac app store](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12) | [Github Releases](https://github.com/johnno1962/InjectionIII/releases) | [Install  Injection.jar](https://github.com/johnno1962/InjectionIII/tree/master/AppCodePlugin) |
+| [Mac app store](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12) | [Github Releases](https://github.com/johnno1962/InjectionIII/releases) |
+
+### Variations on using the InjectionIII app:
+
+[App Store version](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12): load the injection bundle and you can
+perform code injection in the simulator.
+
+[Binary Releases](https://github.com/johnno1962/InjectionIII/releases): 
+These are often slightly more up to date than the App Store release and
+compile outside the App sandbox which avoid compilcations with
+case insensitve filesystems.
+
+[HotReloading Project](https://github.com/johnno1962/HotReloading):
+See the project README for details. Add it as a SwiftPackage to 
+your project along with a "Run Script", "Build Phase" to effectively run
+a version of InjectionIII.app as a daemon (automatically selecting your
+project). Remember not to leave this package configured into your
+project for a release build or it will bloat your app binary!
+
+**On-Device Injection**: Instead of loading  the `iOSInjection.bundle`, add the [HotReloading](https://github.com/johnno1962/HotReloading) Swift Package 
+to your project and use either a "Build Phase" to run the `injectiond` daemon 
+or use one of the recent binary downloads [from GitHub](https://github.com/johnno1962/InjectionIII/releases) of the InjectionIII.app and you 
+should be able to perform injection on a iOS or tvOS device. While the HotReloading 
+Swift Package manifest attempts to automatically work out your Mac's hostname to 
+connect to over WiFi but, if it cannot connect, clone the repo and hardcode the IP address 
+of your development Mac against the hostname variable in HotReloading/Package.swift. 
+For more detail and the limitations of this new feature, see the README of the 
+[HotReloading](https://github.com/johnno1962/HotReloading) project.
 
 ### Limitations/FAQ
 
@@ -279,8 +305,7 @@ modifier on a view struct somewhere in your app.
 
 Applications written using "TCA" can have the "reducer" functions
 update their implementations without having to restart the application.
-You'll need to use a
-[slightly modified version of TCA](https://github.com/thebrowsercompany/swift-composable-architecture/tree/develop) 
+You'll need to use a [slightly modified version of TCA](https://github.com/thebrowsercompany/swift-composable-architecture/tree/develop) 
 and wrap the initialisers of top level reducer variables in a call to the
 global function `ARCInjectable()` defined in that repo.
 
@@ -321,66 +346,15 @@ Injection now includes the higher level `Vaccine` functionality, for more inform
 
 ### Method Tracing menu item (SwiftTrace)
 
-It's possible to inject tracing aspects into your program that don't
-affect its operation but log every method call. Where possible
+It's possible to inject tracing aspects into your program implemented by the 
+package [SwiftTrace](https://github.com/johnno1962/SwiftTrace) that don't
+affect its operation but should log every method call. Where possible
 it will also decorate their arguments. You can add logging to all
 methods in your app's main bundle or the frameworks it uses
 or trace calls to system frameworks such as UIKit or SwiftUI.
 If you opt into "Type Lookup", custom types in your application
 can also be decorated using the CustomStringConvertable
 conformance or the default formatter for structs.
-
-These features are implemented by the package [SwiftTrace](https://github.com/johnno1962/SwiftTrace)
-which is built into the InjectionBundle. If you want finer grain control of what is being traced,
-include the following header file in your project's bridging header and a subset of the internal
-api will be available to Swift (after an injection bundle has been loaded):
-
-```C++
-#import "/Applications/InjectionIII.app/Contents/Resources/SwiftTrace.h"
-```
-The "Trace Main Bundle" menu item can be mimicked by using the following call:
-
-```Swift
- NSObject.swiftTraceMainBundleMethods()
-```
-If you want instead to also trace all Swift calls your application makes to a system
-framework such as SwiftUI you can use the following:
-
-```Swift
- NSObject.swiftTraceMethods(inFrameworkContaining:UIHostingController<ContentView>.self)
-```
-To include or exclude the methods to be traced use the `methodInclusionPattern`
-and `methodExclusionPattern` class properties of SwiftTrace. For more information
-consult the [SwiftTrace source repo](https://github.com/johnno1962/SwiftTrace). It's also
-possible to access the Swift API of SwiftTrace directly in your app. For example, to add 
-a new handler to format a particular type by importing SwiftTrace and adding the
-following to your app's `"Framework Search Paths"` and `"Runpath Search Paths"`
-(for the Debug configuration):
-
-```
-/Applications/InjectionIII.app/Contents/Resources/iOSInjection.bundle/Frameworks
-```
-Then, you can use something like the following to register the type:
-
-```Swift
-SwiftTrace.makeTraceable(types: [MovieSwift.MovieRow.Props.self])
-```
-In this case however the `MovieSwift.MovieRow.Props` type from the excellent 
-`MovieSwift` SwiftUI  [example project](https://github.com/Dimillian/MovieSwiftUI)
-is too large to format but can be changed to be a class instead of a struct. 
-More recent versions of SwiftTrace have the ability to register classes automatically 
-if you opt-in using the "Method Tracing/Type Lookup" menu item.
-
-Finally, if you'd like to go directly to the file that defines a logged method, select the
-fully qualified method and use the service `Injection Goto` to open the file declaring
-that function. (To have the `Injection Goto` item appear on your services context menu
-you need to select it in System Preferences/Keyboard, tab Shortcuts/Services, under the
-"Text" section.)
-
-There are other SwifTrace features that allow you to "profile" your application to optimise
-the order object files are linked into your application which could potentially minimise
-paging on startup. These are surfaced in the "Method Tracing" submenu but if I'm honest,
-these would only make a difference if you had a very, very large application binary.
 
 ### Remote Control
 
@@ -462,4 +436,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2022/01/10 $
+$Date: 2022/01/29 $

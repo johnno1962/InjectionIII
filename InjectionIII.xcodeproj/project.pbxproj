@@ -73,6 +73,11 @@
 		BBB64FDF1FD5744A0020BE47 /* XprobePluginMenuController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBB64FDD1FD5744A0020BE47 /* XprobePluginMenuController.xib */; };
 		BBB64FE11FD575260020BE47 /* XprobeSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB64FE01FD575260020BE47 /* XprobeSwift.swift */; };
 		BBB64FEC1FD585D50020BE47 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBB64FEB1FD585D50020BE47 /* WebKit.framework */; };
+		BBB9E987279BEC190085E3B9 /* SwiftTrace-Swift.h in Headers */ = {isa = PBXBuildFile; fileRef = BBB9E983279BEC190085E3B9 /* SwiftTrace-Swift.h */; };
+		BBB9E988279BEC190085E3B9 /* ObjCBridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = BBB9E984279BEC190085E3B9 /* ObjCBridge.mm */; };
+		BBB9E989279BEC190085E3B9 /* fast_dladdr.mm in Sources */ = {isa = PBXBuildFile; fileRef = BBB9E985279BEC190085E3B9 /* fast_dladdr.mm */; };
+		BBB9E98A279BEC190085E3B9 /* Trampolines.mm in Sources */ = {isa = PBXBuildFile; fileRef = BBB9E986279BEC190085E3B9 /* Trampolines.mm */; };
+		BBB9E98C279BEE3B0085E3B9 /* DeviceServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB9E98B279BEE3B0085E3B9 /* DeviceServer.swift */; };
 		BBBE71BB260652E000F45DE2 /* SweepSeeding.m in Sources */ = {isa = PBXBuildFile; fileRef = BBBE71BA260652E000F45DE2 /* SweepSeeding.m */; };
 		BBBFD2D01FCFEE300057D899 /* SwiftEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */; };
 		BBC03BBD2625F269005C1A06 /* Unhide.mm in Sources */ = {isa = PBXBuildFile; fileRef = BBC03BBC2625F268005C1A06 /* Unhide.mm */; };
@@ -262,6 +267,11 @@
 		BBB64FE51FD577EB0020BE47 /* SwiftSwizzler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SwiftSwizzler.swift; path = XprobePlugin/XprobeSwift/XprobeSwift/SwiftSwizzler.swift; sourceTree = SOURCE_ROOT; };
 		BBB64FE91FD583B60020BE47 /* Xprobe.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = Xprobe.mm; path = XprobePlugin/Sources/Xprobe/Xprobe.mm; sourceTree = SOURCE_ROOT; };
 		BBB64FEB1FD585D50020BE47 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/WebKit.framework; sourceTree = DEVELOPER_DIR; };
+		BBB9E983279BEC190085E3B9 /* SwiftTrace-Swift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SwiftTrace-Swift.h"; path = "../SwiftTrace/SwiftTraceGuts/SwiftTrace-Swift.h"; sourceTree = "<group>"; };
+		BBB9E984279BEC190085E3B9 /* ObjCBridge.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ObjCBridge.mm; path = ../SwiftTrace/SwiftTraceGuts/ObjCBridge.mm; sourceTree = "<group>"; };
+		BBB9E985279BEC190085E3B9 /* fast_dladdr.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = fast_dladdr.mm; path = ../SwiftTrace/SwiftTraceGuts/fast_dladdr.mm; sourceTree = "<group>"; };
+		BBB9E986279BEC190085E3B9 /* Trampolines.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Trampolines.mm; path = ../SwiftTrace/SwiftTraceGuts/Trampolines.mm; sourceTree = "<group>"; };
+		BBB9E98B279BEE3B0085E3B9 /* DeviceServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeviceServer.swift; path = ../HotReloading/Sources/injectiond/DeviceServer.swift; sourceTree = "<group>"; };
 		BBBE71BA260652E000F45DE2 /* SweepSeeding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SweepSeeding.m; path = XprobePlugin/Sources/Xprobe/SweepSeeding.m; sourceTree = SOURCE_ROOT; };
 		BBBEC42D1FC56522004188B3 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		BBC03BBC2625F268005C1A06 /* Unhide.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Unhide.mm; path = HotReloading/Sources/HotReloadingGuts/Unhide.mm; sourceTree = SOURCE_ROOT; };
@@ -481,6 +491,10 @@
 				BB6C87F82520D2C3005AFCFC /* xt_forwarding_trampoline_x64.s */,
 				BB6C87C62520D0D2005AFCFC /* SwiftTrace.h */,
 				BB6C87F62520D2C3005AFCFC /* SwiftTrace.mm */,
+				BBB9E983279BEC190085E3B9 /* SwiftTrace-Swift.h */,
+				BBB9E984279BEC190085E3B9 /* ObjCBridge.mm */,
+				BBB9E986279BEC190085E3B9 /* Trampolines.mm */,
+				BBB9E985279BEC190085E3B9 /* fast_dladdr.mm */,
 				BB6C87EA2520D152005AFCFC /* SwiftTrace.swift */,
 				BB6C87E42520D151005AFCFC /* SwiftSwizzle.swift */,
 				BB6C87E72520D151005AFCFC /* SwiftAspects.swift */,
@@ -531,6 +545,7 @@
 				BBCA02011FB0F10300E45F0F /* AppDelegate.swift */,
 				BB7D7CAB2512F8F00069FE2C /* UpdateCheck.swift */,
 				BBCA02551FB1099500E45F0F /* InjectionServer.swift */,
+				BBB9E98B279BEE3B0085E3B9 /* DeviceServer.swift */,
 				CEC17029253ED117002E823F /* Experimental.swift */,
 				BBB2C6FD26FC9C2900E91E67 /* TupleRegex.swift */,
 				BBE490CE1FB2368A003D41BB /* FileWatcher.swift */,
@@ -642,6 +657,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB6C87D62520D0D2005AFCFC /* SwiftTrace.h in Headers */,
+				BBB9E987279BEC190085E3B9 /* SwiftTrace-Swift.h in Headers */,
 				BB1EBC4F258DE2AD001F2AA4 /* fishhook.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -978,6 +994,7 @@
 			files = (
 				BB6C87F92520D2C3005AFCFC /* SwiftTrace.mm in Sources */,
 				BB1EBC4D258DE2A0001F2AA4 /* fishhook.c in Sources */,
+				BBB9E989279BEC190085E3B9 /* fast_dladdr.mm in Sources */,
 				BB6C87FA2520D2C3005AFCFC /* xt_forwarding_trampoline_arm64.s in Sources */,
 				BB6C87FB2520D2C3005AFCFC /* xt_forwarding_trampoline_x64.s in Sources */,
 				BB6C87EB2520D152005AFCFC /* SwiftMeta.swift in Sources */,
@@ -986,7 +1003,9 @@
 				BB6C87EE2520D152005AFCFC /* SwiftArgs.swift in Sources */,
 				BB1C3246254BFAFD001EDFCC /* EasyPointer.swift in Sources */,
 				BB6446202545831400A83098 /* StringIndex.swift in Sources */,
+				BBB9E98A279BEC190085E3B9 /* Trampolines.mm in Sources */,
 				BBD0AB52263298D9003ED7B1 /* SwiftLifetime.swift in Sources */,
+				BBB9E988279BEC190085E3B9 /* ObjCBridge.mm in Sources */,
 				BB6C87EF2520D152005AFCFC /* SwiftStats.swift in Sources */,
 				BB6C87F02520D152005AFCFC /* SwiftAspects.swift in Sources */,
 				BB6C87F12520D152005AFCFC /* SwiftInterpose.swift in Sources */,
@@ -1012,6 +1031,7 @@
 				BB16653A25E9A5F2001407AE /* main.m in Sources */,
 				BBC03BBD2625F269005C1A06 /* Unhide.mm in Sources */,
 				BBEB704C1FD28C6F00127711 /* XcodeHash.m in Sources */,
+				BBB9E98C279BEE3B0085E3B9 /* DeviceServer.swift in Sources */,
 				BBCA02021FB0F10300E45F0F /* AppDelegate.swift in Sources */,
 				BB7D7CAC2512F8F00069FE2C /* UpdateCheck.swift in Sources */,
 				BB4EC3FE244FA3C40079E244 /* RMWindowController.m in Sources */,
@@ -1227,8 +1247,8 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"HELPER_MACH_ID=\\\"$HELPER_MACH_ID\\\"",
 					"DEBUG=1",
+					"HELPER_MACH_ID=\\\"$HELPER_MACH_ID\\\"",
 					"XPROBE_PORT=8891",
 					"INJECTION_ADDR=INADDR_LOOPBACK",
 					INJECTION_III_APP,
@@ -1294,7 +1314,6 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"HELPER_MACH_ID=\\\"$HELPER_MACH_ID\\\"",
-					"DEBUG=1",
 					"XPROBE_PORT=8891",
 					"INJECTION_ADDR=INADDR_LOOPBACK",
 					INJECTION_III_APP,
@@ -1371,10 +1390,6 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
 				INFOPLIST_FILE = SwiftTrace/SwiftTrace/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
@@ -1438,7 +1453,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 3.2.2;
+				MARKETING_VERSION = 4.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1461,7 +1476,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 3.2.2;
+				MARKETING_VERSION = 4.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
