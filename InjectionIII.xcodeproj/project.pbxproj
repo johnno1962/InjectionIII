@@ -204,6 +204,7 @@
 		BB53B647244FC2F800F006E3 /* RemoteHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteHeaders.h; path = Remote/Sources/RemoteCapture/include/RemoteHeaders.h; sourceTree = SOURCE_ROOT; };
 		BB56393F1FD5D535002FFCEF /* Xprobe+Service.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = "Xprobe+Service.mm"; path = "XprobePlugin/Sources/Xprobe/Xprobe+Service.mm"; sourceTree = "<group>"; };
 		BB5639401FD5D535002FFCEF /* Xtrace.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = Xtrace.mm; path = XprobePlugin/Classes/Xtrace.mm; sourceTree = "<group>"; };
+		BB596EE127AAC5A6009B6241 /* ROADMAP.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = ROADMAP.md; sourceTree = "<group>"; };
 		BB6125D224EA882000A7C230 /* Injection.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; name = Injection.jar; path = AppCodePlugin/Injection.jar; sourceTree = "<group>"; };
 		BB62244F1FC5B18700AD7A3A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BB6224531FC5B1CB00AD7A3A /* mach_inject_bundle_stub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mach_inject_bundle_stub.h; sourceTree = "<group>"; };
@@ -380,6 +381,7 @@
 				BB037DF41FAD80D0004B267C /* LICENSE */,
 				BB037DF31FAD808B004B267C /* README.md */,
 				BB80B3B426B573BE0055FAAE /* README_Chinese.md */,
+				BB596EE127AAC5A6009B6241 /* ROADMAP.md */,
 				BB6125D224EA882000A7C230 /* Injection.jar */,
 				BBCA01FF1FB0F10300E45F0F /* InjectionIII */,
 				BBCA02461FB1065D00E45F0F /* InjectionBundle */,
