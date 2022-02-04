@@ -182,11 +182,20 @@ logs of individual compiles available then switching `WMO` back on if it suits y
 ### Resolving issues
 
 InjectionIII has a number of environment variables that can be used 
-when you launch your app to get a better idea what is going on.
+when you launch your app to customise its behavour or get a better 
+idea what is going on.
+
+**INJECTION_PRESERVE_STATICS** This allows you to decide 
+whether top level variables and static member should be re-initialised
+if they are in a file that is injected or they should retain their values.
+
+**INJECTION_DYNAMIC_CAST** This allows you to opt into a slightly 
+more speculative fix for when you dynamic cast (as? in Swift) to a type 
+which has been injected and therefore its type identifier may have changed.
 
 **INJECTION_DETAIL** Providing any value for this variable in the
 your scheme will produce detailed output of how InjectionIII is
-stiching your new implementation into your application. "Swizzling"
+stitching your new implementations into your application. "Swizzling"
 is the legacy Objective-C way of rebinding symbols though the
 runtime API. "Patching" is where the "vtable" of a class is overridden
 to rebind non-final methods to their new dynamically loaded
