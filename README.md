@@ -181,9 +181,9 @@ logs of individual compiles available then switching `WMO` back on if it suits y
 
 ### Resolving issues
 
-InjectionIII has a number of environment variables that can be used 
-when you launch your app to customise its behavour or get a better 
-idea what is going on.
+Versions > 4.1.0 of InjectionIII has a number of environment variables 
+that can be used in your scheme when you launch your app to 
+customise its behavour or to get a better idea what is going on.
 
 **INJECTION_PRESERVE_STATICS** This allows you to decide 
 whether top level variables and static member should be re-initialised
@@ -445,4 +445,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2022/02/02 $
+$Date: 2022/02/05 $
