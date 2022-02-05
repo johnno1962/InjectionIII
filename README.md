@@ -181,8 +181,8 @@ logs of individual compiles available then switching `WMO` back on if it suits y
 
 ### Resolving issues
 
-Versions > 4.1.0 of InjectionIII has a number of environment variables 
-that can be used in your scheme when you launch your app to 
+Versions > 4.1.0 of InjectionIII have a number of environment variables 
+that can be added to your Xcode scheme when launching your app to 
 customise its behavour or to get a better idea what is going on.
 
 **INJECTION_PRESERVE_STATICS** This allows you to decide 
