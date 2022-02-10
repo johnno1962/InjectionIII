@@ -102,7 +102,7 @@ If you want to build this project from source (which you may need to do to use i
 ### Available downloads
 
 | Xcode 10.2+ | Monterey & Xcode 13 |
-| ------------- | ------------- | ------------- |
+| ------------- | ------------- |
 | [Mac app store](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12) | [Github Releases](https://github.com/johnno1962/InjectionIII/releases) |
 
 ### Variations on using the InjectionIII app:
@@ -181,9 +181,9 @@ logs of individual compiles available then switching `WMO` back on if it suits y
 
 ### Resolving issues
 
-Versions > 4.1.0 of InjectionIII have a number of environment variables 
-that can be added to your Xcode scheme when launching your app to 
-customise its behavour or to get a better idea what is going on.
+Versions > 4.1.1 of InjectionIII have the following environment variables that 
+can be added to your Xcode launch scheme to customise its behavour or to 
+get a better idea what InjectionIII is doing.
 
 **INJECTION_PRESERVE_STATICS** This allows you to decide 
 whether top level variables and static member should be re-initialised
@@ -211,11 +211,11 @@ app is performed. This has two limitations. The instance needs to be
 of seed instances e.g. appDelegate, rootViewController. Secondly,
 technically this is ambitious and can crash for some app states.
 If you encounter this, provide a value for the environment variable
-**DEBUG_SWEEP** and, as it sweeps it will print the type name of 
-the object about to be swept.  If you see a crash, from version 3.2.2
-you can exclude the type shown just before the crash using the
-**SWEEP_EXCLUDE** environment variable (which can be a 
-regular expression).
+**INJECTION_SWEEP_DETAIL** and, as it sweeps it will print the type 
+name of the object about to be swept.  If you see a crash, from version 
+3.2.2 you can exclude the type shown just before the crash using the
+**INJECTION_SWEEP_EXCLUDE** environment variable (which can 
+be a regular expression).
 
 As the application is now released with debug information, if you experience a 
 crash inside the Injection.bundle use the following command to clone the InjectionIII 
@@ -445,4 +445,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2022/02/05 $
+$Date: 2022/02/10 $
