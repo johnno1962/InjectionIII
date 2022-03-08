@@ -220,6 +220,9 @@ be a regular expression).
 **INJECTION_OF_GENERICS** It is possible to inject the methods
 of generic classes but this requires a "sweep" of live objects to
 find the specializations in use so the feature has been made opt-in.
+**INJECTION_UNHIDE** Allows users to opt-into the lecacy processing
+of defualt arguments symbols using the "unhide" which may be required
+for larger projects.
 
 As the application is now released with debug information, if you experience a 
 crash inside the Injection.bundle use the following command to clone the InjectionIII 
@@ -449,4 +452,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2022/03/04 $
+$Date: 2022/03/08 $
