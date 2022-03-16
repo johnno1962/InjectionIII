@@ -116,11 +116,8 @@ compile outside the App sandbox which avoid compilcations with
 case insensitve filesystems.
 
 [HotReloading Project](https://github.com/johnno1962/HotReloading):
-See the project README for details. Add it as a SwiftPackage to 
-your project along with a "Run Script", "Build Phase" to effectively run
-a version of InjectionIII.app as a daemon (automatically selecting your
-project). Remember not to leave this package configured into your
-project for a release build or it will bloat your app binary!
+See the project README for details. Remember not to leave this package 
+configured into your project for a release build or it will bloat your app binary!
 
 **On-Device Injection**: Instead of loading  the `iOSInjection.bundle`, add the [HotReloading](https://github.com/johnno1962/HotReloading) Swift Package 
 to your project and add a "Build Phase" above to run the `injectiond` daemon 
@@ -452,4 +449,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2022/03/08 $
+$Date: 2022/03/16 $
