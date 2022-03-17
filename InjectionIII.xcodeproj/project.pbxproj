@@ -54,6 +54,8 @@
 		BB80B3B526B573BE0055FAAE /* README_Chinese.md in Resources */ = {isa = PBXBuildFile; fileRef = BB80B3B426B573BE0055FAAE /* README_Chinese.md */; };
 		BB877CE42186EB6E0070EEC7 /* DDHotKeyCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6306F51FCD16600021D30C /* DDHotKeyCenter.m */; };
 		BB877CE52186EB6E0070EEC7 /* DDHotKeyUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6306F61FCD16600021D30C /* DDHotKeyUtilities.m */; };
+		BB9642A627E339BE00C61CB7 /* ObjcInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9642A527E339BC00C61CB7 /* ObjcInjection.swift */; };
+		BB9642A827E33C8F00C61CB7 /* DeviceInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9642A727E33C8F00C61CB7 /* DeviceInjection.swift */; };
 		BBB040641FB17A6C007DDD0A /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBB040631FB1798A007DDD0A /* ScriptingBridge.framework */; };
 		BBB2C6FE26FC9C2900E91E67 /* TupleRegex.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB2C6FD26FC9C2900E91E67 /* TupleRegex.swift */; };
 		BBB2C6FF26FC9C2900E91E67 /* TupleRegex.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB2C6FD26FC9C2900E91E67 /* TupleRegex.swift */; };
@@ -244,6 +246,8 @@
 		BB79FC78245CC02200A4B4CB /* TimeLapseBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeLapseBuilder.swift; path = Remote/Sources/RemoteMovie/TimeLapseBuilder.swift; sourceTree = SOURCE_ROOT; };
 		BB7D7CAB2512F8F00069FE2C /* UpdateCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UpdateCheck.swift; path = ../HotReloading/Sources/injectiond/UpdateCheck.swift; sourceTree = "<group>"; };
 		BB80B3B426B573BE0055FAAE /* README_Chinese.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README_Chinese.md; sourceTree = "<group>"; };
+		BB9642A527E339BC00C61CB7 /* ObjcInjection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ObjcInjection.swift; path = HotReloading/Sources/HotReloading/ObjcInjection.swift; sourceTree = SOURCE_ROOT; };
+		BB9642A727E33C8F00C61CB7 /* DeviceInjection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeviceInjection.swift; path = HotReloading/Sources/HotReloading/DeviceInjection.swift; sourceTree = SOURCE_ROOT; };
 		BBA7BE0223473D660067124D /* build_bundles.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = build_bundles.sh; sourceTree = "<group>"; };
 		BBB040631FB1798A007DDD0A /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/ScriptingBridge.framework; sourceTree = DEVELOPER_DIR; };
 		BBB148D91FAD53BE00CB6B33 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -598,7 +602,9 @@
 				BB16653D25EC5FDF001407AE /* InjectionClient.swift */,
 				BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */,
 				BBC03BBF2625F27C005C1A06 /* UnhidingEval.swift */,
+				BB9642A527E339BC00C61CB7 /* ObjcInjection.swift */,
 				BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */,
+				BB9642A727E33C8F00C61CB7 /* DeviceInjection.swift */,
 				BBC03BC626282358005C1A06 /* SwiftSweeper.swift */,
 				BB18D2E7274E1746004BB4A5 /* DynamicCast.swift */,
 				BBD0AB3D262F24E4003ED7B1 /* DLKit.swift */,
@@ -1058,9 +1064,11 @@
 				BB16653E25EC5FE0001407AE /* InjectionClient.swift in Sources */,
 				BBC03BC12625F27C005C1A06 /* UnhidingEval.swift in Sources */,
 				BBCA02501FB107AF00E45F0F /* SwiftEval.swift in Sources */,
+				BB9642A827E33C8F00C61CB7 /* DeviceInjection.swift in Sources */,
 				BB19058C26D0C59200D57FB7 /* DLKit.swift in Sources */,
 				BD35949E21A6C5DE0020EB94 /* Vaccine.swift in Sources */,
 				BBCA02511FB107AF00E45F0F /* SwiftInjection.swift in Sources */,
+				BB9642A627E339BE00C61CB7 /* ObjcInjection.swift in Sources */,
 				BBB64FE11FD575260020BE47 /* XprobeSwift.swift in Sources */,
 				BB16654425ECD828001407AE /* ClientBoot.mm in Sources */,
 				BB16653F25EC6158001407AE /* Xprobe+Service.mm in Sources */,
