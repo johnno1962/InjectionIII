@@ -39,6 +39,13 @@ with it, the amount of time you save. The `iOSInjection.bundle` is only loaded d
 development  in the simulator and cannot affect your application when it is deployed 
 into production.
 
+Always remember to add `"Other Linker Flags"`, `"-Xlinker -interposable"` 
+to your project or due to details of how a method is dispatched you may
+find InjectionIII half works for classes and classes and not for structs. 
+Also, go easy on access control. For example, InjectionIII is unable to 
+inject methods in a private extension as the symbols are not exported 
+to the object file.
+
 To reason about your app while you are using injection, separate  data and program
 in your mind. You can't inject changes to the way data is laid out in memory by adding 
 properties or methods on the fly but apart from that exchanging  method implementations
@@ -107,26 +114,26 @@ If you want to build this project from source (which you may need to do to use i
 
 ### Variations on using the InjectionIII app:
 
-[App Store version](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12): load the injection bundle and you can
-perform code injection in the simulator.
+[App Store version](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12):
+load the injection bundle and you can perform code injection in the simulator.
 
 [Binary Releases](https://github.com/johnno1962/InjectionIII/releases): 
 These are often slightly more up to date than the App Store release and
-compile outside the App sandbox which avoid compilcations with
+compile outside the App sandbox which avoids compilcations with
 case insensitve filesystems.
 
 [HotReloading Project](https://github.com/johnno1962/HotReloading):
-See the project README for details. Remember not to leave this package 
-configured into your project for a release build or it will bloat your app binary!
+A version of InjectionIII that works just by adding this Swift Package to
+your project. See the repo README for details. Remember not to leave
+this package configured into your project for a release build or it will bloat
+your app binary!
 
-**On-Device Injection**: Instead of loading  the `iOSInjection.bundle`, add the [HotReloading](https://github.com/johnno1962/HotReloading) Swift Package 
-to your project and add a "Build Phase" above to run the `injectiond` daemon 
-version of the InjectionIII.app and you should be able to perform injection on a 
-iOS or tvOS device. While the HotReloading Swift Package manifest attempts to 
-automatically work out your Mac's hostname to  connect to over WiFi but, if it fails to
-connect, clone the repo and hardcode the IP address of your development Mac against
-the hostname variable in HotReloading/Package.swift. For more detail and the limitations 
-of this new feature, see the README of the 
+**On-Device Injection**: Instead of loading  the `iOSInjection.bundle`,
+add the [HotReloading](https://github.com/johnno1962/HotReloading)
+Swift Package to your project and add a "Build Phase" above to run the
+`injectiond` daemon version of the InjectionIII.app and you should be
+able to perform injection on a iOS or tvOS device. For more detail and the
+limitations  of this new feature, see the README of the
 [HotReloading](https://github.com/johnno1962/HotReloading) project.
 
 ### Limitations/FAQ
@@ -449,4 +456,4 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2022/03/16 $
+$Date: 2022/04/01 $

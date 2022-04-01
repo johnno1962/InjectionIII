@@ -94,5 +94,10 @@ into which the dylib can be written (while debugging) rather than dynamically lo
 then made executable after simulating as much as is possible of the tasks of an actual 
 dynamic load/linking. After this, it is "injected" into the app in the way described above.
 
-$Date: 2022/02/02 $
+[HotReloading/StandaloneInjection.swift](https://github.com/johnno1962/HotReloading/blob/main/Sources/injectiond/StandaloneInjection.swift):
+A startover implementation of injection for use in the simulator with the
+HotReloading project which removes the need for the App itself.
+
+
+$Date: 2022/04/01 $
  
