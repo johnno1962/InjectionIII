@@ -237,6 +237,9 @@ $ cd /tmp
 $ git clone https://github.com/johnno1962/InjectionIII --recurse-submodules
 ```
 
+To replicate one of the [github releases](https://github.com/johnno1962/InjectionIII/releases),
+turn the App sandbox off in the entitlements file.
+
 ### SwiftUI Injection
 
 It is possible to inject `SwiftUI` interfaces but it requires some minor
@@ -456,4 +459,6 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
-$Date: 2022/04/01 $
+The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
+
+$Date: 2022/04/07 $
