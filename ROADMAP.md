@@ -35,7 +35,7 @@ An instance of the class runs in the simulator for the Sandboxed version of the 
 main app process for the binary github releases.
 
 [HotReloading/SwiftInjection.swift](https://github.com/johnno1962/HotReloading/blob/main/Sources/HotReloading/SwiftInjection.swift): After
-the dynamic library prepared by SwiftEval.swift has be dlopen()'d this file sets about the actual
+the dynamic library prepared by SwiftEval.swift has been dlopen()'d this file sets about the actual
 injection of the new implementations into the client app. It does this three ways. For 
 Objective-C methods it "Swizzles" the new implementations on top of the old using
 Objective-C runtime apis. For Swift classes it scans class information, the later
@@ -49,8 +49,8 @@ needs to have been linked with the option "-interposable" which makes all functi
 global symbols indirect through a patchable pointer as described
 [here](https://www.mikeash.com/pyblog/friday-qa-2012-11-09-dyld-dynamic-linking-on-os-x.html).
 
-A new final part of injecting a newly compiled source file is the "reversee interpose" of the
-"mutable accessors" or top level and static variables which redirects newly injected code to 
+A new final part of injecting a newly compiled source file is the "reverse interpose" of the
+"mutable accessors" for top level and static variables which redirects newly injected code to 
 take their value from the main app bundle rather than have them reinitialise with each injection.
 
 [HotReloading/UnhidingEval.swift](https://github.com/johnno1962/HotReloading/blob/main/Sources/HotReloading/UnhidingEval.swift). This was introduced as a means of overriding functionality in SwiftEval.swift without making it
@@ -99,5 +99,5 @@ A startover implementation of injection for use in the simulator with the
 HotReloading project which removes the need for the App itself.
 
 
-$Date: 2022/04/01 $
+$Date: 2022/04/09 $
  

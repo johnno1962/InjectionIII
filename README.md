@@ -62,7 +62,7 @@ holding it correctly and don't ask too much of it, it should "just work".
 
 ### Getting Started
 
-To use injection, download the app from the App Store and run it. Then, you must add `"-Xlinker -interposable"` (without the double quotes) to your project's `"Other Linker Flags"` for the Debug target (qualified by the simulator SDK to avoid complications with bitcode). Finally, add one of the following to your application delegate's `applicationDidFinishLaunching:`
+To use injection, download the app from the App Store and run it. Then, you need to add "-Xlinker -interposable" (without the double quotes) to the "Other Linker Flags" of all targets in your project for the Debug configuration (qualified by the simulator SDK to avoid complications with bitcode). Finally, add one of the following to your application delegate's `applicationDidFinishLaunching:`
 
 Xcode 10.2 and later (Swift 5+):
 
@@ -106,6 +106,10 @@ If you want to build this project from source (which you may need to do to use i
 
     git clone https://github.com/johnno1962/InjectionIII --recurse-submodules
     
+If you're looking to understand how the app works it's magic, it's not a 
+short story but the staring point is the [ROADMAP.md](ROADMAP.md)
+file in this repo.
+    
 ### Available downloads
 
 | Xcode 10.2+ | Monterey & Xcode 13 |
@@ -124,16 +128,16 @@ case insensitve filesystems.
 
 [HotReloading Project](https://github.com/johnno1962/HotReloading):
 A version of InjectionIII that works just by adding this Swift Package to
-your project. See the repo README for details. Remember not to leave
-this package configured into your project for a release build or it will bloat
-your app binary!
+your project (and adding the -interposable linker flag). See the repo
+README for details. Remember not to leave this package configured 
+into your project for a release build or it will bloat your app binary!
 
 **On-Device Injection**: Instead of loading  the `iOSInjection.bundle`,
 add the [HotReloading](https://github.com/johnno1962/HotReloading)
-Swift Package to your project and add a "Build Phase" above to run the
-`injectiond` daemon version of the InjectionIII.app and you should be
-able to perform injection on a iOS or tvOS device. For more detail and the
-limitations  of this new feature, see the README of the
+Swift Package to your project and add a "Build Phase" in the README 
+to run the `injectiond` daemon version of the InjectionIII.app and you
+should be able to perform injection on a iOS or tvOS device. For more
+detail and the limitations  of this new feature, see the README of the
 [HotReloading](https://github.com/johnno1962/HotReloading) project.
 
 ### Limitations/FAQ
@@ -213,20 +217,21 @@ class when an instance is injected, a sweep of all live objects in your
 app is performed. This has two limitations. The instance needs to be
 "seen" by a reference to a reference to a reference from an initial set 
 of seed instances e.g. appDelegate, rootViewController. Secondly,
-technically this is ambitious and can crash for some app states.
+technically this is ambitious and can crash for some app states or
+if you use `unowned` properties.
 If you encounter this, provide a value for the environment variable
 **INJECTION_SWEEP_DETAIL** and, as it sweeps it will print the type 
 name of the object about to be swept.  If you see a crash, from version 
 3.2.2 you can exclude the type shown just before the crash using the
 **INJECTION_SWEEP_EXCLUDE** environment variable (which can 
 be a regular expression).
-
 **INJECTION_OF_GENERICS** It is possible to inject the methods
 of generic classes but this requires a "sweep" of live objects to
-find the specializations in use so the feature has been made opt-in.
-**INJECTION_UNHIDE** Allows users to opt-into the lecacy processing
+find the specializations in use (as they each have their own vtables)
+so the feature has been made opt-in.
+**INJECTION_UNHIDE** Allows users to opt-into the legacy processing
 of defualt arguments symbols using the "unhide" which may be required
-for larger projects.
+for larger projects. Otherwise it will still occur "on demand".
 
 As the application is now released with debug information, if you experience a 
 crash inside the Injection.bundle use the following command to clone the InjectionIII 
@@ -461,4 +466,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2022/04/07 $
+$Date: 2022/04/09 $
