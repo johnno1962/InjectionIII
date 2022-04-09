@@ -327,7 +327,10 @@ As an alternative, this code is available in the
 [HotSwiftUI](https://github.com/johnno1962/HotSwiftUI)
 Swift Package though you would have to remember to load the 
 `iOSInjection.bundle` separately by using the `.loadInjection()`
-modifier on a view struct somewhere in your app.
+modifier on a view struct somewhere in your app. Another alternative
+from someone who has a lot more experience in iOS development
+than I do check out the [Inject](https://github.com/krzysztofzablocki/Inject)
+Swift Package introduced by this [blog post](https://merowing.info/2022/04/hot-reloading-in-swift/).
 
 ### InjectionIII and "The Composable Architecture"
 
