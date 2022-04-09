@@ -245,91 +245,20 @@ $ git clone https://github.com/johnno1962/InjectionIII --recurse-submodules
 To replicate one of the [github releases](https://github.com/johnno1962/InjectionIII/releases),
 turn the App sandbox off in the entitlements file.
 
-### SwiftUI Injection
+### View / View Controller Injection
 
-It is possible to inject `SwiftUI` interfaces but it requires some minor
-code changes. This is because when you add elements to an interface or
-use modifiers that change their type, this changes the return type of the
-body properties' `Content` which causes a crash. To avoid this you need
-to erase the return type. The easiest way to do this is to add the code below
-to your source somewhere then add the modifier  `.eraseToAnyView()`  at
-the very end of any declaration of a view's body property that you want to inject:
+The easiest way to integrate InjectionIII into your projects is by using [Inject](https://github.com/krzysztofzablocki/Inject) project.
 
-```Swift
-#if DEBUG
-private var loadInjection: () = {
-    #if os(macOS)
-    let bundleName = "macOSInjection.bundle"
-    #elseif os(tvOS)
-    let bundleName = "tvOSInjection.bundle"
-    #elseif targetEnvironment(simulator)
-    let bundleName = "iOSInjection.bundle"
-    #else
-    let bundleName = "maciOSInjection.bundle"
-    #endif
-    Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/"+bundleName)!.load()
-}()
 
-import Combine
+It works regardless if you are using `UIKit`, `AppKit` or `SwiftUI`, and it also turns into no-op in production builds, which means you don't need to remove or ifdef any code.
 
-public let injectionObserver = InjectionObserver()
+With [Inject](https://github.com/krzysztofzablocki/Inject) **A single line of code** change allows you to live code `UIKit` screen:
 
-public class InjectionObserver: ObservableObject {
-    @Published var injectionNumber = 0
-    var cancellable: AnyCancellable? = nil
-    let publisher = PassthroughSubject<Void, Never>()
-    init() {
-        cancellable = NotificationCenter.default.publisher(for:
-            Notification.Name("INJECTION_BUNDLE_NOTIFICATION"))
-            .sink { [weak self] change in
-            self?.injectionNumber += 1
-            self?.publisher.send()
-        }
-    }
-}
 
-extension View {
-    public func eraseToAnyView() -> some View {
-        _ = loadInjection
-        return AnyView(self)
-    }
-    public func onInjection(bumpState: @escaping () -> ()) -> some View {
-        return self
-            .onReceive(injectionObserver.publisher, perform: bumpState)
-            .eraseToAnyView()
-    }
-}
-#else
-extension View {
-    public func eraseToAnyView() -> some View { return self }
-    public func onInjection(bumpState: @escaping () -> ()) -> some View {
-        return self
-    }
-}
-#endif
-```
+https://user-images.githubusercontent.com/26660989/161756368-b150bc25-b66f-4822-86ee-2e4aed713932.mp4
 
-To have the view you are working on redisplay automatically when it is injected it's sufficient
-to add an `@ObservedObject`, initialised to the `injectionObserver` instance as follows:
 
-```Swift
-        .eraseToAnyView()
-    }
-
-    #if DEBUG
-    @ObservedObject var iO = injectionObserver
-    #endif
-```
-You can make all these changes automatically once you've opened a project using the
-`"Prepare Project"` menu item. If you'd like to execute some code each time your interface is injected, use the 
-`.onInjection { ... }` modifier instead of .`eraseToAnyView()`.
-As an alternative, this code is available in the
-[HotSwiftUI](https://github.com/johnno1962/HotSwiftUI)
-Swift Package though you would have to remember to load the 
-`iOSInjection.bundle` separately by using the `.loadInjection()`
-modifier on a view struct somewhere in your app.
-
-### InjectionIII and "The Composable Architecture"
+### "The Composable Architecture" Injection
 
 Applications written using "TCA" can have the "reducer" functions
 update their implementations without having to restart the application.
