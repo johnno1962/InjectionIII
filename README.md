@@ -106,6 +106,9 @@ If you want to build this project from source (which you may need to do to use i
 
     git clone https://github.com/johnno1962/InjectionIII --recurse-submodules
     
+To replicate one of the [github releases](https://github.com/johnno1962/InjectionIII/releases),
+turn the App sandbox off in the entitlements file.
+
 If you're looking to understand how the app works it's magic, it's not a 
 short story but the staring point is the [ROADMAP.md](ROADMAP.md)
 file in this repo.
@@ -179,10 +182,6 @@ If you encounter this problem, restart your app and you should find this issue
 disappears due to a background task [unhide](https://github.com/johnno1962/unhide)
 which is integrated into InjectionIII.
 
-Recent github releases of the InjectionIII app will retain the values of
-top-level and static variables over an injection by redirecting references
-to a variable's storage to that in the main app bundle.
-
 As injection needs to know how to compile Swift files individually it is not compatible with building using
 `Whole Module Optimisation`. A workaround for this is to build with `WMO` switched off so there are
 logs of individual compiles available then switching `WMO` back on if it suits your workflow better.
@@ -232,18 +231,6 @@ so the feature has been made opt-in.
 **INJECTION_UNHIDE** Allows users to opt-into the legacy processing
 of defualt arguments symbols using the "unhide" which may be required
 for larger projects. Otherwise it will still occur "on demand".
-
-As the application is now released with debug information, if you experience a 
-crash inside the Injection.bundle use the following command to clone the InjectionIII 
-project into /tmp and you'll be able to provide a full strack trace in your bug report:
-
-```
-$ cd /tmp
-$ git clone https://github.com/johnno1962/InjectionIII --recurse-submodules
-```
-
-To replicate one of the [github releases](https://github.com/johnno1962/InjectionIII/releases),
-turn the App sandbox off in the entitlements file.
 
 ### SwiftUI Injection
 
@@ -469,4 +456,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2022/04/09 $
+$Date: 2022/04/15 $
