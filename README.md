@@ -315,7 +315,7 @@ As an alternative, this code is available in the
 Swift Package though you would have to remember to load the 
 `iOSInjection.bundle` separately by using the `.loadInjection()`
 modifier on a view struct somewhere in your app. Another alternative
-from someone who has a lot more experience in iOS development
+from someone who has considerably more experience in iOS development
 than I do check out the [Inject](https://github.com/krzysztofzablocki/Inject)
 Swift Package introduced by this [blog post](https://merowing.info/2022/04/hot-reloading-in-swift/).
 
@@ -456,4 +456,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2022/04/15 $
+$Date: 2022/04/19 $
