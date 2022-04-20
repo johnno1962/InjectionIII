@@ -11,5 +11,7 @@
 @interface HelperProxy : NSObject
 
 + (BOOL)inject:(NSString *)bundlePath error:(NSError **)error;
++ (BOOL)properInject:(NSString *)bundlePath error:(NSError **)error;
+
 
 @end

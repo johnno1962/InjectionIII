@@ -12,5 +12,7 @@
 
 + (BOOL)isInstalled;
 + (BOOL)install:(NSError **)error;
++ (BOOL)canInstall:(BOOL **)error;
+
 
 @end
