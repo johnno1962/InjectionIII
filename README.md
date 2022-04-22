@@ -87,7 +87,12 @@ menu item. This list resets when you select a new project.
 The file watcher can be disabled & enabled while the app is running using the status bar menu.
 While the file watcher is disabled you can still force injections through manually using a hotkey `ctrl-=` (remember to save the file first!)
 
-If you inject a subclass of `XCTest` InjectionIII will try running that individual test inside your application provided has been compiled at some time in the past and doesn't require test specific support code.
+If you inject a subclass of `XCTest` InjectionIII will try running that
+individual test inside your application provided has been compiled at 
+some time in the past and doesn't require test specific support code.
+If the menu item "Enable TDD" is enabled, when you inject a file
+InjectionIII will search for test sources containing that filename,
+inject them and run the test.
 
 You can detect when a *class* has been injected in your code (to reload a view controller for example) by adding an `@objc func
 injected()` class or instance method.  The instance `@objc
@@ -456,4 +461,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2022/04/19 $
+$Date: 2022/04/22 $
