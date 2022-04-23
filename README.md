@@ -229,23 +229,30 @@ name of the object about to be swept.  If you see a crash, from version
 3.2.2 you can exclude the type shown just before the crash using the
 **INJECTION_SWEEP_EXCLUDE** environment variable (which can 
 be a regular expression).
+
 **INJECTION_OF_GENERICS** It is possible to inject the methods
 of generic classes but this requires a "sweep" of live objects to
 find the specializations in use (as they each have their own vtables)
 so the feature has been made opt-in.
+
 **INJECTION_UNHIDE** Allows users to opt-into the legacy processing
 of defualt arguments symbols using the "unhide" which may be required
 for larger projects. Otherwise it will still occur "on demand".
+
+**INJECTION_PROJECT_ROOT** This allows you to specify the source
+root of your project in it's scheme automatiically messaging the InjectionIII
+app to change the scope of the file watcher as you switch between projects.
 
 ### SwiftUI Injection
 
 It is possible to inject `SwiftUI` interfaces but it requires some minor
 code changes. This is because when you add elements to an interface or
 use modifiers that change their type, this changes the return type of the
-body properties' `Content` which causes a crash. To avoid this you need
-to erase the return type. The easiest way to do this is to add the code below
-to your source somewhere then add the modifier  `.eraseToAnyView()`  at
-the very end of any declaration of a view's body property that you want to inject:
+body properties' `Content` across the injection which causes a crash. 
+To avoid this you need to erase the return type. The easiest way to do 
+this is to add the code below to your source somewhere then add the
+modifier  `.eraseToAnyView()`  at the very end of any declaration of a
+view's body property that you want to inject:
 
 ```Swift
 #if DEBUG
@@ -329,7 +336,7 @@ Swift Package introduced by this [blog post](https://merowing.info/2022/04/hot-r
 Applications written using "TCA" can have the "reducer" functions
 update their implementations without having to restart the application.
 You'll need to use a [slightly modified version of TCA](https://github.com/thebrowsercompany/swift-composable-architecture/tree/develop) 
-and wrap the initialisers of top level reducer variables in a call to the
+and wrap all initialisers of top level reducer variables in a call to the
 global function `ARCInjectable()` defined in that repo.
 
 ### macOS Injection
@@ -461,4 +468,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2022/04/22 $
+$Date: 2022/04/23 $
