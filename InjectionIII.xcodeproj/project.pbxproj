@@ -97,6 +97,7 @@
 		BBCA02601FB122C300E45F0F /* InjectionIdle.tif in Resources */ = {isa = PBXBuildFile; fileRef = BBCA025E1FB122C300E45F0F /* InjectionIdle.tif */; };
 		BBCA02611FB122C300E45F0F /* InjectionOK.tif in Resources */ = {isa = PBXBuildFile; fileRef = BBCA025F1FB122C300E45F0F /* InjectionOK.tif */; };
 		BBCA02621FB1312A00E45F0F /* SimpleSocket.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB67DBB31FB0CDA8000EAC8A /* SimpleSocket.mm */; };
+		BBCB31C9281677C900081CB6 /* SwiftInterpose.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCB31C8281677C700081CB6 /* SwiftInterpose.swift */; };
 		BBD0AB52263298D9003ED7B1 /* SwiftLifetime.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD0AB51263298D7003ED7B1 /* SwiftLifetime.swift */; };
 		BBE3B2E72524915A00300BF8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE3B2E62524915A00300BF8 /* AppDelegate.swift */; };
 		BBE3B2E92524916000300BF8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBE3B2E82524916000300BF8 /* Assets.xcassets */; };
@@ -296,6 +297,7 @@
 		BBCA025C1FB114FF00E45F0F /* InjectionClient.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = InjectionClient.mm; sourceTree = "<group>"; };
 		BBCA025E1FB122C300E45F0F /* InjectionIdle.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = InjectionIdle.tif; sourceTree = "<group>"; };
 		BBCA025F1FB122C300E45F0F /* InjectionOK.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = InjectionOK.tif; sourceTree = "<group>"; };
+		BBCB31C8281677C700081CB6 /* SwiftInterpose.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftInterpose.swift; path = HotReloading/Sources/HotReloading/SwiftInterpose.swift; sourceTree = SOURCE_ROOT; };
 		BBCB5BE927E7D849005E8AF6 /* StandaloneInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StandaloneInjection.swift; path = HotReloading/Sources/HotReloading/StandaloneInjection.swift; sourceTree = SOURCE_ROOT; };
 		BBD0AB3D262F24E4003ED7B1 /* DLKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DLKit.swift; path = DLKit/Sources/DLKit/DLKit.swift; sourceTree = SOURCE_ROOT; };
 		BBD0AB3F262F2549003ED7B1 /* fishhook.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = fishhook.c; path = DLKit/Sources/DLKitC/fishhook.c; sourceTree = SOURCE_ROOT; };
@@ -604,6 +606,7 @@
 				BBC03BBF2625F27C005C1A06 /* UnhidingEval.swift */,
 				BB9642A527E339BC00C61CB7 /* ObjcInjection.swift */,
 				BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */,
+				BBCB31C8281677C700081CB6 /* SwiftInterpose.swift */,
 				BB9642A727E33C8F00C61CB7 /* DeviceInjection.swift */,
 				BBCB5BE927E7D849005E8AF6 /* StandaloneInjection.swift */,
 				BBC03BC626282358005C1A06 /* SwiftSweeper.swift */,
@@ -1060,6 +1063,7 @@
 				BBB2C6FF26FC9C2900E91E67 /* TupleRegex.swift in Sources */,
 				BB16654025EC6163001407AE /* Xprobe.mm in Sources */,
 				BBC03BC726282358005C1A06 /* SwiftSweeper.swift in Sources */,
+				BBCB31C9281677C900081CB6 /* SwiftInterpose.swift in Sources */,
 				BBC03BBE2625F269005C1A06 /* Unhide.mm in Sources */,
 				BB18D2E8274E1748004BB4A5 /* DynamicCast.swift in Sources */,
 				BB16653E25EC5FE0001407AE /* InjectionClient.swift in Sources */,
