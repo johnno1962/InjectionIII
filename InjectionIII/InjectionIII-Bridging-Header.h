@@ -16,6 +16,4 @@
 #import "DDHotKeyCenter.h"
 #import <libproc.h>
 
-#ifdef XPROBE_PORT
 #import "../XprobePlugin/Sources/XprobeUI/include/XprobePluginMenuController.h"
-#endif
