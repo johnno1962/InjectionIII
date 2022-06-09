@@ -109,6 +109,7 @@
 		BBE490DC1FB2C643003D41BB /* InjectionError.tif in Resources */ = {isa = PBXBuildFile; fileRef = BBE490DA1FB2C643003D41BB /* InjectionError.tif */; };
 		BBE64E5D2524D1B50049B6D4 /* SwiftEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */; };
 		BBEB704C1FD28C6F00127711 /* XcodeHash.m in Sources */ = {isa = PBXBuildFile; fileRef = BBEB704B1FD28C6F00127711 /* XcodeHash.m */; };
+		BBF3D62B2851E6DF0070356F /* ReducerInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF3D62A2851E6DC0070356F /* ReducerInjection.swift */; };
 		BD35949E21A6C5DE0020EB94 /* Vaccine.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD35949D21A6C5DE0020EB94 /* Vaccine.swift */; };
 		CEC1702A253ED117002E823F /* Experimental.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC17029253ED117002E823F /* Experimental.swift */; };
 /* End PBXBuildFile section */
@@ -316,6 +317,7 @@
 		BBE490DA1FB2C643003D41BB /* InjectionError.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = InjectionError.tif; sourceTree = "<group>"; };
 		BBEB704A1FD28C6F00127711 /* XcodeHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XcodeHash.h; sourceTree = "<group>"; };
 		BBEB704B1FD28C6F00127711 /* XcodeHash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XcodeHash.m; sourceTree = "<group>"; };
+		BBF3D62A2851E6DC0070356F /* ReducerInjection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReducerInjection.swift; path = HotReloading/Sources/HotReloading/ReducerInjection.swift; sourceTree = SOURCE_ROOT; };
 		BD35949D21A6C5DE0020EB94 /* Vaccine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Vaccine.swift; path = ../HotReloading/Sources/HotReloading/Vaccine.swift; sourceTree = "<group>"; };
 		BDB6A7CE21824C800001CF95 /* UserDefaults.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UserDefaults.h; path = ../HotReloading/Sources/HotReloadingGuts/include/UserDefaults.h; sourceTree = "<group>"; };
 		CEC17029253ED117002E823F /* Experimental.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Experimental.swift; path = ../HotReloading/Sources/injectiond/Experimental.swift; sourceTree = "<group>"; };
@@ -608,6 +610,7 @@
 				BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */,
 				BBCB31C8281677C700081CB6 /* SwiftInterpose.swift */,
 				BB9642A727E33C8F00C61CB7 /* DeviceInjection.swift */,
+				BBF3D62A2851E6DC0070356F /* ReducerInjection.swift */,
 				BBCB5BE927E7D849005E8AF6 /* StandaloneInjection.swift */,
 				BBC03BC626282358005C1A06 /* SwiftSweeper.swift */,
 				BB18D2E7274E1746004BB4A5 /* DynamicCast.swift */,
@@ -1066,6 +1069,7 @@
 				BBCB31C9281677C900081CB6 /* SwiftInterpose.swift in Sources */,
 				BBC03BBE2625F269005C1A06 /* Unhide.mm in Sources */,
 				BB18D2E8274E1748004BB4A5 /* DynamicCast.swift in Sources */,
+				BBF3D62B2851E6DF0070356F /* ReducerInjection.swift in Sources */,
 				BB16653E25EC5FE0001407AE /* InjectionClient.swift in Sources */,
 				BBC03BC12625F27C005C1A06 /* UnhidingEval.swift in Sources */,
 				BBCA02501FB107AF00E45F0F /* SwiftEval.swift in Sources */,
