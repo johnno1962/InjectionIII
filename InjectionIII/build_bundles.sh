@@ -9,17 +9,12 @@
 #  $Id: //depot/ResidentEval/InjectionIII/build_bundles.sh#67 $
 #
 
-# Injection has to assume a fixed path for Xcode.app as it uses
-# Swift and the user's project may contain only Objective-C.
-# The second "rpath" is to be able to find XCTest.framework.
-FIXED_XCODE_DEVELOPER_PATH=/Applications/Xcode.app/Contents/Developer
-
 function build_bundle () {
     FAMILY=$1
     PLATFORM=$2
     SDK=$3
-    SWIFT_DYLIBS_PATH="$FIXED_XCODE_DEVELOPER_PATH/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$SDK"
-    XCTEST_FRAMEWORK_PATH="$FIXED_XCODE_DEVELOPER_PATH/Platforms/$PLATFORM.platform/Developer/Library/Frameworks"
+    SWIFT_DYLIBS_PATH="$TOOLCHAIN_DIR/usr/lib/swift/$SDK"
+    XCTEST_FRAMEWORK_PATH="$PLATFORM_DIR/Developer/Library/Frameworks"
     BUNDLE_CONFIG=Release
 
     if [ ! -d "$SWIFT_DYLIBS_PATH" -o ! -d "${XCTEST_FRAMEWORK_PATH}/XCTest.framework" ]; then

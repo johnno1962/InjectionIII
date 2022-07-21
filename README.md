@@ -21,7 +21,7 @@ You should use one of these releases for Apple Silicon or if you have upgraded t
 
 ![Icon](http://johnholdsworth.com/InjectionUI.gif)
 
-`InjectionIII.app` needs an Xcode 10.2 or greater at the path `/Applications/Xcode.app` , 
+`InjectionIII.app` needs an Xcode 10.2 or greater, 
 works for `Swift`,  `Objective-C` and since 3.2.2 `C++` and can be used alongside [AppCode](https://www.jetbrains.com/help/objc/create-a-swiftui-application.html) or by using the [AppCode Plugin](https://github.com/johnno1962/InjectionIII/blob/master/AppCodePlugin/INSTALL.md)
 instead.
 

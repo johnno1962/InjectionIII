@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16097" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="19529" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19529"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -664,7 +664,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="480" height="360"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1055"/>
             <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -679,11 +679,11 @@
                         <action selector="autoInject:" target="Voe-Tx-rLC" id="YDX-ZY-Oim"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Open Project" toolTip="Select Project directory to watch for file edits" id="XlL-4Y-oKk">
+                <menuItem title="Open Project" toolTip="Select Project directory to watch for file edits" id="ogq-jl-5tV">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <accessibility description="Open Project"/>
                     <connections>
-                        <action selector="openProject:" target="Voe-Tx-rLC" id="ZLH-lf-p4H"/>
+                        <action selector="openProject:" target="Voe-Tx-rLC" id="Vic-Ez-zP0"/>
                     </connections>
                 </menuItem>
                 <menuItem title="Open Recent" id="tXI-mr-wws">
@@ -704,6 +704,13 @@
                     <accessibility description="Add Project"/>
                     <connections>
                         <action selector="addDirectory:" target="Voe-Tx-rLC" id="Z4L-RL-lKH"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Select Xcode" toolTip="Select Project directory to watch for file edits" id="XlL-4Y-oKk" userLabel="Select Xcode">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <accessibility description="Select Xcode"/>
+                    <connections>
+                        <action selector="selectXcode:" target="Voe-Tx-rLC" id="L05-t8-pwX"/>
                     </connections>
                 </menuItem>
                 <menuItem title="File Watcher" state="on" toolTip="Enable/Disable file watcher" id="0iA-WA-gxc">
@@ -977,7 +984,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="1940" y="1086" width="376" height="166"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1055"/>
             <view key="contentView" id="Qow-ez-PwQ">
                 <rect key="frame" x="0.0" y="0.0" width="376" height="166"/>
                 <autoresizingMask key="autoresizingMask"/>
