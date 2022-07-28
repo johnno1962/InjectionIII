@@ -9,11 +9,11 @@ in the iOS simulator without having to rebuild or restart your application. This
 This start-over implementation of [Injection for Xcode](https://github.com/johnno1962/injectionforxcode)
 has been built into a standalone app: `InjectionIII.app` which runs in the status bar and is [available from the Mac App Store](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12).
 
-**Stop Press:** The functionality of InjectionIII is now  available as a Swift Package
-in the [HotReloading Project](https://github.com/johnno1962/HotReloading) which also supports dynamic code updates on a device. No
-need to download the app, just add this project to yours and add a short
-"Run Script" "Build Phase" as described in the README.md. _Do not
-release your app with the HotReloading package included!_
+**Stop Press:** The functionality of InjectionIII is now available by simply adding a Swift 
+Package, the [HotReloading Project](https://github.com/johnno1962/HotReloading) instead.
+No need to download the app, select the project directory or set unfamiliar linker flags. The 
+package also offers limited support of dynamic code updates on a device in conjuction with a
+github release of the the InjectionIII app if you set a user default as described in the package's README.md. _Do not release your app with the HotReloading package included!_
 
 This README includes descriptions of some newer features that are only available in more recent
 releases of the InjectionIII.app [available on github](https://github.com/johnno1962/InjectionIII/releases).
@@ -468,4 +468,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2022/04/23 $
+$Date: 2022/07/28 $
