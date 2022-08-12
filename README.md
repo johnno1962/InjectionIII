@@ -11,7 +11,7 @@ has been built into a standalone app: `InjectionIII.app` which runs in the statu
 
 **Stop Press:** The functionality of InjectionIII is now available by simply adding a Swift 
 Package, the [HotReloading Project](https://github.com/johnno1962/HotReloading) instead.
-No need to download the app, select the project directory or set unfamiliar linker flags. The 
+No need to download the app or select the project directory. The 
 package also offers limited support of dynamic code updates on a device in conjuction with a
 github release of the the InjectionIII app if you set a user default as described in the package's README.md. _Do not release your app with the HotReloading package included!_
 
@@ -468,4 +468,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2022/07/28 $
+$Date: 2022/08/12 $
