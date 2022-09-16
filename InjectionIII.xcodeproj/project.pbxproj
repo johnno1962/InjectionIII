@@ -1478,6 +1478,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) INJECTION_III_APP";
 				SWIFT_OBJC_BRIDGING_HEADER = "InjectionIII/InjectionIII-Bridging-Header.h";
 			};
 			name = Debug;
@@ -1501,6 +1502,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) INJECTION_III_APP";
 				SWIFT_OBJC_BRIDGING_HEADER = "InjectionIII/InjectionIII-Bridging-Header.h";
 			};
 			name = Release;
