@@ -15,16 +15,19 @@ No need to download the app or select the project directory. The
 package also offers limited support of dynamic code updates on a device in conjuction with a
 github release of the the InjectionIII app if you set a user default as described in the package's README.md. _Do not release your app with the HotReloading package included!_
 
-**Stop Stop Press:** Since versions 4.4.0+ of the app it is possible to 
-use injection by loading one of the "injection bundles" only from your
-client app as described below. If the InjectionIII.app is not running, 
-the bundle will fall back to using the  "standalone" implementation of
-injection from the HotReloading project watching for file changes in 
-your home directory and using the logs of your last built project.
+**Stop Stop Press:** Since versions 4.4.0+ of the app and for 
+iOS/tvOS 14+ it is possible to use injection by just loading one of 
+the "injection bundles" from your client app as described below. 
+If the InjectionIII.app is not running, the bundle will fall back to using 
+the  "standalone" implementation of injection from the HotReloading
+project watching for file changes in your home directory and using the 
+logs of your last built project.
 
 This README includes descriptions of some newer features that are only available in more recent
 releases of the InjectionIII.app [available on github](https://github.com/johnno1962/InjectionIII/releases).
-You should use one of these releases for Apple Silicon or if you have upgraded to macOS Monterey or Xcode 13.
+You should use one of these releases for Apple Silicon and want to 
+target a simulator older than iOS 14 or if you have upgraded to 
+macOS Monterey or later.
 
 ![Icon](http://johnholdsworth.com/InjectionUI.gif)
 
@@ -475,4 +478,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2022/09/20 $
+$Date: 2022/10/01 $
