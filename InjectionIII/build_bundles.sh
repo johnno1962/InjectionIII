@@ -6,7 +6,7 @@
 #  Created by John Holdsworth on 04/10/2019.
 #  Copyright © 2019 John Holdsworth. All rights reserved.
 #
-#  $Id: //depot/ResidentEval/InjectionIII/build_bundles.sh#67 $
+#  $Id: //depot/ResidentEval/InjectionIII/build_bundles.sh#68 $
 #
 
 # Injection has to assume a fixed path for Xcode.app as it uses
@@ -43,7 +43,7 @@ function build_bundle () {
 build_bundle iOS iPhoneSimulator iphonesimulator &&
 build_bundle tvOS AppleTVSimulator appletvsimulator &&
 
-# iphoneos on M1 mac (requires Sanbox switched off)
+# iphoneos on M1 mac (requires Sandbox switched off)
 #build_bundle maciOS iPhoneOS iphoneos &&
 
 # macOSSwiftUISupport needs to be built separately from the main app
