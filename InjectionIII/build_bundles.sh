@@ -6,13 +6,16 @@
 #  Created by John Holdsworth on 04/10/2019.
 #  Copyright © 2019 John Holdsworth. All rights reserved.
 #
-#  $Id: //depot/ResidentEval/InjectionIII/build_bundles.sh#68 $
+#  $Id: //depot/ResidentEval/InjectionIII/build_bundles.sh#69 $
 #
 
 # Injection has to assume a fixed path for Xcode.app as it uses
 # Swift and the user's project may contain only Objective-C.
 # The second "rpath" is to be able to find XCTest.framework.
 FIXED_XCODE_DEVELOPER_PATH=/Applications/Xcode.app/Contents/Developer
+if head -n 6 InjectionIII/InjectionIII.entitlements | grep true; then
+    APP_SANDBOXED="SWIFT_ACTIVE_COMPILATION_CONDITIONS=APP_SANDBOXED"
+fi
 
 function build_bundle () {
     FAMILY=$1
@@ -27,7 +30,7 @@ function build_bundle () {
         exit 1
     fi
     "$DEVELOPER_BIN_DIR"/xcodebuild SYMROOT=$SYMROOT ARCHS="$ARCHS" -sdk $SDK -config $BUNDLE_CONFIG -target SwiftTrace &&
-    "$DEVELOPER_BIN_DIR"/xcodebuild SYMROOT=$SYMROOT ARCHS="$ARCHS" PRODUCT_NAME="${FAMILY}Injection" LD_RUNPATH_SEARCH_PATHS="$SWIFT_DYLIBS_PATH $XCTEST_FRAMEWORK_PATH @loader_path/Frameworks" -sdk $SDK -config $BUNDLE_CONFIG -target InjectionBundle &&
+    "$DEVELOPER_BIN_DIR"/xcodebuild SYMROOT=$SYMROOT ARCHS="$ARCHS" $APP_SANDBOXED PRODUCT_NAME="${FAMILY}Injection" LD_RUNPATH_SEARCH_PATHS="$SWIFT_DYLIBS_PATH $XCTEST_FRAMEWORK_PATH @loader_path/Frameworks" -sdk $SDK -config $BUNDLE_CONFIG -target InjectionBundle &&
     "$DEVELOPER_BIN_DIR"/xcodebuild SYMROOT=$SYMROOT ARCHS="$ARCHS" PRODUCT_NAME="${FAMILY}SwiftUISupport" -sdk $SDK -config $BUNDLE_CONFIG -target SwiftUISupport &&
 
     rsync -au $SYMROOT/$BUNDLE_CONFIG-$SDK/*.bundle "$CODESIGNING_FOLDER_PATH/Contents/Resources" &&
