@@ -252,6 +252,7 @@
 		BB80B3B426B573BE0055FAAE /* README_Chinese.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README_Chinese.md; sourceTree = "<group>"; };
 		BB9642A527E339BC00C61CB7 /* ObjcInjection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ObjcInjection.swift; path = HotReloading/Sources/HotReloading/ObjcInjection.swift; sourceTree = SOURCE_ROOT; };
 		BB9642A727E33C8F00C61CB7 /* DeviceInjection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeviceInjection.swift; path = HotReloading/Sources/HotReloading/DeviceInjection.swift; sourceTree = SOURCE_ROOT; };
+		BB9DE2302923C3B000926B1B /* BAZEL.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = BAZEL.md; sourceTree = "<group>"; };
 		BBA7BE0223473D660067124D /* build_bundles.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = build_bundles.sh; sourceTree = "<group>"; };
 		BBAD6A2B290915DB00DEB1A5 /* InjectionStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InjectionStats.swift; path = HotReloading/Sources/HotReloading/InjectionStats.swift; sourceTree = SOURCE_ROOT; };
 		BBB040631FB1798A007DDD0A /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/ScriptingBridge.framework; sourceTree = DEVELOPER_DIR; };
@@ -394,6 +395,7 @@
 				BB037DF31FAD808B004B267C /* README.md */,
 				BB80B3B426B573BE0055FAAE /* README_Chinese.md */,
 				BB596EE127AAC5A6009B6241 /* ROADMAP.md */,
+				BB9DE2302923C3B000926B1B /* BAZEL.md */,
 				BB6125D224EA882000A7C230 /* Injection.jar */,
 				BBCA01FF1FB0F10300E45F0F /* InjectionIII */,
 				BBCA02461FB1065D00E45F0F /* InjectionBundle */,
