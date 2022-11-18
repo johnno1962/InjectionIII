@@ -6,16 +6,13 @@
 #  Created by John Holdsworth on 04/10/2019.
 #  Copyright © 2019 John Holdsworth. All rights reserved.
 #
-#  $Id: //depot/ResidentEval/InjectionIII/build_bundles.sh#69 $
+#  $Id: //depot/ResidentEval/InjectionIII/build_bundles.sh#70 $
 #
 
 # Injection has to assume a fixed path for Xcode.app as it uses
 # Swift and the user's project may contain only Objective-C.
 # The second "rpath" is to be able to find XCTest.framework.
 FIXED_XCODE_DEVELOPER_PATH=/Applications/Xcode.app/Contents/Developer
-if head -n 6 InjectionIII/InjectionIII.entitlements | grep true; then
-    APP_SANDBOXED="SWIFT_ACTIVE_COMPILATION_CONDITIONS=APP_SANDBOXED"
-fi
 
 function build_bundle () {
     FAMILY=$1
