@@ -12,16 +12,19 @@ has been built into a standalone app: `InjectionIII.app` which runs in the statu
 **Stop Press:** The functionality of InjectionIII is now available by simply adding a Swift 
 Package, the [HotReloading Project](https://github.com/johnno1962/HotReloading) instead.
 No need to download the app or select the project directory. The 
-package also offers limited support of dynamic code updates on a device in conjuction with a
+package also offers limited support of dynamic code updates on a device in conjunction with a
 github release of the the InjectionIII app if you set a user default as described in the package's README.md. _Do not release your app with the HotReloading package included!_
 
 **Stop Stop Press:** Since versions 4.4.0+ of the app and for 
-iOS/tvOS 14+ it is possible to use injection by just loading one of 
-the "injection bundles" from your client app as described below. 
-If the InjectionIII.app is not running, the bundle will fall back to using 
+iOS/tvOS 14+ it is possible to use injection by not running the app
+at all and just loading one of the "injection bundles" from your client app
+by adding the code described below. This is by far the simplest version
+of Injection available so far, not requiring you to select the current project.
+When the InjectionIII.app is not running, the bundle will fall back to using 
 the  "standalone" implementation of injection from the HotReloading
 project watching for file changes in your home directory and using the 
-logs of your last built project.
+logs of your last built project determined by the FileWatcher. Skip to
+the notes on "Standalone Injection" below.
 
 This README includes descriptions of some newer features that are only available in more recent
 releases of the InjectionIII.app [available on github](https://github.com/johnno1962/InjectionIII/releases).
@@ -141,8 +144,8 @@ load the injection bundle and you can perform code injection in the simulator.
 
 [Binary Releases](https://github.com/johnno1962/InjectionIII/releases): 
 These are often slightly more up to date than the App Store release and
-compile outside the App sandbox which avoids compilcations with
-case insensitve filesystems.
+compile outside the App sandbox which avoids complications with
+case insensitive filesystems.
 
 [HotReloading Project](https://github.com/johnno1962/HotReloading):
 A version of InjectionIII that works just by adding this Swift Package to
@@ -157,6 +160,19 @@ to run the `injectiond` daemon version of the InjectionIII.app and you
 should be able to perform injection on a iOS or tvOS device. For more
 detail and the limitations  of this new feature, see the README of the
 [HotReloading](https://github.com/johnno1962/HotReloading) project.
+
+**Standalone Injection**: Since 4.4.*+ this is now the recommended way 
+of using injection as it contains fewer moving parts that need to be in place 
+for injection to "just work". Everything injection needs can be performed
+inside the simulator and it automatically determines which project and
+build logs to use by finding the most recently modified ".xcactivitylog" file
+in ~/Library/Developer/Xcode/DerivedData (which is just a gzip of the
+most recently built project's build log). The file watcher will watch for 
+all changes to source files in your home directory by default. As always,
+you need to add the `-Xlinker -interposable` "Other Linker Flags"
+to your project's targets and download a [binary release](https://github.com/johnno1962/InjectionIII/releases) of the app
+to make available the "iOSInjection.bundle" but no longer need to run 
+the app (though it still works as it did before if you do).
 
 ### Limitations/FAQ
 
@@ -478,4 +494,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2022/10/01 $
+$Date: 2022/11/21 $
