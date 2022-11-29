@@ -102,6 +102,7 @@
 		BBCA02621FB1312A00E45F0F /* SimpleSocket.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB67DBB31FB0CDA8000EAC8A /* SimpleSocket.mm */; };
 		BBCB31C9281677C900081CB6 /* SwiftInterpose.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCB31C8281677C700081CB6 /* SwiftInterpose.swift */; };
 		BBD0AB52263298D9003ED7B1 /* SwiftLifetime.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD0AB51263298D7003ED7B1 /* SwiftLifetime.swift */; };
+		BBD3B4FA2936552E006E7DB4 /* TupleRegex.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB2C6FD26FC9C2900E91E67 /* TupleRegex.swift */; };
 		BBE3B2E72524915A00300BF8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE3B2E62524915A00300BF8 /* AppDelegate.swift */; };
 		BBE3B2E92524916000300BF8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBE3B2E82524916000300BF8 /* Assets.xcassets */; };
 		BBE3B2EC2524916000300BF8 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBE3B2EA2524916000300BF8 /* MainMenu.xib */; };
@@ -1102,6 +1103,7 @@
 			files = (
 				BBE3B2F2252491BC00300BF8 /* SwiftEval.swift in Sources */,
 				BBE3B2E72524915A00300BF8 /* AppDelegate.swift in Sources */,
+				BBD3B4FA2936552E006E7DB4 /* TupleRegex.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
