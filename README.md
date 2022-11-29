@@ -183,7 +183,8 @@ a class or struct in the course of an injection i.e. add or rearrange properties
 non-final class or your app will likely crash. Also, see the notes below for injecting `SwiftUI` views and how they require
 type erasure.
 
-If you have a complex project including Objective-C or C dependancies, using the `-interposable` flag may provoke undefined symbols or the following error on linking:
+Before Xcode 14, it you have a complex project including Objective-C or C dependancies, 
+using the `-interposable` flag may provoke undefined symbols or the following error on linking:
 
 ```
 Can't find ordinal for imported symbol for architecture x86_64
@@ -200,8 +201,8 @@ that have the sandbox turned off. This is because the App Store version operates
 a case sensitive file system which can create problems if filenames in your project do 
 not have the identical casing as the actual filename on disk.
 
-If you inject code which calls a function with default arguments you may
-get an error starting as follows reporting an undefined symbol:
+If you inject code which calls a function with default arguments in a framework
+you may get an error starting as follows reporting an undefined symbol:
 
 ```
 💉 *** dlopen() error: dlopen(/var/folders/nh/gqmp6jxn4tn2tyhwqdcwcpkc0000gn/T/com.johnholdsworth.InjectionIII/eval101.dylib, 2): Symbol not found: _$s13TestInjection15QTNavigationRowC4text10detailText4icon6object13customization6action21accessoryButtonActionACyxGSS_AA08QTDetailG0OAA6QTIconOSgypSgySo15UITableViewCellC_AA5QTRow_AA0T5StyleptcSgyAaT_pcSgAWtcfcfA1_
@@ -274,7 +275,7 @@ app to change the scope of the file watcher as you switch between projects.
 It is possible to inject `SwiftUI` interfaces but it requires some minor
 code changes. This is because when you add elements to an interface or
 use modifiers that change their type, this changes the return type of the
-body properties' `Content` across the injection which causes a crash. 
+body property's `Content` across the injection which causes a crash. 
 To avoid this you need to erase the return type. The easiest way to do 
 this is to add the code below to your source somewhere then add the
 modifier  `.eraseToAnyView()`  at the very end of any declaration of a
@@ -283,7 +284,8 @@ view's body property that you want to inject:
 ```Swift
 #if DEBUG
 private var loadInjection: () = {
-    #if os(macOS)
+    guard objc_getClass("InjectionClient") == nil else { return }
+    #if os(macOS) || targetEnvironment(macCatalyst)
     let bundleName = "macOSInjection.bundle"
     #elseif os(tvOS)
     let bundleName = "tvOSInjection.bundle"
@@ -494,4 +496,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2022/11/21 $
+$Date: 2022/11/29 $
