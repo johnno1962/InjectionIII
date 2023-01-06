@@ -278,7 +278,7 @@ a class or struct in the course of an injection i.e. add or rearrange properties
 non-final class or your app will likely crash. Also, see the notes below for injecting `SwiftUI` views and how they require
 type erasure.
 
-Before Xcode 14, it you have a complex project including Objective-C or C dependancies, 
+Before Xcode 14, if you have a complex project including Objective-C or C dependancies, 
 using the `-interposable` flag may provoke undefined symbols or the following error on linking:
 
 ```
@@ -503,4 +503,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2022/11/30 $
+$Date: 2023/01/06 $
