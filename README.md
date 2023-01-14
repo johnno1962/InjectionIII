@@ -161,14 +161,6 @@ your project (and adding the -interposable linker flag). See the repo
 README for details. Remember not to leave this package configured 
 into your project for a release build or it will bloat your app binary!
 
-**On-Device Injection**: Instead of loading  the `iOSInjection.bundle`,
-add the [HotReloading](https://github.com/johnno1962/HotReloading)
-Swift Package to your project and add a "Build Phase" in the README 
-to run the `injectiond` daemon version of the InjectionIII.app and you
-should be able to perform injection on a iOS or tvOS device. For more
-detail and the limitations  of this new feature, see the README of the
-[HotReloading](https://github.com/johnno1962/HotReloading) project.
-
 **Standalone Injection**: Since 4.4.*+ this is now the recommended way 
 of using injection as it contains fewer moving parts that need to be in place 
 for injection to "just work". Everything injection needs can be performed
@@ -181,6 +173,18 @@ you need to add the `-Xlinker -interposable` "Other Linker Flags"
 to your project's targets and download a [binary release](https://github.com/johnno1962/InjectionIII/releases) of the app
 to make available the "iOSInjection.bundle" but no longer need to run 
 the app (though it still works as it did before if you do).
+
+**On-Device Injection**: Instead of loading  the `iOSInjection.bundle`,
+add the [HotReloading](https://github.com/johnno1962/HotReloading)
+Swift Package to your project, download one of the [github releases](https://github.com/johnno1962/InjectionIII/releases)
+and enter the following commands into your Terminal then run the app:
+
+$ rm ~/Library/Containers/com.johnholdsworth.InjectionIII/Data/Library/Preferences/com.johnholdsworth.InjectionIII.plist
+$ defaults write com.johnholdsworth.InjectionIII deviceUnlock any
+
+See the [HotReloading](https://github.com/johnno1962/HotReloading)
+project for more details about how to debug having your device connect.
+This version of injection is best described as experimental at this stage.
 
 ### SwiftUI Injection
 
@@ -503,4 +507,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2023/01/06 $
+$Date: 2023/01/14 $
