@@ -50,7 +50,7 @@ application might crash during debugging and you'll have to restart it as you wo
 had to anyway. Gaining trust in the changes you can inject builds with experience and
 with it, the amount of time you save. The `iOSInjection.bundle` is only loaded during
 development  in the simulator and cannot affect your application when it is deployed 
-into production.
+to a production device.
 
 Always remember to add `"Other Linker Flags"`, `"-Xlinker -interposable"` 
 to your project or due to details of how a method is dispatched you may
@@ -66,9 +66,17 @@ is performed on the main thread and generally reliable. A common question for ne
 users is: I injected a new version of the code, why can't I see the changes on the screen?
 To have effect, the new code needs to be actually executed and it's up to the user to use 
 either an `@objc func injected()` method or a notification to reload a view controller 
-or refresh a table view to see changes or perform some user action that forces a redisplay.
+or refresh a table view to see changes or perform some user action that forces a redisplay. For example, to force all ViewControllers in your app
+to reload when they are injected some people use this code:
 
-If you try InjectionIII and you think it doesn't work, please, please file an issue so we can
+```Swift
+extension UIViewController {
+    @objc func injected() {
+        viewDidLoad()
+    }
+}
+```
+If you try InjectionIII and you think it doesn't work, please, please open an issue so we can
 either explain what is going on, improve the documentation or try to resolve the particular 
 edge case you have encountered. The project is quite mature now and provided you're 
 holding it correctly and don't ask too much of it, it should "just work".
@@ -153,14 +161,6 @@ your project (and adding the -interposable linker flag). See the repo
 README for details. Remember not to leave this package configured 
 into your project for a release build or it will bloat your app binary!
 
-**On-Device Injection**: Instead of loading  the `iOSInjection.bundle`,
-add the [HotReloading](https://github.com/johnno1962/HotReloading)
-Swift Package to your project and add a "Build Phase" in the README 
-to run the `injectiond` daemon version of the InjectionIII.app and you
-should be able to perform injection on a iOS or tvOS device. For more
-detail and the limitations  of this new feature, see the README of the
-[HotReloading](https://github.com/johnno1962/HotReloading) project.
-
 **Standalone Injection**: Since 4.4.*+ this is now the recommended way 
 of using injection as it contains fewer moving parts that need to be in place 
 for injection to "just work". Everything injection needs can be performed
@@ -174,107 +174,24 @@ to your project's targets and download a [binary release](https://github.com/joh
 to make available the "iOSInjection.bundle" but no longer need to run 
 the app (though it still works as it did before if you do).
 
-### Limitations/FAQ
+**On-Device Injection**: Instead of loading  the `iOSInjection.bundle`,
+add the [HotReloading](https://github.com/johnno1962/HotReloading)
+Swift Package to your project, download one of the [github releases](https://github.com/johnno1962/InjectionIII/releases)
+and enter the following commands into your Terminal then run the app:
 
-New releases of InjectionIII use a [different patching technique](http://johnholdsworth.com/dyld_dynamic_interpose.html)
-than previous versions in that you can now update the implementations of class, struct and enum methods (final or not)
-provided they have not been inlined which shouldn't be the case for a debug build. You can't however alter the layout of
-a class or struct in the course of an injection i.e. add or rearrange properties with storage or add or move methods of a
-non-final class or your app will likely crash. Also, see the notes below for injecting `SwiftUI` views and how they require
-type erasure.
+$ rm ~/Library/Containers/com.johnholdsworth.InjectionIII/Data/Library/Preferences/com.johnholdsworth.InjectionIII.plist
+$ defaults write com.johnholdsworth.InjectionIII deviceUnlock any
 
-If you have a complex project including Objective-C or C dependancies, using the `-interposable` flag may provoke undefined symbols or the following error on linking:
-
-```
-Can't find ordinal for imported symbol for architecture x86_64
-```
-If this is the case, add the following additional "Other linker Flags" and it should go away.
-
-```
--Xlinker -undefined -Xlinker dynamic_lookup
-```
-
-If you have a project using extensive bridging & Objective-C it's recommended to use
-one of the [binary github releases](https://github.com/johnno1962/InjectionIII/releases)
-that have the sandbox turned off. This is because the App Store version operates in 
-a case sensitive file system which can create problems if filenames in your project do 
-not have the identical casing as the actual filename on disk.
-
-If you inject code which calls a function with default arguments you may
-get an error starting as follows reporting an undefined symbol:
-
-```
-💉 *** dlopen() error: dlopen(/var/folders/nh/gqmp6jxn4tn2tyhwqdcwcpkc0000gn/T/com.johnholdsworth.InjectionIII/eval101.dylib, 2): Symbol not found: _$s13TestInjection15QTNavigationRowC4text10detailText4icon6object13customization6action21accessoryButtonActionACyxGSS_AA08QTDetailG0OAA6QTIconOSgypSgySo15UITableViewCellC_AA5QTRow_AA0T5StyleptcSgyAaT_pcSgAWtcfcfA1_
- Referenced from: /var/folders/nh/gqmp6jxn4tn2tyhwqdcwcpkc0000gn/T/com.johnholdsworth.InjectionIII/eval101.dylib
- Expected in: flat namespace
-in /var/folders/nh/gqmp6jxn4tn2tyhwqdcwcpkc0000gn/T/com.johnholdsworth.InjectionIII/eval101.dylib ***
-```
-If you encounter this problem, restart your app and you should find this issue
-disappears due to a background task [unhide](https://github.com/johnno1962/unhide)
-which is integrated into InjectionIII.
-
-As injection needs to know how to compile Swift files individually it is not compatible with building using
-`Whole Module Optimisation`. A workaround for this is to build with `WMO` switched off so there are
-logs of individual compiles available then switching `WMO` back on if it suits your workflow better.
-
-### Resolving issues
-
-Versions > 4.1.1 of InjectionIII have the following environment variables that 
-can be added to your Xcode launch scheme to customise its behavour or to 
-get a better idea what InjectionIII is doing.
-
-**INJECTION_PRESERVE_STATICS** This allows you to decide 
-whether top level variables and static member should be re-initialised
-if they are in a file that is injected or they should retain their values.
-
-**INJECTION_DYNAMIC_CAST** This allows you to opt into a slightly 
-more speculative fix for when you dynamic cast (as? in Swift) to a type 
-which has been injected and therefore its type identifier may have changed.
-
-**INJECTION_DETAIL** Providing any value for this variable in the
-your scheme will produce detailed output of how InjectionIII is
-stitching your new implementations into your application. "Swizzling"
-is the legacy Objective-C way of rebinding symbols though the
-runtime API. "Patching" is where the "vtable" of a class is overridden
-to rebind non-final methods to their new dynamically loaded
-implementation. "Interposing" uses a low level dynamic linker
-feature to effectively re-link call sites to the newly loaded versions
-(provided the "-Xlinker -interposable" "Other Linker Flag" build 
-setting has been supplied).
-
-In order to implement the `@objc func injected()` call to your 
-class when an instance is injected, a sweep of all live objects in your
-app is performed. This has two limitations. The instance needs to be
-"seen" by a reference to a reference to a reference from an initial set 
-of seed instances e.g. appDelegate, rootViewController. Secondly,
-technically this is ambitious and can crash for some app states or
-if you use `unowned` properties.
-If you encounter this, provide a value for the environment variable
-**INJECTION_SWEEP_DETAIL** and, as it sweeps it will print the type 
-name of the object about to be swept.  If you see a crash, from version 
-3.2.2 you can exclude the type shown just before the crash using the
-**INJECTION_SWEEP_EXCLUDE** environment variable (which can 
-be a regular expression).
-
-**INJECTION_OF_GENERICS** It is possible to inject the methods
-of generic classes but this requires a "sweep" of live objects to
-find the specializations in use (as they each have their own vtables)
-so the feature has been made opt-in.
-
-**INJECTION_UNHIDE** Allows users to opt-into the legacy processing
-of defualt arguments symbols using the "unhide" which may be required
-for larger projects. Otherwise it will still occur "on demand".
-
-**INJECTION_PROJECT_ROOT** This allows you to specify the source
-root of your project in it's scheme automatiically messaging the InjectionIII
-app to change the scope of the file watcher as you switch between projects.
+See the [HotReloading](https://github.com/johnno1962/HotReloading)
+project for more details about how to debug having your device connect.
+This version of injection is best described as experimental at this stage.
 
 ### SwiftUI Injection
 
 It is possible to inject `SwiftUI` interfaces but it requires some minor
 code changes. This is because when you add elements to an interface or
 use modifiers that change their type, this changes the return type of the
-body properties' `Content` across the injection which causes a crash. 
+body property's `Content` across the injection which causes a crash. 
 To avoid this you need to erase the return type. The easiest way to do 
 this is to add the code below to your source somewhere then add the
 modifier  `.eraseToAnyView()`  at the very end of any declaration of a
@@ -283,7 +200,8 @@ view's body property that you want to inject:
 ```Swift
 #if DEBUG
 private var loadInjection: () = {
-    #if os(macOS)
+    guard objc_getClass("InjectionClient") == nil else { return }
+    #if os(macOS) || targetEnvironment(macCatalyst)
     let bundleName = "macOSInjection.bundle"
     #elseif os(tvOS)
     let bundleName = "tvOSInjection.bundle"
@@ -346,16 +264,111 @@ to add an `@ObservedObject`, initialised to the `injectionObserver` instance as 
     #endif
 ```
 You can make all these changes automatically once you've opened a project using the
-`"Prepare Project"` menu item. If you'd like to execute some code each time your interface is injected, use the 
+`"Prepare Project"` menu item of the app. If you'd like to execute some code each time your interface is injected, use the 
 `.onInjection { ... }` modifier instead of .`eraseToAnyView()`.
 As an alternative, this code is available in the
 [HotSwiftUI](https://github.com/johnno1962/HotSwiftUI)
-Swift Package though you would have to remember to load the 
-`iOSInjection.bundle` separately by using the `.loadInjection()`
-modifier on a view struct somewhere in your app. Another alternative
+Swift Package. Another alternative
 from someone who has considerably more experience in iOS development
 than I do check out the [Inject](https://github.com/krzysztofzablocki/Inject)
 Swift Package introduced by this [blog post](https://merowing.info/2022/04/hot-reloading-in-swift/).
+
+### Limitations/FAQ
+
+New releases of InjectionIII use a [different patching technique](http://johnholdsworth.com/dyld_dynamic_interpose.html)
+than previous versions in that you can now update the implementations of class, struct and enum methods (final or not)
+provided they have not been inlined which shouldn't be the case for a debug build. You can't however alter the layout of
+a class or struct in the course of an injection i.e. add or rearrange properties with storage or add or move methods of a
+non-final class or your app will likely crash. Also, see the notes below for injecting `SwiftUI` views and how they require
+type erasure.
+
+Before Xcode 14, if you have a complex project including Objective-C or C dependancies, 
+using the `-interposable` flag may provoke undefined symbols or the following error on linking:
+
+```
+Can't find ordinal for imported symbol for architecture x86_64
+```
+If this is the case, add the following additional "Other linker Flags" and it will become a warning.
+
+```
+-Xlinker -undefined -Xlinker dynamic_lookup
+```
+If you have a project using extensive bridging & Objective-C it's recommended to use
+one of the [binary github releases](https://github.com/johnno1962/InjectionIII/releases)
+that have the sandbox turned off. This is because the App Store version operates in 
+a case sensitive file system which can create problems if filenames in your project do 
+not have the identical casing as the actual filename on disk.
+
+If you inject code which calls a function with default arguments in a framework
+you may get an error starting as follows reporting an undefined symbol:
+
+```
+💉 *** dlopen() error: dlopen(/var/folders/nh/gqmp6jxn4tn2tyhwqdcwcpkc0000gn/T/com.johnholdsworth.InjectionIII/eval101.dylib, 2): Symbol not found: _$s13TestInjection15QTNavigationRowC4text10detailText4icon6object13customization6action21accessoryButtonActionACyxGSS_AA08QTDetailG0OAA6QTIconOSgypSgySo15UITableViewCellC_AA5QTRow_AA0T5StyleptcSgyAaT_pcSgAWtcfcfA1_
+ Referenced from: /var/folders/nh/gqmp6jxn4tn2tyhwqdcwcpkc0000gn/T/com.johnholdsworth.InjectionIII/eval101.dylib
+ Expected in: flat namespace
+in /var/folders/nh/gqmp6jxn4tn2tyhwqdcwcpkc0000gn/T/com.johnholdsworth.InjectionIII/eval101.dylib ***
+```
+If you encounter this problem, restart your app and you should find this issue
+disappears due to a background task [unhide](https://github.com/johnno1962/unhide)
+which is integrated into InjectionIII.
+
+As injection needs to know how to compile Swift files individually it is not compatible with building using
+`Whole Module Optimisation`. A workaround for this is to build with `WMO` switched off so there are
+logs of individual compiles available then switching `WMO` back on if it suits your workflow better.
+You may need to do this each time you open your project as Xcode is now
+far for agressive in removing old build logs.
+
+### Resolving issues
+
+Versions > 4.1.1 of InjectionIII have the following environment variables that 
+can be added to your Xcode launch scheme to customise its behavour or to 
+get a better idea what InjectionIII is doing.
+
+**INJECTION_DETAIL** Providing any value for this variable in the
+your scheme will produce detailed output of how InjectionIII is
+stitching your new implementations into your application. "Swizzling"
+is the legacy Objective-C way of rebinding symbols though the
+runtime API. "Patching" is where the "vtable" of a class is overridden
+to rebind non-final methods to their new dynamically loaded
+implementation. "Interposing" uses a low level dynamic linker
+feature to effectively re-link call sites to the newly loaded versions
+(provided the "-Xlinker -interposable" "Other Linker Flag" build 
+setting has been supplied).
+
+**INJECTION_PRESERVE_STATICS** This allows you to decide 
+whether top level variables and static member should be re-initialised
+if they are in a file that is injected or they should preserve their values.
+
+**INJECTION_DYNAMIC_CAST** This allows you to opt into a slightly 
+more speculative fix for when you dynamic cast (as? in Swift) to a type 
+which has been injected and therefore its type identifier may have changed.
+
+In order to implement the `@objc func injected()` call to your 
+class when an instance is injected, a sweep of all live objects in your
+app is performed. This has two limitations. The instance needs to be
+"seen" by a reference to a reference to a reference from an initial set 
+of seed instances e.g. appDelegate, rootViewController. Secondly,
+technically this is ambitious and can crash for some app states or
+if you use `unowned` properties.
+If you encounter this, provide a value for the environment variable
+**INJECTION_SWEEP_DETAIL** and, as it sweeps it will print the type 
+name of the object about to be swept.  If you see a crash, from version 
+3.2.2 you can exclude the type shown just before the crash using the
+**INJECTION_SWEEP_EXCLUDE** environment variable (which can 
+be a regular expression).
+
+**INJECTION_OF_GENERICS** It is possible to inject the methods
+of generic classes but this requires a "sweep" of live objects to
+find the specializations in use (as they each have their own vtables)
+so the feature has been made opt-in.
+
+**INJECTION_UNHIDE** Allows users to opt-into the legacy processing
+of defualt arguments symbols using the "unhide" which may be required
+for larger projects. Otherwise it will still occur "on demand".
+
+**INJECTION_PROJECT_ROOT** This allows you to specify the source
+root of your project in it's scheme automatiically messaging the InjectionIII
+app to change the scope of the file watcher as you switch between projects.
 
 ### InjectionIII and "The Composable Architecture"
 
@@ -494,4 +507,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2022/11/21 $
+$Date: 2023/01/14 $
