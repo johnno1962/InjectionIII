@@ -24,7 +24,7 @@ When the InjectionIII.app is not running, the bundle will fall back to using
 the  "standalone" implementation of injection from the HotReloading
 project watching for file changes in your home directory and using the 
 logs of your last built project determined by the FileWatcher. Skip to
-the notes on "Standalone Injection" below.
+the notes on ["Standalone Injection"](#standalone-injection) below.
 
 This README includes descriptions of some newer features that are only available in more recent
 releases of the InjectionIII.app [available on github](https://github.com/johnno1962/InjectionIII/releases).
@@ -160,6 +160,8 @@ A version of InjectionIII that works just by adding this Swift Package to
 your project (and adding the -interposable linker flag). See the repo
 README for details. Remember not to leave this package configured 
 into your project for a release build or it will bloat your app binary!
+
+<a id="standalone-injection" />
 
 **Standalone Injection**: Since 4.4.*+ this is now the recommended way 
 of using injection as it contains fewer moving parts that need to be in place 
