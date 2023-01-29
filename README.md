@@ -1,6 +1,6 @@
 # InjectionIII - overdue Swift rewrite of InjectionForXcode 
 
-Chinese language README & Tutorial:  [中文集成指南](https://github.com/johnno1962/InjectionIII/blob/main/README_Chinese.md)，[掘金教程](https://juejin.cn/post/6990285526901522463)
+Chinese language README:  [中文集成指南](https://github.com/johnno1962/InjectionIII/blob/main/README_Chinese.md)
 
 ![Icon](http://johnholdsworth.com/Syringe_128.png)
 
@@ -24,7 +24,7 @@ When the InjectionIII.app is not running, the bundle will fall back to using
 the  "standalone" implementation of injection from the HotReloading
 project watching for file changes in your home directory and using the 
 logs of your last built project determined by the FileWatcher. Skip to
-the notes on "Standalone Injection" below.
+the notes on ["Standalone Injection"](#standalone-injection) below.
 
 This README includes descriptions of some newer features that are only available in more recent
 releases of the InjectionIII.app [available on github](https://github.com/johnno1962/InjectionIII/releases).
@@ -161,6 +161,8 @@ your project (and adding the -interposable linker flag). See the repo
 README for details. Remember not to leave this package configured 
 into your project for a release build or it will bloat your app binary!
 
+<a id="standalone-injection" />
+
 **Standalone Injection**: Since 4.4.*+ this is now the recommended way 
 of using injection as it contains fewer moving parts that need to be in place 
 for injection to "just work". Everything injection needs can be performed
@@ -180,6 +182,7 @@ Swift Package to your project, download one of the [github releases](https://git
 and enter the following commands into your Terminal then run the app:
 
 $ rm ~/Library/Containers/com.johnholdsworth.InjectionIII/Data/Library/Preferences/com.johnholdsworth.InjectionIII.plist
+
 $ defaults write com.johnholdsworth.InjectionIII deviceUnlock any
 
 See the [HotReloading](https://github.com/johnno1962/HotReloading)
@@ -507,4 +510,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2023/01/14 $
+$Date: 2023/01/29 $
