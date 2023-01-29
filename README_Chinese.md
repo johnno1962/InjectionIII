@@ -6,7 +6,7 @@
 而且 [AppStore](https://apps.apple.com/cn/app/injectioniii/id1380446739) 也有发布。
 目前已经更新支持 Xcode 13 和 iOS 15。
 
-**最新消息：** 自从 4.4.0+ 版本开始，针对 iOS/tvOS 14+ 使用 InjectionIII 时，可以不用运行 InjectionIII 了，只需要在代码中集成加载 `injection bundles` 的代码就可以了。目前为止，这是最简单的使用 InjectionIII 的方式，而且不需要手动选择项目的文件夹目录。当 InjectionIII.app 没有运行时，bundle 将回退使用 HotReloading 的 `standalone` 的实现方式，监视主目录中的文件更改，并使用由 File Watcher 确定的上次构建项目的构建日志。跳转 [Standalone Injection](#) 查看更多。
+**最新消息：** 自从 4.4.0+ 版本开始，针对 iOS/tvOS 14+ 使用 InjectionIII 时，可以不用运行 InjectionIII 了，只需要在代码中集成加载 `injection bundles` 的代码就可以了。目前为止，这是最简单的使用 InjectionIII 的方式，而且不需要手动选择项目的文件夹目录。当 InjectionIII.app 没有运行时，bundle 将回退使用 HotReloading 的 `standalone` 的实现方式，监视主目录中的文件更改，并使用由 File Watcher 确定的上次构建项目的构建日志。跳转 [Standalone Injection](#standalone-injection) 查看更多。
 
 ## 使用方法
 
