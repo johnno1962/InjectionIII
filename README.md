@@ -1,6 +1,6 @@
 # InjectionIII - overdue Swift rewrite of InjectionForXcode 
 
-Chinese language README & Tutorial:  [中文集成指南](https://github.com/johnno1962/InjectionIII/blob/main/README_Chinese.md)，[掘金教程](https://juejin.cn/post/6990285526901522463)
+Chinese language README:  [中文集成指南](https://github.com/johnno1962/InjectionIII/blob/main/README_Chinese.md)
 
 ![Icon](http://johnholdsworth.com/Syringe_128.png)
 

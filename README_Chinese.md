@@ -1,10 +1,12 @@
 
 # Injection
 
-支持 OC、Swift 以及 Swift 和 OC 混编项目的 UI 热重载工具，采取在**模拟器**(真机不支持)注入方式实现 UI 热重载，修改完 UI 直接 `cmd + s`，不用重新编译运行就能看到 UI 效果，堪称神器。👉🏻 [Github](https://github.com/johnno1962/InjectionIII) 👈🏻
+支持 OC、Swift 以及 Swift 和 OC 混编项目的 UI 热重载工具，采取在**模拟器**(真机不支持)注入方式实现 UI 热重载，修改完 UI 直接 `cmd + s`，不用重新编译运行就能看到 UI 效果。👉🏻 [Github](https://github.com/johnno1962/InjectionIII) 👈🏻
 
 而且 [AppStore](https://apps.apple.com/cn/app/injectioniii/id1380446739) 也有发布。
 目前已经更新支持 Xcode 13 和 iOS 15。
+
+**最新消息：** 自从 4.4.0+ 版本开始，针对 iOS/tvOS 14+ 使用 InjectionIII 时，可以不用运行 InjectionIII 了，只需要在代码中集成加载 `injection bundles` 的代码就可以了。目前为止，这是最简单的使用 InjectionIII 的方式，而且不需要手动选择项目的文件夹目录。当 InjectionIII.app 没有运行时，bundle 将回退使用 HotReloading 的 `standalone` 的实现方式，监视主目录中的文件更改，并使用由 File Watcher 确定的上次构建项目的构建日志。跳转 [Standalone Injection](#) 查看更多。
 
 ## 使用方法
 
@@ -85,6 +87,14 @@ ps：当你的项目使用 unowned 时，项目都配置完成并没有报错，
 ```swift
 NotificationCenter.default.addObserver(self, selector:#selector(hotReloadingUI), name: Notification.Name("INJECTION_BUNDLE_NOTIFICATION"), object: nil)
 ```
+
+## 使用 InjectionIII 的变化：
+
+### Standalone Injection
+
+自从 4.4.* 版本，这是推荐的使用方式，因为它需要更少的步骤就能“正常工作”。所有 Injection 需要的都会在模拟器内执行，它通过 `~/Library/Developer/Xcode/DerivedData` 目录中最近修改的“.wcactivitylog”文件（最近一次构建项目的构建日志的 gzip 压缩文件）自动确定使用哪个项目和构建日志。默认情况下，File Watcher 会监视 home 主目录中源文件的所有更改。
+
+与之前一样，你需要在你项目 `target` 中的 `Other Linker Flags` 添加 `-Xlinker -interposable` 标识符，并且下载 [release 版 InjectionIII](https://github.com/johnno1962/InjectionIII/releases) app 来使得代码中的 `iOSInjection.bundle` 可访问，但是 **不需要单独运行** InjectionIII App（如果你运行了，也能像之前一样工作）。
 
 ## 更多设置
 
