@@ -178,7 +178,7 @@ the app (though it still works as it did before if you do).
 
 **On-Device Injection**: Instead of loading  the `iOSInjection.bundle`,
 add the [HotReloading](https://github.com/johnno1962/HotReloading)
-Swift Package to your project, download one of the [github releases](https://github.com/johnno1962/InjectionIII/releases)
+Swift Package to your project, use one of the most recent 4.6.0+ [github releases](https://github.com/johnno1962/InjectionIII/releases)
 and enter the following commands into your Terminal then run the app:
 
 $ rm ~/Library/Containers/com.johnholdsworth.InjectionIII/Data/Library/Preferences/com.johnholdsworth.InjectionIII.plist
@@ -187,7 +187,6 @@ $ defaults write com.johnholdsworth.InjectionIII deviceUnlock any
 
 See the [HotReloading](https://github.com/johnno1962/HotReloading)
 project for more details about how to debug having your device connect.
-This version of injection is best described as experimental at this stage.
 
 ### SwiftUI Injection
 
