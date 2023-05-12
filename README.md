@@ -281,7 +281,7 @@ New releases of InjectionIII use a [different patching technique](http://johnhol
 than previous versions in that you can now update the implementations of class, struct and enum methods (final or not)
 provided they have not been inlined which shouldn't be the case for a debug build. You can't however alter the layout of
 a class or struct in the course of an injection i.e. add or rearrange properties with storage or add or move methods of a
-non-final class or your app will likely crash. Also, see the notes below for injecting `SwiftUI` views and how they require
+non-final class or your app will likely crash. Also, see the notes above for injecting `SwiftUI` views and how they require
 type erasure.
 
 Before Xcode 14, if you have a complex project including Objective-C or C dependancies, 
@@ -509,4 +509,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2023/01/29 $
+$Date: 2023/05/12 $
