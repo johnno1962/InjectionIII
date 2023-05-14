@@ -188,6 +188,13 @@ $ defaults write com.johnholdsworth.InjectionIII deviceUnlock any
 See the [HotReloading](https://github.com/johnno1962/HotReloading)
 project for more details about how to debug having your device connect.
 
+[InjectionLite Swift Package](https://github.com/johnno1962/InjectionLite):
+This is the nucleus of a new implementation of injection for the
+simulator only with all the cruft that had accumulated over the 
+years removed. If you're intested in how injection works this is 
+by far the easiest starting point and can be considered a reference 
+implementation of almost all of the InjectionIII functionality.
+
 ### SwiftUI Injection
 
 It is possible to inject `SwiftUI` interfaces but it requires some minor
@@ -509,4 +516,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2023/05/12 $
+$Date: 2023/05/14 $
