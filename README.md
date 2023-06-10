@@ -166,15 +166,19 @@ the best source is either my book [Swift Secrets](http://books.apple.com/us/book
 in the [InjectionLite](https://github.com/johnno1962/InjectionLite) 
 Swift Package. For more information about "interposing" consult [this
 blog post](https://www.mikeash.com/pyblog/friday-qa-2012-11-09-dyld-dynamic-linking-on-os-x.html) or the README of the [fishhook project](https://github.com/facebook/fishhook). For more information about the
-organisation of the app itself, consult [ROADMAP.md](ROADMAP.md).
+organisation of the app itself, consult [ROADMAP.md](https://github.com/johnno1962/InjectionIII/blob/main/ROADMAP.md).
 
 ### Further information
 
-Consult the [old README](OLDME.md) which if anything contained 
+Consult the [old README](https://github.com/johnno1962/InjectionIII/blob/main/OLDME.md) which if anything contained 
 simply "too much information" including the various environemt
-variables you can use for customisation. The first among these
-is `INJECTION_DETAIL` which prints verbose information about 
-the actions the code is performing.
+variables you can use for customisation. A few examples:
+
+| Environment var. | Purpose |
+| ------------- | ------------- |
+| **INJECTION_DETAIL** | Verbose output of all actions performed |
+| **INJECTION_TRACE** | Log calls to injected functions (v4.6.6+) |
+| **INJECTION_HOST** | Mac's IP address for on-device injection |
 
 ### Acknowledgements:
 
@@ -202,4 +206,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2023/06/09 $
+$Date: 2023/06/11 $
