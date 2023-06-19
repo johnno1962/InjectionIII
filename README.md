@@ -13,13 +13,15 @@ not just saved to disk but into your running program directly.
 
 ### How to use it
 
-Setting up your projects to use injection is now as simple as
-downloading one of the [github releases](https://github.com/johnno1962/InjectionIII/releases) of the app or from the [Mac App Store](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12) and adding 
-the code below somewhere in your app to be executed on startup (it
-is no longer necessary to actually run the app itself). It's also
+Setting up your projects to use injection is now as simple as downloading
+one of the [github
+releases](https://github.com/johnno1962/InjectionIII/releases) of the app 
+or from the [Mac App Store](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12) 
+and adding the code below somewhere in your app to be executed on
+startup (it is no longer necessary to actually run the app itself). It's also
 important to add "-Xlinker -interposable" (without the double quotes) 
-to the "Other Linker Flags" of all targets in your project (for 
-the `Debug` configuration only) to enable "interposing" (see below).
+to the "Other Linker Flags" of all targets in your project (for the `Debug` 
+configuration only) to enable "interposing" (see the explanation below).
 
 ```Swift
 #if DEBUG
@@ -31,14 +33,14 @@ Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/macOSInjection.b
 #endif
 ```
 After that, when you run your app in the simulator you should see a 
-message saying a file watcher has started for your home directory. 
-Whenever you save a source file in the current project it should 
+message saying a file watcher has started for your home directory 
+and, whenever you save a source file in the current project it should 
 report it has been injected. This means all places that formerly 
-called the old implementation will have been updated to call your 
+called the old implementation will have been updated to call the 
 latest version of your code.
 
-It's not quite as simple as that to see results on the screen
-immediately as the new code needs to have actually been called.
+It's not quite as simple as that as to see results on the screen
+immediately the new code needs to have actually been called.
 For example, if you inject a view controller it needs to force a
 redisplay. To resolve this problem, classes can implement an 
 `@objc func injected()` method which will be called after the 
@@ -84,8 +86,10 @@ observes when an injection has occurred:
 This property wrapper is available in either the 
 [HotSwiftUI](https://github.com/johnno1962/HotSwiftUI) or
 [Inject](https://github.com/krzysztofzablocki/Inject)
-Swift Package. You can use one of the following to make 
-these packages available throughout your project:
+Swift Package. It essentially contains an `@Published` 
+integer your views observe that increments with each 
+injection. You can use one of the following to make one
+of these packages available throughout your project:
 
 ```
 @_exported import HotSwiftUI
@@ -112,19 +116,20 @@ always look like this:
     @ObserveInjection var redraw
 ```
 You can leave these modifications in your production code as, 
-for a release build they optimise out to a no-op.
+for a `Release` build they optimise out to a no-op.
 
 ### On-device injection
 
-This can work but you will need to actually run the InjectionIII.app,
-set a user default to opt-in and, instead of loading the injection
-bundles as shown above you add the 
+This can work but you will need to actually run one of the [github 
+releases](https://github.com/johnno1962/InjectionIII/releases) 
+of the InjectionIII.app, set a user default to opt-in and, instead 
+of loading the injection bundles as shown above you add the 
 [HotReloading](https://github.com/johnno1962/HotReloading) 
 Swift Package to your target _during development_.
 See the README for that project for details on how to debug 
-having your program connect to the app. You will also need to 
-select the project directory for the file watcher manually from
-the menu bar.
+having your program connect to the InjectionIII.app (which
+runs on the menu bar). You will also need to select the project 
+directory for the file watcher manually from the popdown menu.
 
 _Remember to not release your app with the HotReloading package included!_
 
@@ -147,8 +152,8 @@ however, an additional level of indirection is added where it finds
 the address of all functions being called through a section of 
 writable memory. Using the operating system's ability to load 
 executable code and the [fishhook](https://github.com/facebook/fishhook) 
-library to rebind it is therefore possible to "interpose" new
-implementations of any function and effectively stitch 
+library to "rebind" the call it is therefore possible to "interpose"
+new implementations of any function and effectively stitch 
 them into the rest of your program at runtime. From that point it will 
 perform as if the new code had been built into the program. 
 
@@ -158,20 +163,22 @@ recompile it and links a dynamic library that can be loaded into your
 program. Runtime support for injection then loads the dynamic library 
 and scans it for the function definitions it contains which it then
 "interposes" into the rest of the program. This isn't the full story as
-the dispatch of non-final class methods uses a "vtable" (like C++ virtual methods) which also has to be updated but the project looks after
-that along with any legacy Objective-C "swizzling".
+the dispatch of non-final class methods uses a "vtable" (think C++ 
+virtual methods) which also has to be updated but the project looks 
+after that along with any legacy Objective-C "swizzling".
 
 If you are interested knowing more about how injection works
 the best source is either my book [Swift Secrets](http://books.apple.com/us/book/id1551005489) or the new, start-over reference implementation
 in the [InjectionLite](https://github.com/johnno1962/InjectionLite) 
 Swift Package. For more information about "interposing" consult [this
-blog post](https://www.mikeash.com/pyblog/friday-qa-2012-11-09-dyld-dynamic-linking-on-os-x.html) or the README of the [fishhook project](https://github.com/facebook/fishhook). For more information about the
-organisation of the app itself, consult [ROADMAP.md](https://github.com/johnno1962/InjectionIII/blob/main/ROADMAP.md).
+blog post](https://www.mikeash.com/pyblog/friday-qa-2012-11-09-dyld-dynamic-linking-on-os-x.html) 
+or the README of the [fishhook project](https://github.com/facebook/fishhook). 
+For more information about the organisation of the app itself, consult [ROADMAP.md](https://github.com/johnno1962/InjectionIII/blob/main/ROADMAP.md).
 
 ### Further information
 
 Consult the [old README](https://github.com/johnno1962/InjectionIII/blob/main/OLDME.md) which if anything contained 
-simply "too much information" including the various environemt
+simply "too much information" including the various enviroment
 variables you can use for customisation. A few examples:
 
 | Environment var. | Purpose |
@@ -179,6 +186,10 @@ variables you can use for customisation. A few examples:
 | **INJECTION_DETAIL** | Verbose output of all actions performed |
 | **INJECTION_TRACE** | Log calls to injected functions (v4.6.6+) |
 | **INJECTION_HOST** | Mac's IP address for on-device injection |
+
+With an **INJECTION_TRACE** environment variable, injecting 
+any file will add logging of all calls to functions and methods in
+the file along with their argument values as an aid to debugging.
 
 ### Acknowledgements:
 
@@ -206,4 +217,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2023/06/11 $
+$Date: 2023/06/19 $
