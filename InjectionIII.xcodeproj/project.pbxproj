@@ -30,8 +30,6 @@
 		BB4EC3FC244FA3C40079E244 /* RMDeviceController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4EC3F8244FA3C30079E244 /* RMDeviceController.m */; };
 		BB4EC3FD244FA3C40079E244 /* RMImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4EC3F9244FA3C40079E244 /* RMImageView.m */; };
 		BB4EC3FE244FA3C40079E244 /* RMWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4EC3FA244FA3C40079E244 /* RMWindowController.m */; };
-		BB53B642244FC08F00F006E3 /* RemoteCapture.h in Resources */ = {isa = PBXBuildFile; fileRef = BB4EC3FF244FA42A0079E244 /* RemoteCapture.h */; };
-		BB53B648244FC32C00F006E3 /* RemoteHeaders.h in Resources */ = {isa = PBXBuildFile; fileRef = BB53B647244FC2F800F006E3 /* RemoteHeaders.h */; };
 		BB56393C1FD5C25A002FFCEF /* SignerService.m in Sources */ = {isa = PBXBuildFile; fileRef = BB67DBB61FB0D0F2000EAC8A /* SignerService.m */; };
 		BB6306FE1FCD1A410021D30C /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = BB6306FD1FCD1A410021D30C /* Credits.rtf */; };
 		BB6446202545831400A83098 /* StringIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB64461F2545831200A83098 /* StringIndex.swift */; };
@@ -896,8 +894,6 @@
 				BB1EBC50258EA273001F2AA4 /* fishhook.h in Resources */,
 				BB1A840A25227535003873C3 /* SwiftTrace.h in Resources */,
 				BB1A84072522703C003873C3 /* macOSInjection.bundle in Resources */,
-				BB53B648244FC32C00F006E3 /* RemoteHeaders.h in Resources */,
-				BB53B642244FC08F00F006E3 /* RemoteCapture.h in Resources */,
 				BBB64FDE1FD5744A0020BE47 /* XprobeConsole.xib in Resources */,
 				BBB64FDF1FD5744A0020BE47 /* XprobePluginMenuController.xib in Resources */,
 				BBB64DDC1FD570220020BE47 /* graph-xdot.gv in Resources */,
