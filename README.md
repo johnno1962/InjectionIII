@@ -191,6 +191,11 @@ With an **INJECTION_TRACE** environment variable, injecting
 any file will add logging of all calls to functions and methods in
 the file along with their argument values as an aid to debugging.
 
+A little known feature of InjectionIII is that provided you have 
+run the tests for your app at some point you can inject an 
+individual XCTest class and have if run immediately – 
+reporting if it has failed each time you modify it.
+
 ### Acknowledgements:
 
 This project includes code from [rentzsch/mach_inject](https://github.com/rentzsch/mach_inject),
@@ -217,4 +222,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2023/06/19 $
+$Date: 2023/09/26 $
