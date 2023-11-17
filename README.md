@@ -129,7 +129,7 @@ Swift Package to your target _during development_.
 See the README for that project for details on how to debug 
 having your program connect to the InjectionIII.app (which
 runs on the menu bar). You will also need to select the project 
-directory for the file watcher manually from the popdown menu.
+directory for the file watcher manually from the pop-down menu.
 
 _Remember to not release your app with the HotReloading package included!_
 
@@ -175,10 +175,48 @@ blog post](https://www.mikeash.com/pyblog/friday-qa-2012-11-09-dyld-dynamic-link
 or the README of the [fishhook project](https://github.com/facebook/fishhook). 
 For more information about the organisation of the app itself, consult [ROADMAP.md](https://github.com/johnno1962/InjectionIII/blob/main/ROADMAP.md).
 
+### A bit of terminology
+
+Getting injection to work has three components. A FileWatcher, the code to
+recompile any changed files and build a dynamic library that can be loaded 
+and the injection code itself which stitches the new versions of your code
+into the app while it's running. How these three components are combined
+gives rise to the number of ways injection can be used.
+
+"Injection classic" is where you download one of the [binary releases](https://github.com/johnno1962/InjectionIII/releases)
+from github and run the InjectionIII.app. You then load one of the bundles
+inside that app into your program as shown above in the simulator. 
+In this configuration, the file watcher and source recompiling is done 
+inside the app and the bundle connects to the app using a socket to 
+know when a new dynamic library is ready to be loaded.
+
+"App Store injection" This version of the app is sandboxed and while
+the file watcher still runs inside the app, the recompiling and loading
+is delegated to be performed inside the simulator. This can create 
+problems with C header files as the simulator uses a case sensitive 
+file system to be a faithful simulation of a real device.
+
+"HotReloading injection" is where you are running your app on a device
+and because you cannot load a bundle off your Mac's filesystem on a real 
+phone you add the [HotReloading Swift Package](https://github.com/johnno1962/HotReloading)
+to your project (during development only!) which contains all the code that
+would normally be in the bundle to perform the dynamic loading. This 
+requires that you use one of the un-sandboxed binary releases.
+
+"Standalone injection". This was the most recent evolution of the project 
+where you don't run the app itself anymore but simply load one of the 
+injection bundles and the file watcher, re-compilation and injection are 
+all performed inside the simulator. By default this watches for changes 
+to any Swift file inside your home directory though you can change this
+using the environment variable `INJECTION_DIRECTORIES`.
+
+All these variations require you to add the "-Xlinker -interposble" linker flags 
+for a Debug build or you will only be able to inject non-final methods of classes.
+
 ### Further information
 
 Consult the [old README](https://github.com/johnno1962/InjectionIII/blob/main/OLDME.md) which if anything contained 
-simply "too much information" including the various enviroment
+simply "too much information" including the various environment
 variables you can use for customisation. A few examples:
 
 | Environment var. | Purpose |
@@ -222,4 +260,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2023/10/08 $
+$Date: 2023/11/17 $
