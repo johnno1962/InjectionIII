@@ -122,10 +122,24 @@ for a `Release` build they optimise out to a no-op.
 
 This can work but you will need to actually run one of the [github 
 releases](https://github.com/johnno1962/InjectionIII/releases) 
-of the InjectionIII.app, set a user default to opt-in and, instead 
-of loading the injection bundles as shown above you add the 
-[HotReloading](https://github.com/johnno1962/HotReloading) 
-Swift Package to your target _during development_.
+of the InjectionIII.app, set a user default to opt-in and restart the app.
+
+```
+$ defaults write com.johnholdsworth.InjectionIII deviceUnlock any
+```
+Then, instead of loading the injection bundles run this script in a build phase:
+
+```
+/Applications/InjectionIII.app/Contents/Resources/copy_bundle.sh
+```
+and, in your application execute the following code on startup:
+
+```
+    if let path = Bundle.main.path(forResource:
+        "iOSInjection", ofType: "bundle") {
+        Bundle(path: path)!.load()
+    }
+```
 See the README for that project for details on how to debug 
 having your program connect to the InjectionIII.app (which
 runs on the menu bar). You will also need to select the project 
@@ -260,4 +274,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2023/11/17 $
+$Date: 2023/11/27 $
