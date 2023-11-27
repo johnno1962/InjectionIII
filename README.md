@@ -140,7 +140,7 @@ and, in your application execute the following code on startup:
         Bundle(path: path)!.load()
     }
 ```
-See the README for that project for details on how to debug 
+See the [HotReloading project README](https://github.com/johnno1962/HotReloading) for details on how to debug 
 having your program connect to the InjectionIII.app (which
 runs on the menu bar). You will also need to select the project 
 directory for the file watcher manually from the pop-down menu.

@@ -8,7 +8,11 @@
 #
 if [ "$CONFIGURATION" == "Debug" ]; then
     RESOURCES="$(dirname "$0")"
-    BUNDLE=${1:-maciOSInjection}
+    if [ "$PLATFORM_NAME" == "iphonesimulator" ]; then
+     BUNDLE=${1:-iOSInjection}
+    else
+     BUNDLE=${1:-maciOSInjection}
+    fi
     COPY="$CODESIGNING_FOLDER_PATH/iOSInjection.bundle"
     rsync -a "$RESOURCES/$BUNDLE.bundle"/* "$COPY/" &&
     /usr/libexec/PlistBuddy -c "Add :UserHome string $HOME"  "$COPY/Info.plist" &&
