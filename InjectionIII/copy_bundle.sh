@@ -6,7 +6,7 @@
 #  Copies injection bundle for on-device injection.
 #  Thanks @oryonatan
 #
-#  $Id: //depot/ResidentEval/InjectionIII/copy_bundle.sh#4 $
+#  $Id: //depot/ResidentEval/InjectionIII/copy_bundle.sh#5 $
 #
 
 if [ "$CONFIGURATION" == "Debug" ]; then
@@ -21,10 +21,10 @@ if [ "$CONFIGURATION" == "Debug" ]; then
      PLIST="$COPY/Contents/Info.plist"
     elif [ "$PLATFORM_NAME" == "appletvsimulator" ]; then
      BUNDLE=${1:-tvOSInjection}
-    elif [ "$PLATFORM_NAME" == "iphonesimulator" ]; then
-     BUNDLE=${1:-iOSInjection}
-    else
+    elif [ "$PLATFORM_NAME" == "iphoneos" ]; then
      BUNDLE=${1:-maciOSInjection}
+    else
+     BUNDLE=${1:-iOSInjection}
     fi
     rsync -a "$RESOURCES/$BUNDLE.bundle"/* "$COPY/" &&
     /usr/libexec/PlistBuddy -c "Add :UserHome string $HOME" "$PLIST" &&
