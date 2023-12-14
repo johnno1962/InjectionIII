@@ -130,7 +130,10 @@ $ defaults write com.johnholdsworth.InjectionIII deviceUnlock any
 Then, instead of loading the injection bundles run this script in a "Build Phase":
 
 ```
-/Applications/InjectionIII.app/Contents/Resources/copy_bundle.sh
+RESOURCES=/Applications/InjectionIII.app/Contents/Resources
+if [ -f "$RESOURCES/copy_bundle.sh" ]; then
+    "$RESOURCES/copy_bundle.sh"
+fi
 ```
 and, in your application execute the following code on startup:
 
@@ -144,9 +147,11 @@ and, in your application execute the following code on startup:
     }
     #endif
 ```
-See the [HotReloading project README](https://github.com/johnno1962/HotReloading) for details on how to debug 
-having your program connect to the InjectionIII.app (which
-runs on the menu bar). You will also need to select the project 
+Once you have switched to this configuaration it will also
+work when using the simulator. Consult the README of the
+[HotReloading project](https://github.com/johnno1962/HotReloading) 
+for details on how to debug having your program connect to the 
+InjectionIII.app over Wi-Fi. You will also need to select the project 
 directory for the file watcher manually from the pop-down menu.
 
 ### Injection on macOS
@@ -277,4 +282,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2023/12/07 $
+$Date: 2023/12/14 $
