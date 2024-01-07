@@ -18,10 +18,7 @@ one of the [github
 releases](https://github.com/johnno1962/InjectionIII/releases) of the app 
 or from the [Mac App Store](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12) 
 and adding the code below somewhere in your app to be executed on
-startup (it is no longer necessary to actually run the app itself). It's also
-important to add the options `-Xlinker` and `-interposable` (without double quotes 
-and on separate lines) to the "Other Linker Flags" of all targets in your project 
-(for the `Debug` configuration only) to enable "interposing" (see the explanation below).
+startup (it is no longer necessary to actually run the app itself).
 
 ```Swift
 #if DEBUG
@@ -32,6 +29,12 @@ Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/tvOSInjection.bu
 Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/macOSInjection.bundle")?.load()
 #endif
 ```
+ It's also important to add the options `-Xlinker` and `-interposable` (without double
+ quotes and on separate lines) to the "Other Linker Flags" of targets in your project 
+(for the `Debug` configuration only) to enable "interposing" (see the explanation below).
+
+![Icon](interposable.png)
+
 After that, when you run your app in the simulator you should see a 
 message saying a file watcher has started for your home directory 
 and, whenever you save a source file in the current project it should 
