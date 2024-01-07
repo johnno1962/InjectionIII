@@ -19,9 +19,9 @@ releases](https://github.com/johnno1962/InjectionIII/releases) of the app
 or from the [Mac App Store](https://itunes.apple.com/app/injectioniii/id1380446739?mt=12) 
 and adding the code below somewhere in your app to be executed on
 startup (it is no longer necessary to actually run the app itself). It's also
-important to add "-Xlinker -interposable" (without the double quotes and on separate
-lines) to the "Other Linker Flags" of all targets in your project (for the `Debug`
-configuration only) to enable "interposing" (see the explanation below).
+important to add the options `-Xlinker` and `-interposable` (without double quotes 
+and on separate lines) to the "Other Linker Flags" of all targets in your project 
+(for the `Debug` configuration only) to enable "interposing" (see the explanation below).
 
 ```Swift
 #if DEBUG
@@ -282,4 +282,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2023/12/14 $
+$Date: 2024/01/07 $
