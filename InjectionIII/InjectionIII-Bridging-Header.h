@@ -5,7 +5,6 @@
 #import <Carbon/Carbon.h>
 #import <AppKit/NSEvent.h>
 
-#import "Xcode.h"
 #import "XcodeHash.h"
 #import "UserDefaults.h"
 #import "SimpleSocket.h"
