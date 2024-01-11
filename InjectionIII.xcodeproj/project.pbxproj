@@ -321,7 +321,7 @@
 		BBEB704A1FD28C6F00127711 /* XcodeHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XcodeHash.h; sourceTree = "<group>"; };
 		BBEB704B1FD28C6F00127711 /* XcodeHash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XcodeHash.m; sourceTree = "<group>"; };
 		BBF3D62A2851E6DC0070356F /* ReducerInjection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReducerInjection.swift; path = HotReloading/Sources/HotReloading/ReducerInjection.swift; sourceTree = SOURCE_ROOT; };
-		BBFE27E92B148E7400E47E61 /* copy_bundle.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = copy_bundle.sh; sourceTree = "<group>"; };
+		BBFE27E92B148E7400E47E61 /* copy_bundle.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = copy_bundle.sh; path = ../HotReloading/copy_bundle.sh; sourceTree = "<group>"; };
 		BD35949D21A6C5DE0020EB94 /* Vaccine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Vaccine.swift; path = ../HotReloading/Sources/HotReloading/Vaccine.swift; sourceTree = "<group>"; };
 		BDB6A7CE21824C800001CF95 /* UserDefaults.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UserDefaults.h; path = ../HotReloading/Sources/HotReloadingGuts/include/UserDefaults.h; sourceTree = "<group>"; };
 		CEC17029253ED117002E823F /* Experimental.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Experimental.swift; path = ../HotReloading/Sources/injectiond/Experimental.swift; sourceTree = "<group>"; };
@@ -1477,7 +1477,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 4.8.0;
+				MARKETING_VERSION = 4.8.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1501,7 +1501,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 4.8.0;
+				MARKETING_VERSION = 4.8.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1521,6 +1521,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = InjectionBundle/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks @loader_path/../Frameworks";
 				MACH_O_TYPE = mh_dylib;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
@@ -1531,6 +1532,7 @@
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "InjectionBundle/XprobeSwift-Bridging-Header.h";
+				TVOS_DEPLOYMENT_TARGET = 13.0;
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Debug;
@@ -1545,6 +1547,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = InjectionBundle/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks @loader_path/../Frameworks";
 				MACH_O_TYPE = mh_dylib;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
@@ -1555,6 +1558,7 @@
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "InjectionBundle/XprobeSwift-Bridging-Header.h";
+				TVOS_DEPLOYMENT_TARGET = 13.0;
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Release;
