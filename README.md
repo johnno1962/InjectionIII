@@ -72,12 +72,12 @@ you cannot add, remove or reorder properties with storage.
 For non-final classes this also applies to adding
 or removing methods as the `vtable` used for dispatch is 
 itself a data structure which must not change over injection.
-As mentioned above, Injection can't work out on its own what 
-pieces of new code need to be re-executed to update the display.
-Injection also can't see new files you've added to your project
-unles you've done a conventional build using Xcode at some 
-point to update the logs that injection uses to find how to build 
-a source file. This also applies when removing files.
+Injection also can't work out what pieces of code need to
+be re-executed to update the display as discussed above.
+Finally, Injection doesn't cope well with source files being
+added/renamed/deleted during injection. You will need to
+build and relaunch your app or even close and reopen
+your project to clear out old Xcode build logs.
 
 ### Injection of SwiftUI
 
@@ -289,4 +289,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2024/01/07 $
+$Date: 2024/01/11 $
