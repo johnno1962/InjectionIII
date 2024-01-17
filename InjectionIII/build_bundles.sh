@@ -6,7 +6,7 @@
 #  Created by John Holdsworth on 04/10/2019.
 #  Copyright © 2019 John Holdsworth. All rights reserved.
 #
-#  $Id: //depot/ResidentEval/InjectionIII/build_bundles.sh#82 $
+#  $Id: //depot/ResidentEval/InjectionIII/build_bundles.sh#83 $
 #
 
 # Injection has to assume a fixed path for Xcode.app as it uses
@@ -47,6 +47,7 @@ build_bundle tvOS AppleTVSimulator appletvsimulator &&
 
 # iphoneos on M1 mac (requires Sandbox switched off)
 build_bundle maciOS iPhoneOS iphoneos &&
+build_bundle xrOS XRSimulator xrsimulator &&
 
 # CWE-22 / CVE-2023-26111 with node-static (npm) <= 0.7.11 (not used)
 rm "$CODESIGNING_FOLDER_PATH/Contents/Resources/CodeMirror/package.json" &&
@@ -64,6 +65,6 @@ for thing in Modules Resources Headers; do
 done &&
 
 # This seems to be a bug producing .swiftinterface files.
-perl -pi.bak -e 's/SwiftTrace.(Swift(Trace|Meta)|dyld_interpose_tuple|rebinding)/$1/g' $CODESIGNING_FOLDER_PATH/Contents/Resources/{macOSInjection.bundle/Contents,{i,maci,tv}OSInjection.bundle}/Frameworks/SwiftTrace.framework/Modules/*/*.swiftinterface &&
-perl -pi.bak -e 's@(import _Concurrency)@// $1@g' $CODESIGNING_FOLDER_PATH/Contents/Resources/{macOSInjection.bundle/Contents,{i,maci,tv}OSInjection.bundle}/Frameworks/SwiftTrace.framework/Modules/*/*.swiftinterface &&
+perl -pi.bak -e 's/SwiftTrace.(Swift(Trace|Meta)|dyld_interpose_tuple|rebinding)/$1/g' $CODESIGNING_FOLDER_PATH/Contents/Resources/{macOSInjection.bundle/Contents,{i,maci,tv,xr}OSInjection.bundle}/Frameworks/SwiftTrace.framework/Modules/*/*.swiftinterface &&
+perl -pi.bak -e 's@(import _Concurrency)@// $1@g' $CODESIGNING_FOLDER_PATH/Contents/Resources/{macOSInjection.bundle/Contents,{i,maci,tv,xr}OSInjection.bundle}/Frameworks/SwiftTrace.framework/Modules/*/*.swiftinterface &&
 find $CODESIGNING_FOLDER_PATH/Contents/Resources/*.bundle -name '*.bak' -delete
