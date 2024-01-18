@@ -125,7 +125,7 @@ always look like this:
 You can leave these modifications in your production code as, 
 for a `Release` build they optimise out to a no-op.
 
-### On-device injection
+### Injection on an iOS device
 
 This can work but you will need to actually run one of the [github 
 4.8.0+ releases](https://github.com/johnno1962/InjectionIII/releases) 
@@ -163,7 +163,8 @@ directory for the file watcher manually from the pop-down menu.
 
 ### Injection on macOS
 
-It works but you need to temporarily turn off the "app sandbox" and "library validation" under the "hardened runtime" during development 
+It works but you need to temporarily turn off the "app sandbox" and
+"library validation" under the "hardened runtime" during development 
 so it can dynamically load code.
 
 ### How it works
@@ -289,4 +290,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2024/01/11 $
+$Date: 2024/01/18 $
