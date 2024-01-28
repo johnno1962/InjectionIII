@@ -165,7 +165,9 @@ directory for the file watcher manually from the pop-down menu.
 
 It works but you need to temporarily turn off the "app sandbox" and
 "library validation" under the "hardened runtime" during development 
-so it can dynamically load code.
+so it can dynamically load code. In order to avoid codesigning problems,
+use the new `copy_bundle.sh` script as detailed in the instructions for
+injection on an iOS device above.
 
 ### How it works
 
@@ -290,4 +292,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2024/01/18 $
+$Date: 2024/01/28 $
