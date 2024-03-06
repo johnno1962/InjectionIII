@@ -134,30 +134,10 @@ of the InjectionIII.app, set a user default to opt-in and restart the app.
 ```
 $ defaults write com.johnholdsworth.InjectionIII deviceUnlock any
 ```
-Then, instead of loading the injection bundles run this script in a "Build Phase":
-
-```
-RESOURCES=/Applications/InjectionIII.app/Contents/Resources
-if [ -f "$RESOURCES/copy_bundle.sh" ]; then
-    "$RESOURCES/copy_bundle.sh"
-fi
-```
-and, in your application execute the following code on startup:
-
-```
-    #if DEBUG
-    if let path = Bundle.main.path(forResource:
-            "iOSInjection", ofType: "bundle") ??
-        Bundle.main.path(forResource:
-            "macOSInjection", ofType: "bundle") {
-        Bundle(path: path)!.load()
-    }
-    #endif
-```
-Once you have switched to this configuaration it will also
-work when using the simulator. Consult the README of the
-[HotReloading project](https://github.com/johnno1962/HotReloading) 
-for details on how to debug having your program connect to the 
+Then, instead of loading the injection bundles add the following 
+Swift Package to your project (*only during development*):
+[HotReloading project](https://github.com/johnno1962/HotReloading).
+This contains details on how to debug having your program connect to the 
 InjectionIII.app over Wi-Fi. You will also need to select the project 
 directory for the file watcher manually from the pop-down menu.
 
@@ -165,9 +145,7 @@ directory for the file watcher manually from the pop-down menu.
 
 It works but you need to temporarily turn off the "app sandbox" and
 "library validation" under the "hardened runtime" during development 
-so it can dynamically load code. In order to avoid codesigning problems,
-use the new `copy_bundle.sh` script as detailed in the instructions for
-injection on an iOS device above.
+so it can dynamically load code.
 
 ### How it works
 
@@ -231,9 +209,7 @@ file system to be a faithful simulation of a real device.
 and because you cannot load a bundle off your Mac's filesystem on a real 
 phone you add the [HotReloading Swift Package](https://github.com/johnno1962/HotReloading)
 to your project (during development only!) which contains all the code that
-would normally be in the bundle to perform the dynamic loading. This 
-requires that you use one of the un-sandboxed binary releases. It has
-also been replaced by the `copy_bundle.sh` script described above.
+would normally be in the bundle to perform the dynamic loading.
 
 "Standalone injection". This was the most recent evolution of the project 
 where you don't run the app itself anymore but simply load one of the 
@@ -292,4 +268,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2024/01/28 $
+$Date: 2024/03/06 $
