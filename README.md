@@ -130,7 +130,7 @@ always look like this:
 You can leave these modifications in your production code as, 
 for a `Release` build they optimise out to a no-op.
 
-### Injection on an iOS device
+### Injection on an iOS, tvOS or visionOS device
 
 This can work but you will need to actually run one of the [github 
 4.8.0+ releases](https://github.com/johnno1962/InjectionIII/releases) 
@@ -140,7 +140,7 @@ of the InjectionIII.app, set a user default to opt-in and restart the app.
 $ defaults write com.johnholdsworth.InjectionIII deviceUnlock any
 ```
 Then, instead of loading the injection bundles run this script in a "Build Phase":
-(You may also need to turn off the project build setting "User Script Sandboxing")
+(You will also need to turn off the project build setting "User Script Sandboxing")
 
 ```
 RESOURCES=/Applications/InjectionIII.app/Contents/Resources
@@ -173,7 +173,7 @@ It works but you need to temporarily turn off the "app sandbox" and
 "library validation" under the "hardened runtime" during development 
 so it can dynamically load code. In order to avoid codesigning problems,
 use the new `copy_bundle.sh` script as detailed in the instructions for
-injection on an iOS device above.
+injection on real devices above.
 
 ### How it works
 
