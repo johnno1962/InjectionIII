@@ -47,6 +47,7 @@
 		BB6C87FA2520D2C3005AFCFC /* xt_forwarding_trampoline_arm64.s in Sources */ = {isa = PBXBuildFile; fileRef = BB6C87F72520D2C3005AFCFC /* xt_forwarding_trampoline_arm64.s */; };
 		BB6C87FB2520D2C3005AFCFC /* xt_forwarding_trampoline_x64.s in Sources */ = {isa = PBXBuildFile; fileRef = BB6C87F82520D2C3005AFCFC /* xt_forwarding_trampoline_x64.s */; };
 		BB6C881F2520D799005AFCFC /* SwiftTrace.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BB6C87C42520D0D1005AFCFC /* SwiftTrace.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BB746D602BACB62D0001685F /* SwiftKeyPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB746D5F2BACB62B0001685F /* SwiftKeyPath.swift */; };
 		BB79FC79245CC02200A4B4CB /* TimeLapseBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB79FC78245CC02200A4B4CB /* TimeLapseBuilder.swift */; };
 		BB7D7CAC2512F8F00069FE2C /* UpdateCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D7CAB2512F8F00069FE2C /* UpdateCheck.swift */; };
 		BB80B3B526B573BE0055FAAE /* README_Chinese.md in Resources */ = {isa = PBXBuildFile; fileRef = BB80B3B426B573BE0055FAAE /* README_Chinese.md */; };
@@ -245,6 +246,7 @@
 		BB6C87F62520D2C3005AFCFC /* SwiftTrace.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = SwiftTrace.mm; path = SwiftTraceGuts/SwiftTrace.mm; sourceTree = "<group>"; };
 		BB6C87F72520D2C3005AFCFC /* xt_forwarding_trampoline_arm64.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; name = xt_forwarding_trampoline_arm64.s; path = SwiftTraceGuts/xt_forwarding_trampoline_arm64.s; sourceTree = "<group>"; };
 		BB6C87F82520D2C3005AFCFC /* xt_forwarding_trampoline_x64.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; name = xt_forwarding_trampoline_x64.s; path = SwiftTraceGuts/xt_forwarding_trampoline_x64.s; sourceTree = "<group>"; };
+		BB746D5F2BACB62B0001685F /* SwiftKeyPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftKeyPath.swift; path = HotReloading/Sources/HotReloading/SwiftKeyPath.swift; sourceTree = SOURCE_ROOT; };
 		BB79FC78245CC02200A4B4CB /* TimeLapseBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeLapseBuilder.swift; path = Remote/Sources/RemoteMovie/TimeLapseBuilder.swift; sourceTree = SOURCE_ROOT; };
 		BB7D7CAB2512F8F00069FE2C /* UpdateCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UpdateCheck.swift; path = ../HotReloading/Sources/injectiond/UpdateCheck.swift; sourceTree = "<group>"; };
 		BB80B3B426B573BE0055FAAE /* README_Chinese.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README_Chinese.md; sourceTree = "<group>"; };
@@ -613,6 +615,7 @@
 				BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */,
 				BBC03BBF2625F27C005C1A06 /* UnhidingEval.swift */,
 				BB9642A527E339BC00C61CB7 /* ObjcInjection.swift */,
+				BB746D5F2BACB62B0001685F /* SwiftKeyPath.swift */,
 				BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */,
 				BBCB31C8281677C700081CB6 /* SwiftInterpose.swift */,
 				BB9642A727E33C8F00C61CB7 /* DeviceInjection.swift */,
@@ -1083,6 +1086,7 @@
 				BBCA02501FB107AF00E45F0F /* SwiftEval.swift in Sources */,
 				BD35949E21A6C5DE0020EB94 /* Vaccine.swift in Sources */,
 				BBCA02511FB107AF00E45F0F /* SwiftInjection.swift in Sources */,
+				BB746D602BACB62D0001685F /* SwiftKeyPath.swift in Sources */,
 				BB9642A627E339BE00C61CB7 /* ObjcInjection.swift in Sources */,
 				BBB64FE11FD575260020BE47 /* XprobeSwift.swift in Sources */,
 				BB04337A28D31A350007577F /* StandaloneInjection.swift in Sources */,
