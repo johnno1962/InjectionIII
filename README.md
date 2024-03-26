@@ -262,7 +262,6 @@ variables you can use for customisation. A few examples:
 | **INJECTION_DETAIL** | Verbose output of all actions performed |
 | **INJECTION_TRACE** | Log calls to injected functions (v4.6.6+) |
 | **INJECTION_HOST** | Mac's IP address for on-device injection |
-| **INJECTION_KEYPATHS** | Enable workaround for key paths & TCA |
 
 With an **INJECTION_TRACE** environment variable, injecting 
 any file will add logging of all calls to functions and methods in
