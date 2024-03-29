@@ -20,7 +20,7 @@
 		BB1BA90B251DC54100044608 /* SwiftUISupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1BA90A251DC54100044608 /* SwiftUISupport.swift */; };
 		BB1C3246254BFAFD001EDFCC /* EasyPointer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB1C3245254BFAFC001EDFCC /* EasyPointer.swift */; };
 		BB1EBC4D258DE2A0001F2AA4 /* fishhook.c in Sources */ = {isa = PBXBuildFile; fileRef = BB1EBC4C258DE29D001F2AA4 /* fishhook.c */; };
-		BB1EBC4F258DE2AD001F2AA4 /* fishhook.h in Headers */ = {isa = PBXBuildFile; fileRef = BB1EBC4E258DE2AC001F2AA4 /* fishhook.h */; };
+		BB1EBC4F258DE2AD001F2AA4 /* fishhook.h in Headers */ = {isa = PBXBuildFile; fileRef = BB1EBC4E258DE2AC001F2AA4 /* fishhook.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BB1EBC50258EA273001F2AA4 /* fishhook.h in Resources */ = {isa = PBXBuildFile; fileRef = BB1EBC4E258DE2AC001F2AA4 /* fishhook.h */; };
 		BB34C3FD244FAAB400D520A9 /* RMWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB34C3FC244FAAB400D520A9 /* RMWindowController.xib */; };
 		BB34C3FF244FAD3C00D520A9 /* log.html in Resources */ = {isa = PBXBuildFile; fileRef = BB34C3FE244FAD3C00D520A9 /* log.html */; };
