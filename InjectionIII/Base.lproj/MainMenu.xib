@@ -752,7 +752,7 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Method Tracing" autoenablesItems="NO" id="LL4-BA-XJf">
                         <items>
-                            <menuItem title="Profile SwiftUI" allowsKeyEquivalentWhenHidden="YES" toolTip="Log methods defined in app's main bundle." id="3ZO-RG-jcD">
+                            <menuItem title="Profile SwiftUI" allowsKeyEquivalentWhenHidden="YES" toolTip="Profile calls into SwiftUI and AttributeGraph." id="3ZO-RG-jcD">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <accessibility description="Trace App"/>
                                 <connections>
