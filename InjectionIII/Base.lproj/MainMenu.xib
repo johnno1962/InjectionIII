@@ -752,11 +752,18 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Method Tracing" autoenablesItems="NO" id="LL4-BA-XJf">
                         <items>
-                            <menuItem title="Trace Main Bundle" allowsKeyEquivalentWhenHidden="YES" toolTip="Log methods defined in app's main bundle." id="3ZO-RG-jcD">
+                            <menuItem title="Profile SwiftUI" allowsKeyEquivalentWhenHidden="YES" toolTip="Log methods defined in app's main bundle." id="3ZO-RG-jcD">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <accessibility description="Trace App"/>
                                 <connections>
-                                    <action selector="traceUIApp:" target="Voe-Tx-rLC" id="oc5-Cw-bGO"/>
+                                    <action selector="profileSwiftUI:" target="Voe-Tx-rLC" id="v83-nh-7xV"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Trace Main Bundle" allowsKeyEquivalentWhenHidden="YES" toolTip="Log methods defined in app's main bundle." id="shg-Kq-kHd">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <accessibility description="Trace App"/>
+                                <connections>
+                                    <action selector="traceUIApp:" target="Voe-Tx-rLC" id="Whr-wk-3ZR"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Trace Injected" tag="1" toolTip="Trace functions that have been injected." id="CQY-su-z8C">
