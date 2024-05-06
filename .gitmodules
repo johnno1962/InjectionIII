@@ -1,12 +1,6 @@
-[submodule "XprobePlugin"]
-	path = XprobePlugin
-	url = https://github.com/johnno1962/XprobePlugin
 [submodule "SwiftTrace"]
 	path = SwiftTrace
 	url = https://github.com/johnno1962/SwiftTrace
-[submodule "Remote"]
-	path = Remote
-	url = https://github.com/johnno1962/Remote.git
 [submodule "HotReloading"]
 	path = HotReloading
 	url = https://github.com/johnno1962/HotReloading.git

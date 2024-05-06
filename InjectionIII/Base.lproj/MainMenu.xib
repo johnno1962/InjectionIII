@@ -734,7 +734,7 @@
                         <action selector="toggleTDD:" target="Voe-Tx-rLC" id="hjO-wo-Oy4"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Run Xprobe" toolTip="Inspect app object state" id="R6p-Yl-7qz">
+                <menuItem title="Run Xprobe" hidden="YES" toolTip="Inspect app object state" id="R6p-Yl-7qz">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <accessibility description="Open Xprobe"/>
                     <connections>
@@ -888,7 +888,7 @@
                         <accessibility description="Add method traces to App"/>
                     </menu>
                 </menuItem>
-                <menuItem title="Remote Control" id="of9-Ja-9Yf">
+                <menuItem title="Remote Control" hidden="YES" id="of9-Ja-9Yf">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Remote Control" id="eGx-OC-usD">
                         <items>
