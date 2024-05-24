@@ -6,7 +6,7 @@
 #  Created by John Holdsworth on 04/10/2019.
 #  Copyright © 2019 John Holdsworth. All rights reserved.
 #
-#  $Id: //depot/ResidentEval/InjectionIII/build_bundles.sh#90 $
+#  $Id: //depot/ResidentEval/InjectionIII/build_bundles.sh#91 $
 #
 
 # Injection has to assume a fixed path for Xcode.app as it uses
@@ -20,6 +20,7 @@ function build_bundle () {
     PLATFORM=$2
     SDK=$3
     SWIFT_DYLIBS_PATH="$FIXED_XCODE_DEVELOPER_PATH/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$SDK"
+    CONCURRENCY_DYLIBS="$FIXED_XCODE_DEVELOPER_PATH/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.5/$SDK"
     XCTEST_FRAMEWORK_PATH="$FIXED_XCODE_DEVELOPER_PATH/Platforms/$PLATFORM.platform/Developer/Library/Frameworks"
     STRACE_VERSIONS="$CODESIGNING_FOLDER_PATH/Contents/Resources/${FAMILY}Injection.bundle/Frameworks/SwiftTrace.framework/Versions"
     BUNDLE_CONFIG=Release
@@ -29,7 +30,7 @@ function build_bundle () {
         exit 1
     fi
     "$DEVELOPER_BIN_DIR"/xcodebuild SYMROOT=$SYMROOT ARCHS="$ARCHS" -sdk $SDK -config $BUNDLE_CONFIG -target SwiftTrace &&
-    "$DEVELOPER_BIN_DIR"/xcodebuild SYMROOT=$SYMROOT ARCHS="$ARCHS" $APP_SANDBOXED PRODUCT_NAME="${FAMILY}Injection" LD_RUNPATH_SEARCH_PATHS="$SWIFT_DYLIBS_PATH $XCTEST_FRAMEWORK_PATH @loader_path/Frameworks" -sdk $SDK -config $BUNDLE_CONFIG -target InjectionBundle &&
+    "$DEVELOPER_BIN_DIR"/xcodebuild SYMROOT=$SYMROOT ARCHS="$ARCHS" $APP_SANDBOXED PRODUCT_NAME="${FAMILY}Injection" LD_RUNPATH_SEARCH_PATHS="$SWIFT_DYLIBS_PATH $XCTEST_FRAMEWORK_PATH $CONCURRENCY_DYLIBS @loader_path/Frameworks" -sdk $SDK -config $BUNDLE_CONFIG -target InjectionBundle &&
     "$DEVELOPER_BIN_DIR"/xcodebuild SYMROOT=$SYMROOT ARCHS="$ARCHS" PRODUCT_NAME="${FAMILY}SwiftUISupport" -sdk $SDK -config $BUNDLE_CONFIG -target SwiftUISupport &&
 
     rsync -au $SYMROOT/$BUNDLE_CONFIG-$SDK/*.bundle "$CODESIGNING_FOLDER_PATH/Contents/Resources" &&
