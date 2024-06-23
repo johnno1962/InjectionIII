@@ -5,7 +5,9 @@
 #import "SimpleSocket.h"
 #import "UserDefaults.h"
 #import "InjectionClient.h"
+#if SWIFT_PACKAGE
 #import "../XprobePlugin/Sources/Xprobe/include/Xprobe.h"
+#endif
 #import "DLKitC.h"
 
 @interface NSObject(InjectionSweep)
