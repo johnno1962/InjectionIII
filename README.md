@@ -248,6 +248,15 @@ all performed inside the simulator. By default this watches for changes
 to any Swift file inside your home directory though you can change this
 using the environment variable `INJECTION_DIRECTORIES`.
 
+[InjectionLite](https://github.com/johnno1962/InjectionLite) is a start-over
+minimal implementation of standalone injection for reference. Just add
+this Swift package and you should be able to inject in the simulator.
+
+[InjectionNext](https://github.com/johnno1962/InjectionNext) is a 
+currently experimental version of Injection that should be faster and 
+more reliable for large projects. It integrates into a debugging flag of 
+Xcode to find out how to recompile files to avoid parsing build logs.
+
 All these variations require you to add the "-Xlinker -interposble" linker flags 
 for a Debug build or you will only be able to inject non-final methods of classes.
 
@@ -298,4 +307,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2024/03/26 $
+$Date: 2024/06/30 $
