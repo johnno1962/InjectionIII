@@ -255,10 +255,16 @@ this Swift package and you should be able to inject in the simulator.
 [InjectionNext](https://github.com/johnno1962/InjectionNext) is a 
 currently experimental version of Injection that should be faster and 
 more reliable for large projects. It integrates into a debugging flag of 
-Xcode to find out how to recompile files to avoid parsing build logs.
+Xcode to find out how to recompile files to avoid parsing build logs
+and re-uses the client implementation of injection from `InjectionLite`.
+To use with external editors such as `Cursor`, InjectionNext can also
+use a file watcher to detect edits and fall back to build log parsing code.
 
 All these variations require you to add the "-Xlinker -interposble" linker flags 
-for a Debug build or you will only be able to inject non-final methods of classes.
+for a Debug build or you will only be able to inject non-final methods of classes
+and all can be used in conjunction with either of the higher level 
+[Inject](https://github.com/krzysztofzablocki/Inject) or
+[HotSwiftUI](https://github.com/johnno1962/HotSwiftUI).
 
 ### Further information
 
@@ -307,4 +313,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2024/06/30 $
+$Date: 2024/11/20 $
