@@ -258,7 +258,10 @@ more reliable for large projects. It integrates into a debugging flag of
 Xcode to find out how to recompile files to avoid parsing build logs.
 
 All these variations require you to add the "-Xlinker -interposble" linker flags 
-for a Debug build or you will only be able to inject non-final methods of classes.
+for a Debug build or you will only be able to inject non-final methods 
+of classes and all can be used in conjunction with the higher level 
+[Inject](https://github.com/krzysztofzablocki/Inject) or
+[HotSwiftUI](https://github.com/johnno1962/HotSwiftUI).
 
 ### Further information
 
@@ -307,4 +310,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2024/06/30 $
+$Date: 2024/11/09 $
