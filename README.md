@@ -130,6 +130,13 @@ always look like this:
 You can leave these modifications in your production code as, 
 for a `Release` build they optimise out to a no-op.
 
+#### Xcode 16
+
+New in Xcode 16 is `SWIFT_ENABLE_OPAQUE_TYPE_ERASURE` build setting. 
+This setting is turned ON by default and you don't need to erase view body explicitly.
+
+For more info, see [Xcode 16.2 release notes](https://developer.apple.com/documentation/xcode-release-notes/xcode-16_2-release-notes).
+
 ### Injection on an iOS, tvOS or visionOS device
 
 This can work but you will need to actually run one of the [github 
