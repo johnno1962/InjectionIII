@@ -133,7 +133,8 @@ for a `Release` build they optimise out to a no-op.
 #### Xcode 16
 
 New in Xcode 16 is `SWIFT_ENABLE_OPAQUE_TYPE_ERASURE` build setting. 
-This setting is turned ON by default and you don't need to erase view body explicitly.
+This setting is turned ON by default and you don't need to erase view
+body explicitly. You'll still need to `@ObserveInjection` to force redraws.
 
 For more info, see [Xcode 16.2 release notes](https://developer.apple.com/documentation/xcode-release-notes/xcode-16_2-release-notes).
 
@@ -320,4 +321,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2024/11/20 $
+$Date: 2024/11/22 $
