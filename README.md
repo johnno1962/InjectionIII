@@ -92,8 +92,8 @@ to make a couple changes to each 	`View` struct you want to inject.
 To force redraw the simplest way is to add a property that
 observes when an injection has occurred:
 
-```
-    @ObserveInjection var forceRedraw
+```swift
+@ObserveInjection var forceRedraw
 ```
 This property wrapper is available in either the 
 [HotSwiftUI](https://github.com/johnno1962/HotSwiftUI) or
@@ -103,7 +103,7 @@ integer your views observe that increments with each
 injection. You can use one of the following to make one
 of these packages available throughout your project:
 
-```
+```swift
 @_exported import HotSwiftUI
 or
 @_exported import Inject
@@ -117,15 +117,15 @@ return type of the body property which amounts to a memory layout
 change that may crash. In summary, the tail end of each body should
 always look like this:
 
-```
-    var body: some View {
-    	 VStack or whatever {
-        // Your SwiftUI code...
-        }
-        .enableInjection()
+```swift
+var body: some View {
+  VStack or whatever {
+    // Your SwiftUI code...
     }
+    .enableInjection()
+}
 
-    @ObserveInjection var redraw
+@ObserveInjection var redraw
 ```
 You can leave these modifications in your production code as, 
 for a `Release` build they optimise out to a no-op.
@@ -158,15 +158,15 @@ fi
 ```
 and, in your application execute the following code on startup:
 
-```
-    #if DEBUG
-    if let path = Bundle.main.path(forResource:
-            "iOSInjection", ofType: "bundle") ??
-        Bundle.main.path(forResource:
-            "macOSInjection", ofType: "bundle") {
-        Bundle(path: path)!.load()
-    }
-    #endif
+```swift
+#if DEBUG
+if let path = Bundle.main.path(forResource:
+        "iOSInjection", ofType: "bundle") ??
+    Bundle.main.path(forResource:
+        "macOSInjection", ofType: "bundle") {
+    Bundle(path: path)!.load()
+}
+#endif
 ```
 Once you have switched to this configuaration it will also
 work when using the simulator. Consult the README of the
@@ -321,4 +321,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2024/11/22 $
+$Date: 2024/12/02 $
