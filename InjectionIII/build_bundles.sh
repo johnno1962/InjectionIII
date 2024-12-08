@@ -46,14 +46,14 @@ function build_bundle () {
 if [ "$(hostname)" != "Johns-MacBook-Air.local" ]; then
     build_bundle xrOS XRSimulator xrsimulator
     build_bundle watchOS WatchSimulator watchsimulator
-    build_bundle tvdevOS AppleTVOS appletvos
-    build_bundle xrdevOS XROS xros
+#    build_bundle tvdevOS AppleTVOS appletvos
+#    build_bundle xrdevOS XROS xros
 fi
 build_bundle iOS iPhoneSimulator iphonesimulator &&
 build_bundle tvOS AppleTVSimulator appletvsimulator &&
 
 # iphoneos on M1 mac (requires Sandbox switched off)
-build_bundle maciOS iPhoneOS iphoneos &&
+#build_bundle maciOS iPhoneOS iphoneos &&
 
 # macOSSwiftUISupport needs to be built separately from the main app
 "$DEVELOPER_BIN_DIR"/xcodebuild SYMROOT=$SYMROOT ARCHS="$ARCHS" -sdk macosx -config $CONFIGURATION -target SwiftUISupport &&
