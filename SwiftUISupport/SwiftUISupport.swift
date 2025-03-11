@@ -5,7 +5,7 @@
 //  Created by John Holdsworth on 25/09/2020.
 //  Copyright © 2020 John Holdsworth. All rights reserved.
 //
-//  $Id: //depot/ResidentEval/SwiftUISupport/SwiftUISupport.swift#25 $
+//  $Id: //depot/ResidentEval/SwiftUISupport/SwiftUISupport.swift#26 $
 //
 
 import SwiftUI
@@ -28,7 +28,7 @@ public func getStateType<Type>(value: Type, out: inout Any.Type?) {
     out = SwiftUI.State<Type>.self
 }
 
-@objc (SwiftUISupport)
+@objc(SwiftUISupport)
 class SwiftUISupport: NSObject {
 
     @objc class func setup(pointer: UnsafeMutableRawPointer?) {
