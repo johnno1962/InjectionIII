@@ -13,3 +13,6 @@
 [submodule "ProfileSwiftUI"]
 	path = ProfileSwiftUI
 	url = https://github.com/johnno1962/ProfileSwiftUI
+[submodule "InjectionNext"]
+	path = InjectionNext
+	url = http://github.com/johnno1962/InjectionNext
