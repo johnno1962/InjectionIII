@@ -11,6 +11,21 @@ without having to perform a full rebuild or restart your application. This saves
 "source editor" to being a _"program editor"_ where source changes are 
 not just saved to disk but into your running program directly.
 
+### Stop Press: Injection and Xcode 16.3
+
+InjectionIII works by recompiling edited source files into a dynamic library
+which is then loaded into your app. It determines how to recompile the file
+by searching the most recent Xcode build logs for the `swift-frontend` 
+compiler invocation. Unfortunately, after this having worked for 10 
+years Xcode 16.3 no longer logs this information which is a problem.
+InjectionIII 5.1+ contains new code that can patch your Xcode 
+toolchain slightly to replace `swift-frontend` with a script that calls 
+the compiler but also logs the invocation with the InjectionIII app.
+In this way it can build up its own database of how to recompile 
+files and can work as before. To enable this, use the menu item 
+"Xcode 16.3/Intercept compiler" which sets up the script. This 
+can be reverted using the same menu option.
+
 ### How to use it
 
 Setting up your projects to use injection is now as simple as downloading
@@ -321,4 +336,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2024/12/02 $
+$Date: 2025/03/26 $
