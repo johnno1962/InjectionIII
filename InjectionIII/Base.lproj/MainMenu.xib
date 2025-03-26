@@ -21,7 +21,9 @@
                 <outlet property="feedbackItem" destination="CQY-su-z8C" id="OSy-SI-Uso"/>
                 <outlet property="frontItem" destination="wFq-Rv-gfa" id="MPU-fL-HYl"/>
                 <outlet property="lookupItem" destination="4Bd-Sy-26q" id="Orx-2R-4gC"/>
+                <outlet property="patchCompilerItem" destination="azO-gx-VuH" id="RKL-fL-tze"/>
                 <outlet property="remoteItem" destination="of9-Ja-9Yf" id="z57-Ut-oxK"/>
+                <outlet property="selectXcodeItem" destination="4s0-ND-OPf" id="Vu6-S7-g2v"/>
                 <outlet property="sponsorItem" destination="LVU-Kn-bbK" id="reC-fj-vjS"/>
                 <outlet property="startItem" destination="vsd-ll-3nr" id="ODN-wa-BTp"/>
                 <outlet property="statusMenu" destination="V8Q-mq-A2f" id="Epo-HD-J21"/>
@@ -664,7 +666,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="335" y="390" width="480" height="360"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2048" height="1127"/>
             <view key="contentView" wantsLayer="YES" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -747,6 +749,19 @@
                     <connections>
                         <action selector="prepareProject:" target="Voe-Tx-rLC" id="LC6-Th-i3d"/>
                     </connections>
+                </menuItem>
+                <menuItem title="Xcode 16.3+" hidden="YES" id="4s0-ND-OPf">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Xcode 16.3+" id="88g-Td-4JI">
+                        <items>
+                            <menuItem title="Prepare Xcode" id="azO-gx-VuH">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="prepareXcode:" target="Voe-Tx-rLC" id="hcj-ck-ZCR"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
                 </menuItem>
                 <menuItem title="Method Tracing" id="GZB-KU-eto">
                     <modifierMask key="keyEquivalentModifierMask"/>
@@ -984,7 +999,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="1940" y="1086" width="376" height="166"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2048" height="1127"/>
             <view key="contentView" id="Qow-ez-PwQ">
                 <rect key="frame" x="0.0" y="0.0" width="376" height="166"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -993,11 +1008,11 @@
                         <rect key="frame" x="17" y="87" width="342" height="59"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <view key="contentView" id="NsC-kE-14D">
-                            <rect key="frame" x="3" y="3" width="336" height="41"/>
+                            <rect key="frame" x="4" y="5" width="334" height="39"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <textField toolTip="Regular expression for methods to include in tracince output" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Yzf-xB-GlM">
-                                    <rect key="frame" x="8" y="10" width="249" height="21"/>
+                                <textField toolTip="Regular expression for methods to include in tracince output" focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Yzf-xB-GlM">
+                                    <rect key="frame" x="8" y="8" width="249" height="21"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Regular Expression" drawsBackground="YES" id="OSD-Nr-QNY">
                                         <font key="font" usesAppearanceFont="YES"/>
@@ -1012,7 +1027,7 @@
                                     </connections>
                                 </textField>
                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jPt-Lp-Ai7">
-                                    <rect key="frame" x="259" y="3" width="75" height="32"/>
+                                    <rect key="frame" x="259" y="1" width="75" height="32"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="KQ5-Pl-Kbr">
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -1029,11 +1044,11 @@
                         <rect key="frame" x="17" y="16" width="342" height="59"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <view key="contentView" id="G8z-1T-j7h">
-                            <rect key="frame" x="3" y="3" width="336" height="41"/>
+                            <rect key="frame" x="4" y="5" width="334" height="39"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <textField toolTip="Regular expression for methods to exclude in tracince output" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K7d-6S-sPe">
-                                    <rect key="frame" x="8" y="10" width="249" height="21"/>
+                                <textField toolTip="Regular expression for methods to exclude in tracince output" focusRingType="none" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K7d-6S-sPe">
+                                    <rect key="frame" x="8" y="8" width="249" height="21"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Regular Expression" drawsBackground="YES" id="Tjb-Gh-qMa">
                                         <font key="font" usesAppearanceFont="YES"/>
@@ -1048,7 +1063,7 @@
                                     </connections>
                                 </textField>
                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M3g-Xv-ERw">
-                                    <rect key="frame" x="259" y="3" width="75" height="32"/>
+                                    <rect key="frame" x="259" y="1" width="75" height="32"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Iwe-df-0t1">
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>

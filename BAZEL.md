@@ -1,4 +1,4 @@
-### Experimental Bazel build system support.
+### Experimental Bazel build system support (now removed)
 
 The [binary GitHub releases](https://github.com/johnno1962/InjectionIII/releases), version 4.5.* or above contain an initial implementation of injecting larger apps which have elected to use the [bazel build system](https://bazel.build/).
 
@@ -15,4 +15,4 @@ There is a second less conservative implementation  that you should find injects
 
 InjectionIII, using the version with or without the app running works best if you don't use "Whole module optimization" otherwise, all object files are regenerated and injection has to resort to heuristics to determine which other objects will be included to cover "shared hidden symbols" resulting in slower iteration times. For more details on the evolution of this feature consult the original [github issue](https://github.com/johnno1962/InjectionIII/issues/388).
 
-$Date: 2022/11/15 $
+$Date: 2025/03/26 $
