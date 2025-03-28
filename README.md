@@ -17,14 +17,9 @@ InjectionIII works by recompiling edited source files into a dynamic library
 which is then loaded into your app. It determines how to recompile the file
 by searching the most recent Xcode build logs for the `swift-frontend` 
 compiler invocation. Unfortunately, after this having worked for 10 
-years Xcode 16.3 no longer logs this information which is a problem.
-InjectionIII 5.1+ contains new code that can patch your Xcode 
-toolchain slightly to replace `swift-frontend` with a script that calls 
-the compiler but also logs the invocation with the InjectionIII app.
-In this way it can build up its own database of how to recompile 
-files and can work as before. To enable this, use the menu item 
-"Xcode 16.3/Intercept compiler" which sets up the script. This 
-can be reverted using the same menu option.
+years Xcode 16.3 no longer logs this information by default though it 
+will if you add a build setting EMIT_FRONTEND_COMMAND_LINES
+to your project then InjectionIII can continue to work as before.
 
 ### How to use it
 
@@ -92,7 +87,7 @@ be re-executed to update the display as discussed above.
 Also, don't get carried away with access control. `private`
 properties and methods can't be injected directly, particularly 
 in extensions as they are not a `global` interposable symbol. 
-They generally inject indirectly as they can only be acessed 
+They generally inject indirectly as they can only be accessed 
 inside the file being injected but this can cause confusion.
 Finally, Injection doesn't cope well with source files being 
 added/renamed/deleted during injection. You may need to 
@@ -183,7 +178,7 @@ if let path = Bundle.main.path(forResource:
 }
 #endif
 ```
-Once you have switched to this configuaration it will also
+Once you have switched to this configuration it will also
 work when using the simulator. Consult the README of the
 [HotReloading project](https://github.com/johnno1962/HotReloading) 
 for details on how to debug having your program connect to the 
@@ -336,4 +331,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2025/03/26 $
+$Date: 2025/03/29 $
