@@ -17,11 +17,13 @@ InjectionIII works by recompiling edited source files into a dynamic library
 which is then loaded into your app. It determines how to recompile the file
 by searching the most recent Xcode build logs for the `swift-frontend` 
 compiler invocation. Unfortunately, after this having worked for 10 
-years Xcode 16.3 no longer logs this information which is a problem.
-InjectionIII 5.1+ contains new code that can patch your Xcode 
+years Xcode 16.3 no longer logs this information by default though it 
+will if you add a build setting EMIT_FRONTEND_COMMAND_LINES
+to your poject then InjectionIII can continue to work as before.
+InjectionIII 5.1+ also contains new code that can patch your Xcode 
 toolchain slightly to replace `swift-frontend` with a script that calls 
 the compiler but also logs the invocation with the InjectionIII app.
-In this way it can build up its own database of how to recompile 
+In this way it can build a more real-time database of how to recompile 
 files and can work as before. To enable this, use the menu item 
 "Xcode 16.3/Intercept compiler" which sets up the script. This 
 can be reverted using the same menu option.
@@ -336,4 +338,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2025/03/26 $
+$Date: 2025/03/28 $
