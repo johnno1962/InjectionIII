@@ -10,7 +10,7 @@
 #import "SimpleSocket.h"
 #import "SignerService.h"
 #import "InjectionClient.h"
-#if SWIFT_PACKAGE
+#if __has_include("../XprobePlugin/Sources/XprobeUI/include/XprobePluginMenuController.h")
 #import "RMWindowController.h"
 #import "../XprobePlugin/Sources/XprobeUI/include/XprobePluginMenuController.h"
 #endif
