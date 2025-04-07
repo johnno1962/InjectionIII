@@ -18,8 +18,9 @@ which is then loaded into your app. It determines how to recompile the file
 by searching the most recent Xcode build logs for the `swift-frontend` 
 compiler invocation. Unfortunately, after this having worked for 10 
 years Xcode 16.3 no longer logs this information by default though it 
-will if you add a build setting EMIT_FRONTEND_COMMAND_LINES
-to your project then InjectionIII can continue to work as before.
+will if you use "Editor/Add Build Setting/Add User-Defined Setting"
+to add a value for `EMIT_FRONTEND_COMMAND_LINES` to your project's
+`Debug` build settings, then InjectionIII can continue to work as before.
 
 ### How to use it
 
@@ -331,4 +332,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2025/03/29 $
+$Date: 2025/04/07 $
