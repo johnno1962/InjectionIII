@@ -19,7 +19,7 @@ by searching the most recent Xcode build logs for the `swift-frontend`
 compiler invocation. Unfortunately, after this having worked for 10 
 years Xcode 16.3 no longer logs this information by default though it 
 will if you use "Editor/Add Build Setting/Add User-Defined Setting"
-to add a value for `EMIT_FRONTEND_COMMAND_LINES` to your project's
+to add a value for `EMIT_FRONTEND_COMMAND_LINES` (set to "YES") to your project's
 `Debug` build settings, then InjectionIII can continue to work as before.
 
 ### How to use it

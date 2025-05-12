@@ -10,7 +10,7 @@ Injection 能够让你在 iOS 模拟器、真机、Arm 芯片 Mac 直接运行�
 
 ### 重要提示：Injection 与 Xcode 16.3
 
-InjectionIII 的工作原理是将编辑过的源文件重新编译成动态库，然后加载到你的应用程序中。它通过搜索最近的 Xcode 构建日志中的 `swift-frontend` 编译器调用来确定如何重新编译文件。不幸的是，在这个功能正常工作了 10 年之后，Xcode 16.3 默认不再记录这些信息。但是，如果你使用 "Editor/Add Build Setting/Add User-Defined Setting" 为项目的 `Debug` 构建设置添加 `EMIT_FRONTEND_COMMAND_LINES` 值，那么 InjectionIII 可以继续像以前一样工作。
+InjectionIII 的工作原理是将编辑过的源文件重新编译成动态库，然后加载到你的应用程序中。它通过搜索最近的 Xcode 构建日志中的 `swift-frontend` 编译器调用来确定如何重新编译文件。不幸的是，在这个功能正常工作了 10 年之后，Xcode 16.3 默认不再记录这些信息。但是，如果你使用 "Editor/Add Build Setting/Add User-Defined Setting" 为项目的 `Debug` 构建设置添加 `EMIT_FRONTEND_COMMAND_LINES` 值（设置为 "YES"），那么 InjectionIII 可以继续像以前一样工作。
 
 ### 如何使用
 
