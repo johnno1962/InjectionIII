@@ -42,7 +42,8 @@ Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/macOSInjection.b
 ```
  It's also important to add the options `-Xlinker` and `-interposable` (without double
  quotes and on separate lines) to the "Other Linker Flags" of targets in your project 
-(for the `Debug` configuration only) to enable "interposing" (see the explanation below).
+to enable "interposing" (see the explanation below). This must be for the `Debug` 
+configuration only or you can experience problems with TestFlight.
 
 ![Icon](interposable.png)
 
@@ -140,14 +141,6 @@ var body: some View {
 ```
 You can leave these modifications in your production code as, 
 for a `Release` build they optimise out to a no-op.
-
-#### Xcode 16
-
-New in Xcode 16 is `SWIFT_ENABLE_OPAQUE_TYPE_ERASURE` build setting. 
-This setting is turned ON by default and you don't need to erase view
-body explicitly. You'll still need to `@ObserveInjection` to force redraws.
-
-For more info, see [Xcode 16.2 release notes](https://developer.apple.com/documentation/xcode-release-notes/xcode-16_2-release-notes).
 
 ### Injection on an iOS, tvOS or visionOS device
 
@@ -332,4 +325,4 @@ for the code to be evaluated using injection under an MIT license.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2025/04/07 $
+$Date: 2025/07/06 $
