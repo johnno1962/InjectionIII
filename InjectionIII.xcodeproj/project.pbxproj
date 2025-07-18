@@ -20,6 +20,7 @@
 		BB1EBC4D258DE2A0001F2AA4 /* fishhook.c in Sources */ = {isa = PBXBuildFile; fileRef = BB1EBC4C258DE29D001F2AA4 /* fishhook.c */; };
 		BB1EBC4F258DE2AD001F2AA4 /* fishhook.h in Headers */ = {isa = PBXBuildFile; fileRef = BB1EBC4E258DE2AC001F2AA4 /* fishhook.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BB1EBC50258EA273001F2AA4 /* fishhook.h in Resources */ = {isa = PBXBuildFile; fileRef = BB1EBC4E258DE2AC001F2AA4 /* fishhook.h */; };
+		BB34AA6D2E2A6C8C007F5C12 /* Generics.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB34AA6C2E2A6C88007F5C12 /* Generics.swift */; };
 		BB3756FF2BCC269400CE5D05 /* DLKitC.c in Sources */ = {isa = PBXBuildFile; fileRef = BBD0AB40262F2549003ED7B1 /* DLKitC.c */; };
 		BB3757042BCC26DD00CE5D05 /* trie_dlops.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB3757022BCC26DD00CE5D05 /* trie_dlops.mm */; };
 		BB3757052BCC26DD00CE5D05 /* trie_dladdr.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB3757032BCC26DD00CE5D05 /* trie_dladdr.mm */; };
@@ -192,6 +193,7 @@
 		BB1DEA9E1FD6A74900AF509F /* XprobePluginMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XprobePluginMenuController.h; path = XprobePlugin/Sources/XprobeUI/include/XprobePluginMenuController.h; sourceTree = "<group>"; };
 		BB1EBC4C258DE29D001F2AA4 /* fishhook.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = fishhook.c; path = SwiftTraceGuts/fishhook.c; sourceTree = "<group>"; };
 		BB1EBC4E258DE2AC001F2AA4 /* fishhook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fishhook.h; path = SwiftTraceGuts/include/fishhook.h; sourceTree = "<group>"; };
+		BB34AA6C2E2A6C88007F5C12 /* Generics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Generics.swift; path = InjectionNext/InjectionLite/Sources/InjectionImpl/Generics.swift; sourceTree = SOURCE_ROOT; };
 		BB34C3FC244FAAB400D520A9 /* RMWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RMWindowController.xib; path = Remote/Classes/RMWindowController.xib; sourceTree = SOURCE_ROOT; };
 		BB34C3FE244FAD3C00D520A9 /* log.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = log.html; path = Remote/log.html; sourceTree = SOURCE_ROOT; };
 		BB34C400244FAE2F00D520A9 /* iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iphone.png; path = Remote/iphone.png; sourceTree = SOURCE_ROOT; };
@@ -666,6 +668,7 @@
 				BBC03BC626282358005C1A06 /* SwiftSweeper.swift */,
 				BB18D2E7274E1746004BB4A5 /* DynamicCast.swift */,
 				BB3757002BCC26AE00CE5D05 /* ProfileSwiftUI.swift */,
+				BB34AA6C2E2A6C88007F5C12 /* Generics.swift */,
 				BBD0AB3D262F24E4003ED7B1 /* DLKit.swift */,
 				BBD0AB43262F256B003ED7B1 /* DLKitC.h */,
 				BBD0AB40262F2549003ED7B1 /* DLKitC.c */,
@@ -1157,6 +1160,7 @@
 				BBC03BC12625F27C005C1A06 /* UnhidingEval.swift in Sources */,
 				BBCA02501FB107AF00E45F0F /* SwiftEval.swift in Sources */,
 				BD35949E21A6C5DE0020EB94 /* Vaccine.swift in Sources */,
+				BB34AA6D2E2A6C8C007F5C12 /* Generics.swift in Sources */,
 				BBCA02511FB107AF00E45F0F /* SwiftInjection.swift in Sources */,
 				BB746D602BACB62D0001685F /* SwiftKeyPath.swift in Sources */,
 				BB9642A627E339BE00C61CB7 /* ObjcInjection.swift in Sources */,
@@ -1637,7 +1641,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MARKETING_VERSION = 5.1.1;
+				MARKETING_VERSION = 5.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1661,7 +1665,7 @@
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MARKETING_VERSION = 5.1.1;
+				MARKETING_VERSION = 5.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
