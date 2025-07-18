@@ -16,6 +16,20 @@ def _hot_reload_dylib_impl(ctx):
     # Get the Swift toolchain
     swift_toolchain = ctx.attr._swift_toolchain[SwiftToolchainInfo]
     
+    # Get Apple toolchain for SDK path
+    apple_toolchain = apple_common.apple_toolchain()
+    
+    # Get platform information
+    apple_fragment = ctx.fragments.apple
+    cpu = apple_fragment.single_arch_cpu
+    platform = apple_fragment.single_arch_platform
+    
+    # Build target triple dynamically
+    target_triple = "{}-apple-{}".format(cpu, platform.name_in_plist.lower())
+    
+    # Get SDK path dynamically
+    sdk_path = apple_toolchain.sdk_dir()
+    
     # Input source file
     source_file = ctx.file.source
     
@@ -46,8 +60,8 @@ def _hot_reload_dylib_impl(ctx):
     args.add("-emit-library")
     args.add("-o", output_dylib)
     args.add("-module-name", ctx.attr.module_name)
-    args.add("-target", ctx.attr.target_triple)
-    args.add("-sdk", ctx.attr.sdk_path)
+    args.add("-target", target_triple)
+    args.add("-sdk", sdk_path)
     
     # Add module search paths
     for module_path in swift_module_paths:
@@ -105,14 +119,6 @@ hot_reload_dylib = rule(
             mandatory = True,
             doc = "The name of the Swift module",
         ),
-        "target_triple": attr.string(
-            default = "x86_64-apple-macosx10.15",
-            doc = "The target triple for compilation",
-        ),
-        "sdk_path": attr.string(
-            default = "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
-            doc = "Path to the SDK",
-        ),
         "_swift_toolchain": attr.label(
             default = Label("@bazel_tools//tools/swift:toolchain"),
             providers = [SwiftToolchainInfo],
@@ -121,11 +127,27 @@ hot_reload_dylib = rule(
     outputs = {
         "dylib": "%{name}.dylib",
     },
+    fragments = ["apple"],
+    toolchains = ["@bazel_tools//tools/cpp:toolchain_type"],
     doc = "Compiles a Swift source file into a hot reload dynamic library",
 )
 
 def _hot_reload_target_impl(ctx):
     """Implementation of hot_reload_target rule that creates hot reload dylibs for all sources."""
+    
+    # Get Apple toolchain for SDK path
+    apple_toolchain = apple_common.apple_toolchain()
+    
+    # Get platform information
+    apple_fragment = ctx.fragments.apple
+    cpu = apple_fragment.single_arch_cpu
+    platform = apple_fragment.single_arch_platform
+    
+    # Build target triple dynamically
+    target_triple = "{}-apple-{}".format(cpu, platform.name_in_plist.lower())
+    
+    # Get SDK path dynamically
+    sdk_path = apple_toolchain.sdk_dir()
     
     output_dylibs = []
     
@@ -142,8 +164,8 @@ def _hot_reload_target_impl(ctx):
                     "--source", src.path,
                     "--output", dylib_output.path,
                     "--module-name", ctx.attr.module_name,
-                    "--target", ctx.attr.target_triple,
-                    "--sdk", ctx.attr.sdk_path,
+                    "--target", target_triple,
+                    "--sdk", sdk_path,
                 ] + ["--dep=%s" % dep.path for dep in ctx.files.deps],
                 inputs = [src] + ctx.files.deps,
                 outputs = [dylib_output],
@@ -175,20 +197,14 @@ hot_reload_target = rule(
             mandatory = True,
             doc = "The name of the Swift module",
         ),
-        "target_triple": attr.string(
-            default = "x86_64-apple-macosx10.15",
-            doc = "The target triple for compilation",
-        ),
-        "sdk_path": attr.string(
-            default = "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
-            doc = "Path to the SDK",
-        ),
         "_hot_reload_compiler": attr.label(
             default = Label("//bazel/tools:hot_reload_compiler"),
             executable = True,
             cfg = "host",
         ),
     },
+    fragments = ["apple"],
+    toolchains = ["@bazel_tools//tools/cpp:toolchain_type"],
     doc = "Creates hot reload dynamic libraries for Swift source files",
 )
 
@@ -344,54 +360,33 @@ def create_injection_bundle(name, targets, **kwargs):
         **kwargs
     )
 
-# Platform-specific configurations
-def _get_platform_config():
-    """Returns platform-specific configuration."""
-    return {
-        "ios_simulator": {
-            "target_triple": "x86_64-apple-ios13.0-simulator",
-            "sdk_path": "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk",
-        },
-        "ios_device": {
-            "target_triple": "arm64-apple-ios13.0",
-            "sdk_path": "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk",
-        },
-        "macos": {
-            "target_triple": "x86_64-apple-macosx10.15",
-            "sdk_path": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
-        },
-    }
+# Platform-specific configurations removed - now using dynamic platform detection
 
 def ios_injection_library(name, srcs, deps = [], **kwargs):
-    """Creates an iOS library with injection capabilities."""
+    """Creates an iOS library with injection capabilities.
     
-    platform_config = _get_platform_config()
-    
-    # Create versions for both simulator and device
-    for platform in ["ios_simulator", "ios_device"]:
-        config = platform_config[platform]
-        
-        injection_enabled_swift_library(
-            name = name + "_" + platform,
-            srcs = srcs,
-            deps = deps,
-            target_triple = config["target_triple"],
-            sdk_path = config["sdk_path"],
-            **kwargs
-        )
-
-def macos_injection_library(name, srcs, deps = [], **kwargs):
-    """Creates a macOS library with injection capabilities."""
-    
-    platform_config = _get_platform_config()
-    config = platform_config["macos"]
+    Note: Platform detection is now automatic based on build configuration.
+    Use --ios_multi_cpus or --cpu flags to target specific platforms.
+    """
     
     injection_enabled_swift_library(
         name = name,
         srcs = srcs,
         deps = deps,
-        target_triple = config["target_triple"],
-        sdk_path = config["sdk_path"],
+        **kwargs
+    )
+
+def macos_injection_library(name, srcs, deps = [], **kwargs):
+    """Creates a macOS library with injection capabilities.
+    
+    Note: Platform detection is now automatic based on build configuration.
+    Use --macos_cpus or --cpu flags to target specific architectures.
+    """
+    
+    injection_enabled_swift_library(
+        name = name,
+        srcs = srcs,
+        deps = deps,
         **kwargs
     )
 

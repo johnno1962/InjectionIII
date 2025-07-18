@@ -36,7 +36,7 @@ log_error() {
 
 # Check if we're in a Bazel workspace
 check_bazel_workspace() {
-    if [[ ! -f "${WORKSPACE_ROOT}/WORKSPACE" && ! -f "${WORKSPACE_ROOT}/WORKSPACE.bazel" ]]; then
+    if [[ ! -f "${WORKSPACE_ROOT}/MODULE" && ! -f "${WORKSPACE_ROOT}/MODULE.bazel" ]]; then
         log_error "Not in a Bazel workspace. Please run this script from a Bazel workspace root."
         exit 1
     fi
@@ -67,6 +67,7 @@ check_injection_app() {
 # Set up injection build configuration
 setup_build_config() {
     local bazelrc_file="${WORKSPACE_ROOT}/.bazelrc"
+    local injection_bazelrc_file="${WORKSPACE_ROOT}/.injection.bazelrc"
     local injection_config="# Hot reload injection configuration
 build:injection --compilation_mode=fastbuild
 build:injection --features=swift.use_global_module_cache
@@ -79,16 +80,24 @@ build:injection --swiftcopt=-Xfrontend --swiftcopt=-enable-implicit-dynamic
 build:injection --build_event_json_file=/tmp/bazel_injection_bep.json
 "
 
+    # Create the .injection.bazelrc file
+    log_info "Creating .injection.bazelrc with injection configuration"
+    echo "$injection_config" > "$injection_bazelrc_file"
+
+    # Add try-import to .bazelrc if it doesn't exist
     if [[ -f "$bazelrc_file" ]]; then
-        if ! grep -q "Hot reload injection configuration" "$bazelrc_file"; then
-            log_info "Adding injection configuration to .bazelrc"
-            echo "$injection_config" >> "$bazelrc_file"
+        if ! grep -q "try-import.*injection.bazelrc" "$bazelrc_file"; then
+            log_info "Adding try-import to .bazelrc"
+            echo "" >> "$bazelrc_file"
+            echo "# Import injection configuration" >> "$bazelrc_file"
+            echo "try-import %workspace%/.injection.bazelrc" >> "$bazelrc_file"
         else
-            log_info "Injection configuration already exists in .bazelrc"
+            log_info "Try-import for injection configuration already exists in .bazelrc"
         fi
     else
-        log_info "Creating .bazelrc with injection configuration"
-        echo "$injection_config" > "$bazelrc_file"
+        log_info "Creating .bazelrc with try-import for injection configuration"
+        echo "# Import injection configuration" > "$bazelrc_file"
+        echo "try-import %workspace%/.injection.bazelrc" >> "$bazelrc_file"
     fi
 }
 
@@ -171,20 +180,29 @@ EOF
 
 # Create workspace setup
 setup_workspace() {
-    local workspace_file="${WORKSPACE_ROOT}/WORKSPACE"
+    local module_file="${WORKSPACE_ROOT}/MODULE.bazel"
     local injection_setup="
 # Hot reload injection setup
-load(\"//bazel:hot_reload.bzl\", \"injection_enabled_swift_library\")
+bazel_dep(name = \"rules_swift\", version = \"1.0.0\")
+bazel_dep(name = \"build_bazel_rules_apple\", version = \"3.0.0\")
 
-# Add any additional workspace setup here
+# Add any additional module setup here
 "
 
-    if [[ -f "$workspace_file" ]]; then
-        if ! grep -q "Hot reload injection setup" "$workspace_file"; then
-            log_info "Adding injection setup to WORKSPACE"
-            echo "$injection_setup" >> "$workspace_file"
+    if [[ -f "$module_file" ]]; then
+        if ! grep -q "Hot reload injection setup" "$module_file"; then
+            log_info "Adding injection setup to MODULE.bazel"
+            echo "$injection_setup" >> "$module_file"
         else
-            log_info "Injection setup already exists in WORKSPACE"
+            log_info "Injection setup already exists in MODULE.bazel"
+        fi
+    elif [[ -f "${WORKSPACE_ROOT}/MODULE" ]]; then
+        local module_basic="${WORKSPACE_ROOT}/MODULE"
+        if ! grep -q "Hot reload injection setup" "$module_basic"; then
+            log_info "Adding injection setup to MODULE"
+            echo "$injection_setup" >> "$module_basic"
+        else
+            log_info "Injection setup already exists in MODULE"
         fi
     fi
 }

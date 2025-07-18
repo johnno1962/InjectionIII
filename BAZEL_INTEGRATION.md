@@ -149,7 +149,7 @@ The Bazel integration includes several performance optimizations:
 ### Common Issues
 
 1. **Bazel Not Found**: Ensure Bazel is installed and in PATH
-2. **Workspace Detection**: Verify WORKSPACE file exists in project root
+2. **Workspace Detection**: Verify MODULE or MODULE.bazel file exists in project root
 3. **Build Failures**: Check that targets have proper dependencies
 4. **Injection Failures**: Ensure `-interposable` linker flag is set
 
