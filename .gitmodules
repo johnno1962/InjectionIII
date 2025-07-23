@@ -4,12 +4,6 @@
 [submodule "HotReloading"]
 	path = HotReloading
 	url = https://github.com/johnno1962/HotReloading.git
-[submodule "DLKit"]
-	path = DLKit
-	url = https://github.com/johnno1962/DLKit
-[submodule "SwiftRegex5"]
-	path = SwiftRegex5
-	url = https://github.com/johnno1962/SwiftRegex5
 [submodule "ProfileSwiftUI"]
 	path = ProfileSwiftUI
 	url = https://github.com/johnno1962/ProfileSwiftUI
