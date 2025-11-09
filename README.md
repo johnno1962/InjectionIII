@@ -323,6 +323,8 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
+After 100 injections you'll be reminded you can sponsor this project on GitHub.
+
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2025/07/06 $
+$Date: 2025/11/09 $
