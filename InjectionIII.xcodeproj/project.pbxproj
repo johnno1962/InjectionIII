@@ -1049,14 +1049,14 @@
 		};
 		BBCA02321FB0F86E00E45F0F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
 			);
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = "/bin/sh -x";
 			shellScript = "InjectionIII/build_bundles.sh\n";
 			showEnvVarsInLog = 0;
