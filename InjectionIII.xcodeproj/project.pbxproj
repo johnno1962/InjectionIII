@@ -32,7 +32,6 @@
 		BB39892E2D919BFE0086A550 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB39892D2D919BFE0086A550 /* Common.swift */; };
 		BB39893E2D91BC8C0086A550 /* SimpleSocket.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB67DBB31FB0CDA8000EAC8A /* SimpleSocket.mm */; };
 		BB3989462D91BE500086A550 /* feedcommands in Resources */ = {isa = PBXBuildFile; fileRef = BB3989332D91BA8A0086A550 /* feedcommands */; };
-		BB39894A2D91C0880086A550 /* swift-frontend.sh in Resources */ = {isa = PBXBuildFile; fileRef = BB3989492D91C0880086A550 /* swift-frontend.sh */; };
 		BB439B801FABA64300B4F50B /* SwiftEvalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B7F1FABA64300B4F50B /* SwiftEvalTests.swift */; };
 		BB5291012ED8438F00070F80 /* SwiftRefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5291002ED8438F00070F80 /* SwiftRefs.swift */; };
 		BB56393C1FD5C25A002FFCEF /* SignerService.m in Sources */ = {isa = PBXBuildFile; fileRef = BB67DBB61FB0D0F2000EAC8A /* SignerService.m */; };
@@ -80,6 +79,7 @@
 		BBC03BC02625F27C005C1A06 /* UnhidingEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC03BBF2625F27C005C1A06 /* UnhidingEval.swift */; };
 		BBC03BC12625F27C005C1A06 /* UnhidingEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC03BBF2625F27C005C1A06 /* UnhidingEval.swift */; };
 		BBC03BC726282358005C1A06 /* SwiftSweeper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC03BC626282358005C1A06 /* SwiftSweeper.swift */; };
+		BBC3EE022F47EEB300FC785F /* swift-frontend.sh in Resources */ = {isa = PBXBuildFile; fileRef = BBC3EE012F47EEB300FC785F /* swift-frontend.sh */; };
 		BBCA02021FB0F10300E45F0F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCA02011FB0F10300E45F0F /* AppDelegate.swift */; };
 		BBCA02041FB0F10300E45F0F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02031FB0F10300E45F0F /* Assets.xcassets */; };
 		BBCA02071FB0F10300E45F0F /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02051FB0F10300E45F0F /* MainMenu.xib */; };
@@ -124,6 +124,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = BB3989322D91BA8A0086A550;
 			remoteInfo = feedcommands;
+		};
+		BBC3EE042F4CBFB800FC785F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BB439B5D1FABA64300B4F50B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BBCA02441FB1065D00E45F0F;
+			remoteInfo = InjectionBundle;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -206,7 +213,6 @@
 		BB3989252D918C140086A550 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Defaults.swift; path = InjectionNext/App/InjectionNext/Defaults.swift; sourceTree = SOURCE_ROOT; };
 		BB39892D2D919BFE0086A550 /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Common.swift; path = InjectionNext/InjectionLite/Sources/InjectionImpl/Common.swift; sourceTree = SOURCE_ROOT; };
 		BB3989332D91BA8A0086A550 /* feedcommands */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = feedcommands; sourceTree = BUILT_PRODUCTS_DIR; };
-		BB3989492D91C0880086A550 /* swift-frontend.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "swift-frontend.sh"; sourceTree = "<group>"; };
 		BB439B681FABA64300B4F50B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BB439B6A1FABA64300B4F50B /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
 		BB439B6C1FABA64300B4F50B /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
@@ -309,6 +315,7 @@
 		BBC03BBC2625F268005C1A06 /* Unhide.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Unhide.mm; path = HotReloading/Sources/HotReloadingGuts/Unhide.mm; sourceTree = SOURCE_ROOT; };
 		BBC03BBF2625F27C005C1A06 /* UnhidingEval.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UnhidingEval.swift; path = HotReloading/Sources/HotReloading/UnhidingEval.swift; sourceTree = SOURCE_ROOT; };
 		BBC03BC626282358005C1A06 /* SwiftSweeper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftSweeper.swift; path = HotReloading/Sources/HotReloading/SwiftSweeper.swift; sourceTree = SOURCE_ROOT; };
+		BBC3EE012F47EEB300FC785F /* swift-frontend.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = "swift-frontend.sh"; path = "InjectionIII/swift-frontend.sh"; sourceTree = SOURCE_ROOT; };
 		BBCA01FE1FB0F10300E45F0F /* InjectionIII.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InjectionIII.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBCA02011FB0F10300E45F0F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ../HotReloading/Sources/injectiond/AppDelegate.swift; sourceTree = "<group>"; };
 		BBCA02031FB0F10300E45F0F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -609,7 +616,6 @@
 				BBE490CE1FB2368A003D41BB /* FileWatcher.swift */,
 				BB39891C2D918AE90086A550 /* NextCompiler.swift */,
 				BB39891B2D918AE90086A550 /* FrontendServer.swift */,
-				BB3989492D91C0880086A550 /* swift-frontend.sh */,
 				BB39892D2D919BFE0086A550 /* Common.swift */,
 				BB3989252D918C140086A550 /* Defaults.swift */,
 				BBCA025A1FB1132700E45F0F /* Xcode.h */,
@@ -627,6 +633,7 @@
 				BBCA02081FB0F10400E45F0F /* Info.plist */,
 				BBCA02581FB112F500E45F0F /* App.icns */,
 				BBCA020B1FB0F10400E45F0F /* InjectionIII.entitlements */,
+				BBC3EE012F47EEB300FC785F /* swift-frontend.sh */,
 				BBA7BE0223473D660067124D /* build_bundles.sh */,
 				BBFE27E92B148E7400E47E61 /* copy_bundle.sh */,
 				BBDF943C2349277A00334E08 /* InjectionIII-Bridging-Header.h */,
@@ -768,6 +775,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				BBC3EE052F4CBFB800FC785F /* PBXTargetDependency */,
 			);
 			name = feedcommands;
 			packageProductDependencies = (
@@ -847,6 +855,7 @@
 				BBCA02421FB1065D00E45F0F /* Frameworks */,
 				BBCA02431FB1065D00E45F0F /* Resources */,
 				BB6C88222520D799005AFCFC /* Embed Frameworks */,
+				BBC3EE062F4CC07900FC785F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -975,7 +984,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BB39894A2D91C0880086A550 /* swift-frontend.sh in Resources */,
 				BB3989462D91BE500086A550 /* feedcommands in Resources */,
 				BB1EBC50258EA273001F2AA4 /* fishhook.h in Resources */,
 				BBFE27EA2B148E7400E47E61 /* copy_bundle.sh in Resources */,
@@ -987,6 +995,7 @@
 				BBE490DC1FB2C643003D41BB /* InjectionError.tif in Resources */,
 				BBCA02591FB112F500E45F0F /* App.icns in Resources */,
 				BBCA02601FB122C300E45F0F /* InjectionIdle.tif in Resources */,
+				BBC3EE022F47EEB300FC785F /* swift-frontend.sh in Resources */,
 				BB6306FE1FCD1A410021D30C /* Credits.rtf in Resources */,
 				BBCA02611FB122C300E45F0F /* InjectionOK.tif in Resources */,
 				BBCA02041FB0F10300E45F0F /* Assets.xcassets in Resources */,
@@ -1046,6 +1055,23 @@
 			shellPath = /bin/sh;
 			shellScript = "if [ \"$ACTION\" == \"install\" ]; then exit 0; fi\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\nchmod +w \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		BBC3EE062F4CC07900FC785F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "perl -e 'print \"#define COMMANDS_VERSION @{[1_000_000 + int(rand() * ((1 << 31)) - 1_000_000)]}\\n\"' >/tmp/InjectionNextSalt.h\n";
 		};
 		BBCA02321FB0F86E00E45F0F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1196,6 +1222,11 @@
 			isa = PBXTargetDependency;
 			target = BB3989322D91BA8A0086A550 /* feedcommands */;
 			targetProxy = BB3989442D91BE420086A550 /* PBXContainerItemProxy */;
+		};
+		BBC3EE052F4CBFB800FC785F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BBCA02441FB1065D00E45F0F /* InjectionBundle */;
+			targetProxy = BBC3EE042F4CBFB800FC785F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1879,7 +1910,7 @@
 			repositoryURL = "https://github.com/johnno1962/Popen";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.1.9;
+				minimumVersion = 2.2.0;
 			};
 		};
 		BB98653C2D92F67600C092FA /* XCRemoteSwiftPackageReference "Fortify" */ = {

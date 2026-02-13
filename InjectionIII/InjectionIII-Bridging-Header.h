@@ -14,6 +14,6 @@
 #import "RMWindowController.h"
 #import "../XprobePlugin/Sources/XprobeUI/include/XprobePluginMenuController.h"
 #endif
-
+#import "/tmp/InjectionNextSalt.h"
 #import "DDHotKeyCenter.h"
 #import <libproc.h>

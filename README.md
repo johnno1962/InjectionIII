@@ -22,6 +22,13 @@ will if you use "Editor/Add Build Setting/Add User-Defined Setting"
 to add a value for `EMIT_FRONTEND_COMMAND_LINES` (set to "YES") to your project's
 `Debug` build settings, then InjectionIII can continue to work as before.
 
+### InjectionNext
+
+InjectionIII now has a start-over successor in the very similar
+[InjectionNext](https://github.com/johnno1962/InjectionNext) project.
+If you encounter a limitation of InjectionIII it's recommended giving
+InjectionNext a try to see if the issue has been resolved there.
+
 ### How to use it
 
 Setting up your projects to use injection is now as simple as downloading
@@ -265,8 +272,8 @@ minimal implementation of standalone injection for reference. Just add
 this Swift package and you should be able to inject in the simulator.
 
 [InjectionNext](https://github.com/johnno1962/InjectionNext) is a 
-currently experimental version of Injection that should be faster and 
-more reliable for large projects. It integrates into a debugging flag of 
+new start-over version of Injection that should be faster and more 
+reliable for large projects. It integrates into a debugging flag of 
 Xcode to find out how to recompile files to avoid parsing build logs
 and re-uses the client implementation of injection from `InjectionLite`.
 To use with external editors such as `Cursor`, InjectionNext can also
@@ -327,4 +334,4 @@ After 100 injections you'll be reminded you can sponsor this project on GitHub.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2025/11/09 $
+$Date: 2026/02/22 $
