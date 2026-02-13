@@ -265,8 +265,8 @@ minimal implementation of standalone injection for reference. Just add
 this Swift package and you should be able to inject in the simulator.
 
 [InjectionNext](https://github.com/johnno1962/InjectionNext) is a 
-currently experimental version of Injection that should be faster and 
-more reliable for large projects. It integrates into a debugging flag of 
+new start-over version of Injection that should be faster and more 
+reliable for large projects. It integrates into a debugging flag of 
 Xcode to find out how to recompile files to avoid parsing build logs
 and re-uses the client implementation of injection from `InjectionLite`.
 To use with external editors such as `Cursor`, InjectionNext can also
@@ -327,4 +327,4 @@ After 100 injections you'll be reminded you can sponsor this project on GitHub.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2025/11/09 $
+$Date: 2026/02/13 $
