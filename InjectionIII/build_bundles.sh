@@ -6,7 +6,7 @@
 #  Created by John Holdsworth on 04/10/2019.
 #  Copyright © 2019 John Holdsworth. All rights reserved.
 #
-#  $Id: //depot/ResidentEval/InjectionIII/build_bundles.sh#93 $
+#  $Id: //depot/ResidentEval/InjectionIII/build_bundles.sh#100 $
 #
 
 # Injection has to assume a fixed path for Xcode.app as it uses
@@ -43,7 +43,7 @@ function build_bundle () {
 }
 
 #build_bundle macOS MacOSX macosx &&
-if [ "$(hostname)" != "Johns-MacBook-Air.local" ]; then
+if [ "$CONFIGURATION" = "Release" ]; then
     build_bundle xrOS XRSimulator xrsimulator
     build_bundle tvOS AppleTVSimulator appletvsimulator &&
     build_bundle watchOS WatchSimulator watchsimulator
@@ -66,6 +66,16 @@ rsync -au $SYMROOT/$CONFIGURATION/SwiftTrace.framework/Versions/A/{Headers,Modul
 for thing in Modules Resources Headers; do
     ln -sf Versions/Current/$thing $CODESIGNING_FOLDER_PATH/Contents/Resources/macOSInjection.bundle/Contents/Frameworks/SwiftTrace.framework
 done &&
+
+rsync -au \
+    --exclude node_modules \
+    --exclude .npm \
+    --exclude 'npm-debug.log*' \
+    --exclude .DS_Store \
+    InjectionNext/mcp-server "$CODESIGNING_FOLDER_PATH/Contents/Resources" &&
+perl -pi.bak -e 's@InjectionNext@InjectionIII@g' \
+    $CODESIGNING_FOLDER_PATH/Contents/Resources/mcp-server/README.md &&
+rm $CODESIGNING_FOLDER_PATH/Contents/Resources/mcp-server/README.md.bak &&
 
 # This seems to be a bug producing .swiftinterface files.
 perl -pi.bak -e 's/SwiftTrace.(Swift(Trace|Meta)|dyld_interpose_tuple|rebinding)/$1/g' $CODESIGNING_FOLDER_PATH/Contents/Resources/{macOSInjection.bundle/Contents,{i,maci,tv,xr}OSInjection.bundle}/Frameworks/SwiftTrace.framework/Modules/*/*.swiftinterface &&
