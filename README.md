@@ -22,6 +22,9 @@ will if you use "Editor/Add Build Setting/Add User-Defined Setting"
 to add a value for `EMIT_FRONTEND_COMMAND_LINES` (set to "YES") to your project's
 `Debug` build settings, then InjectionIII can continue to work as before.
 
+Versions 5.2.1+ of the app support an MCP server contained in the `Resources`
+directory of the app bundle. Consult mcp-server/README.md for details.
+
 ### InjectionNext
 
 InjectionIII now has a start-over successor in the very similar
@@ -334,4 +337,4 @@ After 100 injections you'll be reminded you can sponsor this project on GitHub.
 
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2026/02/22 $
+$Date: 2026/05/24 $

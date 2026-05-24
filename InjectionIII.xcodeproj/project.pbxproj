@@ -20,11 +20,14 @@
 		BB1EBC4D258DE2A0001F2AA4 /* fishhook.c in Sources */ = {isa = PBXBuildFile; fileRef = BB1EBC4C258DE29D001F2AA4 /* fishhook.c */; };
 		BB1EBC4F258DE2AD001F2AA4 /* fishhook.h in Headers */ = {isa = PBXBuildFile; fileRef = BB1EBC4E258DE2AC001F2AA4 /* fishhook.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BB1EBC50258EA273001F2AA4 /* fishhook.h in Resources */ = {isa = PBXBuildFile; fileRef = BB1EBC4E258DE2AC001F2AA4 /* fishhook.h */; };
+		BB321CE42FC2F6D6004AC0B4 /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB321CE32FC2F6D6004AC0B4 /* LogManager.swift */; };
 		BB34AA6D2E2A6C8C007F5C12 /* Generics.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB34AA6C2E2A6C88007F5C12 /* Generics.swift */; };
 		BB3756FF2BCC269400CE5D05 /* DLKitC.c in Sources */ = {isa = PBXBuildFile; fileRef = BBD0AB40262F2549003ED7B1 /* DLKitC.c */; };
 		BB3757042BCC26DD00CE5D05 /* trie_dlops.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB3757022BCC26DD00CE5D05 /* trie_dlops.mm */; };
 		BB3757052BCC26DD00CE5D05 /* trie_dladdr.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB3757032BCC26DD00CE5D05 /* trie_dladdr.mm */; };
 		BB3757072BCC385F00CE5D05 /* ProfileSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3757002BCC26AE00CE5D05 /* ProfileSwiftUI.swift */; };
+		BB37AA552FC2EDFE006AA05B /* ControlServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB37AA542FC2EDFE006AA05B /* ControlServer.swift */; };
+		BB37AA572FC2EE24006AA05B /* InjectionTouchEvents.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB37AA562FC2EE24006AA05B /* InjectionTouchEvents.mm */; };
 		BB39891D2D918AE90086A550 /* FrontendServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB39891B2D918AE90086A550 /* FrontendServer.swift */; };
 		BB39891E2D918AE90086A550 /* NextCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB39891C2D918AE90086A550 /* NextCompiler.swift */; };
 		BB3989212D918B640086A550 /* Popen in Frameworks */ = {isa = PBXBuildFile; productRef = BB3989202D918B640086A550 /* Popen */; };
@@ -201,6 +204,7 @@
 		BB1DEA9E1FD6A74900AF509F /* XprobePluginMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XprobePluginMenuController.h; path = XprobePlugin/Sources/XprobeUI/include/XprobePluginMenuController.h; sourceTree = "<group>"; };
 		BB1EBC4C258DE29D001F2AA4 /* fishhook.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = fishhook.c; path = SwiftTraceGuts/fishhook.c; sourceTree = "<group>"; };
 		BB1EBC4E258DE2AC001F2AA4 /* fishhook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fishhook.h; path = SwiftTraceGuts/include/fishhook.h; sourceTree = "<group>"; };
+		BB321CE32FC2F6D6004AC0B4 /* LogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LogManager.swift; path = InjectionNext/App/InjectionNext/LogManager.swift; sourceTree = SOURCE_ROOT; };
 		BB34AA6C2E2A6C88007F5C12 /* Generics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Generics.swift; path = InjectionNext/InjectionLite/Sources/InjectionImpl/Generics.swift; sourceTree = SOURCE_ROOT; };
 		BB34C3FC244FAAB400D520A9 /* RMWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RMWindowController.xib; path = Remote/Classes/RMWindowController.xib; sourceTree = SOURCE_ROOT; };
 		BB34C3FE244FAD3C00D520A9 /* log.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = log.html; path = Remote/log.html; sourceTree = SOURCE_ROOT; };
@@ -208,6 +212,9 @@
 		BB3757002BCC26AE00CE5D05 /* ProfileSwiftUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileSwiftUI.swift; path = ProfileSwiftUI/Sources/ProfileSwiftUI/ProfileSwiftUI.swift; sourceTree = SOURCE_ROOT; };
 		BB3757022BCC26DD00CE5D05 /* trie_dlops.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = trie_dlops.mm; path = DLKit/Sources/DLKitC/trie_dlops.mm; sourceTree = SOURCE_ROOT; };
 		BB3757032BCC26DD00CE5D05 /* trie_dladdr.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = trie_dladdr.mm; path = DLKit/Sources/DLKitC/trie_dladdr.mm; sourceTree = SOURCE_ROOT; };
+		BB37AA542FC2EDFE006AA05B /* ControlServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ControlServer.swift; path = InjectionNext/App/InjectionNext/ControlServer.swift; sourceTree = SOURCE_ROOT; };
+		BB37AA562FC2EE24006AA05B /* InjectionTouchEvents.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = InjectionTouchEvents.mm; path = InjectionNext/Sources/InjectionNextC/InjectionTouchEvents.mm; sourceTree = SOURCE_ROOT; };
+		BB37AA582FC2EEE5006AA05B /* InjectionTouchEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InjectionTouchEvents.h; path = InjectionNext/Sources/InjectionNextC/include/InjectionTouchEvents.h; sourceTree = SOURCE_ROOT; };
 		BB39891B2D918AE90086A550 /* FrontendServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FrontendServer.swift; path = InjectionNext/App/InjectionNext/FrontendServer.swift; sourceTree = SOURCE_ROOT; };
 		BB39891C2D918AE90086A550 /* NextCompiler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NextCompiler.swift; path = InjectionNext/App/InjectionNext/NextCompiler.swift; sourceTree = SOURCE_ROOT; };
 		BB3989252D918C140086A550 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Defaults.swift; path = InjectionNext/App/InjectionNext/Defaults.swift; sourceTree = SOURCE_ROOT; };
@@ -616,6 +623,8 @@
 				BBE490CE1FB2368A003D41BB /* FileWatcher.swift */,
 				BB39891C2D918AE90086A550 /* NextCompiler.swift */,
 				BB39891B2D918AE90086A550 /* FrontendServer.swift */,
+				BB37AA542FC2EDFE006AA05B /* ControlServer.swift */,
+				BB321CE32FC2F6D6004AC0B4 /* LogManager.swift */,
 				BB39892D2D919BFE0086A550 /* Common.swift */,
 				BB3989252D918C140086A550 /* Defaults.swift */,
 				BBCA025A1FB1132700E45F0F /* Xcode.h */,
@@ -686,6 +695,8 @@
 				BB3757022BCC26DD00CE5D05 /* trie_dlops.mm */,
 				BBD0AB3F262F2549003ED7B1 /* fishhook.c */,
 				BBC03BBC2625F268005C1A06 /* Unhide.mm */,
+				BB37AA582FC2EEE5006AA05B /* InjectionTouchEvents.h */,
+				BB37AA562FC2EE24006AA05B /* InjectionTouchEvents.mm */,
 				BBB64FE41FD576AA0020BE47 /* XprobeSwift-Bridging-Header.h */,
 				BD35949D21A6C5DE0020EB94 /* Vaccine.swift */,
 			);
@@ -1159,11 +1170,13 @@
 				BBC03BBD2625F269005C1A06 /* Unhide.mm in Sources */,
 				BB3989262D918C140086A550 /* Defaults.swift in Sources */,
 				BBEB704C1FD28C6F00127711 /* XcodeHash.m in Sources */,
+				BB321CE42FC2F6D6004AC0B4 /* LogManager.swift in Sources */,
 				BB39892E2D919BFE0086A550 /* Common.swift in Sources */,
 				BBB9E98C279BEE3B0085E3B9 /* DeviceServer.swift in Sources */,
 				BBCA02021FB0F10300E45F0F /* AppDelegate.swift in Sources */,
 				BB7D7CAC2512F8F00069FE2C /* UpdateCheck.swift in Sources */,
 				BBE490D01FB2368A003D41BB /* FileWatcher.swift in Sources */,
+				BB37AA552FC2EDFE006AA05B /* ControlServer.swift in Sources */,
 				BBCA02561FB1099500E45F0F /* InjectionServer.swift in Sources */,
 				BBC03BC02625F27C005C1A06 /* UnhidingEval.swift in Sources */,
 				BBBFD2D01FCFEE300057D899 /* SwiftEval.swift in Sources */,
@@ -1192,6 +1205,7 @@
 				BD35949E21A6C5DE0020EB94 /* Vaccine.swift in Sources */,
 				BB34AA6D2E2A6C8C007F5C12 /* Generics.swift in Sources */,
 				BBCA02511FB107AF00E45F0F /* SwiftInjection.swift in Sources */,
+				BB37AA572FC2EE24006AA05B /* InjectionTouchEvents.mm in Sources */,
 				BB746D602BACB62D0001685F /* KeyPaths.swift in Sources */,
 				BB9642A627E339BE00C61CB7 /* ObjcInjection.swift in Sources */,
 				BB04337A28D31A350007577F /* StandaloneInjection.swift in Sources */,
@@ -1675,8 +1689,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MARKETING_VERSION = 5.2.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MARKETING_VERSION = 5.2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1699,8 +1713,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MARKETING_VERSION = 5.2.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MARKETING_VERSION = 5.2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
