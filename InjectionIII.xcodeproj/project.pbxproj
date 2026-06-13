@@ -1452,6 +1452,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ALLOW_ENTITLEMENTS_MODIFICATION = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -1523,6 +1524,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ALLOW_ENTITLEMENTS_MODIFICATION = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1924,7 +1926,7 @@
 			repositoryURL = "https://github.com/johnno1962/Popen";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.2.0;
+				minimumVersion = 2.2.1;
 			};
 		};
 		BB98653C2D92F67600C092FA /* XCRemoteSwiftPackageReference "Fortify" */ = {
@@ -1932,7 +1934,7 @@
 			repositoryURL = "https://github.com/johnno1962/Fortify";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.1.12;
+				minimumVersion = 2.2.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
