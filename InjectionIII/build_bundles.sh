@@ -67,6 +67,8 @@ for thing in Modules Resources Headers; do
     ln -sf Versions/Current/$thing $CODESIGNING_FOLDER_PATH/Contents/Resources/macOSInjection.bundle/Contents/Frameworks/SwiftTrace.framework
 done &&
 
+cp -f InjectionNext/App/InjectionNext/swift-frontend.sh $CODESIGNING_FOLDER_PATH/Contents/Resources &&
+
 rsync -au \
     --exclude node_modules \
     --exclude .npm \
@@ -74,8 +76,8 @@ rsync -au \
     --exclude .DS_Store \
     InjectionNext/mcp-server "$CODESIGNING_FOLDER_PATH/Contents/Resources" &&
 perl -pi.bak -e 's@InjectionNext@InjectionIII@g' \
-    $CODESIGNING_FOLDER_PATH/Contents/Resources/mcp-server/README.md &&
-rm $CODESIGNING_FOLDER_PATH/Contents/Resources/mcp-server/README.md.bak &&
+    $CODESIGNING_FOLDER_PATH/Contents/Resources/{mcp-server/README.md,swift-frontend.sh} &&
+rm $CODESIGNING_FOLDER_PATH/Contents/Resources/{mcp-server/README.md,swift-frontend.sh}.bak &&
 
 # This seems to be a bug producing .swiftinterface files.
 perl -pi.bak -e 's/SwiftTrace.(Swift(Trace|Meta)|dyld_interpose_tuple|rebinding)/$1/g' $CODESIGNING_FOLDER_PATH/Contents/Resources/{macOSInjection.bundle/Contents,{i,maci,tv,xr}OSInjection.bundle}/Frameworks/SwiftTrace.framework/Modules/*/*.swiftinterface &&
