@@ -20,10 +20,14 @@
 		BB1EBC4D258DE2A0001F2AA4 /* fishhook.c in Sources */ = {isa = PBXBuildFile; fileRef = BB1EBC4C258DE29D001F2AA4 /* fishhook.c */; };
 		BB1EBC4F258DE2AD001F2AA4 /* fishhook.h in Headers */ = {isa = PBXBuildFile; fileRef = BB1EBC4E258DE2AC001F2AA4 /* fishhook.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BB1EBC50258EA273001F2AA4 /* fishhook.h in Resources */ = {isa = PBXBuildFile; fileRef = BB1EBC4E258DE2AC001F2AA4 /* fishhook.h */; };
+		BB321CE42FC2F6D6004AC0B4 /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB321CE32FC2F6D6004AC0B4 /* LogManager.swift */; };
+		BB34AA6D2E2A6C8C007F5C12 /* Generics.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB34AA6C2E2A6C88007F5C12 /* Generics.swift */; };
 		BB3756FF2BCC269400CE5D05 /* DLKitC.c in Sources */ = {isa = PBXBuildFile; fileRef = BBD0AB40262F2549003ED7B1 /* DLKitC.c */; };
 		BB3757042BCC26DD00CE5D05 /* trie_dlops.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB3757022BCC26DD00CE5D05 /* trie_dlops.mm */; };
 		BB3757052BCC26DD00CE5D05 /* trie_dladdr.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB3757032BCC26DD00CE5D05 /* trie_dladdr.mm */; };
 		BB3757072BCC385F00CE5D05 /* ProfileSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3757002BCC26AE00CE5D05 /* ProfileSwiftUI.swift */; };
+		BB37AA552FC2EDFE006AA05B /* ControlServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB37AA542FC2EDFE006AA05B /* ControlServer.swift */; };
+		BB37AA572FC2EE24006AA05B /* InjectionTouchEvents.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB37AA562FC2EE24006AA05B /* InjectionTouchEvents.mm */; };
 		BB39891D2D918AE90086A550 /* FrontendServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB39891B2D918AE90086A550 /* FrontendServer.swift */; };
 		BB39891E2D918AE90086A550 /* NextCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB39891C2D918AE90086A550 /* NextCompiler.swift */; };
 		BB3989212D918B640086A550 /* Popen in Frameworks */ = {isa = PBXBuildFile; productRef = BB3989202D918B640086A550 /* Popen */; };
@@ -31,8 +35,8 @@
 		BB39892E2D919BFE0086A550 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB39892D2D919BFE0086A550 /* Common.swift */; };
 		BB39893E2D91BC8C0086A550 /* SimpleSocket.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB67DBB31FB0CDA8000EAC8A /* SimpleSocket.mm */; };
 		BB3989462D91BE500086A550 /* feedcommands in Resources */ = {isa = PBXBuildFile; fileRef = BB3989332D91BA8A0086A550 /* feedcommands */; };
-		BB39894A2D91C0880086A550 /* swift-frontend.sh in Resources */ = {isa = PBXBuildFile; fileRef = BB3989492D91C0880086A550 /* swift-frontend.sh */; };
 		BB439B801FABA64300B4F50B /* SwiftEvalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB439B7F1FABA64300B4F50B /* SwiftEvalTests.swift */; };
+		BB5291012ED8438F00070F80 /* SwiftRefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5291002ED8438F00070F80 /* SwiftRefs.swift */; };
 		BB56393C1FD5C25A002FFCEF /* SignerService.m in Sources */ = {isa = PBXBuildFile; fileRef = BB67DBB61FB0D0F2000EAC8A /* SignerService.m */; };
 		BB6306FE1FCD1A410021D30C /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = BB6306FD1FCD1A410021D30C /* Credits.rtf */; };
 		BB6446202545831400A83098 /* StringIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB64461F2545831200A83098 /* StringIndex.swift */; };
@@ -50,7 +54,7 @@
 		BB6C87FA2520D2C3005AFCFC /* xt_forwarding_trampoline_arm64.s in Sources */ = {isa = PBXBuildFile; fileRef = BB6C87F72520D2C3005AFCFC /* xt_forwarding_trampoline_arm64.s */; };
 		BB6C87FB2520D2C3005AFCFC /* xt_forwarding_trampoline_x64.s in Sources */ = {isa = PBXBuildFile; fileRef = BB6C87F82520D2C3005AFCFC /* xt_forwarding_trampoline_x64.s */; };
 		BB6C881F2520D799005AFCFC /* SwiftTrace.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BB6C87C42520D0D1005AFCFC /* SwiftTrace.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		BB746D602BACB62D0001685F /* SwiftKeyPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB746D5F2BACB62B0001685F /* SwiftKeyPath.swift */; };
+		BB746D602BACB62D0001685F /* KeyPaths.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB746D5F2BACB62B0001685F /* KeyPaths.swift */; };
 		BB7D7CAC2512F8F00069FE2C /* UpdateCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D7CAB2512F8F00069FE2C /* UpdateCheck.swift */; };
 		BB80B3B526B573BE0055FAAE /* README_Chinese.md in Resources */ = {isa = PBXBuildFile; fileRef = BB80B3B426B573BE0055FAAE /* README_Chinese.md */; };
 		BB877CE42186EB6E0070EEC7 /* DDHotKeyCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6306F51FCD16600021D30C /* DDHotKeyCenter.m */; };
@@ -78,6 +82,7 @@
 		BBC03BC02625F27C005C1A06 /* UnhidingEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC03BBF2625F27C005C1A06 /* UnhidingEval.swift */; };
 		BBC03BC12625F27C005C1A06 /* UnhidingEval.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC03BBF2625F27C005C1A06 /* UnhidingEval.swift */; };
 		BBC03BC726282358005C1A06 /* SwiftSweeper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC03BC626282358005C1A06 /* SwiftSweeper.swift */; };
+		BBC3EE022F47EEB300FC785F /* swift-frontend.sh in Resources */ = {isa = PBXBuildFile; fileRef = BBC3EE012F47EEB300FC785F /* swift-frontend.sh */; };
 		BBCA02021FB0F10300E45F0F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCA02011FB0F10300E45F0F /* AppDelegate.swift */; };
 		BBCA02041FB0F10300E45F0F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02031FB0F10300E45F0F /* Assets.xcassets */; };
 		BBCA02071FB0F10300E45F0F /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBCA02051FB0F10300E45F0F /* MainMenu.xib */; };
@@ -122,6 +127,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = BB3989322D91BA8A0086A550;
 			remoteInfo = feedcommands;
+		};
+		BBC3EE042F4CBFB800FC785F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BB439B5D1FABA64300B4F50B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BBCA02441FB1065D00E45F0F;
+			remoteInfo = InjectionBundle;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -192,18 +204,22 @@
 		BB1DEA9E1FD6A74900AF509F /* XprobePluginMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XprobePluginMenuController.h; path = XprobePlugin/Sources/XprobeUI/include/XprobePluginMenuController.h; sourceTree = "<group>"; };
 		BB1EBC4C258DE29D001F2AA4 /* fishhook.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = fishhook.c; path = SwiftTraceGuts/fishhook.c; sourceTree = "<group>"; };
 		BB1EBC4E258DE2AC001F2AA4 /* fishhook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fishhook.h; path = SwiftTraceGuts/include/fishhook.h; sourceTree = "<group>"; };
+		BB321CE32FC2F6D6004AC0B4 /* LogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LogManager.swift; path = InjectionNext/App/InjectionNext/LogManager.swift; sourceTree = SOURCE_ROOT; };
+		BB34AA6C2E2A6C88007F5C12 /* Generics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Generics.swift; path = InjectionNext/InjectionLite/Sources/InjectionImpl/Generics.swift; sourceTree = SOURCE_ROOT; };
 		BB34C3FC244FAAB400D520A9 /* RMWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RMWindowController.xib; path = Remote/Classes/RMWindowController.xib; sourceTree = SOURCE_ROOT; };
 		BB34C3FE244FAD3C00D520A9 /* log.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = log.html; path = Remote/log.html; sourceTree = SOURCE_ROOT; };
 		BB34C400244FAE2F00D520A9 /* iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iphone.png; path = Remote/iphone.png; sourceTree = SOURCE_ROOT; };
 		BB3757002BCC26AE00CE5D05 /* ProfileSwiftUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileSwiftUI.swift; path = ProfileSwiftUI/Sources/ProfileSwiftUI/ProfileSwiftUI.swift; sourceTree = SOURCE_ROOT; };
 		BB3757022BCC26DD00CE5D05 /* trie_dlops.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = trie_dlops.mm; path = DLKit/Sources/DLKitC/trie_dlops.mm; sourceTree = SOURCE_ROOT; };
 		BB3757032BCC26DD00CE5D05 /* trie_dladdr.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = trie_dladdr.mm; path = DLKit/Sources/DLKitC/trie_dladdr.mm; sourceTree = SOURCE_ROOT; };
+		BB37AA542FC2EDFE006AA05B /* ControlServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ControlServer.swift; path = InjectionNext/App/InjectionNext/ControlServer.swift; sourceTree = SOURCE_ROOT; };
+		BB37AA562FC2EE24006AA05B /* InjectionTouchEvents.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = InjectionTouchEvents.mm; path = InjectionNext/Sources/InjectionNextC/InjectionTouchEvents.mm; sourceTree = SOURCE_ROOT; };
+		BB37AA582FC2EEE5006AA05B /* InjectionTouchEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InjectionTouchEvents.h; path = InjectionNext/Sources/InjectionNextC/include/InjectionTouchEvents.h; sourceTree = SOURCE_ROOT; };
 		BB39891B2D918AE90086A550 /* FrontendServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FrontendServer.swift; path = InjectionNext/App/InjectionNext/FrontendServer.swift; sourceTree = SOURCE_ROOT; };
 		BB39891C2D918AE90086A550 /* NextCompiler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NextCompiler.swift; path = InjectionNext/App/InjectionNext/NextCompiler.swift; sourceTree = SOURCE_ROOT; };
 		BB3989252D918C140086A550 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Defaults.swift; path = InjectionNext/App/InjectionNext/Defaults.swift; sourceTree = SOURCE_ROOT; };
 		BB39892D2D919BFE0086A550 /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Common.swift; path = InjectionNext/InjectionLite/Sources/InjectionImpl/Common.swift; sourceTree = SOURCE_ROOT; };
 		BB3989332D91BA8A0086A550 /* feedcommands */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = feedcommands; sourceTree = BUILT_PRODUCTS_DIR; };
-		BB3989492D91C0880086A550 /* swift-frontend.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "swift-frontend.sh"; sourceTree = "<group>"; };
 		BB439B681FABA64300B4F50B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BB439B6A1FABA64300B4F50B /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
 		BB439B6C1FABA64300B4F50B /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
@@ -223,6 +239,7 @@
 		BB4EC3FA244FA3C40079E244 /* RMWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMWindowController.m; path = Remote/Sources/RemoteUI/RMWindowController.m; sourceTree = SOURCE_ROOT; };
 		BB4EC3FF244FA42A0079E244 /* RemoteCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteCapture.h; path = Remote/Sources/RemoteCapture/include/RemoteCapture.h; sourceTree = SOURCE_ROOT; };
 		BB4EC400244FA4420079E244 /* RMWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RMWindowController.h; path = Remote/Sources/RemoteUI/include/RMWindowController.h; sourceTree = SOURCE_ROOT; };
+		BB5291002ED8438F00070F80 /* SwiftRefs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftRefs.swift; path = SwiftTrace/SwiftRefs.swift; sourceTree = "<group>"; };
 		BB53B647244FC2F800F006E3 /* RemoteHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteHeaders.h; path = Remote/Sources/RemoteCapture/include/RemoteHeaders.h; sourceTree = SOURCE_ROOT; };
 		BB56393F1FD5D535002FFCEF /* Xprobe+Service.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = "Xprobe+Service.mm"; path = "XprobePlugin/Sources/Xprobe/Xprobe+Service.mm"; sourceTree = "<group>"; };
 		BB5639401FD5D535002FFCEF /* Xtrace.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = Xtrace.mm; path = XprobePlugin/Classes/Xtrace.mm; sourceTree = "<group>"; };
@@ -262,7 +279,7 @@
 		BB6C87F62520D2C3005AFCFC /* SwiftTrace.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = SwiftTrace.mm; path = SwiftTraceGuts/SwiftTrace.mm; sourceTree = "<group>"; };
 		BB6C87F72520D2C3005AFCFC /* xt_forwarding_trampoline_arm64.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; name = xt_forwarding_trampoline_arm64.s; path = SwiftTraceGuts/xt_forwarding_trampoline_arm64.s; sourceTree = "<group>"; };
 		BB6C87F82520D2C3005AFCFC /* xt_forwarding_trampoline_x64.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; name = xt_forwarding_trampoline_x64.s; path = SwiftTraceGuts/xt_forwarding_trampoline_x64.s; sourceTree = "<group>"; };
-		BB746D5F2BACB62B0001685F /* SwiftKeyPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftKeyPath.swift; path = HotReloading/Sources/HotReloading/SwiftKeyPath.swift; sourceTree = SOURCE_ROOT; };
+		BB746D5F2BACB62B0001685F /* KeyPaths.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KeyPaths.swift; path = InjectionNext/InjectionLite/Sources/InjectionImpl/KeyPaths.swift; sourceTree = SOURCE_ROOT; };
 		BB79FC78245CC02200A4B4CB /* TimeLapseBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimeLapseBuilder.swift; path = Remote/Sources/RemoteMovie/TimeLapseBuilder.swift; sourceTree = SOURCE_ROOT; };
 		BB7D7CAB2512F8F00069FE2C /* UpdateCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UpdateCheck.swift; path = ../HotReloading/Sources/injectiond/UpdateCheck.swift; sourceTree = "<group>"; };
 		BB80B3B426B573BE0055FAAE /* README_Chinese.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README_Chinese.md; sourceTree = "<group>"; };
@@ -305,6 +322,7 @@
 		BBC03BBC2625F268005C1A06 /* Unhide.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Unhide.mm; path = HotReloading/Sources/HotReloadingGuts/Unhide.mm; sourceTree = SOURCE_ROOT; };
 		BBC03BBF2625F27C005C1A06 /* UnhidingEval.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UnhidingEval.swift; path = HotReloading/Sources/HotReloading/UnhidingEval.swift; sourceTree = SOURCE_ROOT; };
 		BBC03BC626282358005C1A06 /* SwiftSweeper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftSweeper.swift; path = HotReloading/Sources/HotReloading/SwiftSweeper.swift; sourceTree = SOURCE_ROOT; };
+		BBC3EE012F47EEB300FC785F /* swift-frontend.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = "swift-frontend.sh"; path = "InjectionNext/App/InjectionNext/swift-frontend.sh"; sourceTree = SOURCE_ROOT; };
 		BBCA01FE1FB0F10300E45F0F /* InjectionIII.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InjectionIII.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBCA02011FB0F10300E45F0F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ../HotReloading/Sources/injectiond/AppDelegate.swift; sourceTree = "<group>"; };
 		BBCA02031FB0F10300E45F0F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -557,6 +575,7 @@
 				BB6C87E92520D151005AFCFC /* SwiftStack.swift */,
 				BB6C87E62520D151005AFCFC /* SwiftStats.swift */,
 				BB6C87E22520D150005AFCFC /* SwiftMeta.swift */,
+				BB5291002ED8438F00070F80 /* SwiftRefs.swift */,
 				BB6C87E52520D151005AFCFC /* SwiftArgs.swift */,
 				BB64461F2545831200A83098 /* StringIndex.swift */,
 				BB1C3245254BFAFC001EDFCC /* EasyPointer.swift */,
@@ -604,7 +623,8 @@
 				BBE490CE1FB2368A003D41BB /* FileWatcher.swift */,
 				BB39891C2D918AE90086A550 /* NextCompiler.swift */,
 				BB39891B2D918AE90086A550 /* FrontendServer.swift */,
-				BB3989492D91C0880086A550 /* swift-frontend.sh */,
+				BB37AA542FC2EDFE006AA05B /* ControlServer.swift */,
+				BB321CE32FC2F6D6004AC0B4 /* LogManager.swift */,
 				BB39892D2D919BFE0086A550 /* Common.swift */,
 				BB3989252D918C140086A550 /* Defaults.swift */,
 				BBCA025A1FB1132700E45F0F /* Xcode.h */,
@@ -622,6 +642,7 @@
 				BBCA02081FB0F10400E45F0F /* Info.plist */,
 				BBCA02581FB112F500E45F0F /* App.icns */,
 				BBCA020B1FB0F10400E45F0F /* InjectionIII.entitlements */,
+				BBC3EE012F47EEB300FC785F /* swift-frontend.sh */,
 				BBA7BE0223473D660067124D /* build_bundles.sh */,
 				BBFE27E92B148E7400E47E61 /* copy_bundle.sh */,
 				BBDF943C2349277A00334E08 /* InjectionIII-Bridging-Header.h */,
@@ -656,7 +677,6 @@
 				BB439B8A1FABA65D00B4F50B /* SwiftEval.swift */,
 				BBC03BBF2625F27C005C1A06 /* UnhidingEval.swift */,
 				BB9642A527E339BC00C61CB7 /* ObjcInjection.swift */,
-				BB746D5F2BACB62B0001685F /* SwiftKeyPath.swift */,
 				BB109FAF1FAECD92008C5218 /* SwiftInjection.swift */,
 				BBCB31C8281677C700081CB6 /* SwiftInterpose.swift */,
 				BB9642A727E33C8F00C61CB7 /* DeviceInjection.swift */,
@@ -666,6 +686,8 @@
 				BBC03BC626282358005C1A06 /* SwiftSweeper.swift */,
 				BB18D2E7274E1746004BB4A5 /* DynamicCast.swift */,
 				BB3757002BCC26AE00CE5D05 /* ProfileSwiftUI.swift */,
+				BB746D5F2BACB62B0001685F /* KeyPaths.swift */,
+				BB34AA6C2E2A6C88007F5C12 /* Generics.swift */,
 				BBD0AB3D262F24E4003ED7B1 /* DLKit.swift */,
 				BBD0AB43262F256B003ED7B1 /* DLKitC.h */,
 				BBD0AB40262F2549003ED7B1 /* DLKitC.c */,
@@ -673,6 +695,8 @@
 				BB3757022BCC26DD00CE5D05 /* trie_dlops.mm */,
 				BBD0AB3F262F2549003ED7B1 /* fishhook.c */,
 				BBC03BBC2625F268005C1A06 /* Unhide.mm */,
+				BB37AA582FC2EEE5006AA05B /* InjectionTouchEvents.h */,
+				BB37AA562FC2EE24006AA05B /* InjectionTouchEvents.mm */,
 				BBB64FE41FD576AA0020BE47 /* XprobeSwift-Bridging-Header.h */,
 				BD35949D21A6C5DE0020EB94 /* Vaccine.swift */,
 			);
@@ -762,6 +786,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				BBC3EE052F4CBFB800FC785F /* PBXTargetDependency */,
 			);
 			name = feedcommands;
 			packageProductDependencies = (
@@ -841,6 +866,7 @@
 				BBCA02421FB1065D00E45F0F /* Frameworks */,
 				BBCA02431FB1065D00E45F0F /* Resources */,
 				BB6C88222520D799005AFCFC /* Embed Frameworks */,
+				BBC3EE062F4CC07900FC785F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -969,7 +995,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BB39894A2D91C0880086A550 /* swift-frontend.sh in Resources */,
 				BB3989462D91BE500086A550 /* feedcommands in Resources */,
 				BB1EBC50258EA273001F2AA4 /* fishhook.h in Resources */,
 				BBFE27EA2B148E7400E47E61 /* copy_bundle.sh in Resources */,
@@ -981,6 +1006,7 @@
 				BBE490DC1FB2C643003D41BB /* InjectionError.tif in Resources */,
 				BBCA02591FB112F500E45F0F /* App.icns in Resources */,
 				BBCA02601FB122C300E45F0F /* InjectionIdle.tif in Resources */,
+				BBC3EE022F47EEB300FC785F /* swift-frontend.sh in Resources */,
 				BB6306FE1FCD1A410021D30C /* Credits.rtf in Resources */,
 				BBCA02611FB122C300E45F0F /* InjectionOK.tif in Resources */,
 				BBCA02041FB0F10300E45F0F /* Assets.xcassets in Resources */,
@@ -1041,16 +1067,33 @@
 			shellScript = "if [ \"$ACTION\" == \"install\" ]; then exit 0; fi\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\nchmod +w \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		BBC3EE062F4CC07900FC785F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "perl -e 'print \"#define COMMANDS_VERSION @{[1_000_000 + int(rand() * ((1 << 31)) - 1_000_000)]}\\n\"' >/tmp/InjectionNextSalt.h\n";
+		};
 		BBCA02321FB0F86E00E45F0F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
 			);
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = "/bin/sh -x";
 			shellScript = "InjectionIII/build_bundles.sh\n";
 			showEnvVarsInLog = 0;
@@ -1103,6 +1146,7 @@
 				BBD0AB52263298D9003ED7B1 /* SwiftLifetime.swift in Sources */,
 				BBB9E988279BEC190085E3B9 /* ObjCBridge.mm in Sources */,
 				BB6C87EF2520D152005AFCFC /* SwiftStats.swift in Sources */,
+				BB5291012ED8438F00070F80 /* SwiftRefs.swift in Sources */,
 				BB6C87F02520D152005AFCFC /* SwiftAspects.swift in Sources */,
 				BB6C87F12520D152005AFCFC /* SwiftInterpose.swift in Sources */,
 				BB6C87F22520D152005AFCFC /* SwiftStack.swift in Sources */,
@@ -1126,11 +1170,13 @@
 				BBC03BBD2625F269005C1A06 /* Unhide.mm in Sources */,
 				BB3989262D918C140086A550 /* Defaults.swift in Sources */,
 				BBEB704C1FD28C6F00127711 /* XcodeHash.m in Sources */,
+				BB321CE42FC2F6D6004AC0B4 /* LogManager.swift in Sources */,
 				BB39892E2D919BFE0086A550 /* Common.swift in Sources */,
 				BBB9E98C279BEE3B0085E3B9 /* DeviceServer.swift in Sources */,
 				BBCA02021FB0F10300E45F0F /* AppDelegate.swift in Sources */,
 				BB7D7CAC2512F8F00069FE2C /* UpdateCheck.swift in Sources */,
 				BBE490D01FB2368A003D41BB /* FileWatcher.swift in Sources */,
+				BB37AA552FC2EDFE006AA05B /* ControlServer.swift in Sources */,
 				BBCA02561FB1099500E45F0F /* InjectionServer.swift in Sources */,
 				BBC03BC02625F27C005C1A06 /* UnhidingEval.swift in Sources */,
 				BBBFD2D01FCFEE300057D899 /* SwiftEval.swift in Sources */,
@@ -1157,8 +1203,10 @@
 				BBC03BC12625F27C005C1A06 /* UnhidingEval.swift in Sources */,
 				BBCA02501FB107AF00E45F0F /* SwiftEval.swift in Sources */,
 				BD35949E21A6C5DE0020EB94 /* Vaccine.swift in Sources */,
+				BB34AA6D2E2A6C8C007F5C12 /* Generics.swift in Sources */,
 				BBCA02511FB107AF00E45F0F /* SwiftInjection.swift in Sources */,
-				BB746D602BACB62D0001685F /* SwiftKeyPath.swift in Sources */,
+				BB37AA572FC2EE24006AA05B /* InjectionTouchEvents.mm in Sources */,
+				BB746D602BACB62D0001685F /* KeyPaths.swift in Sources */,
 				BB9642A627E339BE00C61CB7 /* ObjcInjection.swift in Sources */,
 				BB04337A28D31A350007577F /* StandaloneInjection.swift in Sources */,
 				BB16654425ECD828001407AE /* ClientBoot.mm in Sources */,
@@ -1188,6 +1236,11 @@
 			isa = PBXTargetDependency;
 			target = BB3989322D91BA8A0086A550 /* feedcommands */;
 			targetProxy = BB3989442D91BE420086A550 /* PBXContainerItemProxy */;
+		};
+		BBC3EE052F4CBFB800FC785F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BBCA02441FB1065D00E45F0F /* InjectionBundle */;
+			targetProxy = BBC3EE042F4CBFB800FC785F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1329,7 +1382,18 @@
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
+				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
+				ENABLE_RESOURCE_ACCESS_USB = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1357,7 +1421,18 @@
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
+				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
+				ENABLE_RESOURCE_ACCESS_USB = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
@@ -1399,6 +1474,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ALLOW_ENTITLEMENTS_MODIFICATION = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -1470,6 +1546,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ALLOW_ENTITLEMENTS_MODIFICATION = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1636,8 +1713,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MARKETING_VERSION = 5.1.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MARKETING_VERSION = 5.2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1660,8 +1737,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = InjectionIII/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MARKETING_VERSION = 5.1.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MARKETING_VERSION = 5.2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.johnholdsworth.InjectionIII;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1871,7 +1948,7 @@
 			repositoryURL = "https://github.com/johnno1962/Popen";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.1.7;
+				minimumVersion = 2.2.1;
 			};
 		};
 		BB98653C2D92F67600C092FA /* XCRemoteSwiftPackageReference "Fortify" */ = {
@@ -1879,7 +1956,7 @@
 			repositoryURL = "https://github.com/johnno1962/Fortify";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.1.12;
+				minimumVersion = 2.2.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

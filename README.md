@@ -22,6 +22,17 @@ will if you use "Editor/Add Build Setting/Add User-Defined Setting"
 to add a value for `EMIT_FRONTEND_COMMAND_LINES` (set to "YES") to your project's
 `Debug` build settings, then InjectionIII can continue to work as before.
 
+Versions 5.2.1+ of the app support an MCP server contained in the `Resources`
+directory of the app bundle. Consult mcp-server/README.md for details.
+Running the server is opt-in by setting the default `mcpServer` to true.
+
+### InjectionNext
+
+InjectionIII now has a start-over successor in the very similar
+[InjectionNext](https://github.com/johnno1962/InjectionNext) project.
+If you encounter a limitation of InjectionIII it's recommended giving
+InjectionNext a try to see if the issue has been resolved there.
+
 ### How to use it
 
 Setting up your projects to use injection is now as simple as downloading
@@ -42,7 +53,8 @@ Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/macOSInjection.b
 ```
  It's also important to add the options `-Xlinker` and `-interposable` (without double
  quotes and on separate lines) to the "Other Linker Flags" of targets in your project 
-(for the `Debug` configuration only) to enable "interposing" (see the explanation below).
+to enable "interposing" (see the explanation below). This must be for the `Debug` 
+configuration only or you can experience problems with TestFlight.
 
 ![Icon](interposable.png)
 
@@ -140,14 +152,6 @@ var body: some View {
 ```
 You can leave these modifications in your production code as, 
 for a `Release` build they optimise out to a no-op.
-
-#### Xcode 16
-
-New in Xcode 16 is `SWIFT_ENABLE_OPAQUE_TYPE_ERASURE` build setting. 
-This setting is turned ON by default and you don't need to erase view
-body explicitly. You'll still need to `@ObserveInjection` to force redraws.
-
-For more info, see [Xcode 16.2 release notes](https://developer.apple.com/documentation/xcode-release-notes/xcode-16_2-release-notes).
 
 ### Injection on an iOS, tvOS or visionOS device
 
@@ -272,8 +276,8 @@ minimal implementation of standalone injection for reference. Just add
 this Swift package and you should be able to inject in the simulator.
 
 [InjectionNext](https://github.com/johnno1962/InjectionNext) is a 
-currently experimental version of Injection that should be faster and 
-more reliable for large projects. It integrates into a debugging flag of 
+new start-over version of Injection that should be faster and more 
+reliable for large projects. It integrates into a debugging flag of 
 Xcode to find out how to recompile files to avoid parsing build logs
 and re-uses the client implementation of injection from `InjectionLite`.
 To use with external editors such as `Cursor`, InjectionNext can also
@@ -330,6 +334,8 @@ store edge paths so they can be coloured (line 66 and 303) in "canviz-0.1/canviz
 It also includes [CodeMirror](http://codemirror.net/) JavaScript editor
 for the code to be evaluated using injection under an MIT license.
 
+After 100 injections you'll be reminded you can sponsor this project on GitHub.
+
 The fabulous app icon is thanks to Katya of [pixel-mixer.com](http://pixel-mixer.com/).
 
-$Date: 2025/04/07 $
+$Date: 2026/05/25 $
