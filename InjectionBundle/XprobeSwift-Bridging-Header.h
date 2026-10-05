@@ -5,6 +5,7 @@
 #import "SimpleSocket.h"
 #import "UserDefaults.h"
 #import "InjectionClient.h"
+#import "InjectionTouchEvents.h"
 #if SWIFT_PACKAGE
 #import "../XprobePlugin/Sources/Xprobe/include/Xprobe.h"
 #endif
